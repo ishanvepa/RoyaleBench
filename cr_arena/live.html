@@ -99,9 +99,11 @@
   <div class="inner">
     <div>
       <div class="label">CR Arena live play</div>
-      <h1>You against the planner bot, in real time</h1>
+      <h1>You against the bots, in real time</h1>
     </div>
     <p>The game runs at full speed and never waits. Pick a card, drop it anywhere it is allowed. The bot looks ahead on live snapshots of the game, several times a second.</p>
+    <label for="opponent" class="label">Opponent</label>
+    <select id="opponent"></select>
     <div class="label">Your deck</div>
     <div class="decks" id="decks"></div>
     <div class="row">
@@ -204,6 +206,11 @@
   // ---------------------------------------------------------------- setup screen
   function showSetup(m) {
     decks = m.decks;
+    const opponent = $("opponent"); opponent.textContent = "";
+    for (const [key, bot] of Object.entries(m.bots)) {
+      const option = document.createElement("option"); option.value = key;
+      option.textContent = bot.name; opponent.append(option);
+    }
     const names = Object.keys(decks);
     myDeck = myDeck || names[0];
     const box = $("decks"); box.textContent = "";
@@ -222,7 +229,7 @@
   function start(again) {
     if (!again || !lastStart) {
       const od = $("opp-deck").value;
-      lastStart = { t: "start", deck: myDeck, opp_deck: od === "same as mine" ? myDeck : od };
+      lastStart = { t: "start", bot: $("opponent").value, deck: myDeck, opp_deck: od === "same as mine" ? myDeck : od };
     }
     send(lastStart);
   }

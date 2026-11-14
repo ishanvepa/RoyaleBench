@@ -3,6 +3,7 @@ benchmark for clash royale
 
 ## Quick guides
 
+- [Phone play](docs/phone_play.md): launch the game and a temporary public link with one command.
 - [Valkyrie guide](docs/valkyrie_guide.md): publish tasks, run evaluations, and collect hackathon results.
 - [Modal guide](docs/modal_guide.md): connect sandbox compute and manage evaluation usage.
 

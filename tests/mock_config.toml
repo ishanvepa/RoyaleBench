@@ -1,0 +1,35 @@
+# Pipeline/dashboard test with fake LLMs (no API calls, no cost).
+#   uv run python -m cr_arena.tournament --config tests/mock_config.toml --job mock-demo
+[tournament]
+out_dir = "runs/round_robin"
+seeds = [1, 2]
+decision_ticks = 40
+parallel = 6
+anchor = "random-bot"
+
+[[players]]
+name = "random-bot"
+type = "random"
+
+[[players]]
+name = "heuristic-bot"
+type = "heuristic"
+
+[[players]]
+name = "mock-llm-a"
+type = "mock"
+latency_s = 0.04
+error_rate = 0.02
+junk_rate = 0.03
+price_in = 4
+price_out = 20
+
+[[players]]
+name = "mock-llm-b"
+type = "mock"
+latency_s = 0.06
+error_rate = 0.08
+junk_rate = 0.15
+seed = 7
+price_in = 2
+price_out = 10

@@ -1,0 +1,53 @@
+# The main Claude benchmark: 5 Claude models, all played through the logged-in
+# Claude Code CLI (no API key). Two tracks from the same config:
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job classic-v2                     # fixed classic decks
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job build-v2 --deck-mode build     # models build decks
+[tournament]
+out_dir = "runs/round_robin"
+deck_mode = "mirror"       # mirror: every pair plays every classic deck below, mirrored, from both sides
+seeds = [1, 2, 3, 4]       # build mode only: games per pair = 2 x len(seeds) = 8
+decision_ticks = 40        # 2.0 s of game time between decisions
+parallel = 10
+replays_per_pair = 3       # saved replays: only the first 3 games of each pairing (all games are still played and scored)
+
+[decks]
+# Classic track decks (names from cr_arena/decks.py). Adding a deck later and rerunning the same
+# job only plays the new games. 7 decks x 2 sides = 14 games per pair.
+classic = ["giant-beatdown", "hog-2.6-cycle", "lavaloon", "log-bait", "golem-beatdown", "xbow-cycle", "pekka-bridge-spam"]
+
+# All models at the same reasoning effort ("low") so the comparison is like for like and games stay fast.
+# Cost is the CLI's own per-call figure (list price), not a guess.
+[[players]]
+name = "claude-fable-5.1"
+provider = "claude_cli"
+model = "claude-fable-5-1"
+effort = "low"
+timeout_s = 150
+
+[[players]]
+name = "claude-opus-5.5"
+provider = "claude_cli"
+model = "claude-opus-5-5"
+effort = "low"
+timeout_s = 150
+
+[[players]]
+name = "claude-sonnet-5.5"
+provider = "claude_cli"
+model = "claude-sonnet-5-5"
+effort = "low"
+timeout_s = 150
+
+[[players]]
+name = "claude-haiku-5.5"
+provider = "claude_cli"
+model = "claude-haiku-5-5"
+effort = "low"
+timeout_s = 150
+
+[[players]]
+name = "claude-opus-4.8"
+provider = "claude_cli"
+model = "claude-opus-4-8"
+effort = "low"
+timeout_s = 150

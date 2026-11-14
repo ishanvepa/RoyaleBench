@@ -1,0 +1,68 @@
+# Round-robin configuration. Every enabled player plays every other player,
+# once per seed from each side (blue/red), with the same deck on both sides.
+
+[tournament]
+out_dir = "runs/round_robin"
+seeds = [1, 2, 3]          # 3 seeds x 2 sides = 6 games per pair. Raise for tighter ratings.
+decision_ticks = 40        # 40 ticks = 2.0 s of game time between decisions (~105 decisions/side/match)
+parallel = 6               # matches run at the same time
+anchor = "random-bot"      # pinned to 400, like chess benchmarks pin a random mover
+
+[decks]
+# Each seed uses the next deck in this list (cycling). Mirror matches: both sides same deck.
+list = [
+  ["Knight", "Archer", "Giant", "Minions", "Fireball", "Zap", "Cannon", "Musketeer"],
+]
+
+# ---------------------------------------------------------------- baselines (free)
+[[players]]
+name = "random-bot"
+type = "random"
+
+[[players]]
+name = "heuristic-bot"
+type = "heuristic"
+
+# ---------------------------------------------------------------- LLMs
+# provider = "anthropic"      -> Anthropic SDK, needs ANTHROPIC_API_KEY (or `ant auth login`)
+# provider = "openai_compat"  -> any OpenAI-compatible API; default base_url is OpenRouter,
+#                                key from OPENROUTER_API_KEY (or set api_key_env / base_url)
+# Each (model, effort) combination is its own rated player.
+# price_in/price_out: list prices (Anthropic docs / OpenRouter listing, 2026-11-07); only used for cost estimates.
+# OpenRouter model IDs below were read from openrouter.ai/api/v1/models on 2026-11-07.
+
+[[players]]
+name = "claude-opus-5.5"
+provider = "anthropic"
+model = "claude-opus-5-5"
+price_in = 4        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 20
+effort = "medium"          # low | medium | high | xhigh | max
+
+[[players]]
+name = "gpt-6.1-sol"
+provider = "openai_compat"
+model = "openai/gpt-6.1-sol"
+price_in = 2        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 10
+
+[[players]]
+name = "gemini-4-argon"
+provider = "openai_compat"
+model = "google/gemini-4-argon"
+price_in = 2        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 10
+
+[[players]]
+name = "grok-4.7"
+provider = "openai_compat"
+model = "x-ai/grok-4.7"
+price_in = 2        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 6
+
+[[players]]
+name = "deepseek-v4.1-flash"
+provider = "openai_compat"
+model = "deepseek/deepseek-v4.1-flash"
+price_in = 0.051        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 0.567

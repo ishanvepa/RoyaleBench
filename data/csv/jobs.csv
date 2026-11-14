@@ -1,0 +1,439 @@
+id,name,status,created_at,started_at,finished_at,config_toml,players,seeds,decision_ticks,total_matches,notes
+1,bots-smoke,done,1794033196.08221,1794033196.08231,1794033199.94856,"# Round-robin configuration. Every enabled player plays every other player,
+# once per seed from each side (blue/red), with the same deck on both sides.
+
+[tournament]
+out_dir = ""runs/round_robin""
+seeds = [1, 2, 3]          # 3 seeds x 2 sides = 6 games per pair. Raise for tighter ratings.
+decision_ticks = 40        # 40 ticks = 2.0 s of game time between decisions (~105 decisions/side/match)
+parallel = 6               # matches run at the same time
+anchor = ""random-bot""      # pinned to 400, like chess benchmarks pin a random mover
+
+[decks]
+# Each seed uses the next deck in this list (cycling). Mirror matches: both sides same deck.
+list = [
+  [""Knight"", ""Archer"", ""Giant"", ""Minions"", ""Fireball"", ""Zap"", ""Cannon"", ""Musketeer""],
+]
+
+# ---------------------------------------------------------------- baselines (free)
+[[players]]
+name = ""random-bot""
+type = ""random""
+
+[[players]]
+name = ""heuristic-bot""
+type = ""heuristic""
+
+# ---------------------------------------------------------------- LLMs
+# provider = ""anthropic""      -> Anthropic SDK, needs ANTHROPIC_API_KEY (or `ant auth login`)
+# provider = ""openai_compat""  -> any OpenAI-compatible API; default base_url is OpenRouter,
+#                                key from OPENROUTER_API_KEY (or set api_key_env / base_url)
+# Each (model, effort) combination is its own rated player.
+# price_in/price_out: list prices (Anthropic docs / OpenRouter listing, 2026-11-07); only used for cost estimates.
+# OpenRouter model IDs below were read from openrouter.ai/api/v1/models on 2026-11-07.
+
+[[players]]
+name = ""claude-opus-5.5""
+provider = ""anthropic""
+model = ""claude-opus-5-5""
+price_in = 4        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 20
+effort = ""medium""          # low | medium | high | xhigh | max
+
+[[players]]
+name = ""gpt-6.1-sol""
+provider = ""openai_compat""
+model = ""openai/gpt-6.1-sol""
+price_in = 2        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 10
+
+[[players]]
+name = ""gemini-4-argon""
+provider = ""openai_compat""
+model = ""google/gemini-4-argon""
+price_in = 2        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 10
+
+[[players]]
+name = ""grok-4.7""
+provider = ""openai_compat""
+model = ""x-ai/grok-4.7""
+price_in = 2        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 6
+
+[[players]]
+name = ""deepseek-v4.1-flash""
+provider = ""openai_compat""
+model = ""deepseek/deepseek-v4.1-flash""
+price_in = 0.051        # USD per 1M input tokens (for the dashboard cost estimate)
+price_out = 0.567
+","[""random-bot"", ""heuristic-bot""]","[1, 2, 3]",40,6,"free smoke test, bots only"
+2,mock-demo,done,1794033225.39953,1794033225.40001,1794033254.03094,"# Pipeline/dashboard test with fake LLMs (no API calls, no cost).
+#   uv run python -m cr_arena.tournament --config tests/mock_config.toml --job mock-demo
+[tournament]
+out_dir = ""runs/round_robin""
+seeds = [1, 2]
+decision_ticks = 40
+parallel = 6
+anchor = ""random-bot""
+
+[[players]]
+name = ""random-bot""
+type = ""random""
+
+[[players]]
+name = ""heuristic-bot""
+type = ""heuristic""
+
+[[players]]
+name = ""mock-llm-a""
+type = ""mock""
+latency_s = 0.04
+error_rate = 0.02
+junk_rate = 0.03
+price_in = 4
+price_out = 20
+
+[[players]]
+name = ""mock-llm-b""
+type = ""mock""
+latency_s = 0.06
+error_rate = 0.08
+junk_rate = 0.15
+seed = 7
+price_in = 2
+price_out = 10
+","[""random-bot"", ""heuristic-bot"", ""mock-llm-a"", ""mock-llm-b""]","[1, 2]",40,24,"fake LLMs for dashboard testing"
+3,live-test,done,1794033492.71809,1794033492.71868,1794033655.2239,"# Pipeline/dashboard test with fake LLMs (no API calls, no cost).
+#   uv run python -m cr_arena.tournament --config tests/mock_config.toml --job mock-demo
+[tournament]
+out_dir = ""runs/round_robin""
+seeds = [1, 2]
+decision_ticks = 40
+parallel = 3
+anchor = ""random-bot""
+
+[[players]]
+name = ""random-bot""
+type = ""random""
+
+[[players]]
+name = ""heuristic-bot""
+type = ""heuristic""
+
+[[players]]
+name = ""mock-llm-a""
+type = ""mock""
+latency_s = 0.4
+error_rate = 0.02
+junk_rate = 0.03
+price_in = 4
+price_out = 20
+
+[[players]]
+name = ""mock-llm-b""
+type = ""mock""
+latency_s = 0.5
+error_rate = 0.08
+junk_rate = 0.15
+seed = 7
+price_in = 2
+price_out = 10
+","[""random-bot"", ""mock-llm-a"", ""mock-llm-b""]","[1, 2]",40,12,"live view test"
+4,fable-vs-haiku,done,1794087405.47251,1794087405.47337,1794088350.62341,"# Plays Claude models through the logged-in Claude Code CLI (`claude -p`): no API key needed.
+[tournament]
+out_dir = ""runs/round_robin""
+seeds = [1, 2]
+decision_ticks = 40
+parallel = 8
+anchor = ""random-bot""
+
+[decks]
+list = [[""Knight"", ""Archer"", ""Giant"", ""Minions"", ""Fireball"", ""Zap"", ""Cannon"", ""Musketeer""]]
+
+[[players]]
+name = ""random-bot""
+type = ""random""
+
+[[players]]
+name = ""heuristic-bot""
+type = ""heuristic""
+
+[[players]]
+name = ""claude-fable-5.1""
+provider = ""claude_cli""
+model = ""claude-fable-5-1""
+effort = ""low""
+timeout_s = 120
+price_in = 15
+price_out = 75
+
+[[players]]
+name = ""claude-haiku-5.5""
+provider = ""claude_cli""
+model = ""claude-haiku-5-5""
+timeout_s = 120
+price_in = 1
+price_out = 5
+","[""random-bot"", ""heuristic-bot"", ""claude-fable-5.1"", ""claude-haiku-5.5""]","[1, 2]",40,24,"Fable 5.1 (low effort) vs Haiku 5.5 via Claude Code CLI, + bots"
+5,counter-deck,done,1794088802.07127,1794088802.07219,1794089360.51857,"# Haiku 5.5 gets a deck built to counter the default Giant/Musketeer deck that Fable plays.
+[tournament]
+out_dir = ""runs/round_robin""
+seeds = [1, 2, 3]
+decision_ticks = 40
+parallel = 6
+anchor = ""random-bot""
+
+[decks]
+list = [[""Knight"", ""Archer"", ""Giant"", ""Minions"", ""Fireball"", ""Zap"", ""Cannon"", ""Musketeer""]]
+
+[[players]]
+name = ""claude-fable-5.1""
+provider = ""claude_cli""
+model = ""claude-fable-5-1""
+effort = ""low""
+timeout_s = 120
+price_in = 15
+price_out = 75
+
+[[players]]
+name = ""claude-haiku-5.5+counter""
+provider = ""claude_cli""
+model = ""claude-haiku-5-5""
+timeout_s = 120
+price_in = 1
+price_out = 5
+# Inferno Tower + Mini P.E.K.K.A shred the Giant; Wizard / Baby Dragon / Valkyrie / Arrows clear
+# Archers, Minions and Musketeer; Hog Rider is the win condition; Skeletons are a cheap distraction.
+deck = [""InfernoTower"", ""MiniPekka"", ""Valkyrie"", ""BabyDragon"", ""Wizard"", ""Arrows"", ""HogRider"", ""Skeletons""]
+","[""claude-fable-5.1"", ""claude-haiku-5.5+counter""]","[1, 2, 3]",40,6,"Haiku 5.5 with a counter deck (Inferno/MiniPekka/Wizard/BabyDragon/Valk/Arrows/Hog/Skeletons) vs Fable 5.1 with the default Giant/Musketeer deck"
+6,classic-v1,stopped,1794094426.68277,1794094426.6837,1794095371.57558,"# The main Claude benchmark: 5 Claude models + 2 baseline bots, all played through the logged-in
+# Claude Code CLI (no API key). Two tracks from the same config:
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job classic-v1                     # fixed classic decks
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job build-v1 --deck-mode build     # models build decks
+[tournament]
+out_dir = ""runs/round_robin""
+deck_mode = ""mirror""       # mirror: every pair plays every classic deck below, mirrored, from both sides
+seeds = [1, 2]             # build mode only: games per pair = 2 x len(seeds)
+decision_ticks = 40        # 2.0 s of game time between decisions
+parallel = 10
+anchor = ""random-bot""      # pinned to 400
+
+[decks]
+# Classic track decks (names from cr_arena/decks.py). Adding a deck later and rerunning the same
+# job only plays the new games. Bots in build mode play these too (deck i for seed i).
+classic = [""giant-beatdown"", ""hog-2.6-cycle"", ""lavaloon""]
+
+[[players]]
+name = ""random-bot""
+type = ""random""
+
+[[players]]
+name = ""heuristic-bot""
+type = ""heuristic""
+
+# All models at the same reasoning effort (""low"") so the comparison is like for like and games stay fast.
+# Cost is the CLI's own per-call figure (list price), not a guess.
+[[players]]
+name = ""claude-fable-5.1""
+provider = ""claude_cli""
+model = ""claude-fable-5-1""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-5.5""
+provider = ""claude_cli""
+model = ""claude-opus-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-sonnet-5.5""
+provider = ""claude_cli""
+model = ""claude-sonnet-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-haiku-5.5""
+provider = ""claude_cli""
+model = ""claude-haiku-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-4.8""
+provider = ""claude_cli""
+model = ""claude-opus-4-8""
+effort = ""low""
+timeout_s = 150
+","[""random-bot"", ""heuristic-bot"", ""claude-fable-5.1"", ""claude-opus-5.5"", ""claude-sonnet-5.5"", ""claude-haiku-5.5"", ""claude-opus-4.8""]","[1, 2]",40,126,"Classic decks track: 5 Claude models (low effort) + 2 bots; giant-beatdown, hog-2.6-cycle, lavaloon, mirrored, both sides"
+7,build-v1,stopped,1794094426.70051,1794094426.70089,1794095371.57558,"# The main Claude benchmark: 5 Claude models + 2 baseline bots, all played through the logged-in
+# Claude Code CLI (no API key). Two tracks from the same config:
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job classic-v1                     # fixed classic decks
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job build-v1 --deck-mode build     # models build decks
+[tournament]
+out_dir = ""runs/round_robin""
+deck_mode = ""build""  # set by --deck-mode
+seeds = [1, 2]             # build mode only: games per pair = 2 x len(seeds)
+decision_ticks = 40        # 2.0 s of game time between decisions
+parallel = 10
+anchor = ""random-bot""      # pinned to 400
+
+[decks]
+# Classic track decks (names from cr_arena/decks.py). Adding a deck later and rerunning the same
+# job only plays the new games. Bots in build mode play these too (deck i for seed i).
+classic = [""giant-beatdown"", ""hog-2.6-cycle"", ""lavaloon""]
+
+[[players]]
+name = ""random-bot""
+type = ""random""
+
+[[players]]
+name = ""heuristic-bot""
+type = ""heuristic""
+
+# All models at the same reasoning effort (""low"") so the comparison is like for like and games stay fast.
+# Cost is the CLI's own per-call figure (list price), not a guess.
+[[players]]
+name = ""claude-fable-5.1""
+provider = ""claude_cli""
+model = ""claude-fable-5-1""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-5.5""
+provider = ""claude_cli""
+model = ""claude-opus-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-sonnet-5.5""
+provider = ""claude_cli""
+model = ""claude-sonnet-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-haiku-5.5""
+provider = ""claude_cli""
+model = ""claude-haiku-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-4.8""
+provider = ""claude_cli""
+model = ""claude-opus-4-8""
+effort = ""low""
+timeout_s = 150
+","[""random-bot"", ""heuristic-bot"", ""claude-fable-5.1"", ""claude-opus-5.5"", ""claude-sonnet-5.5"", ""claude-haiku-5.5"", ""claude-opus-4.8""]","[1, 2]",40,84,"Deck-building track: each model builds its deck blind before every game; 5 Claude models (low effort) + 2 bots (classic decks)"
+9,classic-v2,done,1794095411.25362,1794095411.25409,1794097463.65954,"# The main Claude benchmark: 5 Claude models, all played through the logged-in
+# Claude Code CLI (no API key). Two tracks from the same config:
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job classic-v2                     # fixed classic decks
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job build-v2 --deck-mode build     # models build decks
+[tournament]
+out_dir = ""runs/round_robin""
+deck_mode = ""mirror""       # mirror: every pair plays every classic deck below, mirrored, from both sides
+seeds = [1, 2, 3, 4]       # build mode only: games per pair = 2 x len(seeds) = 8
+decision_ticks = 40        # 2.0 s of game time between decisions
+parallel = 10
+
+[decks]
+# Classic track decks (names from cr_arena/decks.py). Adding a deck later and rerunning the same
+# job only plays the new games. 7 decks x 2 sides = 14 games per pair.
+classic = [""giant-beatdown"", ""hog-2.6-cycle"", ""lavaloon"", ""log-bait"", ""golem-beatdown"", ""xbow-cycle"", ""pekka-bridge-spam""]
+
+# All models at the same reasoning effort (""low"") so the comparison is like for like and games stay fast.
+# Cost is the CLI's own per-call figure (list price), not a guess.
+[[players]]
+name = ""claude-fable-5.1""
+provider = ""claude_cli""
+model = ""claude-fable-5-1""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-5.5""
+provider = ""claude_cli""
+model = ""claude-opus-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-sonnet-5.5""
+provider = ""claude_cli""
+model = ""claude-sonnet-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-haiku-5.5""
+provider = ""claude_cli""
+model = ""claude-haiku-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-4.8""
+provider = ""claude_cli""
+model = ""claude-opus-4-8""
+effort = ""low""
+timeout_s = 150
+","[""claude-fable-5.1"", ""claude-opus-5.5"", ""claude-sonnet-5.5"", ""claude-haiku-5.5"", ""claude-opus-4.8""]","[1, 2, 3, 4]",40,25,"Classic decks: 5 Claude models (low effort), 7 classic decks mirrored, both sides, 14 games per pair"
+10,build-v2,done,1794095411.2798,1794095411.28011,1794097468.96729,"# The main Claude benchmark: 5 Claude models, all played through the logged-in
+# Claude Code CLI (no API key). Two tracks from the same config:
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job classic-v2                     # fixed classic decks
+#   uv run python -m cr_arena.tournament --config configs/claude.toml --job build-v2 --deck-mode build     # models build decks
+[tournament]
+out_dir = ""runs/round_robin""
+deck_mode = ""build""  # set by --deck-mode
+seeds = [1, 2, 3, 4]       # build mode only: games per pair = 2 x len(seeds) = 8
+decision_ticks = 40        # 2.0 s of game time between decisions
+parallel = 10
+
+[decks]
+# Classic track decks (names from cr_arena/decks.py). Adding a deck later and rerunning the same
+# job only plays the new games. 7 decks x 2 sides = 14 games per pair.
+classic = [""giant-beatdown"", ""hog-2.6-cycle"", ""lavaloon"", ""log-bait"", ""golem-beatdown"", ""xbow-cycle"", ""pekka-bridge-spam""]
+
+# All models at the same reasoning effort (""low"") so the comparison is like for like and games stay fast.
+# Cost is the CLI's own per-call figure (list price), not a guess.
+[[players]]
+name = ""claude-fable-5.1""
+provider = ""claude_cli""
+model = ""claude-fable-5-1""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-5.5""
+provider = ""claude_cli""
+model = ""claude-opus-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-sonnet-5.5""
+provider = ""claude_cli""
+model = ""claude-sonnet-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-haiku-5.5""
+provider = ""claude_cli""
+model = ""claude-haiku-5-5""
+effort = ""low""
+timeout_s = 150
+
+[[players]]
+name = ""claude-opus-4.8""
+provider = ""claude_cli""
+model = ""claude-opus-4-8""
+effort = ""low""
+timeout_s = 150
+","[""claude-fable-5.1"", ""claude-opus-5.5"", ""claude-sonnet-5.5"", ""claude-haiku-5.5"", ""claude-opus-4.8""]","[1, 2, 3, 4]",40,20,"Deck building: 5 Claude models (low effort) build decks blind before every game, 4 seeds, both sides, 8 games per pair"

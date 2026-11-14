@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.env
+runs/arena.db
+runs/arena.db-*
+runs/**/replays/
+runs/site/
+runs/*.out
+data/arena.db
+data/*.db-*

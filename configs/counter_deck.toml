@@ -1,0 +1,30 @@
+# Haiku 5.5 gets a deck built to counter the default Giant/Musketeer deck that Fable plays.
+[tournament]
+out_dir = "runs/round_robin"
+seeds = [1, 2, 3]
+decision_ticks = 40
+parallel = 6
+anchor = "random-bot"
+
+[decks]
+list = [["Knight", "Archer", "Giant", "Minions", "Fireball", "Zap", "Cannon", "Musketeer"]]
+
+[[players]]
+name = "claude-fable-5.1"
+provider = "claude_cli"
+model = "claude-fable-5-1"
+effort = "low"
+timeout_s = 120
+price_in = 15
+price_out = 75
+
+[[players]]
+name = "claude-haiku-5.5+counter"
+provider = "claude_cli"
+model = "claude-haiku-5-5"
+timeout_s = 120
+price_in = 1
+price_out = 5
+# Inferno Tower + Mini P.E.K.K.A shred the Giant; Wizard / Baby Dragon / Valkyrie / Arrows clear
+# Archers, Minions and Musketeer; Hog Rider is the win condition; Skeletons are a cheap distraction.
+deck = ["InfernoTower", "MiniPekka", "Valkyrie", "BabyDragon", "Wizard", "Arrows", "HogRider", "Skeletons"]

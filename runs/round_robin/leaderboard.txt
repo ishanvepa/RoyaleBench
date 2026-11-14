@@ -1,0 +1,8 @@
+ #  player                       rating         95% CI  games      W-D-L  score
+ 1  heuristic-bot                   959  [  959,  959]      6   6-0-0      1.0
+ 2  random-bot                      400  [  400,  400]      6   0-0-6      0.0 (pinned)
+
+HEAD TO HEAD (row player's score / games)
+               heuristic-  random-bot
+heuristic-bot           -       6.0/6
+random-bot          0.0/6           -

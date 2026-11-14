@@ -1,0 +1,35 @@
+# Plays Claude models through the logged-in Claude Code CLI (`claude -p`): no API key needed.
+[tournament]
+out_dir = "runs/round_robin"
+seeds = [1, 2]
+decision_ticks = 40
+parallel = 8
+anchor = "random-bot"
+
+[decks]
+list = [["Knight", "Archer", "Giant", "Minions", "Fireball", "Zap", "Cannon", "Musketeer"]]
+
+[[players]]
+name = "random-bot"
+type = "random"
+
+[[players]]
+name = "heuristic-bot"
+type = "heuristic"
+
+[[players]]
+name = "claude-fable-5.1"
+provider = "claude_cli"
+model = "claude-fable-5-1"
+effort = "low"
+timeout_s = 120
+price_in = 15
+price_out = 75
+
+[[players]]
+name = "claude-haiku-5.5"
+provider = "claude_cli"
+model = "claude-haiku-5-5"
+timeout_s = 120
+price_in = 1
+price_out = 5

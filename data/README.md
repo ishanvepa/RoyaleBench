@@ -31,6 +31,15 @@ including the exact board text sent and the model's full reply) is only in the d
 
 ## Tables (for moving to a hosted database, e.g. Supabase Postgres)
 
+The repository now includes a Supabase adapter and complete importer. Set `DATABASE_URL` in
+your git-ignored `.env`, then run `uv run python -m cr_arena.migrate`. This reads `arena.db.gz`
+directly, preserves every table and decision, and can be retried without duplication. The import
+is atomic and never changes this snapshot. See the root README's **Shared Supabase database**
+section for project setup and team access. New runs use the configured shared database automatically.
+
+The notes below describe the original SQLite representation; the deployed Postgres schema is
+in `supabase/migrations/202611070001_arena.sql` (JSON stays TEXT for compatibility with the dashboard).
+
 Schema is in `cr_arena/db.py` (`SCHEMA`). Notes for a Postgres port:
 - `jobs.id` is `INTEGER PRIMARY KEY AUTOINCREMENT` -> `BIGSERIAL`; `matches` PK is `(job_id, match_id)`.
 - Timestamps (`created_at`, `started_at`, `finished_at`, `checked_at`) are Unix seconds as `REAL` -> use

@@ -6,6 +6,8 @@ runs/arena.db-*
 runs/**/replays/
 runs/site/
 runs/*.out
+runs/replay-cache/
+runs/dashboard/
 data/arena.db
 data/*.db-*
 modal.json

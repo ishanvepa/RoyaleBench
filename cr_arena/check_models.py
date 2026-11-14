@@ -11,7 +11,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from .db import DEFAULT_DB, DB
+from .db import DB
 from .game import Game
 from .players import LLMPlayer, build_player
 
@@ -19,7 +19,7 @@ from .players import LLMPlayer, build_player
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.toml")
-    ap.add_argument("--db", default=str(DEFAULT_DB))
+    ap.add_argument("--db", help="Override DATABASE_URL with a SQLite path or Postgres URL")
     args = ap.parse_args()
     load_dotenv()
     cfg = tomllib.loads(Path(args.config).read_text())

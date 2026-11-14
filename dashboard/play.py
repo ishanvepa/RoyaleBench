@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import time
 import tomllib
+import uuid
 from html import escape
 from pathlib import Path
 
@@ -14,7 +15,9 @@ import streamlit as st
 from royalegym.protocol import EntityKind
 from royalegym.replay import save_trace
 
-from cr_arena.decks import CLASSIC_DECKS
+from dashboard.model_ui import model_label, model_selectbox
+from dashboard.loading import loading
+from cr_arena.decks import deck_options
 from cr_arena.game import Game
 from cr_arena.players import Decision, InfraError, build_player
 
@@ -166,31 +169,31 @@ def _save(P: dict, get_db) -> str:
     game: Game = P["game"]
     db = get_db()
     winner, crowns, towers, ticks, trace = game.finish()
-    mid = f"human__vs__{P['opp_name']}__{time.strftime('%Y%m%d-%H%M%S')}"
+    mid = P.setdefault("match_id", f"human__vs__{P['opp_name']}__{uuid.uuid4().hex}")
     (OUT_DIR / "replays").mkdir(parents=True, exist_ok=True)
     rp = OUT_DIR / "replays" / f"{mid}.msgpack"
     if trace is not None:
         save_trace(trace, rp)
-    jid = db.get_or_create_job("human-play", "", ["human"], [], P["ticks"], 0, "Games played by a human on the Play page")
-    db.queue_matches(jid, [{"match_id": mid, "blue": "human", "red": P["opp_name"], "seed": P["seed"],
-                            "deck": {"blue": P["decks"][0], "red": P["decks"][1]}}])
-    db.match_started(jid, mid, "", str(rp))
-    db.set_match_decks(jid, mid, *P["decks"])
-    db.add_decisions([(jid, mid, r["step"], r["team"], r["player"], r["time_left"], r["elixir"], r["my_towers"],
-                       r["enemy_towers"], r["n_moves"], r["asked"], r["move"], r["result"], r["ok"], r["error"],
-                       r["latency_s"], r["tokens_in"], r["tokens_out"], r["cache_read"], r["cache_write"], r["raw"],
-                       r["state"], r["cost_usd"]) for r in P["rows"]])
-    stats = {"decisions": P["step"], "asked": sum(r["asked"] for r in P["rows"] if r["team"] == 0)}
-    db.match_finished(jid, {"match_id": mid, "winner": int(winner), "crowns": crowns, "tower_hp": towers, "ticks": ticks,
-                            "wall_s": round(time.time() - P["t0"], 1), "stats_blue": stats, "stats_red": {}})
-    n = db.query("SELECT COUNT(*) AS n FROM matches WHERE job_id = ?", (jid,))[0]["n"]
-    db.execute("UPDATE jobs SET total_matches = ?, status = 'done' WHERE id = ?", (n, jid))
+    with db.transaction():
+        jid = db.get_or_create_job("human-play", "", ["human"], [], P["ticks"], 0, "Games played by a human on the Play page")
+        db.queue_matches(jid, [{"match_id": mid, "blue": "human", "red": P["opp_name"], "seed": P["seed"],
+                                "deck": {"blue": P["decks"][0], "red": P["decks"][1]}}])
+        db.match_started(jid, mid, "", str(rp))
+        db.set_match_decks(jid, mid, *P["decks"])
+        db.add_decisions([(jid, mid, r["step"], r["team"], r["player"], r["time_left"], r["elixir"], r["my_towers"],
+                           r["enemy_towers"], r["n_moves"], r["asked"], r["move"], r["result"], r["ok"], r["error"],
+                           r["latency_s"], r["tokens_in"], r["tokens_out"], r["cache_read"], r["cache_write"], r["raw"],
+                           r["state"], r["cost_usd"]) for r in P["rows"]])
+        stats = {"decisions": P["step"], "asked": sum(r["asked"] for r in P["rows"] if r["team"] == 0)}
+        db.match_finished(jid, {"match_id": mid, "winner": int(winner), "crowns": crowns, "tower_hp": towers, "ticks": ticks,
+                                "wall_s": round(time.time() - P["t0"], 1), "stats_blue": stats, "stats_red": {}})
+        n = db.query("SELECT COUNT(*) AS n FROM matches WHERE job_id = ?", (jid,))[0]["n"]
+        db.execute("UPDATE jobs SET total_matches = ?, status = 'done' WHERE id = ?", (n, jid))
     return mid
 
 
 # ---------------------------------------------------------------- page
 def page_play(root: Path, get_db) -> None:
-    st.title("Play")
     st.caption("You play blue (bottom) through exactly the interface the models get: every 2 s of game time you pick "
                "one move from the legal-move list, and the game pauses while you decide. Finished games are saved "
                "under the job **human-play**.")
@@ -198,27 +201,28 @@ def page_play(root: Path, get_db) -> None:
             "`uv run python -m cr_arena.live` and open http://localhost:8600.")
     P = st.session_state.get("play")
     opps = opponents(root)
-    if P is None or st.sidebar.button("New game", width="stretch"):
+    if P is None or st.button("New game"):
         if P is not None:
             st.session_state.pop("play")
             st.rerun()
         with st.form("setup"):
             c1, c2, c3 = st.columns(3)
-            opp = c1.selectbox("Opponent", list(opps), help="Models are called through their configured provider "
+            opp = model_selectbox("Opponent", list(opps), target=c1, help="Models are called through their configured provider "
                                                                "(claude_cli = your Claude Code login).")
-            decks = list(CLASSIC_DECKS)
-            mine = c2.selectbox("Your deck", decks)
-            theirs = c3.selectbox("Opponent deck", ["same as mine"] + decks)
+            decks = deck_options(get_db())
+            mine = c2.selectbox("Your deck", list(decks))
+            theirs = c3.selectbox("Opponent deck", ["same as mine"] + list(decks))
             c4, c5 = st.columns(2)
             seed = c4.number_input("Seed (shuffle)", 1, 10_000, 1)
             ticks = c5.select_slider("Decision interval (game time)", [20, 40, 60], value=40,
                                      format_func=lambda t: f"{t * 0.05:.0f} s" if t % 20 == 0 else str(t))
-            for name, d in CLASSIC_DECKS.items():
+            for name, d in decks.items():
                 st.caption(f"**{name}**: {', '.join(d)}")
             if st.form_submit_button("Start game", type="primary"):
-                od = CLASSIC_DECKS[mine] if theirs == "same as mine" else CLASSIC_DECKS[theirs]
-                _start(opps[opp], CLASSIC_DECKS[mine], od, int(seed), int(ticks))
-                _fast_forward(st.session_state.play)
+                od = decks[mine] if theirs == "same as mine" else decks[theirs]
+                with loading("Starting your game..."):
+                    _start(opps[opp], decks[mine], od, int(seed), int(ticks))
+                    _fast_forward(st.session_state.play)
                 st.rerun()
         return
 
@@ -230,7 +234,7 @@ def page_play(root: Path, get_db) -> None:
     with board:
         st.markdown(board_svg(game), unsafe_allow_html=True)
     with side:
-        st.markdown(f"**You** (blue) vs **{P['opp_name']}** (red)")
+        st.markdown(f"<b>You</b> (blue) vs {model_label(P['opp_name'])} (red)", unsafe_allow_html=True)
         m = st.columns(3)
         m[0].metric("Time left", f"{int(left) // 60}:{int(left) % 60:02d}" + (" OT" if ot else ""))
         m[1].metric("Crowns (you-opp)", f"{me.crowns}-{en.crowns}")
@@ -239,7 +243,8 @@ def page_play(root: Path, get_db) -> None:
 
         if game.over:
             if P["saved"] is None:
-                P["saved"] = _save(P, get_db)
+                with loading("Saving game results..."):
+                    P["saved"] = _save(P, get_db)
             w = s.winner
             msg = {0: "🏆 You win!", 1: f"{P['opp_name']} wins.", 2: "Draw."}.get(w, "Game over")
             st.subheader(f"{msg}  {me.crowns}-{en.crowns}")
@@ -273,13 +278,8 @@ def page_play(root: Path, get_db) -> None:
                         if cols[i % 3].button(mv.target, key=f"mv{P['step']}_{mv.index}", width="stretch"):
                             choice = mv.index
             if choice is not None:
-                spin = st.spinner(f"{P['opp_name']} is thinking...") if P["opp"].__class__.__name__ == "LLMPlayer" else None
                 try:
-                    if spin:
-                        with spin:
-                            _advance(P, choice)
-                            _fast_forward(P)
-                    else:
+                    with loading("Waiting for the opponent's move..."):
                         _advance(P, choice)
                         _fast_forward(P)
                 except InfraError as exc:

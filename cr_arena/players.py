@@ -173,13 +173,15 @@ class LLMPlayer(Player):
             import anthropic
 
             self.client = anthropic.Anthropic(timeout=timeout_s, max_retries=2)
-        elif provider == "openai_compat":
+        elif provider in ("openai", "openai_compat"):
             from openai import OpenAI
 
-            key = os.environ.get(api_key_env or "OPENROUTER_API_KEY")
+            key_env = api_key_env or ("OPENAI_API_KEY" if provider == "openai" else "OPENROUTER_API_KEY")
+            key = os.environ.get(key_env)
             if not key:
-                raise RuntimeError(f"{name}: env var {api_key_env or 'OPENROUTER_API_KEY'} is not set")
-            self.client = OpenAI(base_url=base_url or "https://openrouter.ai/api/v1", api_key=key,
+                raise RuntimeError(f"{name}: env var {key_env} is not set")
+            default_url = "https://api.openai.com/v1" if provider == "openai" else "https://openrouter.ai/api/v1"
+            self.client = OpenAI(base_url=base_url or default_url, api_key=key,
                                  timeout=timeout_s, max_retries=2)
         elif provider == "claude_cli":
             # Uses the logged-in Claude Code CLI (`claude -p`), so no API key is needed.
@@ -266,15 +268,24 @@ class LLMPlayer(Player):
                          "cache_write": u.cache_creation_input_tokens or 0}
         kwargs = dict(
             model=self.model,
-            max_tokens=self.max_tokens,
             messages=[{"role": "system", "content": system}, {"role": "user", "content": text}],
         )
-        if self.effort:
-            kwargs["extra_body"] = {"reasoning": {"effort": self.effort}}
-        if self.extra:
-            kwargs.setdefault("extra_body", {}).update(self.extra)
+        if self.provider == "openai":
+            kwargs["max_completion_tokens"] = self.max_tokens
+            if self.effort:
+                kwargs["reasoning_effort"] = self.effort
+            kwargs.update(self.extra)
+        else:
+            kwargs["max_tokens"] = self.max_tokens
+            if self.effort:
+                kwargs["extra_body"] = {"reasoning": {"effort": self.effort}}
+            if self.extra:
+                kwargs.setdefault("extra_body", {}).update(self.extra)
         r = self.client.chat.completions.create(**kwargs)
-        out = r.choices[0].message.content or ""
+        message = r.choices[0].message
+        if getattr(message, "refusal", None):
+            raise RuntimeError(f"refusal: {message.refusal}")
+        out = message.content or ""
         u = r.usage
         return out, ({"in": u.prompt_tokens, "out": u.completion_tokens} if u else {})
 

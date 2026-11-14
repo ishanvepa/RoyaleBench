@@ -21,18 +21,26 @@ The exact task design, agent interface, and scoring method are still to be decid
 - Start with small runs to control cost, then expand only after the tasks and scoring work reliably.
 - Record the harness, model, dataset version, run configuration, and results so another person can reproduce the comparison.
 
-## Project references
+## Documentation index
 
+- Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
+- [`README.md`](README.md): project entry point and links to quick guides.
+- [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, pinned dependencies, and benchmark validation priorities.
+- [`docs/phone_play.md`](docs/phone_play.md): launch interactive play and share a temporary public link.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
 - [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
+- [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
+- [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
+- [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
+- [`data/README.md`](data/README.md): documentation for project data.
+
+## Project references
+
 - [Valkyrie repository](https://github.com/vals-ai/Valkyrie): source code for the evaluation framework.
 - [Valkyrie documentation](https://docs.valkyrie.vals.ai/introduction/what-is-valkyrie): framework introduction and usage guidance.
 - [Valkyrie sandbox provider setup](https://docs.valkyrie.vals.ai/get-started/sandbox-providers): connect Modal credentials for evaluation compute.
 - [Modal getting started](https://modal.com/docs/guide/getting-started): account, CLI, and authentication setup.
 - [Modal Sandboxes](https://modal.com/docs/guide/sandboxes): isolated task execution and resource configuration.
-- [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
-- [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
-- [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
 
 Modal provides the sandbox compute for evaluation tasks run through Valkyrie. Use `--provider modal` for evaluation runs and follow the provider setup and project smoke-test guide for credentials.
 

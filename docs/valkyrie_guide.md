@@ -22,11 +22,29 @@ valkyrie login
 valkyrie org use hackathon-rip-ojas-e8d933c926
 ```
 
-Use the existing team organization. Connect Modal using the [Modal guide](modal_guide.md), then store the Anthropic API key at the hidden prompt:
+Use the existing team organization. Modal is configured once for the organization;
+check `valkyrie provider list` before following the [Modal guide](modal_guide.md).
+
+Choose your own Anthropic secret name in each terminal session. Ben uses
+`anthropic-api-key-ben`; Ishan uses `anthropic-api-key-ishan`. Set the variable to
+your name (the example below is for Ben):
 
 ```bash
-valkyrie secret set anthropic-api-key
+export VALKYRIE_ANTHROPIC_SECRET="anthropic-api-key-ben"
 ```
+
+This variable holds the secret's name, not the API key. If your secret does not
+already exist, save your key once at the hidden prompt:
+
+```bash
+valkyrie secret set "${VALKYRIE_ANTHROPIC_SECRET:?Set your secret name first}"
+```
+
+Secrets are shared across the organization. The suffix identifies whose API
+account pays; it does not restrict access to that person. Each run explicitly
+selects its secret, so teammates can use different keys without replacing one
+another's. `valkyrie secret set` replaces an existing value; skip it when your
+key is already saved.
 
 The example below uses the harness and dataset recorded as prepared in the [smoke-test guide](valkyrie_smoke.md). That guide also covers republishing the smoke task.
 
@@ -38,7 +56,7 @@ valkyrie run start \
   --dataset royalebench/smoke@1 \
   --model anthropic/claude-sonnet-4-6 \
   --provider modal \
-  -s ANTHROPIC_API_KEY anthropic-api-key \
+  -s ANTHROPIC_API_KEY "${VALKYRIE_ANTHROPIC_SECRET:?Set your secret name first}" \
   --slice 0:1 --concurrency 1 \
   --label royalebench-connection-smoke --connect
 ```

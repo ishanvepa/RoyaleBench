@@ -10,6 +10,11 @@ We define the task environment, inputs, and grading; Valkyrie coordinates execut
 
 ## Connect once
 
+This connection is shared across the Valkyrie organization. Check
+`valkyrie provider list` first and reuse the configured Modal provider. Each
+teammate selects their own model API secret separately using
+`VALKYRIE_ANTHROPIC_SECRET` in the [Valkyrie guide](valkyrie_guide.md).
+
 1. Claim the hackathon Modal credits and select the credited Modal workspace.
 2. Create an API token in [Modal token settings](https://modal.com/settings/tokens).
 3. After selecting our Valkyrie organization (see the [Valkyrie guide](valkyrie_guide.md)), upload the token through hidden prompts and configure the provider:

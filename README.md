@@ -1,7 +1,21 @@
 vals ai hackathon 
 benchmark for clash royale
 
+## Quick guides
+
+- [Valkyrie guide](docs/valkyrie_guide.md): publish tasks, run evaluations, and collect hackathon results.
+- [Modal guide](docs/modal_guide.md): connect sandbox compute and manage evaluation usage.
+
 ## Valkyrie references
 
 - [Valkyrie repository](https://github.com/vals-ai/Valkyrie)
 - [Valkyrie documentation](https://docs.valkyrie.vals.ai/introduction/what-is-valkyrie)
+
+## Modal compute
+
+Modal provides the sandbox compute for evaluation tasks run through Valkyrie (`--provider modal`).
+
+- [Valkyrie sandbox provider setup](https://docs.valkyrie.vals.ai/get-started/sandbox-providers): connect Modal credentials to Valkyrie.
+- [Modal getting started](https://modal.com/docs/guide/getting-started): account, CLI, and authentication setup.
+- [Modal Sandboxes](https://modal.com/docs/guide/sandboxes): isolated task execution and resource configuration.
+- [Project smoke test](docs/valkyrie_smoke.md): project-specific credential setup and a minimal evaluation run.

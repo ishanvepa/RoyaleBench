@@ -1,0 +1,3 @@
+# Keep shell scripts and task files LF so they run in Linux sandboxes
+* text=auto eol=lf
+*.sh text eol=lf

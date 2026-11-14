@@ -23,9 +23,17 @@ The exact task design, agent interface, and scoring method are still to be decid
 
 ## Project references
 
+- [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
+- [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
 - [Valkyrie repository](https://github.com/vals-ai/Valkyrie): source code for the evaluation framework.
 - [Valkyrie documentation](https://docs.valkyrie.vals.ai/introduction/what-is-valkyrie): framework introduction and usage guidance.
+- [Valkyrie sandbox provider setup](https://docs.valkyrie.vals.ai/get-started/sandbox-providers): connect Modal credentials for evaluation compute.
+- [Modal getting started](https://modal.com/docs/guide/getting-started): account, CLI, and authentication setup.
+- [Modal Sandboxes](https://modal.com/docs/guide/sandboxes): isolated task execution and resource configuration.
+- [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
 - [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
 
-The track guide names the team's Valkyrie organization and provides example CLI commands. Check current Valkyrie and Harbor documentation when implementing their interfaces, since the project has not yet established a working benchmark structure.
+Modal provides the sandbox compute for evaluation tasks run through Valkyrie. Use `--provider modal` for evaluation runs and follow the provider setup and project smoke-test guide for credentials.
+
+The track guide names the team's Valkyrie organization and provides example CLI commands. Check current Valkyrie, Harbor, and Modal documentation when implementing their interfaces, since the project has not yet established a working benchmark structure.

@@ -40,6 +40,21 @@ POOL: list[str] = [
 ]
 
 
+def validate_deck(cards: list[str]) -> list[str]:
+    """Validate saved decks without silently dropping duplicate or unsupported cards."""
+    if len(cards) != 8 or len(set(cards)) != 8:
+        raise ValueError("Choose exactly 8 different cards.")
+    unknown = [card for card in cards if card not in POOL]
+    if unknown:
+        raise ValueError("Unsupported cards: " + ", ".join(unknown))
+    return list(cards)
+
+
+def deck_options(db) -> dict[str, list[str]]:
+    """Presets and saved decks use separate labels to avoid name collisions."""
+    return {**CLASSIC_DECKS, **{f"Custom: {deck['name']}": deck["cards"] for deck in db.custom_decks()}}
+
+
 def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]", "", s.lower())
 

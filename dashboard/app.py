@@ -1,7 +1,7 @@
 """CR Arena dashboard: jobs, live progress, leaderboards, per-model metrics, match drill-down.
 
     uv run streamlit run dashboard/app.py
-Reads runs/arena.db (override with CR_ARENA_DB=...). Read-only except the "check models" button.
+Reads shared DATABASE_URL or local runs/arena.db. The Play page and model checks also write.
 """
 
 from __future__ import annotations
@@ -21,18 +21,24 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from cr_arena.db import DB  # noqa: E402
+from cr_arena.db import DB, database_target  # noqa: E402
 from cr_arena.ratings import standings  # noqa: E402
+from cr_arena.site import _family  # noqa: E402
 from dashboard.leaderboard import page_leaderboard  # noqa: E402
 from dashboard.play import page_play  # noqa: E402
+from dashboard.battle import page_battle  # noqa: E402
+from dashboard.decks import page_decks  # noqa: E402
+from dashboard.model_ui import model_dataframe, model_label  # noqa: E402
+from dashboard.style import render_shell  # noqa: E402
+from dashboard.loading import loading  # noqa: E402
 
-DB_PATH = Path(os.environ.get("CR_ARENA_DB", ROOT / "runs" / "arena.db"))
+DB_TARGET = database_target()
 CONFIG_PATH = Path(os.environ.get("CR_ARENA_CONFIG", ROOT / "config.toml"))
 
-st.set_page_config(page_title="CR Arena", page_icon="👑", layout="wide")
+st.set_page_config(page_title="RoyaleBench", page_icon="👑", layout="wide")
 
 # ---------------------------------------------------------------- palette (validated, see dataviz skill)
-DARK = getattr(getattr(st.context, "theme", None), "type", "light") == "dark"
+DARK = st.session_state.get("dark_mode", True)
 BLUE_SIDE = "#3987e5" if DARK else "#2a78d6"   # categorical slot 1
 RED_SIDE = "#d95926" if DARK else "#eb6834"    # categorical slot 2
 NEUTRAL = "#383835" if DARK else "#f0efec"     # diverging midpoint
@@ -45,7 +51,7 @@ STATUS = {"done": "✅ done", "running": "🔄 running", "queued": "⏳ queued",
 
 @st.cache_resource
 def get_db() -> DB:
-    return DB(DB_PATH)
+    return DB(DB_TARGET)
 
 
 def q(sql: str, params=()) -> pd.DataFrame:
@@ -178,7 +184,7 @@ def page_overview():
     st.caption("LLMs playing Clash Royale against each other: round-robin jobs, standings and live progress.")
     jobs = q("SELECT * FROM jobs ORDER BY created_at DESC")
     if jobs.empty:
-        st.info("No jobs yet. Start one with `uv run python -m cr_arena.tournament --job my-first-run`.")
+        st.info("No jobs yet. Open Play and choose Model vs model to start a battle.")
         return
     m = q("SELECT job_id, status, COUNT(*) AS n FROM matches GROUP BY job_id, status")
     calls = q("SELECT COUNT(*) AS n FROM decisions WHERE asked = 1 AND state != ''").iloc[0]["n"]
@@ -204,10 +210,10 @@ def page_overview():
                      "started": pd.to_datetime(j.started_at, unit="s", utc=True).tz_convert(None) if j.started_at else None,
                      "elapsed": fmt_dur(end - j.started_at) if j.started_at else "-", "notes": j.notes or ""})
     st.subheader("Jobs")
-    st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", column_config={
+    model_dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", column_config={
         "progress": st.column_config.ProgressColumn("progress", min_value=0, max_value=1, format="percent"),
         "started": st.column_config.DatetimeColumn("started (UTC)", format="MMM D, HH:mm")})
-    st.caption("Open a job from the sidebar for its leaderboard, matches and per-model metrics.")
+    st.caption("Open a job from the Job tab for its leaderboard, matches and per-model metrics.")
 
 
 def job_header(job: dict):
@@ -298,7 +304,7 @@ def page_job(job: dict):
             left, right = st.columns([1, 1])
             with left:
                 st.markdown("**Standings** · ranked by games won")
-                st.dataframe(lb[["rank", "player", "games", "W", "D", "L", "win_rate", "crowns_for", "crowns_against"]],
+                model_dataframe(lb[["rank", "player", "games", "W", "D", "L", "win_rate", "crowns_for", "crowns_against"]],
                              hide_index=True, width="stretch", column_config={
                                  "win_rate": st.column_config.ProgressColumn("win %", format="percent", min_value=0, max_value=1),
                                  "crowns_for": st.column_config.NumberColumn("crowns won"),
@@ -313,7 +319,7 @@ def page_job(job: dict):
         else:
             wt = win_table(res)
             st.markdown("**Win rate per player** · all finished matches in this job")
-            st.dataframe(wt, hide_index=True, width="stretch", column_config={
+            model_dataframe(wt, hide_index=True, width="stretch", column_config={
                 "win rate": st.column_config.ProgressColumn("win rate", format="percent", min_value=0, max_value=1),
                 "as blue": st.column_config.NumberColumn("wins as blue"),
                 "as red": st.column_config.NumberColumn("wins as red")})
@@ -339,7 +345,7 @@ def page_job(job: dict):
                     "length": [fmt_dur(t * 0.05) for t in ends["ticks"]],
                     "blue towers left (K/L/R)": [" / ".join(str(v) for v in h[0]) for h in hp],
                     "red towers left (K/L/R)": [" / ".join(str(v) for v in h[1]) for h in hp]})
-                st.dataframe(fin, hide_index=True, width="stretch", height=320)
+                model_dataframe(fin, hide_index=True, width="stretch", height=320)
             st.caption("Regulation is 3:00, overtime adds up to 2:00 (sudden death: first crown wins); if still tied, "
                        "the engine's tower-HP tiebreak decides. Towers are king / left princess / right princess; 0 = destroyed.")
 
@@ -350,7 +356,7 @@ def page_job(job: dict):
         else:
             show = pm[["player", "asked", "plays", "refused", "error_rate", "bad_reply_rate", "avg_latency_s",
                        "max_latency_s", "tokens_in", "tokens_out", "cache_read", "est_cost_usd"]].sort_values("player")
-            st.dataframe(show, hide_index=True, width="stretch", column_config={
+            model_dataframe(show, hide_index=True, width="stretch", column_config={
                 "asked": st.column_config.NumberColumn("decisions asked", help="decision points where a move other than wait was possible (the model is only called on these)"),
                 "tokens_in": st.column_config.NumberColumn("tokens in", format="localized"),
                 "tokens_out": st.column_config.NumberColumn("tokens out", format="localized"),
@@ -390,7 +396,7 @@ def page_job(job: dict):
                          "seed": r.seed, "winner": winner, "crowns / live": f"{crowns[0]}-{crowns[1]}" if crowns else prog,
                          "errors (b/r)": f"{sb.get('errors', 0) + sb.get('illegal_or_unparsed', 0)}/{sr.get('errors', 0) + sr.get('illegal_or_unparsed', 0)}" if sb else "",
                          "wall time": fmt_dur(r.wall_s) if pd.notna(r.wall_s) else ""})
-        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
+        model_dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
         crashed = allm[allm.status == "crashed"] if not allm.empty else allm
         for r in crashed.itertuples():
             with st.expander(f"❌ {r.match_id}"):
@@ -416,7 +422,9 @@ def page_match(job: dict):
     crowns = jl(m["crowns"])
     c = st.columns(4)
     c[0].metric("Status", STATUS.get(m["status"], m["status"]))
-    c[1].metric("Winner", winner or "-")
+    c[1].caption("Winner")
+    winner_name = {0: m["blue"], 1: m["red"]}.get(m["winner"])
+    c[1].markdown(model_label(winner_name) if winner_name else (winner or "-"), unsafe_allow_html=True)
     c[2].metric("Crowns (blue-red)", f"{crowns[0]}-{crowns[1]}" if crowns else "-")
     c[3].metric("Wall time", fmt_dur(m["wall_s"]) if m["wall_s"] else "-")
     deck = jl(m.get("deck"))
@@ -439,7 +447,7 @@ def page_match(job: dict):
     only_asked = st.toggle("only decisions where the model was asked", value=True)
     dd = d[d.asked == 1] if only_asked else d
     view = dd[["step", "time_left", "side", "move", "result", "ok", "latency_s", "tokens_in", "tokens_out", "error"]]
-    ev = st.dataframe(view, hide_index=True, width="stretch", on_select="rerun", selection_mode="single-row", height=320,
+    ev = model_dataframe(view, hide_index=True, width="stretch", on_select="rerun", selection_mode="single-row", height=320,
                       column_config={"ok": st.column_config.CheckboxColumn("parsed ok"),
                                      "time_left": st.column_config.NumberColumn("time left (s)", format="%.0f")})
     sel = ev.selection.rows if ev and hasattr(ev, "selection") else []
@@ -454,9 +462,7 @@ def page_match(job: dict):
         st.caption("Select a row to see the exact board text the model saw and its full reply.")
 
     st.subheader("Replay")
-    rp = Path(m["replay_path"]) if m.get("replay_path") else None
-    if rp and not rp.is_absolute():
-        rp = ROOT / rp
+    rp = get_db().replay_file(job["id"], mid, m.get("replay_path"))
     if not rp or not rp.exists():
         st.caption("Replay is saved when the match finishes." if m["status"] != "done" else
                    "No replay saved for this game: only the first few games of each pairing keep one "
@@ -464,7 +470,7 @@ def page_match(job: dict):
         return
     html_path = rp.with_suffix(".html")
     if st.button("Render replay" if not html_path.exists() else "Re-render replay"):
-        with st.spinner("rendering..."):
+        with loading("Rendering replay..."):
             subprocess.run([sys.executable, "-m", "cr_arena.replay", str(rp), "-o", str(html_path), "--stride", "2",
                             "--title", mid], check=False, cwd=ROOT, capture_output=True)
     if html_path.exists():
@@ -483,11 +489,15 @@ def page_models():
     for p in cfg.get("players", []):
         kind = p.get("type", "llm")
         prov = p.get("provider", "-")
-        env = p.get("api_key_env") or {"anthropic": "ANTHROPIC_API_KEY", "openai_compat": "OPENROUTER_API_KEY"}.get(prov)
+        env = p.get("api_key_env") or {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY",
+                                      "openai_compat": "OPENROUTER_API_KEY"}.get(prov)
         key_ok = (bool(os.environ.get(env)) or _dotenv_has(env)) if env else None
         chk = last.get(p["name"])
+        family = _family(p.get("model") or p["name"], kind in ("llm", "mock"))
+        if family == "other":
+            family = _family(p["name"], True)
         rows.append({
-            "player": p["name"], "type": kind, "provider": prov, "model id": p.get("model", "-"),
+            "player": p["name"], "family": family, "type": kind, "provider": prov, "model id": p.get("model", "-"),
             "effort": p.get("effort", ""), "enabled": p.get("enabled", True),
             "key": "-" if key_ok is None else ("✅ set" if key_ok else f"❌ {env} missing"),
             "last check": "-" if chk is None else ("✅ ok" if chk["ok"] else "❌ failed"),
@@ -497,14 +507,25 @@ def page_models():
             "games (all jobs)": lb.get(p["name"], {}).get("games", 0),
             "wins (all jobs)": lb.get(p["name"], {}).get("W", 0),
         })
-    st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch",
+    family_labels = {"gpt": "GPT", "claude": "Claude", "gemini": "Gemini", "grok": "Grok",
+                     "deepseek": "DeepSeek", "mistral": "Mistral", "llama": "Llama", "qwen": "Qwen",
+                     "bot": "Baseline bots", "other": "Other"}
+    families = st.multiselect("Model family", sorted({r["family"] for r in rows}),
+                              format_func=lambda family: family_labels.get(family, family),
+                              placeholder="All families", key="models_family_filter")
+    frame = pd.DataFrame(rows)
+    if families and not frame.empty:
+        frame = frame[frame["family"].isin(families)]
+    if "family" in frame:
+        frame["family"] = frame["family"].map(family_labels)
+    model_dataframe(frame, hide_index=True, width="stretch",
                  column_config={"checked": st.column_config.DatetimeColumn("checked (UTC)", format="MMM D, HH:mm")})
     st.caption(f"From {CONFIG_PATH.name}. Keys are read from the environment or .env. "
                "'games' and 'wins' pool every finished match in the database.")
     if st.button("Run model check now (1 cheap call per LLM)"):
-        with st.spinner("calling each model once..."):
-            out = subprocess.run([sys.executable, "-m", "cr_arena.check_models", "--config", str(CONFIG_PATH),
-                                  "--db", str(DB_PATH)], cwd=ROOT, capture_output=True, text=True)
+        with loading("Checking model connections..."):
+            out = subprocess.run([sys.executable, "-m", "cr_arena.check_models", "--config", str(CONFIG_PATH)],
+                                 cwd=ROOT, capture_output=True, text=True)
         st.code(out.stdout + out.stderr, language="text")
         st.rerun()
 
@@ -521,51 +542,75 @@ def _dotenv_has(name: str) -> bool:
 
 # ---------------------------------------------------------------- layout
 def main():
-    jobs = get_db().query("SELECT * FROM jobs ORDER BY created_at DESC")
-    with st.sidebar:
-        st.header("CR Arena")
-        pages = ["Leaderboard", "Play", "Overview", "Job", "Match", "Models"]
-        qp = st.query_params  # pages are linkable: ?page=Job&job=main-v1
-        page = st.radio("Page", pages, index=pages.index(qp.get("page", "Leaderboard")) if qp.get("page") in pages else 0,
-                        label_visibility="collapsed")
-        qp["page"] = page
-        job = None
-        if page in ("Job", "Match") and jobs:
-            names = [f"{STATUS.get(j['status'], j['status']).split()[0]} {j['name']}" for j in jobs]
-            by = [j["name"] for j in jobs]
-            default = by.index(qp["job"]) if qp.get("job") in by else 0
-            job = jobs[st.selectbox("Job", range(len(jobs)), index=default, format_func=lambda i: names[i])]
-            qp["job"] = job["name"]
-        live = st.toggle("Auto-refresh", help="Job / Overview every 5 s, Leaderboard every 30 s", value=any(j["status"] == "running" for j in jobs) and page != "Play")
-        st.caption(f"DB: {DB_PATH.relative_to(ROOT) if DB_PATH.is_relative_to(ROOT) else DB_PATH}")
+    render_shell()
+    with loading("Connecting to the arena..."):
+        jobs = get_db().query("SELECT * FROM jobs ORDER BY created_at DESC")
+    qp = st.query_params
+    if qp.get("page") == "Battle":  # preserve existing battle links
+        qp["page"] = "Play"
+        qp["mode"] = "battle"
+    pages = ["Leaderboard", "Play", "Decks", "Overview", "Job", "Match", "Models"]
+    if "main_navigation" not in st.session_state:
+        st.session_state.main_navigation = qp.get("page") if qp.get("page") in pages else "Leaderboard"
+    tabs = st.tabs(pages, key="main_navigation", on_change="rerun")
+    page, active_tab = next((name, tab) for name, tab in zip(pages, tabs) if tab.open)
+    qp["page"] = page
+    with active_tab:
+        with st.container(key="page_controls"):
+            job = None
+            if page in ("Job", "Match") and jobs:
+                picker, refresh = st.columns([4, 1], vertical_alignment="bottom")
+                names = [f"{STATUS.get(j['status'], j['status']).split()[0]} {j['name']}" for j in jobs]
+                by = [j["name"] for j in jobs]
+                default = by.index(qp["job"]) if qp.get("job") in by else 0
+                job = jobs[picker.selectbox("Job", range(len(jobs)), index=default, format_func=lambda i: names[i])]
+                qp["job"] = job["name"]
+            else:
+                refresh = st
+            live = False
+            if page in ("Leaderboard", "Overview", "Job"):
+                live = refresh.toggle("Live updates", help="Results refresh every 30 seconds; job progress every 5 seconds.",
+                                      value=get_db().postgres or any(j["status"] == "running" for j in jobs))
 
     def render():
-        nonlocal job
-        if job is not None:  # re-read so status/timestamps are fresh on every auto-refresh
-            job = get_db().query("SELECT * FROM jobs WHERE id = ?", (job["id"],))[0]
-        if page == "Leaderboard":
-            page_leaderboard(get_db, ROOT)
-        elif page == "Overview":
-            page_overview()
-        elif page == "Models":
-            page_models()
-        elif job is None:
-            st.info("No jobs yet.")
-        elif page == "Job":
-            page_job(job)
-        else:
-            page_match(job)
+        with loading(f"Loading {page.lower()}..."):
+            nonlocal job
+            if job is not None:  # re-read so status/timestamps are fresh on every auto-refresh
+                job = get_db().query("SELECT * FROM jobs WHERE id = ?", (job["id"],))[0]
+            if page == "Leaderboard":
+                page_leaderboard(get_db, ROOT)
+            elif page == "Decks":
+                page_decks(get_db)
+            elif page == "Overview":
+                page_overview()
+            elif page == "Models":
+                page_models()
+            elif job is None:
+                st.info("No jobs yet.")
+            elif page == "Job":
+                page_job(job)
+            else:
+                page_match(job)
 
-    if page == "Play":  # interactive game: never auto-refresh
-        page_play(ROOT, get_db)
-        return
-    if live and page == "Leaderboard":  # rebuild the site every 30 s; it restores its own tab/sort state
-        st.fragment(render, run_every=30)()
-        return
-    if live and page != "Match":  # the match page has interactive selection; refresh manually there
-        st.fragment(render, run_every=5)()
-    else:
-        render()
+    with active_tab:
+        if page == "Play":  # both match types keep their state; never auto-refresh
+            st.title("Play")
+            mode = st.radio("Match type", ["You vs model", "Model vs model"], horizontal=True,
+                            index=1 if qp.get("mode") == "battle" else 0, key="play_mode")
+            qp["mode"] = "battle" if mode == "Model vs model" else "human"
+            with st.container(key="play_content"), loading("Loading arena..."):
+                if mode == "Model vs model":
+                    page_battle(ROOT, CONFIG_PATH, DB_TARGET, get_db)
+                else:
+                    page_play(ROOT, get_db)
+        elif live and page == "Leaderboard":  # rebuild the site every 30 s; it restores its own tab/sort state
+            st.fragment(render, run_every=30)()
+        elif live and page != "Match":  # the match page has interactive selection; refresh manually there
+            st.fragment(render, run_every=5)()
+        else:
+            render()
+    st.html('<div class="rb-footer">RoyaleBench &middot; Language models in the arena</div>')
+
 
 
 main()

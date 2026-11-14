@@ -1,4 +1,4 @@
-"""Live play: a human plays the search bot in real time, in the browser.
+"""Live play: a human plays a search or planning bot in real time, in the browser.
 
     uv run python -m cr_arena.live            # then open http://localhost:8600
 
@@ -33,7 +33,10 @@ from .decks import CLASSIC_DECKS
 from .game import Game
 
 HUMAN, BOT = 0, 1
-BOT_SPEC = {"name": "planner-bot", "type": "planner", "workers": 6}  # or {"name": "search-bot", "type": "search"}
+BOT_SPECS = {
+    "planner": {"name": "planner-bot", "type": "planner", "workers": 6},
+    "search": {"name": "search-bot", "type": "search", "rollouts": 4, "horizon_s": 12.0},
+}
 COMMAND_DELAY_TICKS = 21  # a play lands about 1 s after it is made, for both sides, as measured on the real client
 MAX_GAMES = 3  # games at once (each one runs its own bot processes); a fourth player is asked to wait
 ACTIVE: set = set()
@@ -101,8 +104,9 @@ def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int)
 class Session:
     """One real-time game for one browser tab."""
 
-    def __init__(self, ws: WebSocket, my_deck: str, opp_deck: str, seed: int):
+    def __init__(self, ws: WebSocket, my_deck: str, opp_deck: str, seed: int, bot: str = "planner"):
         self.ws = ws
+        self.bot_spec = BOT_SPECS[bot]
         self.deck_names = (my_deck, opp_deck)
         self.decks = [CLASSIC_DECKS[my_deck], CLASSIC_DECKS[opp_deck]]
         self.seed = seed
@@ -114,7 +118,7 @@ class Session:
         self.paused = False
         self.t0 = time.time()
         # share the machine's cores between the games in progress
-        spec = {**BOT_SPEC, "workers": max(2, 8 // (len(ACTIVE) + 1))} if BOT_SPEC.get("workers") else BOT_SPEC
+        spec = {**self.bot_spec, "workers": max(2, 8 // (len(ACTIVE) + 1))} if self.bot_spec.get("workers") else self.bot_spec
         ACTIVE.add(self)
         ctx = mp.get_context("spawn")
         self.conn, child = ctx.Pipe()
@@ -127,7 +131,7 @@ class Session:
     # ------------------------------------------------------------------ messages out
     def init_msg(self) -> dict:
         g = self.game
-        return {"t": "init", "opp": BOT_SPEC["name"], "seed": self.seed, "decks": list(self.deck_names),
+        return {"t": "init", "opp": self.bot_spec["name"], "seed": self.seed, "decks": list(self.deck_names),
                 "cards": {c.card_id: [c.name, g.kind_of(c), c.elixir] for c in g.cards},
                 "lockout": g.engine.rules().deploy_lockout_ticks, "delay": self.delay}
 
@@ -268,7 +272,7 @@ class Session:
         winner, crowns, towers, ticks, trace = g.finish()
         out = {"winner": int(winner), "crowns": crowns, "saved": None}
         try:
-            mid = f"human__vs__{BOT_SPEC['name']}__{time.strftime('%Y%m%d-%H%M%S')}"
+            mid = f"human__vs__{self.bot_spec['name']}__{time.strftime('%Y%m%d-%H%M%S')}"
             (OUT_DIR / "replays").mkdir(parents=True, exist_ok=True)
             rp = OUT_DIR / "replays" / f"{mid}.msgpack"
             if trace is not None:
@@ -276,7 +280,7 @@ class Session:
             db = DB()
             jid = db.get_or_create_job("human-play", "", ["human"], [], g.decision_ticks, 0,
                                        "Games played by a human on the Play page")
-            db.queue_matches(jid, [{"match_id": mid, "blue": "human", "red": BOT_SPEC["name"], "seed": self.seed,
+            db.queue_matches(jid, [{"match_id": mid, "blue": "human", "red": self.bot_spec["name"], "seed": self.seed,
                                     "deck": {"blue": self.decks[0], "red": self.decks[1]}}])
             db.match_started(jid, mid, "", str(rp))
             db.set_match_decks(jid, mid, self.decks[0], self.decks[1])
@@ -320,7 +324,7 @@ async def socket(ws: WebSocket) -> None:
         session = task = None
 
     try:
-        await ws.send_text(json.dumps({"t": "hello", "decks": CLASSIC_DECKS, "bot": BOT_SPEC}))
+        await ws.send_text(json.dumps({"t": "hello", "decks": CLASSIC_DECKS, "bots": BOT_SPECS}))
         while True:
             m = json.loads(await ws.receive_text())
             if m.get("t") == "start":
@@ -330,7 +334,8 @@ async def socket(ws: WebSocket) -> None:
                     continue
                 mine = m.get("deck") if m.get("deck") in CLASSIC_DECKS else next(iter(CLASSIC_DECKS))
                 theirs = m.get("opp_deck") if m.get("opp_deck") in CLASSIC_DECKS else mine
-                session = Session(ws, mine, theirs, int(m.get("seed") or random.randrange(1, 10_000)))
+                bot = m.get("bot") if m.get("bot") in BOT_SPECS else "planner"
+                session = Session(ws, mine, theirs, int(m.get("seed") or random.randrange(1, 10_000)), bot)
                 task = asyncio.create_task(session.run())
             elif m.get("t") == "quit":
                 stop()

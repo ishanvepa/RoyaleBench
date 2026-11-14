@@ -23,6 +23,8 @@ The exact task design, agent interface, and scoring method are still to be decid
 
 ## Project references
 
+- [Valkyrie repository](https://github.com/vals-ai/Valkyrie): source code for the evaluation framework.
+- [Valkyrie documentation](https://docs.valkyrie.vals.ai/introduction/what-is-valkyrie): framework introduction and usage guidance.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
 - [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
 

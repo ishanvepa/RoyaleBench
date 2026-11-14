@@ -1,0 +1,29 @@
+# RoyaleBench
+
+## Project goal
+
+Build a Clash Royale benchmark for LLMs on Vals AI's Valkyrie framework. This is a Vals Hacks project in the **Build Your Own Eval** track (November 14–15, 2026). The benchmark should reveal meaningful ways that capable models struggle with Clash Royale tasks, rather than merely testing game trivia.
+
+The exact task design, agent interface, and scoring method are still to be decided. Favor tasks with clear inputs, verifiable outcomes, and enough strategic depth to distinguish model performance. Keep the evaluation reproducible so that results across models are comparable.
+
+## What to deliver
+
+- A focused set of benchmark tasks in the [Harbor task format](https://docs.harborframework.com/tasks/overview), packaged as a dataset that can run on Valkyrie.
+- A working Valkyrie run against at least one frontier model, with scores and representative traces or failure examples. Compare models when time and credits permit.
+- A README that explains the benchmark, how to run it, the scoring method, and the results. The required one-paragraph overview at the top of the README must be written entirely by a human.
+- A short demo video and a submission-ready repository for the hackathon.
+
+## Benchmark principles
+
+- Prioritize a few strong, well-checked tasks over a large collection of weak ones.
+- Make each task's expected behavior and grading criteria explicit. Avoid ambiguous wins, hidden assumptions, and accidental shortcuts.
+- Test whether the tasks actually challenge frontier models. Inspect rollouts and revise tasks or graders when failures come from unclear instructions or broken evaluation setup.
+- Start with small runs to control cost, then expand only after the tasks and scoring work reliably.
+- Record the harness, model, dataset version, run configuration, and results so another person can reproduce the comparison.
+
+## Project references
+
+- [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
+- [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
+
+The track guide names the team's Valkyrie organization and provides example CLI commands. Check current Valkyrie and Harbor documentation when implementing their interfaces, since the project has not yet established a working benchmark structure.

@@ -315,6 +315,23 @@ class BenchmarkDetail(BaseModel):
     valkyrie_error: str | None = None
 
 
+class TaskRankingRow(BaseModel):
+    task: str
+    rank: int | None = None
+    attempts: int
+    solved: int
+    pass_rate: float | None = None
+    cost_per_task: float | None = None
+    cost_known: int
+    infra_errors: int
+
+
+class TaskRankingOut(BaseModel):
+    rows: list[TaskRankingRow]
+    runs_considered: int
+    costs_pending: int
+
+
 class FileInfo(BaseModel):
     path: str
     size: int

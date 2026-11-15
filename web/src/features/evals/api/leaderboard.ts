@@ -8,10 +8,11 @@ export interface LeaderboardFilters {
   revision: string;
   harness: string;
   includeSmoke: boolean;
+  fullOnly: boolean;
 }
 
 /** Every finished run, smoke tests included: the pool that overview-style totals are summed over. */
-export const ALL_RESULTS: LeaderboardFilters = { dataset: "", revision: "", harness: "", includeSmoke: true };
+export const ALL_RESULTS: LeaderboardFilters = { dataset: "", revision: "", harness: "", includeSmoke: true, fullOnly: false };
 
 function query(filters: LeaderboardFilters) {
   return {
@@ -19,6 +20,7 @@ function query(filters: LeaderboardFilters) {
     revision: filters.revision || undefined,
     harness: filters.harness || undefined,
     include_smoke: filters.includeSmoke,
+    full_only: filters.fullOnly,
   };
 }
 

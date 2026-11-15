@@ -13,6 +13,7 @@ export const handlers = [
   http.get("*/api/evals/jobs/:runId/tasks", () => HttpResponse.json(taskList())),
   http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList())),
   http.get("*/api/evals/benchmarks/:name", () => HttpResponse.json(benchmarkDetail())),
+  http.get("*/api/evals/benchmarks/:name/ranking", () => HttpResponse.json({ rows: [], runs_considered: 0, costs_pending: 0 })),
 ];
 
 export const server = setupServer(...handlers);

@@ -78,12 +78,18 @@ Workspace billing access is separate from the Valkyrie sandbox provider connecti
 | New job | Pick a published benchmark and revision, run **all of it or selected tasks**, choose harness, model and API-key secret, set concurrency. A live review shows the task count, any problems, and the equivalent `valkyrie run start` command. Sandboxes are always Modal. |
 | Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, API cost and average cost per task, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Fetch missing costs for this run here. Task rows show difficulty badges (easy green, medium amber, hard red) from current local benchmark metadata, with a dash when unavailable; rows open details with **Watch replay**, **View resolution** when the task exists locally, and the agent's trace. |
 | Benchmarks | The folders under `benchmarks/`, marked draft, published or modified, with their published versions. **Publish** pushes the folder to Valkyrie as a new revision (nothing changes if the content is unchanged). |
-| Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), difficulty badges (easy green, medium amber, hard red), and for each task its instruction, files and results across runs. The task header offers **View resolution** for a validated reference; each result offers **Watch replay** alongside its agent trace. |
-| Leaderboard | Models by harness with solved, pass rate, score, agent failures, infrastructure errors, time and cost. Click any column to sort. The historical Qwen `mini_swe_agent_modal_qwen` entry is excluded; its job evidence remains available. |
+| Benchmark and task pages | A sortable task ranking with average pass rate, average API cost, attempts, passes and cost coverage; tasks with checks (missing tests, CRLF scripts, no timeout) and difficulty badges; and for each task its instruction, files and results across runs. The task header offers **View resolution** for a validated reference; each result offers **Watch replay** alongside its agent trace. |
+| Leaderboard | Models by harness with solved, score, agent failures, infrastructure errors, time and cost. Score is mean reward as a percentage. Filter by benchmark, revision, harness, or full benchmark runs only. Click any column to sort. The historical Qwen `mini_swe_agent_modal_qwen` entry is excluded; its job evidence remains available. |
 | Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
 | Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
 
 Model labels use family logos, including Qwen, Inkling (Thinking Machines), DeepSeek, and Kimi. The New job model dropdown shows these logos beside each model and in the selected value. Family detection checks the model name before the provider prefix, so OpenAI-compatible Modal endpoints retain the correct family logo. Kimi and Moonshot model names share the Kimi logo.
+
+Enable **Full benchmark runs only** to exclude task subsets from the leaderboard and its manual cost
+downloads. A finished run qualifies when its task results (including task errors) cover exactly the task
+IDs in its published dataset revision. Explicitly selecting every task also qualifies; older revisions
+are checked against their own published tasks. Runs without a pinned revision cannot qualify. The toggle
+defaults to off and is saved in shareable URLs as `full_only=true`. It combines with the other filters.
 
 One job is one Valkyrie run: one model on a whole benchmark or a subset. To compare models, start one job
 per model. Valkyrie stays the source of truth; finished runs and downloaded costs are cached under
@@ -112,6 +118,18 @@ hover and on the monitor. Cost per task averages only tasks with known costs. Ru
 with reported costs, including infrastructure failures; the leaderboard excludes infrastructure failures
 from its model-scoring pool and associated cost totals. Failed, stopped, and active runs have no run-level
 cost metrics yet. Downloading costs does not launch evaluations.
+
+Each benchmark detail page shows a **Task ranking**, hardest first (lowest pass rate),
+with tied pass rates sharing a rank. Each attempt counts equally across all models,
+harnesses and revisions in finished runs, including subset runs. Only tasks currently
+listed in that benchmark appear. Pass rate is full-reward passes divided by counted
+attempts; infrastructure failures are shown separately and excluded from both averages.
+Average API cost divides known costs by the number of counted attempts with known costs,
+with that coverage shown explicitly; unknown cost is a dash and a reported zero remains
+`$0`. Tasks without counted attempts have no rank or pass rate. Click a column to sort
+or a local task to open its Results tab. Ranking data loads separately so benchmark
+files remain accessible if results fail, and refreshes every 30 seconds using the
+existing results/cost cache without downloading task outputs.
 
 Each job's **Tasks** tab also shows a sortable **API cost** column and the selected task's cost
 in its detail panel. These are the individual harness-reported or Modal token costs from the same cache as the run

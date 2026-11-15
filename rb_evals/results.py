@@ -403,6 +403,35 @@ def uncached_task_count(cache: ResultsCache, runs: Iterable[dict]) -> int:
     return total
 
 
+# ---------------------------------------------------------------------- benchmark task ranking
+def task_ranking(records: Iterable[dict], dataset: str, task_ids: Iterable[str]) -> list[dict]:
+    """Hardest tasks first, pooling counted attempts; unknown costs never enter the average."""
+    groups: dict[str, list[dict]] = {task_id: [] for task_id in task_ids}
+    for record in records:
+        if record["dataset"] == dataset:
+            for task in record["tasks"]:
+                if task["task"] in groups:
+                    groups[task["task"]].append(task)
+    rows = []
+    for task_id, tasks in groups.items():
+        counted = [t for t in tasks if t["counted"]]
+        costs = [t["cost"] for t in counted if t["cost"] is not None]
+        solved = sum(t["solved"] for t in counted)
+        rows.append({"task": task_id, "rank": None, "attempts": len(counted), "solved": solved,
+                     "pass_rate": solved / len(counted) if counted else None,
+                     "cost_per_task": sum(costs) / len(costs) if costs else None,
+                     "cost_known": len(costs), "infra_errors": len(tasks) - len(counted)})
+    rows.sort(key=lambda r: (r["pass_rate"] is None, r["pass_rate"] or 0, r["task"]))
+    previous_rate, rank = None, None
+    for index, row in enumerate(rows, 1):
+        if row["pass_rate"] is not None:
+            if row["pass_rate"] != previous_rate:
+                rank = index
+            row["rank"] = rank
+            previous_rate = row["pass_rate"]
+    return rows
+
+
 # ---------------------------------------------------------------------- leaderboard
 def leaderboard(records: Iterable[dict]) -> list[dict]:
     """Rows per (model, harness), pooled over the given finished-run records, best score first."""

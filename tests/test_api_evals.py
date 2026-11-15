@@ -533,6 +533,55 @@ class LeaderboardTests(ApiCase):
         self.assertEqual(body["filters"]["revisions"], ["1"])
         self.assertEqual(self.client.get(self.URL, params={"dataset": "arena-lite", "revision": "7"}).json()["rows"], [])
 
+    def test_full_runs_excludes_subsets_from_scores_and_cost_downloads(self):
+        full = self.start(task_ids=None)
+        explicit_full = self.start(task_ids=["t3", "t1", "t2"])
+        subset = self.start(task_ids=["t1"])
+        self.advance(30)
+        self.start(task_ids=None)  # an unfinished full run must stay excluded
+        params = {"dataset": "alpha", "full_only": True}
+        unfiltered = self.client.get(self.URL, params={"dataset": "alpha"}).json()
+        self.assertEqual((unfiltered["runs_considered"], unfiltered["tasks_considered"]), (3, 7))
+        body = self.client.get(self.URL, params=params).json()
+        self.assertEqual((body["runs_considered"], body["tasks_considered"], body["costs_pending"]), (2, 6, 6))
+        self.assertEqual((body["rows"][0]["runs"], body["rows"][0]["tasks_run"]), (2, 6))
+        self.assertEqual(body["filters"], unfiltered["filters"])
+        with patch.object(self.ctx.costs, "start") as start:
+            response = self.client.post(self.URL + "/costs", params=params)
+            self.assertEqual(response.status_code, 200)
+            with patch.object(self.fake, "download_artifact", wraps=self.fake.download_artifact) as download:
+                start.call_args.args[0](lambda done, total: None)
+                downloaded = {call.args[0] for call in download.call_args_list}
+        self.assertEqual(downloaded, {full, explicit_full})
+        self.assertNotIn(subset, downloaded)
+
+    def test_full_runs_uses_the_pinned_published_revision(self):
+        self.start(task_ids=None)
+        self.advance(30)
+        make_task(self.benchmarks / "alpha" / "t4")
+        self.fake.push_dataset(self.cfg.benchmark, "alpha", self.benchmarks / "alpha")
+        with patch.object(self.fake, "dataset_tasks", wraps=self.fake.dataset_tasks) as tasks:
+            body = self.client.get(self.URL, params={"dataset": "alpha", "revision": "1", "full_only": True}).json()
+        self.assertEqual((body["runs_considered"], body["tasks_considered"]), (1, 3))
+        tasks.assert_called_once_with(self.cfg.benchmark, "alpha", "1")
+
+    def test_full_runs_checks_task_identities_and_includes_task_errors(self):
+        run_id = self.start(task_ids=None)
+        self.advance(30)
+        raw = self.fake.results(run_id)
+        entry = raw["evaluation_results"].pop("t3")
+        raw["evaluation_results"]["other-task"] = entry  # same count, wrong task
+        self.ctx.cache.save_results(run_id, raw)
+        params = {"dataset": "alpha", "full_only": True}
+        self.assertEqual(self.client.get(self.URL, params=params).json()["runs_considered"], 0)
+        raw["evaluation_results"].pop("other-task")
+        raw["task_errors"] = {"t3": "Sandbox connection lost"}
+        raw["task_failure_categories"] = {"t3": "infrastructure"}
+        self.ctx.cache.save_results(run_id, raw)
+        body = self.client.get(self.URL, params=params).json()
+        self.assertEqual((body["runs_considered"], body["tasks_considered"]), (1, 3))
+        self.assertEqual((body["rows"][0]["tasks_run"], body["rows"][0]["infra_errors"]), (2, 1))
+
     def test_cost_download_runs_in_the_background_and_fills_in_costs(self):
         before = self.client.get(self.URL).json()
         self.assertEqual(before["costs_pending"], 16)

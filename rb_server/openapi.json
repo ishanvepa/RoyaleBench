@@ -4499,6 +4499,98 @@
         "title": "TaskModelSummary",
         "type": "object"
       },
+      "TaskRankingOut": {
+        "properties": {
+          "costs_pending": {
+            "title": "Costs Pending",
+            "type": "integer"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/TaskRankingRow"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "runs_considered": {
+            "title": "Runs Considered",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rows",
+          "runs_considered",
+          "costs_pending"
+        ],
+        "title": "TaskRankingOut",
+        "type": "object"
+      },
+      "TaskRankingRow": {
+        "properties": {
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "cost_known": {
+            "title": "Cost Known",
+            "type": "integer"
+          },
+          "cost_per_task": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Task"
+          },
+          "infra_errors": {
+            "title": "Infra Errors",
+            "type": "integer"
+          },
+          "pass_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pass Rate"
+          },
+          "rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rank"
+          },
+          "solved": {
+            "title": "Solved",
+            "type": "integer"
+          },
+          "task": {
+            "title": "Task",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "attempts",
+          "solved",
+          "cost_known",
+          "infra_errors"
+        ],
+        "title": "TaskRankingRow",
+        "type": "object"
+      },
       "TaskResultRow": {
         "properties": {
           "agent_s": {
@@ -5477,6 +5569,121 @@
           }
         },
         "summary": "Publish the local folder as a new Valkyrie dataset version (a no-op when unchanged)",
+        "tags": [
+          "evals: benchmarks"
+        ]
+      }
+    },
+    "/api/evals/benchmarks/{name}/ranking": {
+      "get": {
+        "operationId": "get_task_ranking_api_evals_benchmarks__name__ranking_get",
+        "parameters": [
+          {
+            "description": "Benchmark folder name",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "description": "Benchmark folder name",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRankingOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Rank current tasks by pass rate and average known API cost across finished runs",
         "tags": [
           "evals: benchmarks"
         ]
@@ -7933,6 +8140,18 @@
               "title": "Include Smoke",
               "type": "boolean"
             }
+          },
+          {
+            "description": "Only runs covering every task in their published dataset revision",
+            "in": "query",
+            "name": "full_only",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Only runs covering every task in their published dataset revision",
+              "title": "Full Only",
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -8200,6 +8419,18 @@
             "schema": {
               "default": false,
               "title": "Include Smoke",
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Only runs covering every task in their published dataset revision",
+            "in": "query",
+            "name": "full_only",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Only runs covering every task in their published dataset revision",
+              "title": "Full Only",
               "type": "boolean"
             }
           }

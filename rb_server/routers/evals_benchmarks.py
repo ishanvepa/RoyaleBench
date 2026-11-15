@@ -13,6 +13,7 @@ from ..schemas.evals import (
     PublishOut,
     ReplayOut,
     TaskDetailOut,
+    TaskRankingOut,
     TaskResultsOut,
 )
 from ..services import benchmarks as service
@@ -28,6 +29,12 @@ def list_benchmarks(ctx: Ctx):
 @router.get("/benchmarks/{name}", response_model=BenchmarkDetail)
 def get_benchmark(name: BenchmarkName, ctx: Ctx):
     return service.benchmark_detail(ctx, name)
+
+
+@router.get("/benchmarks/{name}/ranking", response_model=TaskRankingOut,
+            summary="Rank current tasks by pass rate and average known API cost across finished runs")
+def get_task_ranking(name: BenchmarkName, ctx: Ctx):
+    return service.task_ranking(ctx, name)
 
 
 @router.get("/benchmarks/{name}/tasks/{task_id}", response_model=TaskDetailOut)

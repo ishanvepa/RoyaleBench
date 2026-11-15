@@ -28,6 +28,7 @@ from ..schemas.evals import (
     TaskDetailOut,
     TaskInfo,
     TaskModelSummary,
+    TaskRankingOut,
     TaskResultRow,
     TaskResultsOut,
     VersionOut,
@@ -103,6 +104,15 @@ def benchmark_detail(ctx: AppContext, name: str) -> BenchmarkDetail:
         folder=f"{ctx.cfg.benchmarks_dir.name}/{name}" if info.local else None,
         versions=[_version_out(v) for v in info.versions], tasks=[_task_info(info, t) for t in info.task_ids],
         errors=list(info.local.errors) if info.local else [], valkyrie_error=error)
+
+
+def task_ranking(ctx: AppContext, name: str) -> TaskRankingOut:
+    info, _ = _find(ctx, name)
+    runs = [r for r in ctx.valkyrie.list_runs(ctx.cfg.benchmark)
+            if r.get("dataset") == name and r.get("status") == "FINISHED"]
+    records = R.load_records(ctx.valkyrie, ctx.cache, runs, fetch_costs=False)
+    return TaskRankingOut(rows=R.task_ranking(records, name, info.task_ids), runs_considered=len(records),
+                          costs_pending=R.uncached_task_count(ctx.cache, runs))
 
 
 def task_detail(ctx: AppContext, name: str, task_id: str) -> TaskDetailOut:

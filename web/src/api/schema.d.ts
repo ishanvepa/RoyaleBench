@@ -72,6 +72,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/evals/benchmarks/{name}/ranking": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rank current tasks by pass rate and average known API cost across finished runs */
+        get: operations["get_task_ranking_api_evals_benchmarks__name__ranking_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/evals/benchmarks/{name}/tasks/{task_id}": {
         parameters: {
             query?: never;
@@ -2386,6 +2403,34 @@ export interface components {
             /** Solved */
             solved: number;
         };
+        /** TaskRankingOut */
+        TaskRankingOut: {
+            /** Costs Pending */
+            costs_pending: number;
+            /** Rows */
+            rows: components["schemas"]["TaskRankingRow"][];
+            /** Runs Considered */
+            runs_considered: number;
+        };
+        /** TaskRankingRow */
+        TaskRankingRow: {
+            /** Attempts */
+            attempts: number;
+            /** Cost Known */
+            cost_known: number;
+            /** Cost Per Task */
+            cost_per_task?: number | null;
+            /** Infra Errors */
+            infra_errors: number;
+            /** Pass Rate */
+            pass_rate?: number | null;
+            /** Rank */
+            rank?: number | null;
+            /** Solved */
+            solved: number;
+            /** Task */
+            task: string;
+        };
         /** TaskResultRow */
         TaskResultRow: {
             /** Agent S */
@@ -2827,6 +2872,101 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PublishOut"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    get_task_ranking_api_evals_benchmarks__name__ranking_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Benchmark folder name */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TaskRankingOut"];
                 };
             };
             /** @description Rejected */
@@ -4750,6 +4890,8 @@ export interface operations {
                 /** @description Only this agent harness */
                 harness?: string | null;
                 include_smoke?: boolean;
+                /** @description Only runs covering every task in their published dataset revision */
+                full_only?: boolean;
             };
             header?: never;
             path?: never;
@@ -4942,6 +5084,8 @@ export interface operations {
                 /** @description Only this agent harness */
                 harness?: string | null;
                 include_smoke?: boolean;
+                /** @description Only runs covering every task in their published dataset revision */
+                full_only?: boolean;
             };
             header?: never;
             path?: never;

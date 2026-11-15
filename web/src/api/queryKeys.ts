@@ -16,6 +16,7 @@ export const qk = {
     preview: (body: object) => ["evals", "preview", body] as const,
     benchmarks: () => ["evals", "benchmarks"] as const,
     benchmark: (name: string) => ["evals", "benchmark", name] as const,
+    taskRanking: (name: string) => ["evals", "benchmark", name, "ranking"] as const,
     benchmarkTask: (name: string, taskId: string) => ["evals", "benchmark", name, "task", taskId] as const,
     taskResolution: (name: string, taskId: string) => ["evals", "benchmark", name, "task", taskId, "resolution"] as const,
     taskResults: (name: string, taskId: string) => ["evals", "benchmark", name, "task", taskId, "results"] as const,

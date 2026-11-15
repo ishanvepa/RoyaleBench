@@ -21,8 +21,8 @@ each move is recorded. You cannot inspect or change the game itself; only `cr` i
 
 ## Scoring
 
-Win = 1, draw = 0.5, loss = 0. The match is graded by replaying your moves, so only the moves you
-submit with `cr act` count.
+Win = 1, loss = 0. The rare exact draw (see the tiebreak rule below) counts as a loss. The match
+is graded by replaying your moves, so only the moves you submit with `cr act` count.
 
 ## Rules in brief
 

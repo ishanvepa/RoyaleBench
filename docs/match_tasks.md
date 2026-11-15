@@ -21,7 +21,7 @@ These guarantees were checked locally in Docker: permission probes, a crash and 
 
 ## Reward
 
-`reward` is 1 for a win, 0.5 for a draw and 0 for a loss. Valkyrie's score is the mean `reward` across tasks. The verifier also reports these diagnostics in `reward.json`:
+`reward` is 1 for a win and 0 for a loss; there are no fractional rewards. A level overtime is decided by the tower-HP tiebreak; only an exact tie there is a draw, and a draw scores 0 like a loss. Valkyrie's score is the mean `reward` across tasks. The verifier also reports these diagnostics in `reward.json`:
 
 | Key | Meaning |
 | --- | --- |

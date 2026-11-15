@@ -14,10 +14,31 @@
     blueDk: "#1c4f96",
     red: "#f0703c",
     redDk: "#9a3a14",
-    grassA: "#75ad4d",
-    grassB: "#6ca346",
-    water: "#358cb9",
-    bridge: "#a87540",
+    // Terrain, sampled from Arena 1 reference frames and toned down slightly.
+    grassA: "#acc547",
+    grassB: "#a2bc41",
+    lane: "#93aa40",
+    water: "#34dcc8",
+    waterLight: "#7cf0dc",
+    waterShade: "#2f6a52",
+    waterDeep: "#2ab9a8",
+    bankShadow: "#6d7e27",
+    tuft: "#86a033",
+    lily: "#4cb772",
+    lilyEdge: "#2f8a55",
+    bridge: "#e8bd6a",
+    bridgeLight: "#f6d996",
+    bridgeEdge: "#b98a49",
+    bridgeDark: "#8f6532",
+    plankSeam: "rgba(150,104,48,.75)",
+    plankGrain: "rgba(176,128,64,.55)",
+    fence: "#7f5838",
+    fenceDark: "#553823",
+    dirt: "#6e5a32",
+    edgeShade: "rgba(60,70,20,.28)",
+    bush: "#5daa3c",
+    bushEdge: "#33772a",
+    bushLight: "#86c95a",
     gold: "#f2c230",
   });
   const KING = 2,
@@ -147,82 +168,177 @@
       previous = s;
     }
     function drawGround() {
+      // Arena 1 terrain, colour-matched to sampled frames of the reference video.
+      // Water and bridge cells come from the simulator grid; nothing is assumed
+      // about where the river or bridges sit.
       const half = arena.half,
         grid = arena.grid,
         water = arena.water_half_rows,
-        cell = T / half;
-      ctx.fillStyle = "#344b2b";
-      ctx.fillRect(0, 0, TX * T, TY * T);
-      // The mown field is drawn at tile resolution; only the river needs the
-      // simulator's finer grid. This keeps the terrain inexpensive to redraw.
-      for (let ty = 0; ty < TY; ty++)
-        for (let tx = 0; tx < TX; tx++) {
-          const px = Math.min(X(tx), X(tx + 1)),
-            py = Math.min(Y(ty), Y(ty + 1));
-          ctx.fillStyle = (tx + ty) % 2 ? C.grassA : C.grassB;
-          ctx.fillRect(px, py, T + 0.5, T + 0.5);
-          ctx.fillStyle = "rgba(235,255,174,.11)";
-          ctx.fillRect(px + 1, py + 1, T - 2, Math.max(1, T * 0.09));
-          if (grain(tx, ty) > 0.58) {
-            ctx.strokeStyle = "rgba(35,93,35,.32)";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(px + T * 0.33, py + T * 0.75);
-            ctx.lineTo(px + T * 0.25, py + T * 0.52);
-            ctx.moveTo(px + T * 0.33, py + T * 0.75);
-            ctx.lineTo(px + T * 0.43, py + T * 0.55);
-            ctx.stroke();
+        W = TX * T,
+        H = TY * T,
+        cell = T / half,
+        isWater = (hy, hx) => !!(grid[hy][hx] & arena.bits.WATER);
+      // Screen rectangle of a tile-space box, whichever way the board is flipped.
+      const box = (x0, y0, x1, y1) => {
+        const ax = X(x0),
+          bx = X(x1),
+          ay = Y(y0),
+          by = Y(y1);
+        return [Math.min(ax, bx), Math.min(ay, by), Math.abs(bx - ax), Math.abs(by - ay)];
+      };
+      // Bridges: runs of non-water cells within each river half-row.
+      const runs = [];
+      for (let hy = water[0]; hy <= water[1]; hy++)
+        for (let hx = 0; hx < grid[hy].length; ) {
+          if (isWater(hy, hx)) {
+            hx++;
+            continue;
           }
+          const start = hx;
+          while (hx < grid[hy].length && !isWater(hy, hx)) hx++;
+          runs.push({ hy, x0: start / half, x1: hx / half });
         }
+      // A bridge is the vertical union of overlapping runs; its deck extends
+      // a little onto both banks, as in the reference.
+      const bridges = [];
+      for (const r of runs) {
+        const b = bridges.find((q) => r.x0 < q.x1 && r.x1 > q.x0 && r.hy === q.hy1 + 1);
+        if (b) {
+          b.x0 = Math.min(b.x0, r.x0);
+          b.x1 = Math.max(b.x1, r.x1);
+          b.hy1 = r.hy;
+        } else bridges.push({ x0: r.x0, x1: r.x1, hy0: r.hy, hy1: r.hy });
+      }
+      const riverY0 = water[0] / half,
+        riverY1 = (water[1] + 1) / half,
+        lip = 0.5;
+
+      // Grass: a soft two-tone tile checker.
+      ctx.fillStyle = C.grassA;
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = C.grassB;
+      for (let ty = 0; ty < TY; ty++)
+        for (let tx = (ty + 1) % 2; tx < TX; tx += 2) ctx.fillRect(...box(tx, ty, tx + 1, ty + 1));
+      // Worn lanes run from each bridge towards the princess towers.
+      ctx.fillStyle = C.lane;
+      for (const b of bridges) {
+        const inset = Math.min(0.35, (b.x1 - b.x0) * 0.2);
+        ctx.fillRect(...box(b.x0 + inset, TY * 0.22, b.x1 - inset, riverY0));
+        ctx.fillRect(...box(b.x0 + inset, riverY1, b.x1 - inset, TY * 0.78));
+      }
+
+      // River: water cells only, with a shaded upper bank and a bright lower lip.
+      for (let hy = water[0]; hy <= water[1]; hy++)
+        for (let hx = 0; hx < grid[hy].length; hx++)
+          if (isWater(hy, hx)) {
+            ctx.fillStyle = C.water;
+            ctx.fillRect(...box(hx / half, hy / half, (hx + 1) / half, (hy + 1) / half).map((v, i) => (i > 1 ? v + 0.6 : v)));
+          }
+      const [, ry, , rh] = box(0, riverY0, TX, riverY1);
       for (let hy = water[0]; hy <= water[1]; hy++)
         for (let hx = 0; hx < grid[hy].length; hx++) {
-          const v = grid[hy][hx],
-            x = Math.min(X(hx / half), X((hx + 1) / half)),
-            y = Math.min(Y(hy / half), Y((hy + 1) / half)),
-            bridge = !(v & arena.bits.WATER);
-          ctx.fillStyle = bridge
-            ? (hy + hx) % 3 ? "#ac7a43" : "#ba8950"
-            : (hy + hx) % 3 ? C.water : "#419bc4";
-          ctx.fillRect(x, y, cell + 0.6, cell + 0.6);
-          if (bridge) {
-            ctx.fillStyle = "rgba(255,229,163,.28)";
-            ctx.fillRect(x + 1, y + 1, cell - 2, Math.max(1, cell * 0.1));
-            ctx.fillStyle = "rgba(55,35,19,.34)";
-            ctx.fillRect(x, y + cell - Math.max(1, cell * 0.09), cell, Math.max(1, cell * 0.09));
-            // The rails follow the actual bridge cells supplied by the engine.
-            for (const side of [-1, 1]) {
-              const neighbor = grid[hy][hx + side];
-              if (neighbor === undefined || neighbor & arena.bits.WATER) {
-                ctx.fillStyle = "#6d492d";
-                const railX = (flip ? -side : side) < 0 ? x : x + cell - Math.max(2, cell * 0.16);
-                ctx.fillRect(railX, y, Math.max(2, cell * 0.16), cell + 0.5);
-                ctx.fillStyle = "#d4a66a";
-                ctx.fillRect(railX + 1, y + 1, Math.max(1, cell * 0.05), cell - 2);
-              }
-            }
-          } else {
-            ctx.strokeStyle = "rgba(209,242,246,.36)";
-            ctx.lineWidth = Math.max(1, T * 0.045);
-            ctx.beginPath();
-            ctx.moveTo(x + cell * 0.16, y + cell * 0.48);
-            ctx.lineTo(x + cell * 0.63, y + cell * 0.4);
-            ctx.stroke();
-          }
+          if (!isWater(hy, hx)) continue;
+          const [x] = box(hx / half, 0, (hx + 1) / half, 1);
+          ctx.fillStyle = C.waterShade;
+          ctx.fillRect(x, ry, cell + 0.6, rh * 0.2);
+          ctx.fillStyle = C.waterDeep;
+          ctx.fillRect(x, ry + rh * 0.2, cell + 0.6, rh * 0.08);
+          ctx.fillStyle = C.waterLight;
+          ctx.fillRect(x, ry + rh * 0.9, cell + 0.6, rh * 0.1);
         }
-      // Stone banks and a raised frame make the river legible at replay size.
-      for (const row of [water[0], water[1] + 1]) {
-        const py = Y(row / half);
-        ctx.fillStyle = "#dbc48c";
-        ctx.fillRect(0, py - T * 0.09, TX * T, T * 0.18);
-        ctx.fillStyle = "rgba(47,57,36,.34)";
-        ctx.fillRect(0, py + T * 0.09, TX * T, Math.max(1, T * 0.07));
+      // Lily pads at fixed spots, kept off bridges.
+      for (let tx = 1; tx < TX - 1; tx++) {
+        if (grain(tx, 7) < 0.6) continue;
+        const px = tx + 0.2 + grain(tx, 3) * 0.6,
+          py = riverY0 + (riverY1 - riverY0) * (0.35 + grain(tx, 5) * 0.4),
+          hx = Math.floor(px * half),
+          hy = Math.floor(py * half);
+        if (!grid[hy] || !isWater(hy, hx) || !isWater(hy, Math.max(0, hx - 1)) || !isWater(hy, Math.min(grid[hy].length - 1, hx + 1))) continue;
+        disk(X(px), Y(py), T * 0.32, T * 0.24, C.lily, C.lilyEdge, Math.max(1, T * 0.05));
       }
-      ctx.strokeStyle = "#35472c";
-      ctx.lineWidth = Math.max(3, T * 0.22);
-      ctx.strokeRect(0, 0, TX * T, TY * T);
-      ctx.strokeStyle = "rgba(230,218,170,.75)";
-      ctx.lineWidth = Math.max(1, T * 0.055);
-      ctx.strokeRect(T * 0.12, T * 0.12, TX * T - T * 0.24, TY * T - T * 0.24);
+      // Bank edges: a dark lip above the water and grass tufts over both edges.
+      ctx.fillStyle = C.bankShadow;
+      ctx.fillRect(0, ry - T * 0.08, W, T * 0.08);
+      ctx.strokeStyle = C.tuft;
+      ctx.lineWidth = Math.max(1, T * 0.05);
+      ctx.beginPath();
+      for (let i = 0; i <= TX * 4; i++) {
+        const x = (i / 4) * T,
+          up = grain(i, 11) * T * 0.1;
+        ctx.moveTo(x, ry - T * 0.08);
+        ctx.lineTo(x + T * 0.05, ry - T * 0.08 + T * 0.06 + up);
+        ctx.moveTo(x, ry + rh);
+        ctx.lineTo(x + T * 0.05, ry + rh - T * 0.05 - up);
+      }
+      ctx.stroke();
+
+      // Bridges: plank decks sized from the grid runs, with rails on both sides.
+      for (const b of bridges) {
+        const y0 = b.hy0 / half - (b.hy0 === water[0] ? lip : 0),
+          y1 = (b.hy1 + 1) / half + (b.hy1 === water[1] ? lip : 0),
+          [x, y, w, h] = box(b.x0, y0, b.x1, y1),
+          rail = Math.max(2, T * 0.12);
+        ctx.fillStyle = "rgba(20,60,40,.28)";
+        ctx.fillRect(x + T * 0.12, y + T * 0.12, w, h);
+        ctx.fillStyle = C.bridge;
+        ctx.fillRect(x, y, w, h);
+        // Planks run along the crossing, so seams are vertical on screen.
+        const planks = Math.max(2, Math.round(((b.x1 - b.x0) * 4) / 2));
+        ctx.strokeStyle = C.plankSeam;
+        ctx.lineWidth = Math.max(1, T * 0.04);
+        ctx.beginPath();
+        for (let i = 1; i < planks; i++) {
+          const sx = x + (w * i) / planks;
+          ctx.moveTo(sx, y + 1);
+          ctx.lineTo(sx, y + h - 1);
+        }
+        ctx.stroke();
+        // Wavy grain, deterministic per plank.
+        ctx.strokeStyle = C.plankGrain;
+        ctx.lineWidth = Math.max(1, T * 0.025);
+        ctx.beginPath();
+        for (let i = 0; i < planks; i++) {
+          const gx = x + (w * (i + 0.5)) / planks,
+            amp = (w / planks) * 0.12;
+          ctx.moveTo(gx, y + h * 0.08);
+          for (let k = 1; k <= 8; k++) ctx.lineTo(gx + (k % 2 ? amp : -amp) * (0.5 + grain(i, k)), y + h * (0.08 + k * 0.105));
+        }
+        ctx.stroke();
+        ctx.fillStyle = C.bridgeEdge;
+        ctx.fillRect(x, y, rail, h);
+        ctx.fillRect(x + w - rail, y, rail, h);
+        ctx.fillStyle = C.bridgeLight;
+        ctx.fillRect(x + rail, y, w - 2 * rail, Math.max(1, T * 0.06));
+        ctx.fillStyle = C.bridgeDark;
+        ctx.fillRect(x, y + h - Math.max(2, T * 0.1), w, Math.max(2, T * 0.1));
+      }
+
+      // Border: a wooden palisade on the sides and a dirt edge top and bottom.
+      const post = Math.max(3, T * 0.2);
+      ctx.fillStyle = C.edgeShade;
+      ctx.fillRect(post, 0, T * 0.12, H);
+      ctx.fillRect(W - post - T * 0.12, 0, T * 0.12, H);
+      ctx.fillStyle = C.fence;
+      ctx.fillRect(0, 0, post, H);
+      ctx.fillRect(W - post, 0, post, H);
+      ctx.fillStyle = C.fenceDark;
+      for (let i = 0; i < TY * 2; i++) {
+        const y = (i * T) / 2;
+        ctx.fillRect(0, y, post, Math.max(1, T * 0.05));
+        ctx.fillRect(W - post, y, post, Math.max(1, T * 0.05));
+      }
+      ctx.fillStyle = C.edgeShade;
+      ctx.fillRect(0, post, W, T * 0.1);
+      ctx.fillRect(0, H - post - T * 0.1, W, T * 0.1);
+      ctx.fillStyle = C.dirt;
+      ctx.fillRect(0, 0, W, post);
+      ctx.fillRect(0, H - post, W, post);
+      // Bushes where the river meets the palisade.
+      for (const ex of [0, TX])
+        for (const ey of [riverY0 - 0.35, riverY1 + 0.35]) {
+          disk(X(ex), Y(ey), T * 0.62, T * 0.5, C.bush, C.bushEdge, Math.max(1, T * 0.05));
+          disk(X(ex), Y(ey) - T * 0.12, T * 0.36, T * 0.26, C.bushLight);
+        }
     }
     function shieldBar(x, y, w, frac) {
       ctx.fillStyle = "rgba(0,0,0,.55)";

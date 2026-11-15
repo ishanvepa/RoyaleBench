@@ -37,7 +37,7 @@ from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketDiscon
 from .db import DB
 from .decks import CLASSIC_DECKS
 from .game import Game
-from .leaderboard import Leaderboard, guest_name
+from .leaderboard import Leaderboard, guest_name, player_name as validate_player_name
 from .rendering import embed_renderer
 from .bots import human_bot_specs
 
@@ -117,12 +117,12 @@ class Session:
 
     def __init__(self, ws: WebSocket, my_deck: str, opp_deck: str, seed: int, bot: str = "heuristic",
                  *, spec: dict | None = None, leaderboard: Leaderboard | None = None,
-                 player_id: str | None = None):
+                 player_id: str | None = None, player_name: str | None = None):
         self.ws = ws
         self.match_id = uuid.uuid4().hex
         self.leaderboard = leaderboard
         self.player_id = player_id or uuid.uuid4().hex
-        self.player_name = guest_name(self.player_id)  # Future name entry can set this before playing.
+        self.player_name = guest_name(self.player_id) if player_name is None else validate_player_name(player_name)
         self.bot_spec = spec if spec is not None else BOT_SPECS[bot]
         self.deck_names = (my_deck, opp_deck)
         self.decks = [CLASSIC_DECKS[my_deck], CLASSIC_DECKS[opp_deck]]
@@ -163,6 +163,7 @@ class Session:
     def init_msg(self) -> dict:
         g = self.game
         return {"t": "init", "opp": self.bot_spec["name"], "seed": self.seed, "decks": list(self.deck_names),
+                "player_name": self.player_name,
                 "cards": {c.card_id: [c.name, g.kind_of(c), c.elixir, c.footprint_tiles or 0] for c in g.cards},
                 "lockout": g.engine.rules().deploy_lockout_ticks, "delay": self.delay,
                 "arena": {"tiles_x": g.arena.tiles_x, "tiles_y": g.arena.tiles_y,
@@ -532,6 +533,11 @@ async def socket(ws: WebSocket) -> None:
                 await ws.send_json({"t": "invalid", "message": "Invalid game message."})
                 continue
             if m.get("t") == "start":
+                try:
+                    name = validate_player_name(m["player_name"]) if "player_name" in m else None
+                except ValueError as exc:
+                    await ws.send_json({"t": "invalid", "message": str(exc)})
+                    continue
                 mine, theirs = m.get("deck"), m.get("opp_deck", m.get("deck"))
                 bot, seed = m.get("bot", next(iter(specs))), m.get("seed", random.randrange(1, 10_000))
                 if fixed:
@@ -548,7 +554,7 @@ async def socket(ws: WebSocket) -> None:
                     continue
                 try:
                     session = Session(ws, mine, theirs, seed, bot, spec=specs[bot] if fixed else None,
-                                      leaderboard=ws.app.state.leaderboard, player_id=player_id)
+                                      leaderboard=ws.app.state.leaderboard, player_id=player_id, player_name=name)
                 except Exception:
                     log.exception("could not start live game")
                     await ws.send_json({"t": "error", "message": "Could not start a game. Please try again."})

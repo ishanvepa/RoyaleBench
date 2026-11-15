@@ -11,10 +11,41 @@ from starlette.testclient import TestClient
 
 from cr_arena import live
 from cr_arena.db import DB
-from cr_arena.leaderboard import Leaderboard
+from cr_arena.leaderboard import Leaderboard, player_name
 
 
 class LeaderboardTests(unittest.TestCase):
+    def test_names_normalize_spaces_and_unicode_and_reject_invalid_values(self):
+        self.assertEqual(player_name("  Alice,   the Great  "), "Alice, the Great")
+        self.assertEqual(player_name("E\u0301lodie"), "Élodie")
+        self.assertEqual(player_name("王者 👑"), "王者 👑")
+        for value in (None, 4, [], {}, "", "   ", "a" * 25, "A\x00B", "A\u202eB"):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                player_name(value)
+
+    def test_start_carries_validated_names_without_changing_browser_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(live, "DB", lambda: DB(Path(tmp) / "arena.db")):
+                with TestClient(live.create_app(public=True, leaderboard_path=Path(tmp) / "board.csv")) as client:
+                    client.get("/")
+                    identity = client.cookies[live.PLAYER_COOKIE]
+                    for name in ("  Alice,   the Great  ", "New arena name"):
+                        with client.websocket_connect("/ws") as ws:
+                            self.assertEqual(ws.receive_json()["t"], "hello")
+                            for invalid in (None, "", "a" * 25, [], "A\x00B"):
+                                ws.send_json({"t": "start", "deck": "giant-beatdown", "player_name": invalid})
+                                self.assertEqual(ws.receive_json()["t"], "invalid")
+                                self.assertEqual(client.get("/health").json()["active_games"], 0)
+                            ws.send_json({"t": "start", "deck": "giant-beatdown", "player_name": name})
+                            init = ws.receive_json()
+                            self.assertEqual(init["t"], "init")
+                            self.assertEqual(init["player_name"], player_name(name))
+                            session = next(iter(live.ACTIVE))
+                            self.assertEqual(session.player_id, identity)
+                            self.assertEqual(session.player_name, player_name(name))
+                    # Starting and disconnecting are not leaderboard results.
+                    self.assertEqual(client.get("/leaderboard").json()["total"], 0)
+
     def test_persistence_names_ranking_ties_and_ignored_draws(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "leaderboard.csv"

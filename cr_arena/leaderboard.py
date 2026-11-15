@@ -5,11 +5,22 @@ from __future__ import annotations
 import csv
 import os
 import threading
+import unicodedata
 from pathlib import Path
 
 
 def guest_name(player_id: str) -> str:
     return f"Player {player_id[:6].upper()}"
+
+
+def player_name(value: object) -> str:
+    """Validate public display names independently of the stable browser identity."""
+    if not isinstance(value, str):
+        raise ValueError("Enter a name for the leaderboard.")
+    name = unicodedata.normalize("NFC", " ".join(value.split()))
+    if not 1 <= len(name) <= 24 or not name.isprintable():
+        raise ValueError("Your arena name must contain 1–24 visible characters.")
+    return name
 
 
 class Leaderboard:
@@ -50,7 +61,7 @@ class Leaderboard:
             player = players.setdefault(row["player_id"], {
                 "player_id": row["player_id"], "name": "", "wins": 0, "losses": 0,
             })
-            # The latest recorded name wins, ready for the future naming flow.
+            # The latest recorded name wins; renaming keeps the same browser record.
             player["name"] = row["player_name"] or guest_name(row["player_id"])
             player["wins" if row["winner"] == "0" else "losses"] += 1
         ranked = sorted(players.values(), key=lambda p: (-p["wins"], p["losses"], p["player_id"]))

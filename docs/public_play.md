@@ -6,6 +6,14 @@ The opponent and its deck are fixed on the server. The public UI shows no bot or
 opponent-deck selectors. Local mode retains the full bot catalog and both deck
 selectors.
 
+The shared link opens an arena lobby with a miniature battlefield and a gold
+**Battle** button. Enter your arena name, then press Battle to open deck selection;
+it does not start a match. Choose
+a preset to see its strategy and all eight card portraits, then press **Enter
+battle** to begin. **Back to arena** returns to the lobby and keeps the selected
+deck. The **How to play** button explains deployment, elixir, and winning. On
+phones, the final Enter battle button stays visible while browsing the decks.
+
 The deck picker uses no match slot. A sixth start receives **“Server at capacity —
 please try again shortly.”** Finish, quit, disconnect, or worker failure releases
 a slot. A game expires after 15 minutes including pauses. Reconnect starts a new
@@ -13,7 +21,7 @@ game rather than resuming the previous one.
 
 ## Persistent leaderboard
 
-The deck picker and match result screen link to an all-time leaderboard showing
+The lobby header and match result screen link to an all-time leaderboard showing
 player names, wins, and losses. Most wins rank first; fewer losses break ties,
 and identical records share a rank. The board shows the top 50 plus your own
 record, even when you are outside the top 50. It refreshes when setup opens,
@@ -25,12 +33,26 @@ ID prevents duplicate results if saving is retried. Results come from the game
 engine; the HTTP endpoint accepts no score submissions. The CSV write uses the
 existing single-server setup and a thread lock for simultaneous finishes.
 
-Until name entry is added, a persistent browser cookie identifies each player as
-`Player ABC123`. The cookie lasts one year; clearing cookies, changing browsers,
-or using a different tunnel hostname creates a new identity. This is a casual
-leaderboard with no accounts. To integrate future names, set `Session.player_name`
-from the name flow; `Session.player_id` remains the stable aggregation key. The
-CSV's `player_name` column supplies the displayed name, using the latest result.
+The start screen requires an arena name of 1–24 visible characters. It remembers
+the name in browser storage, shows it in deck selection and the live HUD, and
+sends it as `player_name` in the WebSocket start message. The server normalizes
+whitespace and Unicode, rejects invalid names before allocating a game, and
+stores the validated name with completed results. **Edit name** returns to the
+lobby; changing a name keeps the same record and updates its displayed name
+after the next completed win or loss. Older clients that omit the name retain
+the generated `Player ABC123` fallback.
+
+A persistent browser cookie identifies each player independently of their name.
+The cookie lasts one year; clearing cookies, changing browsers, or using a
+different tunnel hostname creates a new identity. This is a casual leaderboard
+with no accounts; matching names do not merge records. `Session.player_id`
+remains the stable aggregation key. The CSV's `player_name` column supplies the
+displayed name, using the latest result.
+
+The play page requests a fixed 1× viewport and suppresses pinch, double-tap,
+trackpad, and keyboard page-zoom gestures while allowing normal scrolling.
+Name entry uses a 16px font to avoid mobile input-focus zoom. Browser menus,
+accessibility settings, and OS magnification can override page zoom restrictions.
 
 `GET /leaderboard` returns `entries`, `you`, and `total`. Each entry includes
 `rank`, `name`, `wins`, `losses`, and `is_you`. The default local file is

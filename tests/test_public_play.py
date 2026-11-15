@@ -140,7 +140,7 @@ class PublicPlayTests(unittest.TestCase):
     def test_five_natural_completions_save_unique_replays_and_release_open_sockets(self):
         async def finish_games(board):
             sessions = [live.Session(MemorySocket(), 'giant-beatdown', 'giant-beatdown', seed,
-                                     leaderboard=board, player_id='test-player')
+                                     leaderboard=board, player_id='test-player', player_name='Alice, the Great')
                         for seed in range(5)]
             for index, session in enumerate(sessions):
                 hp = [list(player.tower_hp) for player in session.game.state.players]
@@ -177,6 +177,7 @@ class PublicPlayTests(unittest.TestCase):
                 self.assertEqual(you['wins'], winners.count(0))
                 self.assertEqual(you['losses'], winners.count(1))
                 self.assertEqual((you['wins'], you['losses']), (2, 2))
+                self.assertEqual(you['name'], 'Alice, the Great')
             self.assertEqual(len(set(ids)), 5)
             self.assertEqual(len(list((Path(tmp) / 'replays').glob('*.msgpack'))), 5)
             db = DB(db_path)

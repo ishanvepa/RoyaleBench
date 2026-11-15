@@ -46,10 +46,17 @@ uses the same command delay as you, and discards outdated card choices. It uses
 a soft 1.2-second search deadline at completed comparison rounds; a round can
 finish after that target. Its live results are separate from the paused benchmark.
 
-Choose an opponent and decks, then press **Start game**. Tap a card and then
+Enter your **arena name** and press **Battle** in the lobby to open deck selection.
+Your name is remembered in this browser and used for completed leaderboard
+results. Use **Edit name** in deck selection to change it. Choose your deck,
+and, in local mode, an opponent and its deck, then press **Enter battle**. Each
+preset shows its playstyle and an eight-card preview. Tap a card and then
 tap a legal location on the arena to deploy it. Use **Change deck** to return
 to setup and switch opponents. Finished games save to `runs/arena.db`, with
 replays under `runs/round_robin/human-play/replays/`.
+
+The play page disables page-zoom gestures, including double taps and pinches,
+while keeping normal scrolling. Browser accessibility settings can override this.
 The setup screen includes a persistent wins/losses leaderboard backed by
 `runs/round_robin/human-play/leaderboard.csv`, with a placeholder name per browser
 until name entry is added. See [leaderboard behavior and storage](public_play.md#persistent-leaderboard).

@@ -25,6 +25,7 @@ def snapshot_session(game) -> Session:
     s = Session.__new__(Session)
     s.game, s.sub, s.delay, s.seed, s.paused = game, game.sub, DELAY, game.seed, False
     s.bot_spec, s.deck_names = {"name": "heuristic"}, ("", "")
+    s.player_name = 'Test player'
     s.placement = PlacementOracle(game.arena, game.engine.rules(), game.cards)
     s.mask_cache = {}
     return s

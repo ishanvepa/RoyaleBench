@@ -64,6 +64,7 @@ class RenderingTests(unittest.TestCase):
         session.seed = 2
         session.bot_spec = {'name': 'test'}
         session.deck_names = ('test', 'test')
+        session.player_name = 'Test player'
         session.paused = False
         session.placement = PlacementOracle(session.game.arena, session.game.engine.rules(), session.game.cards)
         session.mask_cache = {}

@@ -113,6 +113,63 @@ test('old replay rows without footprints use the three-tile princess size', () =
   assert.equal(rect[4], 60);
 });
 
+test('king artwork keeps the existing size and tooltip anchor for both teams and flips', () => {
+  for (const flip of [false, true]) for (const team of [0, 1]) {
+    const {renderer, a, operations} = fixture();
+    const y = team ? 29 : 3;
+    a.en = [[10, team, 2, -1, 9, y, 4824, 4824, 1, 0, 0, 0, 0]];
+    renderer.observe(a, 0);
+    const hit = renderer.draw(a, a, 0, 100, {scale: 20, cards, flip})[0];
+    assert.deepEqual(Array.from(hit.p), [180, (flip ? y : 32 - y) * 20]);
+    assert.equal(hit.rad, 31);
+    const rect = operations.find(op => op[0] === 'roundRect');
+    assert.deepEqual(rect.slice(1, 5), [149, hit.p[1] - 31, 62, 62]);
+  }
+});
+
+test('destroyed towers leave footprint-aligned ruins without tooltip targets, and seeks clear them', () => {
+  for (const flip of [false, true]) {
+    const {renderer, a, operations} = fixture();
+    a.en = [[2, 0, 3, -1, 3.5, 6.5, 10, 3052, 1, 0, 1, 0, 0, 0, [1.5, 5, 5.5, 8]]];
+    const gone = {en: [], sp: [], pr: []};
+    renderer.observe(a, 0); renderer.observe(gone, 100);
+    const draw = () => {
+      operations.length = 0;
+      const hits = renderer.draw(gone, gone, 0, 1000, {scale: 20, cards, flip});
+      assert.equal(hits.length, 0);
+      return operations.filter(op => op[0] === 'roundRect');
+    };
+    const ruins = draw();
+    assert.equal(ruins.length, 1);
+    assert.deepEqual(ruins[0].slice(1, 5), [(flip ? 18 - 5.5 : 1.5) * 20,
+      (flip ? 5 : 32 - 8) * 20, 80, 60]);
+    renderer.reset();
+    renderer.observe(gone, 100);
+    assert.equal(draw().length, 0, 'reset must not remember a future destroyed tower');
+    renderer.reset();
+    renderer.observe(a, 0); renderer.observe(gone, 100);
+    assert.deepEqual(draw(), ruins, 'rebuilding history must reproduce the same ruins');
+  }
+});
+
+test('low health preserves tower masonry, while an immediate hit still flashes', () => {
+  const {renderer, a, operations} = fixture();
+  a.en = [[2, 1, 3, -1, 3.5, 25.5, 3052, 3052, 1, 0, 1, 0, 0]];
+  const damaged = {en: [a.en[0].map((value, i) => i === 6 ? 10 : value)], sp: [], pr: []};
+  const art = (s, now) => {
+    operations.length = 0;
+    renderer.draw(s, s, 0, now, {scale: 20, cards});
+    // Exclude the unchanged HUD path (health bar and number) after tower restore.
+    return operations.slice(0, operations.findIndex(op => op[0] === 'restore') + 1);
+  };
+  renderer.observe(a, 0);
+  const healthy = art(a, 0);
+  renderer.observe(damaged, 100);
+  const hit = art(damaged, 110);
+  assert.ok(hit.some(op => op[0] === 'fillStyle' && op[1] === '#fff'));
+  assert.equal(JSON.stringify(art(damaged, 1000)), JSON.stringify(healthy));
+});
+
 test('a shield is drawn above the health bar and its loss flashes the unit', () => {
   const {renderer, operations} = fixture();
   const a = {en: [[1, 0, 0, 0, 4, 8, 100, 100, .5, 0, -1, 1, 0, 0, null, 50, 0, -1]], sp: [], pr: []};

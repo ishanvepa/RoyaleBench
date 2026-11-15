@@ -19,6 +19,14 @@ please try again shortly.”** Finish, quit, disconnect, or worker failure relea
 a slot. A game expires after 15 minutes including pauses. Reconnect starts a new
 game rather than resuming the previous one.
 
+Completed battles open a result dialog over the dimmed arena, using the lobby's
+navy panels, crown emblem, and gold **Battle again** button. Victory, defeat, and
+draw results show both players, decks, and final crown scores, followed by your
+record and replay status. **Battle again** keeps the same matchup; **Change deck**
+returns to deck selection, and **View leaderboard** opens the standings. Keyboard
+focus stays in the dialog; Escape returns to deck selection. The dialog scrolls
+on short screens so every action remains reachable.
+
 ## Persistent leaderboard
 
 The lobby header and match result screen link to an all-time leaderboard showing

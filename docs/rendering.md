@@ -12,6 +12,13 @@ The lobby includes a remembered arena-name field; deck selection and the live
 HUD show the selected name. The header opens the CSV leaderboard as a separate
 screen, keeping the lobby's arena centerpiece and deck picker intact.
 
+The match result dialog continues this style with a fine gold border, an original
+crown-and-shield emblem, blue and coral crown scores, and the lobby's raised gold
+action button. Defeat and draw use a quieter emblem color. It shows player names
+and decks in aligned score columns, with the record, replay status, and secondary
+actions below. A native modal dialog dims and blurs the finished arena, contains
+keyboard focus, and scrolls within the viewport on small or short screens.
+
 Live play and saved HTML replays use `cr_arena/battle_renderer.js` for the arena,
 units, names, health bars, projectiles, spells, and animation effects. Change those
 graphics there so both views stay consistent. The renderer takes positions and

@@ -25,7 +25,8 @@ Enterprise workspace and suitable account permissions.
 
 Each Modal model preset in `evals.toml` has `modal_app`, the exact serving App
 name or `ap-` ID. Qwen, Inkling, DeepSeek and Kimi are configured from their endpoint
-App names; these mappings still require live verification in the owning workspace.
+App names. All four mappings were resolved successfully in workspace `ishanvepa171`
+during live verification on November 15, 2026.
 The SDK resolves each App to its ID without creating resources. An App that
 cannot be found is shown explicitly; other resolved Apps can still have costs.
 For additional hosted models, add their `modal_app` and restart the dashboard.
@@ -66,8 +67,14 @@ Automated tests cover idempotent refresh, corrected charges, exact persistence
 across restart, error retention, shared-App deduplication, unknown versus zero,
 month boundaries, the dashboard API and the frontend table. Local Qwen, Inkling
 and DeepSeek pilot trajectories can be read without launching model calls.
-Live billing access and App resolution remain unverified until the dashboard
-can use a login in the owning Modal workspace.
+Live verification on November 15, 2026 confirmed billing access in workspace
+`ishanvepa171`, resolved all four serving Apps, and retrieved actual compute
+charges for each. It also exposed Modal's seven-day hourly range limit; a
+regression test now checks bounded, contiguous requests across a whole month.
+The first available endpoint charges were in the latest completed hour, which
+remains outside the dashboard's intentional one-hour ingestion buffer until the
+next hour. A successful sync and persisted snapshot can therefore initially
+have unknown model costs despite successful authentication and App resolution.
 
 References: [Modal billing](https://modal.com/docs/guide/billing),
 [Workspace billing API](https://modal.com/docs/reference/modal.Workspace#billingreport),

@@ -10,4 +10,5 @@ runs/replay-cache/
 runs/dashboard/
 data/arena.db
 data/*.db-*
+data/references/*.mp4
 modal.json

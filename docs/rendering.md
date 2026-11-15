@@ -7,6 +7,23 @@ radii in tiles, with Blue at the bottom; its file header documents the row layou
 Both views supply the arena grid from the simulation or trace, rather than
 guessing bridge positions.
 
+The arena now uses layered grass, water, stone banks, and wooden bridge planks.
+Bridges and rails follow the simulator's actual water grid. Towers and troops
+are original canvas miniatures with team-colored roofs or bases, so replay files
+remain self-contained and work offline. The troop silhouettes cover the common
+RoyaleGym cards; an unknown card receives a generic armored miniature and its
+name label. These are illustrative graphics, not imported Clash Royale assets.
+REA 6.9.0 parsed `battle_renderer.js` as a standalone JavaScript source and
+found no module imports in that file; it did not evaluate the artwork. The
+graphics were then checked in a browser against a recorded replay. REA is an
+analysis tool and is not needed at runtime.
+
+![Arena preview from a recorded battle](images/arena-preview.png)
+
+The [Arena 1 gameplay video](https://www.youtube.com/watch?v=PD6QCK7GzA8)
+is saved locally at `data/references/arena-1-PD6QCK7GzA8.mp4` for a future
+reference-matching pass; see [data documentation](../data/README.md#visual-reference).
+
 `live.html` handles the WebSocket stream, HUD, and placement controls. `replay.html`
 adapts RoyaleGym's named trace columns into the same drawing contract and handles
 playback, scrubbing, flipping, and tooltips. Its playback controls were adapted

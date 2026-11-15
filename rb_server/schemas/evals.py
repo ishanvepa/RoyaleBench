@@ -139,6 +139,7 @@ class TraceStep(BaseModel):
     title: str
     text: str
     time: str | None = None
+    tool: str | None = None  # tool name, set on tool_use steps and on the tool_result that answers them
 
 
 class TraceOut(BaseModel):

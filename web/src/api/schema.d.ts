@@ -2317,6 +2317,8 @@ export interface components {
             time?: string | null;
             /** Title */
             title: string;
+            /** Tool */
+            tool?: string | null;
         };
         /** ValidationError */
         ValidationError: {

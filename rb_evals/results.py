@@ -109,9 +109,10 @@ def normalize_trajectory(events: list[dict], *, max_steps: int = 300, max_text: 
     JSON preview so no harness is ever dropped silently.
     """
     steps: list[dict] = []
+    tool_names: dict[str, str] = {}  # tool_use id -> tool name, so a result can say which tool produced it
 
-    def add(kind: str, title: str, text: str, when) -> None:
-        steps.append({"kind": kind, "title": title, "text": _clip(text, max_text), "time": when})
+    def add(kind: str, title: str, text: str, when, tool: str | None = None) -> None:
+        steps.append({"kind": kind, "title": title, "text": _clip(text, max_text), "time": when, "tool": tool})
 
     for event in events:
         if not isinstance(event, dict):
@@ -135,9 +136,13 @@ def normalize_trajectory(events: list[dict], *, max_steps: int = 300, max_text: 
                     detail = inputs.get("command") or inputs.get("file_path") or ""
                     body = json.dumps(inputs, ensure_ascii=False, indent=2) if not detail else (
                         f"{detail}\n\n{inputs['content']}" if "content" in inputs else str(detail))
-                    add("tool_use", f"Tool: {block.get('name', '?')}", body, when)
+                    name = str(block.get("name") or "?")
+                    if block.get("id"):
+                        tool_names[str(block["id"])] = name
+                    add("tool_use", f"Tool: {name}", body, when, tool=name)
                 elif btype == "tool_result":
-                    add("tool_result", "Tool result", _as_text(block.get("content")), when)
+                    name = tool_names.get(str(block.get("tool_use_id")))
+                    add("tool_result", f"Tool result: {name}" if name else "Tool result", _as_text(block.get("content")), when, tool=name)
                 else:
                     add("other", f"{kind} block", json.dumps(block, ensure_ascii=False)[:max_text], when)
         elif kind in ("assistant", "user") and isinstance(content, str):

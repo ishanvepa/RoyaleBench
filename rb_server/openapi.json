@@ -4544,6 +4544,17 @@
           "title": {
             "title": "Title",
             "type": "string"
+          },
+          "tool": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool"
           }
         },
         "required": [

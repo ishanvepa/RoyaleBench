@@ -42,7 +42,7 @@ def test_replay_and_range_request(client, name):
     assert partial.content == replay.content[:100]
 
 
-@pytest.mark.parametrize("name", ["tactics_clips.md", "royalebench_v9_failure_analysis.md"])
+@pytest.mark.parametrize("name", ["royalebench_v9_failure_analysis.md"])
 def test_only_linked_guides_redirect(client, name):
     guide = client.get(f"/{name}", follow_redirects=False)
     assert guide.status_code == 307
@@ -50,6 +50,6 @@ def test_only_linked_guides_redirect(client, name):
     assert client.get("/not-a-guide.md", follow_redirects=False).status_code == 404
 
 
-@pytest.mark.parametrize("url", ["/.env", "/writeup-assets/.env", "/writeup-assets/%2e%2e/.env", "/writeup-assets/missing.json", "/writeup.md", "/royalebench_v9.md", "/royalebench_v4.md"])
+@pytest.mark.parametrize("url", ["/.env", "/writeup-assets/.env", "/writeup-assets/%2e%2e/.env", "/writeup-assets/missing.json", "/writeup.md", "/royalebench_v9.md", "/royalebench_v4.md", "/tactics_clips.md"])
 def test_private_and_missing_files_are_not_served(client, url):
     assert client.get(url).status_code == 404

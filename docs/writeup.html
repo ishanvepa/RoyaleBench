@@ -39,8 +39,8 @@
           </div>
           <p class="intro">
             RoyaleBench evaluates language models on 21 fixed Clash Royale
-            positions. Models choose cards, coordinates, and timing through a
-            text interface. An independent replay verifies each outcome.
+            positions. Models choose cards, coordinates, and timing.
+            An independent replay verifies each outcome.
           </p>
           <div class="hero-links">
             <a class="cta" href="#case-study">Watch the comparison ↓</a
@@ -60,11 +60,6 @@
               <b>4</b><span>tasks passed by 0 of 12 models</span>
             </div>
           </div>
-          <p class="caption">
-            Frozen results: <code>royalebench/royalebench-v9@1</code> · 252 task
-            attempts · snapshot November 15, 2026, 11:47 a.m. PST. Development
-            measurements, with one attempt per model per task.
-          </p>
         </section>
 
         <section class="section reference-section" id="background" aria-labelledby="why-title">
@@ -87,8 +82,7 @@
             <div class="reason">
               <h3>Spatial reasoning</h3>
               <p>
-                Choose deployment coordinates without automatic snapping to
-                legal placements.
+                Choose where to place cards. Invalid positions aren't corrected.
               </p>
             </div>
             <div class="reason">
@@ -263,78 +257,6 @@
           </div>
         </section>
 
-        <section
-          class="results-detail"
-          id="difficulty"
-          aria-labelledby="difficulty-title"
-        >
-          <div class="section-head">
-            <div>
-              <h3 id="difficulty-title">Per-task outcomes</h3>
-            </div>
-            <p>
-              Each cell is one attempt. Select a cell for the objective,
-              reward, agent time, and cost. Columns follow overall score order.
-            </p>
-          </div>
-          <div class="table-top">
-            <div class="key">
-              <span><i></i>1 · passed</span
-              ><span><i class="fail"></i>0 · failed</span>
-            </div>
-            <label for="task-order"
-              >Order tasks
-              <select id="task-order">
-                <option value="difficulty">Observed pass rate</option>
-                <option value="capability">Capability</option>
-                <option value="name">Task name</option>
-              </select></label
-            >
-          </div>
-          <div
-            class="tablebox"
-            tabindex="0"
-            role="region"
-            aria-label="Scrollable task outcome matrix"
-          >
-            <table class="heatmap">
-              <caption hidden>
-                Model by task binary reward matrix, all 12 full v9 runs
-              </caption>
-              <thead id="heatmap-head"></thead>
-              <tbody id="heatmap-body"></tbody>
-            </table>
-          </div>
-          <div class="inspector" id="task-inspector" aria-live="polite">
-            <strong>Select any result in the matrix.</strong>
-            <p>
-              The panel will show the task objective and the evidence from that
-              model's run.
-            </p>
-          </div>
-          <div class="finding-strip">
-            <div>
-              <strong>Four positions: 0/12 passes</strong>Reserve the counter,
-              Critical cycle and connect, Hog body-block, and Balloon Fireball.
-              All four have passing reference solutions.
-            </div>
-            <div>
-              <strong>Two positions: 11/12 passes</strong>Spell placement and
-              Protect the lead.
-            </div>
-          </div>
-          <p class="caption">
-            Difficulty labels are empirical: easy ≥70%, medium ≥30% and &lt;70%,
-            hard &lt;30%. The snapshot yields 2 easy, 8 medium, and 11 hard
-            tasks. Models and harnesses are pooled equally per attempt.
-            Capability groupings are editorial descriptions, not independently
-            validated subscales.
-            <a
-              href="https://github.com/ishanvepa/RoyaleBench/blob/main/runs/royalebench-v9/difficulty.json"
-              >Recorded counts and thresholds ↗</a
-            >
-          </p>
-        </section>
         </section>
 
         <section class="section reference-section" id="tasks" aria-labelledby="task-title">
@@ -677,153 +599,69 @@ cr wait            # advance one decision interval</code></pre>
             <div class="eyebrow">Behavioral evidence</div>
             <h2 id="patterns-title">Failure analysis</h2>
             <p>
-              Across v9,
-              <strong>252/252 attempts pass replay integrity</strong>. There are
+              All <strong>252 attempts pass replay integrity</strong>, with
               <span id="rejection-summary"
                 >14 rejected actions across 1,584 recorded decisions</span
               >.
             </p>
             <p>
-              Of the 161 failed objectives, 127 complete the scenario and 34
-              stop early. The examples below use independently replayed
-              policies; diagnostic probes are separate from scored attempts.
+              Of 161 failed objectives, 127 complete the scenario and 34 stop
+              early. The examples below use independently replayed policies
+              and controlled probes.
             </p>
           </div>
           <div class="two">
             <article class="pattern">
-              <div class="eyebrow">Commitment</div>
-              <h3>Tower race B: opening defense</h3>
+              <div class="eyebrow">Threat prioritization</div>
+              <h3>Defend before committing to offense</h3>
               <p>
-                On Tower race B, ten models open with Fireball at the enemy
-                tower and lose after 1.4 seconds. The spell lands, but leaves
-                113 HP. Fable 5.2 instead places Cannon, distracts the incoming
-                Balloon, and wins. The existing Giant supplies the finishing
-                attack.
+                Ten models spend Fireball on a tower it cannot destroy and lose
+                to the incoming Balloon. Fable 5.2 uses Cannon to pull the
+                Balloon away, buying time for its Giant to finish the tower.
               </p>
               <p class="source">
-                V9 · 1/12 passes ·
-                <a href="royalebench_v9_failure_analysis.md"
-                  >replayed race ordering ↗</a
-                >
+                Tower race B · V9 · 1/12 passes
               </p>
             </article>
             <article class="pattern">
               <div class="eyebrow">Placement</div>
-              <h3>Balloon: Fireball aim</h3>
+              <h3>Use knockback to delay the next attack</h3>
               <p>
-                Sol waits the reference's ten seconds on Balloon Fireball, but
-                aims at (3.3, 6.7) and loses. Changing only the aim's y-coordinate to 7.5 makes that
-                recorded policy pass; casting its original aim earlier still
-                fails.
+                Sol's Fireball hits the Balloon but does not delay its next
+                attack enough to protect the tower. Changing only the aim's
+                vertical position makes the same policy pass.
               </p>
               <p class="source">
-                V9 · isolated aim counterfactual ·
-                <a href="royalebench_v9_failure_analysis.md"
-                  >mechanics and ablations ↗</a
-                >
+                Balloon Fireball · V9 · isolated aim counterfactual
               </p>
             </article>
             <article class="pattern">
               <div class="eyebrow">Resources</div>
-              <h3>Reserve the counter: Log allocation</h3>
+              <h3>Reserve counters for later threats</h3>
               <p>
-                All twelve models stay within Reserve the counter's six-elixir
-                budget, yet all fail its 450-damage limit. Opus and Fable 5.2
-                preserve Log initially but later spend it on a right-lane threat
-                while the disclosed Barrel approaches the left tower. They take
-                904 and 1,163 damage; the reference takes 249.
+                Opus and Fable 5.2 spend Log on the right lane while a disclosed
+                Goblin Barrel approaches the left tower. The passing reference
+                handles earlier threats with other cards and saves Log for the
+                Barrel.
               </p>
               <p class="source">
-                V9 · 0/12 passes ·
-                <a href="royalebench_v9_failure_analysis.md"
-                  >allocation review and probes ↗</a
-                >
+                Reserve the counter · V9 · 0/12 passes
               </p>
             </article>
             <article class="pattern">
               <div class="eyebrow">Timing</div>
-              <h3>Hog body-block: deployment timing</h3>
+              <h3>Time deployments to block the Hog's path</h3>
               <p>
-                Ten models choose both Ice Golem and Skeletons on Hog
-                body-block, but all ten start deploying immediately. The
-                reference waits half a second. Shifting both reference
-                placements half a second earlier changes zero damage into 635
-                damage and a lost tower, even with the same card locations.
+                Ten models deploy Ice Golem and Skeletons starting immediately.
+                The passing reference waits for the Hog to advance. Moving its
+                deployments half a second earlier, with placements unchanged,
+                loses the tower.
               </p>
               <p class="source">
-                V9 · controlled timing shift ·
-                <a href="royalebench_v9_failure_analysis.md"
-                  >Hog trace and timing probe ↗</a
-                >
+                Hog body-block · V9 · controlled timing shift
               </p>
             </article>
           </div>
-        </section>
-
-        <section
-          class="section"
-          id="sensitivity"
-          aria-labelledby="sensitivity-title"
-        >
-          <div class="prose">
-            <div class="eyebrow">Controlled contrasts</div>
-            <h2 id="sensitivity-title">Timing and placement controls</h2>
-            <p>
-              These controls hold the card and starting position fixed while
-              changing timing or placement. Mini P.E.K.K.A. also has successful
-              model timings and placements beyond the reference shown here.
-            </p>
-          </div>
-          <div class="two">
-            <article class="contrast">
-              <div class="eyebrow">Mini P.E.K.K.A. / Skeletons kite</div>
-              <div class="timing">
-                3.0s → pass<span
-                  >Exactly one Skeletons play at (7.5, 13.5)</span
-                >
-              </div>
-              <ul>
-                <li>
-                  The same placement at <strong>3.5 seconds</strong> fails.
-                </li>
-                <li>
-                  At three seconds, changing x from
-                  <strong>7.5 to 6.5</strong> also fails.
-                </li>
-                <li>
-                  The objective requires all towers alive with zero additional
-                  tower damage.
-                </li>
-              </ul>
-            </article>
-            <article class="contrast">
-              <div class="eyebrow">Balloon / Fireball knockback</div>
-              <div class="timing">
-                10.0s → pass<span>Exactly one Fireball at (3.5, 7.5)</span>
-              </div>
-              <ul>
-                <li>
-                  The same placement at <strong>nine seconds</strong> fails.
-                </li>
-                <li>
-                  At ten seconds, changing x to <strong>8.5</strong> also fails.
-                </li>
-                <li>
-                  The reference takes 240 death-bomb damage, leaving the
-                  threatened tower at <strong>1 HP</strong>.
-                </li>
-              </ul>
-            </article>
-          </div>
-          <p class="caption">
-            Both tasks use level-11 units and towers, a 16-second window, and
-            separately calibrated references. They are inspired by gameplay
-            clips, with disclosed reconstructed positions rather than recovered
-            original match saves.
-            <a href="tactics_clips.md"
-              >Schedules, normalization, and controls ↗</a
-            >
-          </p>
         </section>
 
         <section
@@ -931,21 +769,6 @@ cr wait            # advance one decision interval</code></pre>
               <a href="royalebench_v9_failure_analysis.md"
                 >Completion and truncation audit ↗</a
               >
-            </li>
-            <li>
-              <strong>Mixed objectives.</strong> The score averages task success,
-              including constrained defenses; it is not a match win rate.
-            </li>
-            <li>
-              <strong>Simulator scope.</strong> The engine supports a limited
-              card and mechanic set. Live-game fidelity and human performance
-              have not been established. The clock pauses during reasoning;
-              Planner can read hidden state.
-            </li>
-            <li>
-              <strong>Causal attribution.</strong> Replays with several changed
-              placements do not isolate one cause. No-script rules rely partly
-              on instructions and trace review.
             </li>
           </ul>
         </section>
@@ -4365,6 +4188,17 @@ cr wait            # advance one decision interval</code></pre>
             "codex-v1.0.0": "#2d5ba4",
             mini_swe_agent: "#908041",
           })[h];
+        const familyLogos = {
+          "Anthropic": "data:image/svg+xml;base64,PHN2ZyBmaWxsPSJjdXJyZW50Q29sb3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSIxZW0iIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMWVtIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5BbnRocm9waWM8L3RpdGxlPjxwYXRoIGQ9Ik0xMy44MjcgMy41MmgzLjYwM0wyNCAyMGgtMy42MDNsLTYuNTctMTYuNDh6bS03LjI1OCAwaDMuNzY3TDE2LjkwNiAyMGgtMy42NzRsLTEuMzQzLTMuNDYxSDUuMDE3bC0xLjM0NCAzLjQ2SDBMNi41NyAzLjUyMnptNC4xMzIgOS45NTlMOC40NTMgNy42ODcgNi4yMDUgMTMuNDhIMTAuN3oiPjwvcGF0aD48L3N2Zz4=",
+          "OpenAI": "data:image/svg+xml;base64,PHN2ZyBmaWxsPSJjdXJyZW50Q29sb3IiIGZpbGwtcnVsZT0iZXZlbm9kZCIgaGVpZ2h0PSIxZW0iIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMWVtIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5PcGVuQUk8L3RpdGxlPjxwYXRoIGQ9Ik05LjIwNSA4LjY1OHYtMi4yNmMwLS4xOS4wNzItLjMzMy4yMzgtLjQyOGw0LjU0My0yLjYxNmMuNjE5LS4zNTcgMS4zNTYtLjUyMyAyLjExNy0uNTIzIDIuODU0IDAgNC42NjIgMi4yMTIgNC42NjIgNC41NjYgMCAuMTY3IDAgLjM1Ny0uMDI0LjU0N2wtNC43MS0yLjc1OWEuNzk3Ljc5NyAwIDAwLS44NTYgMGwtNS45NyAzLjQ3M3ptMTAuNjA5IDguOFYxMi4wNmMwLS4zMzMtLjE0My0uNTctLjQyOS0uNzM3bC01Ljk3LTMuNDczIDEuOTUtMS4xMThhLjQzMy40MzMgMCAwMS40NzYgMGw0LjU0MyAyLjYxN2MxLjMwOS43NiAyLjE4OSAyLjM3OCAyLjE4OSAzLjk0OCAwIDEuODA4LTEuMDcgMy40NzMtMi43NiA0LjE2M3pNNy44MDIgMTIuNzAzbC0xLjk1LTEuMTQyYy0uMTY3LS4wOTUtLjIzOS0uMjM4LS4yMzktLjQyOFY1Ljg5OWMwLTIuNTQ1IDEuOTUtNC40NzIgNC41OTEtNC40NzIgMSAwIDEuOTI3LjMzMyAyLjcxMi45MjhMOC4yMyA1LjA2N2MtLjI4NS4xNjYtLjQyOC40MDQtLjQyOC43Mzd2Ni44OTh6TTEyIDE1LjEyOGwtMi43OTUtMS41N3YtMy4zM0wxMiA4LjY1OGwyLjc5NSAxLjU3djMuMzNMMTIgMTUuMTI4em0xLjc5NiA3LjIzYy0xIDAtMS45MjctLjMzMi0yLjcxMi0uOTI3bDQuNjg2LTIuNzEyYy4yODUtLjE2Ni40MjgtLjQwNC40MjgtLjczN3YtNi44OThsMS45NzQgMS4xNDJjLjE2Ny4wOTUuMjM4LjIzOC4yMzguNDI4djUuMjMzYzAgMi41NDUtMS45NzQgNC40NzItNC42MTQgNC40NzJ6bS01LjYzNy01LjMwM2wtNC41NDQtMi42MTdjLTEuMzA4LS43NjEtMi4xODgtMi4zNzgtMi4xODgtMy45NDhBNC40ODIgNC40ODIgMCAwMTQuMjEgNi4zMjd2NS40MjNjMCAuMzMzLjE0My41NzEuNDI4LjczOGw1Ljk0NyAzLjQ0OS0xLjk1IDEuMTE4YS40MzIuNDMyIDAgMDEtLjQ3NiAwem0tLjI2MiAzLjljLTIuNjg4IDAtNC42NjItMi4wMjEtNC42NjItNC41MTkgMC0uMTkuMDI0LS4zOC4wNDctLjU3bDQuNjg2IDIuNzFjLjI4Ni4xNjcuNTcxLjE2Ny44NTYgMGw1Ljk3LTMuNDQ4djIuMjZjMCAuMTktLjA3LjMzMy0uMjM3LjQyOGwtNC41NDMgMi42MTZjLS42MTkuMzU3LTEuMzU2LjUyMy0yLjExNy41MjN6bTUuODk5IDIuODNhNS45NDcgNS45NDcgMCAwMDUuODI3LTQuNzU2QzIyLjI4NyAxOC4zMzkgMjQgMTUuODQgMjQgMTMuMjk2YzAtMS42NjUtLjcxMy0zLjI4Mi0xLjk5OC00LjQ0OC4xMTktLjUuMTktLjk5OS4xOS0xLjQ5OCAwLTMuNDAxLTIuNzU5LTUuOTQ3LTUuOTQ2LTUuOTQ3LS42NDIgMC0xLjI2LjA5NS0xLjg4LjMxQTUuOTYyIDUuOTYyIDAgMDAxMC4yMDUgMGE1Ljk0NyA1Ljk0NyAwIDAwLTUuODI3IDQuNzU3QzEuNzEzIDUuNDQ3IDAgNy45NDUgMCAxMC40OWMwIDEuNjY2LjcxMyAzLjI4MyAxLjk5OCA0LjQ0OC0uMTE5LjUtLjE5IDEtLjE5IDEuNDk5IDAgMy40MDEgMi43NTkgNS45NDYgNS45NDYgNS45NDYuNjQyIDAgMS4yNi0uMDk1IDEuODgtLjMwOWE1Ljk2IDUuOTYgMCAwMDQuMTYyIDEuNzEzeiI+PC9wYXRoPjwvc3ZnPg==",
+          "Inkling": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGltYWdlIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgaHJlZj0iZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFDQUFBQUFnQ0FZQUFBQnplbnIwQUFBQkVVbEVRVlJZUjJOa0FJSm56NTRGTVRBeU5RQ1pXa0RNREJLaklmZ0xOUHNhdy85L0RWSlNVdXNZbjcxOEdjVHc3Lzlxb0NBVERTM0ZadlEvQmliR1VNYm5MMTVjL1ArZlFZL09sb090WTJSa3VNVDQ3UG1MUDNRSWRseisrd3R5d1ArQjhEM01UcXdPK1BIakI4UHlsV3NZbnI5NFNSVzNTVXFJTTBTR2h6QndjSEJnbUlmVkFmTVhMV1ZZczI0RFZTeUhHUklTRk1DUUdCZE5uQVBhdS9vWWpodzdUbFVIMkZoWk1sU1dGWTA2WURRRVJrTmdOQVJHUTJBMEJFWkRZRFFFaGtnSURIaVQ3RHUwVWZxQ1NvMVNDV0NqTklxVVJpbFZHNE1FREJ2NGpzbkFkODJlQVR1bmpBUFVPZjBQN0p5Q29nalNQV2RzWkdSazB2ei8vejlOdStlTWpJeC9HZjcvdi9ZZjJqMEhBTjlISDVNVktrblhBQUFBQUVsRlRrU3VRbUNDIi8+PC9zdmc+Cg==",
+          "Moonshot AI": "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjFlbSIgc3R5bGU9ImZsZXg6bm9uZTtsaW5lLWhlaWdodDoxIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxZW0iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPktpbWk8L3RpdGxlPjxwYXRoIGQ9Ik0yMS44NDYgMGExLjkyMyAxLjkyMyAwIDExMCAzLjg0NkgyMC4xNWEuMjI2LjIyNiAwIDAxLS4yMjctLjIyNlYxLjkyM0MxOS45MjMuODYxIDIwLjc4NCAwIDIxLjg0NiAweiIgZmlsbD0iIzE3ODNGRiI+PC9wYXRoPjxwYXRoIGQ9Ik0xMS4wNjUgMTEuMTk5bDcuMjU3LTcuMmMuMTM3LS4xMzYuMDYtLjQxLS4xMTYtLjQxSDE0LjNhLjE2NC4xNjQgMCAwMC0uMTE3LjA1MWwtNy44MiA3Ljc1NmMtLjEyMi4xMi0uMzAyLjAxMy0uMzAyLS4xNzlWMy44MmMwLS4xMjctLjA4My0uMjMtLjE4NS0uMjNIMy4xODZjLS4xMDMgMC0uMTg2LjEwMy0uMTg2LjIzVjE5Ljc3YzAgLjEyOC4wODMuMjMuMTg2LjIzaDIuNjljLjEwMyAwIC4xODYtLjEwMi4xODYtLjIzdi0zLjI1YzAtLjA2OS4wMjUtLjEzNS4wNjktLjE3OGwyLjQyNC0yLjQwNmEuMTU4LjE1OCAwIDAxLjIwNS0uMDIzbDYuNDg0IDQuNzcyYTcuNjc3IDcuNjc3IDAgMDAzLjQ1MyAxLjI4M2MuMTA4LjAxMi4yLS4wOTUuMi0uMjN2LTMuMDZjMC0uMTE3LS4wNy0uMjEyLS4xNjQtLjIyN2E1LjAyOCA1LjAyOCAwIDAxLTIuMDI3LS44MDdsLTUuNjEzLTQuMDY0Yy0uMTE3LS4wNzgtLjEzMi0uMjc5LS4wMjgtLjM4MXoiIGZpbGw9ImN1cnJlbnRDb2xvciI+PC9wYXRoPjwvc3ZnPg==",
+          "Alibaba": "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjFlbSIgc3R5bGU9ImZsZXg6bm9uZTtsaW5lLWhlaWdodDoxIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxZW0iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPlF3ZW48L3RpdGxlPjxwYXRoIGQ9Ik0xOS43MTMgMi44MjVoLTUuOTA3YzAtLjI1MS0uMDY2LS41MDMtLjE5Ni0uNzI4TDEyLjgxOS43MjhBMS40NiAxLjQ2IDAgMCAwIDExLjU1OSAwaC0xLjU4Yy0uNTIgMC0xIC4yNzUtMS4yNi43MjhsLTIuNDIgNC4xOWExLjQ1IDEuNDUgMCAwIDAgMCAxLjQ1M2wuNzkxIDEuMzdjLjI2LjQ0OC43NC43MjcgMS4yNi43MjdoMTEuMzZjLjUyIDAgMS0uMjc1IDEuMjYtLjcyOGwuNzktMS4zN2ExLjQ1IDEuNDUgMCAwIDAgMC0xLjQ1MWwtLjc5LTEuMzdhMS40NiAxLjQ2IDAgMCAwLTEuMjYtLjcyOHpNLjE5NSA5LjkwNWwyLjk1MSA1LjExNWExLjQ2IDEuNDYgMCAwIDAtLjUzMS41MzFsLS43OTEgMS4zN2ExLjQ1IDEuNDUgMCAwIDAgMCAxLjQ1MmwuNzkgMS4zN2MuMjYuNDQ4Ljc0LjcyNyAxLjI2LjcyN2g0Ljg0Yy41MiAwIDEtLjI3NSAxLjI2LS43MjhsLjc5LTEuMzdhMS40NSAxLjQ1IDAgMCAwIDAtMS40NTFMNS4wODYgNy4wODNhMS40NiAxLjQ2IDAgMCAwLTEuMjYtLjcyOGgtMS41OGMtLjUyIDAtMSAuMjc2LTEuMjYuNzI4bC0uNzkgMS4zN2ExLjQ1IDEuNDUgMCAwIDAgMCAxLjQ1Mm0xNS44ODggMTMuMzY3IDIuOTUxLTUuMTE1Yy4yMTcuMTI1LjQ2OS4xOTYuNzI4LjE5NmgxLjU4MmMuNTIgMCAxLS4yNzUgMS4yNi0uNzI4bC43OS0xLjM3YTEuNDUgMS40NSAwIDAgMCAwLTEuNDUxbC0yLjQyLTQuMTkxYTEuNDYgMS40NiAwIDAgMC0xLjI1OS0uNzI4aC0xLjU4MmMtLjUyIDAtMSAuMjc2LTEuMjU5LjcyOGwtNS42NzggOS44MzhhMS40NSAxLjQ1IDAgMCAwIDAgMS40NTJsLjc5IDEuMzdjLjI2LjQ0OC43NC43MjcgMS4yNi43MjdoMS41ODJjLjUyIDAgMS0uMjc1IDEuMjYtLjcyOHoiIGZpbGw9IiMwODJkZmYiPjwvcGF0aD48L3N2Zz4=",
+          "DeepSeek": "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjFlbSIgc3R5bGU9ImZsZXg6bm9uZTtsaW5lLWhlaWdodDoxIiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIxZW0iIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPkRlZXBTZWVrPC90aXRsZT48cGF0aCBkPSJNMjMuNzQ4IDQuNDgyYy0uMjU0LS4xMjQtLjM2NC4xMTMtLjUxMi4yMzQtLjA1MS4wMzktLjA5NC4wOS0uMTM3LjEzNi0uMzcyLjM5Ny0uODA2LjY1Ny0xLjM3My42MjYtLjgyOS0uMDQ2LTEuNTM3LjIxNC0yLjE2My44NDgtLjEzMy0uNzgyLS41NzUtMS4yNDgtMS4yNDctMS41NDgtLjM1Mi0uMTU2LS43MDgtLjMxMS0uOTU1LS42NS0uMTcyLS4yNDEtLjIxOS0uNTEtLjMwNS0uNzc0LS4wNTUtLjE2LS4xMS0uMzIzLS4yOTMtLjM1LS4yLS4wMzEtLjI3OC4xMzYtLjM1Ni4yNzYtLjMxMy41NzItLjQzNCAxLjIwMi0uNDIyIDEuODQuMDI3IDEuNDM2LjYzMyAyLjU4IDEuODM4IDMuMzkzLjEzNy4wOTMuMTcyLjE4Ny4xMjkuMzIzLS4wODIuMjgtLjE4LjU1Mi0uMjY2LjgzMy0uMDU1LjE3OS0uMTM3LjIxNy0uMzI5LjE0YTUuNTI2IDUuNTI2IDAgMDEtMS43MzYtMS4xOGMtLjg1Ny0uODI4LTEuNjMxLTEuNzQyLTIuNTk3LTIuNDU4YTExLjM2NSAxMS4zNjUgMCAwMC0uNjg5LS40NzFjLS45ODUtLjk1Ny4xMy0xLjc0My4zODgtMS44MzYuMjctLjA5OC4wOTMtLjQzMi0uNzc5LS40MjgtLjg3Mi4wMDQtMS42Ny4yOTUtMi42ODcuNjg0YTMuMDU1IDMuMDU1IDAgMDEtLjQ2NS4xMzcgOS41OTcgOS41OTcgMCAwMC0yLjg4My0uMTAyYy0xLjg4NS4yMS0zLjM5IDEuMTAyLTQuNDk3IDIuNjIzQy4wODIgOC42MDYtLjIzMSAxMC42ODQuMTUyIDEyLjg1Yy40MDMgMi4yODQgMS41NjkgNC4xNzUgMy4zNiA1LjY1MyAxLjg1OCAxLjUzMyAzLjk5NyAyLjI4NCA2LjQzOCAyLjE0IDEuNDgyLS4wODUgMy4xMzMtLjI4NCA0Ljk5NC0xLjg2LjQ3LjIzNC45NjIuMzI3IDEuNzguMzk3LjYzLjA1OSAxLjIzNi0uMDMgMS43MDUtLjEyOC43MzUtLjE1Ni42ODQtLjgzNy40MTktLjk2MS0yLjE1NS0xLjAwNC0xLjY4Mi0uNTk1LTIuMTEzLS45MjYgMS4wOTYtMS4yOTYgMi43NDYtMi42NDIgMy4zOTItNy4wMDMuMDUtLjM0Ny4wMDctLjU2NSAwLS44NDUtLjAwNC0uMTcuMDM1LS4yMzcuMjMtLjI1NmE0LjE3MyA0LjE3MyAwIDAwMS41NDUtLjQ3NWMxLjM5Ni0uNzYzIDEuOTYtMi4wMTUgMi4wOTMtMy41MTcuMDItLjIzLS4wMDQtLjQ2Ny0uMjQ3LS41ODh6TTExLjU4MSAxOGMtMi4wODktMS42NDItMy4xMDItMi4xODMtMy41Mi0yLjE2LS4zOTIuMDI0LS4zMjEuNDcxLS4yMzUuNzYzLjA5LjI4OC4yMDcuNDg2LjM3MS43MzkuMTE0LjE2Ny4xOTIuNDE2LS4xMTMuNjAzLS42NzMuNDE2LTEuODQyLS4xNC0xLjg5Ny0uMTY3LTEuMzYxLS44MDItMi41LTEuODYtMy4zMDEtMy4zMDctLjc3NC0xLjM5My0xLjIyNC0yLjg4Ny0xLjI5OC00LjQ4Mi0uMDItLjM4Ni4wOTMtLjUyMi40NzctLjU5MmE0LjY5NiA0LjY5NiAwIDAxMS41MjktLjAzOWMyLjEzMi4zMTIgMy45NDYgMS4yNjUgNS40NjggMi43NzQuODY4Ljg2IDEuNTI1IDEuODg3IDIuMjAyIDIuODkxLjcyIDEuMDY2IDEuNDk0IDIuMDgyIDIuNDggMi45MTQuMzQ4LjI5Mi42MjUuNTE0Ljg5MS42NzctLjgwMi4wOS0yLjE0LjExLTMuMDU0LS42MTR6bTEtNi40NGEuMzA2LjMwNiAwIDAxLjQxNS0uMjg3LjMwMi4zMDIgMCAwMS4yLjI4OC4zMDYuMzA2IDAgMDEtLjMxLjMwNy4zMDMuMzAzIDAgMDEtLjMwNC0uMzA4em0zLjExIDEuNTk2Yy0uMi4wODEtLjM5OS4xNTEtLjU5LjE2YTEuMjQ1IDEuMjQ1IDAgMDEtLjc5OC0uMjU0Yy0uMjc0LS4yMy0uNDctLjM1OC0uNTUyLS43NThhMS43MyAxLjczIDAgMDEuMDE2LS41ODhjLjA3LS4zMjctLjAwOC0uNTM3LS4yMzktLjcyNy0uMTg3LS4xNTYtLjQyNi0uMTk5LS42ODgtLjE5OWEuNTU5LjU1OSAwIDAxLS4yNTQtLjA3OGMtLjExLS4wNTQtLjItLjE5LS4xMTQtLjM1OC4wMjgtLjA1NC4xNi0uMTg2LjE5Mi0uMjEuMzU2LS4yMDIuNzY3LS4xMzYgMS4xNDYuMDE2LjM1Mi4xNDQuNjE4LjQwOCAxLjAwMS43ODIuMzkxLjQ1MS40NjIuNTc2LjY4NS45MTQuMTc2LjI2NS4zMzYuNTM3LjQ0NS44NDguMDY3LjE5NS0uMDE5LjM1NC0uMjUuNDUyeiIgZmlsbD0iIzRENkJGRSI+PC9wYXRoPjwvc3ZnPg=="
+        };
+        const familyLogo = (family) => familyLogos[family]
+          ? `<img class="model-logo" src="${familyLogos[family]}" width="20" height="20" alt="" aria-hidden="true">`
+          : "";
         const costPerMove = (m) => {
           const tasks = Object.values(m.tasks),
             moves = tasks.reduce((n, t) => n + t.decisions, 0);
@@ -4382,11 +4216,11 @@ cr wait            # advance one decision interval</code></pre>
           $("leaderboard-rows").innerHTML = models
             .map(
               (m, i) =>
-                `<tr><td>${models.filter((x) => x.solved > m.solved).length + 1}</td><td><strong>${esc(m.name)}</strong><span class="model-family">${esc(m.family)}</span></td><td class="harness">${esc(harnessName(m.harness))}<br>${esc(m.harness)}</td><td class="num">${m.solved} / ${m.attempts}</td><td class="num">${m.incomplete}</td><td><div class="success"><span class="num">${pct(m.solved, m.attempts)}</span><i aria-hidden="true"><span style="width:${(100 * m.solved) / m.attempts}%"></span></i></div></td><td class="num">${money(m.cost_per_task_usd)}</td><td class="num">${money(costPerMove(m))}</td><td class="num">${duration(m.mean_agent_seconds)}</td></tr>`,
+                `<tr><td>${models.filter((x) => x.solved > m.solved).length + 1}</td><td><div class="model-identity">${familyLogo(m.family)}<div><strong>${esc(m.name)}</strong><span class="model-family">${esc(m.family)}</span></div></div></td><td class="harness">${esc(harnessName(m.harness))}<br>${esc(m.harness)}</td><td class="num">${m.solved} / ${m.attempts}</td><td class="num">${m.incomplete}</td><td><div class="success"><span class="num">${pct(m.solved, m.attempts)}</span><i aria-hidden="true"><span style="width:${(100 * m.solved) / m.attempts}%"></span></i></div></td><td class="num">${money(m.cost_per_task_usd)}</td><td class="num">${money(costPerMove(m))}</td><td class="num">${duration(m.mean_agent_seconds)}</td></tr>`,
             )
             .join("");
           $("leaderboard-note").textContent =
-            `${models.length} full runs · ${models.length * 21} task attempts · one attempt per model per task · ${models.reduce((n, m) => n + m.incomplete, 0)} incomplete attempts scored zero · all costs known · no infrastructure errors. Cost / move = total run inference cost / recorded agent decisions (including waits and rejected actions; excluding automatic verifier waits). The filter updates results and cost chart; the task matrix always shows all 12 runs.`;
+            `${models.length} full runs · ${models.length * 21} task attempts · one attempt per model per task · ${models.reduce((n, m) => n + m.incomplete, 0)} incomplete attempts scored zero · all costs known · no infrastructure errors. Cost / move = total run inference cost / recorded agent decisions (including waits and rejected actions; excluding automatic verifier waits). The filter updates the results, task-type chart, and cost chart.`;
           costPlot(models);
           typePerformance(models);
         }
@@ -4407,46 +4241,6 @@ cr wait            # advance one decision interval</code></pre>
             }).join("")}</tr>`
           ).join("");
         }
-        function heatmap() {
-          const order = $("task-order").value,
-            tasks = [...data.tasks].sort((a, b) =>
-              order === "capability"
-                ? a.capability.localeCompare(b.capability) ||
-                  a.solved - b.solved ||
-                  a.task.localeCompare(b.task)
-                : order === "name"
-                  ? a.title.localeCompare(b.title)
-                  : a.solved - b.solved || a.task.localeCompare(b.task),
-            );
-          $("heatmap-head").innerHTML =
-            `<tr><th scope="col" class="task-name">Task / capability</th>${data.models.map((m) => `<th scope="col" title="${esc(m.name)} · ${esc(m.harness)}">${esc(m.short)}</th>`).join("")}<th scope="col" class="rate">Passed</th></tr>`;
-          $("heatmap-body").innerHTML = tasks
-            .map(
-              (t) =>
-                `<tr><th scope="row" class="task-name">${esc(t.title)}<small>${esc(t.capability)}</small></th>${data.models
-                  .map((m, i) => {
-                    const r = m.tasks[t.task];
-                    return `<td><button type="button" class="${r.reward ? "pass" : ""}" data-task="${esc(t.task)}" data-model="${i}" aria-pressed="false" aria-label="${esc(m.name)}, ${esc(t.title)}: ${r.reward ? "passed" : "failed"}">${r.reward}</button></td>`;
-                  })
-                  .join(
-                    "",
-                  )}<td class="rate" title="${pct(t.solved, t.attempts)} · ${esc(t.difficulty)}">${t.solved}/${t.attempts}</td></tr>`,
-            )
-            .join("");
-        }
-        $("heatmap-body").addEventListener("click", (e) => {
-          const b = e.target.closest("button[data-task]");
-          if (!b) return;
-          document
-            .querySelectorAll(".heatmap button[aria-pressed=true]")
-            .forEach((x) => x.setAttribute("aria-pressed", "false"));
-          b.setAttribute("aria-pressed", "true");
-          const t = data.tasks.find((t) => t.task === b.dataset.task),
-            m = data.models[Number(b.dataset.model)],
-            r = m.tasks[t.task];
-          $("task-inspector").innerHTML =
-            `<strong>${esc(m.name)} · ${esc(t.title)} · ${r.reward ? "Passed (1)" : "Failed (0)"}</strong><p>${esc(t.objective)}</p><p class="small">${esc(t.task)} · ${esc(t.grading)} objective · ${esc(t.difficulty)} in this cohort · completed ${r.completed} · integrity ${r.integrity} · ${r.rejected_actions} rejected actions · ${duration(r.agent_seconds)} agent time · ${money(r.cost_usd)} inference cost</p><p class="small">${esc(r.cost_source)} · <a href="https://github.com/ishanvepa/RoyaleBench/tree/main/benchmarks/royalebench-v9/${encodeURIComponent(t.task)}">Task package ↗</a></p>`;
-        });
         const hiddenHarnesses = new Set();
         function costPlot(models) {
           const measuredWidth = $("cost-plot").clientWidth,
@@ -4546,9 +4340,7 @@ cr wait            # advance one decision interval</code></pre>
           .join("");
         $("harness-filter").addEventListener("change", leaderboard);
         $("type-order").addEventListener("change", leaderboard);
-        $("task-order").addEventListener("change", heatmap);
         leaderboard();
-        heatmap();
         const frames = [$("opus-replay"), $("reference-replay")],
           ready = new Set(),
           // File documents have opaque message origins, even when Chrome's

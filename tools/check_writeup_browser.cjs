@@ -33,10 +33,15 @@ async function check(browser, url) {
   page.on('pageerror', (error) => errors.push(error.message));
   try {
     await page.goto(url + '#case-study');
+    assert.equal(await page.locator('#difficulty, #heatmap-body, #task-inspector').count(), 0);
+    assert.equal(await page.locator('#leaderboard-rows .model-logo').count(), 12);
+    await page.waitForFunction(() => [...document.querySelectorAll('#leaderboard-rows .model-logo')]
+      .every((logo) => logo.complete && logo.naturalWidth > 0));
     assert.equal(await page.locator('#type-chart-body .type-track').count(), 48);
     await page.locator('#type-order').selectOption('Resource allocation');
     assert.match(await page.locator('#type-chart-body tr').first().textContent(), /Claude Fable 5.2/);
     await page.locator('#harness-filter').selectOption('codex-v1.0.0');
+    assert.equal(await page.locator('#leaderboard-rows .model-logo').count(), 3);
     assert.equal(await page.locator('#type-chart-body tr').count(), 3);
     assert.match(await page.locator('#type-chart-body tr').first().textContent(), /GPT-6.1 Sol/);
     await page.locator('#harness-filter').selectOption('all');

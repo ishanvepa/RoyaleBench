@@ -1,8 +1,8 @@
 # Public writeup
 
 [`writeup.html`](writeup.html) is the public research writeup. It covers motivation,
-the task interface, the frozen v9 model comparison, per-task outcomes, synchronized
-recorded gameplay, failure analysis, timing controls, inference cost, methodology,
+the task interface, the frozen v9 model comparison, performance by task type, synchronized
+recorded gameplay, failure analysis, inference cost, methodology,
 and limitations. [`modal_writeup.py`](../modal_writeup.py) serves
 the page and its evidence assets locally or on Modal.
 
@@ -12,7 +12,7 @@ The page follows the [Vals AI Poker Agent benchmark](https://www.vals.ai/benchma
 white backgrounds, warm gray text and rules, green leaderboard cells, a restrained
 title, 640-pixel article columns, serif body text, and compact data controls.
 The title block uses the reference's 800-pixel width; figures break out to 768
-pixels, the task matrix to 1024, and the leaderboard to the 1280-pixel frame.
+pixels, the task-type chart to 1024, and the leaderboard to the 1280-pixel frame.
 The cost visualization follows its framed Pareto scatter plot with square
 markers, a tinted clickable legend, monospaced axes, and focus/hover details.
 Its controls switch between cost per task and cost per move on logarithmic or
@@ -25,10 +25,12 @@ ordered by overall score or success within a selected type. Rates are derived
 from the embedded per-task rewards; incomplete attempts retain zero reward.
 The shared harness filter controls the leaderboard, cost chart, and task-type
 chart. The cost chart's legend toggles affect only that chart.
+Model-family logos in the results table are embedded from the repository's
+[existing logo assets](../cr_arena/assets/logos/README.md), so they work offline.
 Background, Results, Tasks, and Methodology use the published
 [RoyaleBench page's section layout](https://ishanvepa171--royalebench-writeup.us-east.modal.run/):
 plain headings, a three-column capability panel, results grouped with their
-charts and outcome matrix, a task catalog, and stacked methodology subsections.
+charts, a task catalog, and stacked methodology subsections.
 These four sections use a 728-pixel reading column. The catalog draws its 21
 tasks, objective types, capabilities, and pass counts from the same embedded
 v9 snapshot; the published reference's historical results are not imported.
@@ -62,8 +64,7 @@ manifest, acknowledgements, and footer are omitted; the frozen JSON remains
 available through the results snapshot link in the results discussion.
 
 The same data is embedded in the HTML, so tables and plots need no live dashboard
-or API. The leaderboard and cost chart share a harness filter. The outcome matrix
-always shows the full cohort and supports task ordering and cell inspection.
+or API. The leaderboard, task-type chart, and cost chart share a harness filter.
 The leaderboard's **Cost / move** is total run inference cost divided by the
 sum of recorded agent decisions across all 21 attempts. This includes submitted
 waits and rejected actions, excludes automatic verifier waits, and includes
@@ -73,10 +74,11 @@ as unavailable.
 The export also includes completion per task and incomplete counts per model.
 There are 34 incomplete attempts, all scored zero under the original grading;
 33 belong to the four mini-SWE-agent runs with `step_limit=12`. The leaderboard
-reports completion separately; the matrix shows every zero reward as `0`, with
-the same styling for incomplete and completed failures. The [v9 failure analysis](royalebench_v9_failure_analysis.md)
+reports completion separately. The [v9 failure analysis](royalebench_v9_failure_analysis.md)
 provides the completion audit and controlled timing/aim/allocation probes used
-in the behavioral section. Diagnostic simulator probes do not add model attempts
+in the behavioral section. Its concise examples describe observed tactical errors
+and successful actions: urgent defense, knockback placement, counter allocation,
+and body-block timing. Diagnostic simulator probes do not add model attempts
 or change official rewards.
 
 The synchronized **v6@1** case is separate historical evidence, from run

@@ -17,7 +17,7 @@ function element(id) {
   return nodes.get(id);
 }
 element('benchmark-data').textContent = JSON.stringify(data);
-element('harness-filter').value = 'all'; element('task-order').value = 'difficulty';
+element('harness-filter').value = 'all';
 const windowEvents = {}; let nextFrame; const origin = 'http://127.0.0.1:8768';
 const context = vm.createContext({
   document: { hidden: false, getElementById: element, querySelectorAll: () => [], querySelector: () => ({}), addEventListener() {} },
@@ -28,14 +28,12 @@ const script = [...page.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].a
 vm.runInContext(script, context, { filename: 'writeup.html' });
 const count = (id, pattern) => [...element(id).innerHTML.matchAll(pattern)].length;
 assert.equal(count('leaderboard-rows', /<tr>/g), 12);
+assert.equal(count('leaderboard-rows', /class="model-logo"/g), 12);
 assert.equal(count('task-catalog-rows', /<tr>/g), 21);
+assert.doesNotMatch(page, /id="(?:difficulty|task-order|heatmap-head|heatmap-body|task-inspector)"/);
 for (const task of data.tasks) {
   assert.ok(element('task-catalog-rows').innerHTML.includes(encodeURIComponent(task.task)));
 }
-assert.equal(count('heatmap-body', /<button /g), 252);
-assert.equal(count('heatmap-body', />0<\/button>/g), 161);
-assert.doesNotMatch(element('heatmap-body').innerHTML, /incomplete|0\*/);
-assert.equal(count('heatmap-body', /class="pass"/g), 91);
 assert.equal(count('cost-plot', /<rect class="marker"/g), 12);
 assert.equal(count('type-chart-body', /class="type-track"/g), 48);
 for (const row of element('type-chart-body').innerHTML.matchAll(/<tr data-model="(\d+)">([\s\S]*?)<\/tr>/g)) {
@@ -48,8 +46,8 @@ assert.match(element('type-chart-body').innerHTML, /Claude Fable 5.2, Resource a
 for (const [harness, runs, incomplete] of [['codex-v1.0.0', 3, 0], ['claude_code-v1.0.0', 5, 1], ['mini_swe_agent', 4, 33]]) {
   element('harness-filter').value = harness; element('harness-filter').events.change();
   assert.equal(count('leaderboard-rows', /<tr>/g), runs); assert.equal(count('cost-plot', /<rect class="marker"/g), runs);
+  assert.equal(count('leaderboard-rows', /class="model-logo"/g), runs);
   assert.match(element('leaderboard-note').textContent, new RegExp(`${incomplete} incomplete`));
-  assert.equal(count('heatmap-body', /<button /g), 252);
   assert.equal(count('type-chart-body', /class="type-track"/g), runs * 4);
 }
 element('harness-filter').value = 'all'; element('harness-filter').events.change();
@@ -82,17 +80,6 @@ assert.equal(legendButton.attributes['aria-pressed'], 'false');
 assert.equal(count('leaderboard-rows', /<tr>/g), 12);
 element('plot-legend').events.click({ target: { closest: () => legendButton } });
 assert.equal(count('cost-plot', /<rect class="marker"/g), 12);
-for (const order of ['capability', 'name', 'difficulty']) {
-  element('task-order').value = order; element('task-order').events.change();
-  assert.equal(count('heatmap-body', /<button /g), 252);
-}
-const modelIndex = data.models.findIndex(m => m.name === 'DeepSeek V4.1 Flash');
-assert.equal(data.models[modelIndex].tasks['05-hog-body-block'].completed, 0);
-const button = { dataset: { task: '05-hog-body-block', model: String(modelIndex) }, setAttribute() {} };
-element('heatmap-body').events.click({ target: { closest: () => button } });
-assert.match(element('task-inspector').innerHTML, /Failed \(0\)/);
-assert.match(element('task-inspector').innerHTML, /zero additional total crown-tower damage/);
-assert.match(element('task-inspector').innerHTML, /completed 0/);
 // Ping immediately as well as on load, and reject unrelated readiness messages.
 for (const id of ['opus-replay', 'reference-replay']) {
   assert.equal(element(id).contentWindow.messages[0].message.type, 'royalebench-ping');
@@ -120,4 +107,4 @@ for (const name of ['opus', 'reference']) {
     else new vm.Script(match[2], { filename: `${name}-replay:${i}` });
   }
 }
-console.log('Passed: 252 cells, 161 zero scores, 91 passes, harness filters, task ordering/inspection, synchronized playback/reset, replay syntax.');
+console.log('Passed: model logos, task catalog, task-type rates/sorting, harness filters, cost axes, synchronized playback/reset, replay syntax.');

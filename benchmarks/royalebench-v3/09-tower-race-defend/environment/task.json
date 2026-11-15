@@ -104,5 +104,16 @@
     ]
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "09-tower-race-defend",
+  "instruction_sha256": "3b59d2950a8cfbc44a5ae1679a1d88ac9136257ea5a4448e364fbfac33a97336",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

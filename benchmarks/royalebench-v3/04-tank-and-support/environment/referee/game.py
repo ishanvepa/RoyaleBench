@@ -104,6 +104,7 @@ class SeatMemory:
     seen_uids: set[int] = field(default_factory=set)
     enemy_cards_seen: list[str] = field(default_factory=list)
     events: list[str] = field(default_factory=list)  # since last decision
+    opponent_plays: list[str] = field(default_factory=list)  # accepted plays since last decision
     announced_cards: set[int] = field(default_factory=set)  # enemy plays reported this interval
     history: list[str] = field(default_factory=list)  # own recent moves with results
 
@@ -196,6 +197,7 @@ class Game:
         card = self.card_by_id.get(card_id)
         name = self.card_name(card_id)
         tx, ty = self.own_tiles(viewer, x, y)
+        m.opponent_plays.append(f"{name}@({tx:.1f},{ty:.1f})")
         verb = "cast" if card is not None and self.kind_of(card) == "SPELL" else "deployed"
         m.events.append(f"enemy {verb} {name} at ({tx:.1f}, {ty:.1f}), {self.lane_of(tx)} lane")
         self._saw_card(m, name)
@@ -359,8 +361,8 @@ class Game:
         mine, theirs = unit_lines(team), unit_lines(1 - team)
         lines.append("YOUR UNITS ON FIELD:" + ("\n" + "\n".join(mine) if mine else " none"))
         lines.append("ENEMY UNITS ON FIELD:" + ("\n" + "\n".join(theirs) if theirs else " none"))
-        if mem.events:
-            lines.append("SINCE YOUR LAST DECISION:\n" + "\n".join(f"  - {ev}" for ev in mem.events[-8:]))
+        if mem.opponent_plays:
+            lines.append("Opponent plays: " + ", ".join(mem.opponent_plays))
         if mem.history:
             lines.append("YOUR LAST MOVES:\n" + "\n".join(f"  - {h}" for h in mem.history[-5:]))
         if moves is not None:
@@ -461,6 +463,7 @@ class Game:
         """Called once the player has actually been shown its events (so events seen during
         forced waits, when the player is not asked, are kept for the next real decision)."""
         self.mem[team].events.clear()
+        self.mem[team].opponent_plays.clear()
 
     def finish(self):
         trace = self.recorder.end(self.engine) if self.recorder else None

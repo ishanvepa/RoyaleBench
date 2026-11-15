@@ -100,5 +100,16 @@
     "damage_limit": 10000
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "04-tank-and-support",
+  "instruction_sha256": "3d067f4d5a603459ee53b7df4d5e58ccd2d34a122f976c6839ad66624af1e88a",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

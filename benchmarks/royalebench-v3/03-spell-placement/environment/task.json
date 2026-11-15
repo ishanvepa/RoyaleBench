@@ -110,5 +110,16 @@
     "only_card": "Fireball"
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "03-spell-placement",
+  "instruction_sha256": "784e2a499a2bc9b685f3384e7577a07982f9d280efc27fd1d3b6361c54bccda2",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

@@ -100,5 +100,16 @@
     ]
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "07-counterpush",
+  "instruction_sha256": "5841481628ba78dac9bd92c5212fd1b8daf1e6519391a22765f421bd0e3aa11b",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

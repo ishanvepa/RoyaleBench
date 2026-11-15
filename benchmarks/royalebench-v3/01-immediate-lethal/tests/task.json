@@ -100,5 +100,16 @@
     "verified_fireball_crown_damage": 159
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "01-immediate-lethal",
+  "instruction_sha256": "42d01142b37375f1689fac1d02787c585a35f8aa58689e1ab4437d9ae81def3b",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

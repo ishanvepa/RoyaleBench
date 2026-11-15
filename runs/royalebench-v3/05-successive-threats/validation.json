@@ -9,7 +9,7 @@
     "malformed": 0.0
   },
   "config_sha256": "99b278c4c0ebe90672f86ec80026e715ea0280beda63de8defcfcad79e75780c",
-  "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
   "reference_log_sha256": "3205df464b1696ebd1200a4a86abf856c326049c42d3b722d9d93ef87c7709c9",
   "reference_outcome": {
     "result": "unfinished",

@@ -5,7 +5,24 @@ direct coordinate actions against Planner. The source is
 [`benchmarks/royalebench-v3`](../benchmarks/royalebench-v3), benchmark version `3.0.0`.
 The stable action protocol is named `coordinates-v1`; that protocol version is separate from
 the benchmark release and Valkyrie's immutable dataset revision (`@1`, `@2`, ...).
-The published revision is **`royalebench/royalebench-v3@1`**, tagged `v3`.
+The current published revision is **`royalebench/royalebench-v3@2`**, tagged `v3-support`.
+The initial `@1` revision remains available under tag `v3` for historical runs.
+
+## Support carried forward from v1
+
+Revision `@2` carries the operational additions made across the v1 releases:
+
+| v1 release | Support in v3 |
+| --- | --- |
+| `@2` | Private observation/action/state/event capture, carried replay checkpoints, instruction and resource provenance, and the same separate verifier and artifact layout. Coordinate attempt acceptance and rejection remain explicit. |
+| `@3`–`@6` | The same agent network allowlist for Anthropic, OpenAI, OpenRouter, and the Modal Qwen, Inkling, DeepSeek and Kimi endpoints. The verifier still requests no network. The existing dashboard model presets and billing view work with v3 runs. |
+| Subsequent observation update | Compact `Opponent plays: Card@(x,y), ...` text in the coordinate board view, with the full engine state and action history retained in private capture. |
+
+The builder takes scenario inputs from the pinned v1 `@1` source snapshot in
+[`data/royalebench-v1-source`](../data/royalebench-v1-source), while current runtime code supplies
+the observation and capture behavior. Every packaged task records its own protocol hash, task ID,
+instruction hash, rubric, capture schema and resource limits. The changed task bytes were
+published as `@2`; existing `v3@1` runs remain attributed to `@1`.
 
 V3 promotes the coordinate harness tested in the [historical three-task pilot](coordinate_harness.md)
 to the full released task set. It preserves the exact v1 decks, seeds, tower HP, starting hands,
@@ -61,15 +78,25 @@ See [`manifest.json`](../benchmarks/royalebench-v3/manifest.json) and
 [`runs/royalebench-v3`](../runs/royalebench-v3) for actual release/validation evidence.
 All **11/11 references** pass local calibration and actual CLI/socket validation in Docker,
 including player isolation, restart persistence, and fresh-container grading with no network.
-Every replay reproduces its frame hashes. The related checks pass **185 Python tests plus
+Every replay reproduces its frame hashes. The initial `@1` release checks passed **185 Python tests plus
 13 subtests**, **208 web tests**, API type generation, typechecking, lint, and a production build.
 Web checks used Node **20.20.2**; validation commands and provenance are recorded in
 [`checks.json`](../runs/royalebench-v3/checks.json).
-The published revision also passed a hosted lethal control with Sonnet 4.6 through
+The initial `@1` revision also passed a hosted lethal control with Sonnet 4.6 through
 `claude_code-v1.0.0` on Modal: run `5b0afc35-e137-4143-b288-249634c0f181`, reward **1**,
 integrity **1**, and zero rejected deployments. Results are retained in
 [`model-lethal-results.json`](../runs/royalebench-v3/model-lethal-results.json). This is one
 control task, not an eleven-task model score.
+For revision `@2`, all 11 references again pass local and isolated Docker validation, including
+complete carried capture and frame hash verification. The new validation is in
+[`docker-revision2/validation.json`](../runs/royalebench-v3/docker-revision2/validation.json).
+The [revision check summary](../runs/royalebench-v3/checks-revision2.json) pins the published
+digest, protocol hash, Python checks and container checks.
+A hosted Qwen/mini-SWE-agent lethal smoke test on `@2` finished with reward 1, integrity 1,
+no rejected action, and a direct `cr play 0 3.5 25.5` deployment. Its carried capture is complete
+and its archive verifies; see [pilot evidence](../runs/royalebench-v3/qwen-support-pilot.json).
+This is one task, not a cohort score. The current collector does not extract individual model
+calls from this stock harness, though its raw trajectory is retained in the archive.
 Full-cohort frontier-model scores are not established by reference validation. Historical pilot
 scores (coordinates 3/3, menu 2/3 in one Sonnet 4.6 attempt each) remain attributed to their original
 dataset revisions; they are not renamed v3 results.
@@ -91,14 +118,14 @@ validator for a diagnostic subset. A subset does not prove that the entire datas
 Publish through the existing [Valkyrie/Modal workflow](valkyrie_guide.md):
 
 ```bash
-valkyrie dataset push royalebench/royalebench-v3 ./benchmarks/royalebench-v3 --tag v3
+valkyrie dataset push royalebench/royalebench-v3 ./benchmarks/royalebench-v3 --tag v3-support
 ```
 
-The initial immutable published revision is `@1`; use a new revision after future task changes:
+Pin the new immutable revision for comparisons:
 
 ```bash
 valkyrie run start --agent claude_code-v1.0.0 \
-  --dataset royalebench/royalebench-v3@1 \
+  --dataset royalebench/royalebench-v3@2 \
   --model anthropic/claude-sonnet-4-6 --provider modal \
   -s ANTHROPIC_API_KEY "${VALKYRIE_ANTHROPIC_SECRET:?Set your secret name first}" \
   --task-ids 01-immediate-lethal --concurrency 1 --label royalebench-v3-lethal-pilot
@@ -107,6 +134,9 @@ valkyrie run start --agent claude_code-v1.0.0 \
 Start small, inspect the model's decisions and replay, then expand. Record exact revisions,
 model/harness settings, resources, run IDs, costs and failure classifications. New runs should
 be enrolled in [evidence collection](data_collection.md).
+The Qwen, Inkling, DeepSeek and Kimi presets in `evals.toml` can also use `@2` with the
+harness and secret mappings documented in their respective Modal guides. Their v1 pilot scores
+do not transfer to v3; compare models only after new runs on this exact revision.
 
 The dashboard's `default_dataset = "royalebench-v3"` setting selects v3 for a new job once it is
 published. Explicit benchmark links and manual selections take precedence. If the configured

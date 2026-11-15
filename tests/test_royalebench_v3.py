@@ -5,8 +5,10 @@ import shutil
 import pytest
 
 from cr_arena.build_v3 import EVIDENCE, OUT, TITLE, VERSION, build, task_names
+from cr_arena.build_v1 import MODEL_API_HOSTS
 from cr_arena.coordinate_benchmark import (BASE, OUT as PILOT, build as build_coordinates, calibrate,
                                            packaged_protocol_digest, protocol_digest)
+from cr_arena.telemetry import VERSION as CAPTURE_VERSION, digest
 from rb_evals.benchmarks import load_benchmark, task_problems
 from rb_evals.config import load_config
 
@@ -51,6 +53,7 @@ def test_packaged_v3_has_coordinates_for_every_task_and_keeps_candidates_gated()
     benchmark = load_benchmark(OUT)
     assert benchmark.title == TITLE
     assert manifest["version"] == VERSION == "3.0.0"
+    assert manifest["capture_schema_version"] == CAPTURE_VERSION
     assert set(benchmark.tasks) == set(task_names())
     assert {g["family"] for g in manifest["gated_tasks"]} == {11, 12}
     assert len(manifest["gated_tasks"]) == 3
@@ -62,6 +65,16 @@ def test_packaged_v3_has_coordinates_for_every_task_and_keeps_candidates_gated()
         assert task.config["metadata"]["dataset_version"] == VERSION
         assert task.config["task"]["name"] == f"royalebench/v3-{name}"
         cfg = json.loads((task.path / "tests/task.json").read_text())
+        assert cfg == json.loads((task.path / "environment/task.json").read_text())
+        assert cfg["task_id"] == name
+        assert cfg["instruction_sha256"] == digest(task.instruction)
+        assert cfg["rubric"] == "scenario-objective-coordinates-v1"
+        assert cfg["capture_schema_version"] == CAPTURE_VERSION
+        assert cfg["resources"] == {"agent_timeout_s": 3600, "verifier_timeout_s": 600,
+                                    "cpus": 1, "memory_mb": 2048, "storage_mb": 4096}
+        assert task.config["agent"]["network_mode"] == "allowlist"
+        assert task.config["agent"]["allowed_hosts"] == list(MODEL_API_HOSTS)
+        assert task.config["verifier"]["network_mode"] == "no-network"
         old = json.loads((BASE / name / "tests/task.json").read_text())
         for field in ("scenario", "seed", "agent_team", "agent_deck", "opponent_deck", "planner", "decision_ticks"):
             assert cfg[field] == old[field]

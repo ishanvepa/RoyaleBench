@@ -22,13 +22,16 @@ observations and independent replay grading. Starting positions and objectives m
 v1 set; cycle-history and comeback candidates remain gated. Build with
 `uv run python -m cr_arena.build_v3 --jobs 2`. The dashboard prefers v3 for new jobs once published.
 See the guide and manifest for release validation and model-run evidence.
-Published as `royalebench/royalebench-v3@1` (tag `v3`); all 11 references pass isolated Docker
+Current release: `royalebench/royalebench-v3@2` (tag `v3-support`), with capture provenance,
+compact opponent play observations and the Modal model endpoint allowlist. All 11 references pass isolated Docker
 validation and deterministic replay. Full-cohort model calibration remains pending.
-The published v3 lethal control passes with Sonnet 4.6 on Valkyrie/Modal (reward 1, integrity 1).
+The `@1` lethal control passed with Sonnet 4.6 on Valkyrie/Modal (reward 1, integrity 1).
+An `@2` Qwen/mini-SWE-agent lethal smoke test also passed with reward 1, integrity 1 and
+complete archived capture; neither single-task result estimates the full benchmark score.
 
 ## Historical v1 and coordinate pilot
 
-The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. Use `royalebench/royalebench-v1@3` for automatic replay and telemetry capture with the Modal Qwen endpoint allowed during play. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands, or [Qwen on Modal](docs/qwen_modal.md) for that model's setup. The frozen `@1` snapshot remains the menu baseline for the three-task harness comparison below. The full-match results further below use the earlier benchmark and opponent.
+The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. Its current menu revision is `royalebench/royalebench-v1@6`, with telemetry and Modal Qwen, Inkling, DeepSeek and Kimi endpoint access. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, release history and run commands. The frozen `@1` snapshot remains the menu baseline for the three-task harness comparison below. The full-match results further below use the earlier benchmark and opponent.
 
 The separate [coordinate-action pilot](docs/coordinate_harness.md) uses three matching v1 positions
 with `cr play SLOT X Y` and `cr wait`, retaining text observations and paused turns. It removes

@@ -1,0 +1,23 @@
+{
+  "run_id": "478571f3-312b-4f88-ba7f-5d93945e47c0",
+  "dataset": "royalebench/royalebench-v3@2",
+  "task_id": "01-immediate-lethal",
+  "provider": "modal",
+  "harness": "mini_swe_agent",
+  "model": "openai/Qwen/Qwen3.8-2.4T-A95B",
+  "concurrency": 1,
+  "agent_options": {"cost_tracking": "ignore_errors", "step_limit": 12},
+  "status": "FINISHED",
+  "reward": 1,
+  "integrity": 1,
+  "objective_met": 1,
+  "action": {"cmd": "play", "slot": 0, "x": 3.5, "y": 25.5},
+  "rejected_actions": 0,
+  "capture_complete": true,
+  "capture_gaps": [],
+  "capture_counts": {"commands": 6, "events": 42, "matches": 1, "model_calls": 0, "observations": 4, "states": 4},
+  "archive_checksum_errors": [],
+  "archive": "/Users/ben/.local/share/royalebench/archive/478571f3-312b-4f88-ba7f-5d93945e47c0",
+  "results": "qwen-support-results.json",
+  "purpose": "Single-task integration check of the coordinate CLI, Qwen endpoint and private capture; not an aggregate performance estimate. Model-call extraction for this stock harness is unavailable in the current collector."
+}

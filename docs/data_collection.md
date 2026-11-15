@@ -12,6 +12,10 @@ requires the validation gates in the [v1 guide](royalebench_v1.md).
 The default [v3 benchmark](royalebench_v3.md) and historical [coordinate pilot](coordinate_harness.md) record raw coordinate attempts,
 acceptance/rejection metadata and application ticks. Rejected deployments consume an interval
 as `rejected_action`; exports count them as error waits rather than voluntary waits.
+V3 revision `@2` additionally packages the explicit task identity, instruction hash, rubric,
+capture schema and resource limits used by the v1 instrumented releases. Its eleven carried
+captures and replay hashes pass isolated Docker validation; a hosted Qwen smoke run has a complete,
+checksum-verified archive. See the [v3 evidence](royalebench_v3.md#tasks-and-scores).
 
 ## What gets captured
 

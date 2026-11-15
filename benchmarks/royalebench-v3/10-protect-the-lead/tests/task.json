@@ -98,5 +98,16 @@
     ]
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "10-protect-the-lead",
+  "instruction_sha256": "244a02c42f2a8ed2f62de7b50cef163a36ef2d496493bc775d401749e079aca7",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

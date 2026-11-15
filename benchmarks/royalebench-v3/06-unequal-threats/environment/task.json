@@ -101,5 +101,16 @@
     "right_lane_budget": 4
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "06-unequal-threats",
+  "instruction_sha256": "8304d18fbef1f78882558740a9a9fb3225de2e16b9f20434ee892dc255d0b05e",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

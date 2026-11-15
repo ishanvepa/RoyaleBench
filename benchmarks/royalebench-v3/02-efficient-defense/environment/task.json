@@ -94,5 +94,16 @@
     "damage_limit": 400
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "02-efficient-defense",
+  "instruction_sha256": "940a7f127f28a5e9f97355ac76daab7005cb5e523091bd8cc0cf350054cf7266",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

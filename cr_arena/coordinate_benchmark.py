@@ -19,10 +19,11 @@ import tempfile
 import tomllib
 
 from .build_tasks import REFEREE_FILES, ROOT, START_SERVER, SUDOERS, TEST_SH
-from .build_v1 import instruction as menu_instruction, write
+from .build_v1 import MODEL_API_HOSTS, instruction as menu_instruction, write
 from .coordinate_task import MODE
 from .royale_task import make_referee, read_log, verify
 from .scenario_task import ScenarioReferee
+from .telemetry import VERSION as CAPTURE_VERSION, digest
 
 TITLE = "RoyaleBench coordinates pilot"
 VERSION = "1.0.0-coordinate.1"
@@ -238,6 +239,12 @@ def build(out=OUT, evidence=EVIDENCE, *, names=PILOT, title=TITLE, version=VERSI
         name = cfg["id"]
         with tempfile.TemporaryDirectory(prefix="royale-coordinates-") as tmp:
             d = Path(tmp) / name
+            task_instruction = instruction(cfg)
+            packaged_config = dict(cfg, task_id=name, instruction_sha256=digest(task_instruction),
+                                   rubric="scenario-objective-coordinates-v1",
+                                   capture_schema_version=CAPTURE_VERSION,
+                                   resources={"agent_timeout_s": 3600, "verifier_timeout_s": 600,
+                                              "cpus": 1, "memory_mb": 2048, "storage_mb": 4096})
             for source in RUNTIME:
                 write(d / "environment/referee" / source, (ROOT / source).read_text())
             for relative, text in {
@@ -245,10 +252,10 @@ def build(out=OUT, evidence=EVIDENCE, *, names=PILOT, title=TITLE, version=VERSI
                 "environment/cr": (ROOT / "cr_client.py").read_text(),
                 "environment/royale-start-server": START_SERVER,
                 "environment/sudoers": SUDOERS,
-                "environment/task.json": json.dumps(cfg, indent=2) + "\n",
-                "tests/task.json": json.dumps(cfg, indent=2) + "\n",
+                "environment/task.json": json.dumps(packaged_config, indent=2) + "\n",
+                "tests/task.json": json.dumps(packaged_config, indent=2) + "\n",
                 "tests/test.sh": TEST_SH,
-                "instruction.md": instruction(cfg),
+                "instruction.md": task_instruction,
                 "solution/solve.sh": "#!/bin/bash\nset -euo pipefail\npython3 /solution/replay_reference.py\n",
                 "solution/replay_reference.py": SOLUTION,
                 "solution/reference.jsonl": (evidence / name / "reference.jsonl").read_text(),
@@ -258,6 +265,7 @@ def build(out=OUT, evidence=EVIDENCE, *, names=PILOT, title=TITLE, version=VERSI
             task["task"].update(name=f"royalebench/{task_prefix}{name}",
                                 description=f"{cfg['title']}. {cfg['objective']} | action_mode={MODE} | version={version}")
             task["metadata"].update(dataset_version=version, action_mode=MODE)
+            task["agent"]["allowed_hosts"] = list(MODEL_API_HOSTS)
             write(d / "task.toml", tomli_w.dumps(task))
             if (out / name).is_symlink():
                 raise ValueError("refusing to replace symlink")
@@ -276,6 +284,7 @@ def build(out=OUT, evidence=EVIDENCE, *, names=PILOT, title=TITLE, version=VERSI
                               reason="Gated in frozen v1; coordinate release gate is not validated.",
                               release_gate=candidate.get("release_gate")))
     manifest = dict(benchmark=title, version=version, action_mode=MODE,
+                    capture_schema_version=CAPTURE_VERSION,
                     protocol_sha256=start_protocol, runnable_tasks=list(names), gated_tasks=gated,
                     source_dataset="royalebench/royalebench-v1@1",
                     dependencies={p: package_version(p) for p in ("royalegym", "royalesim", "msgspec")},

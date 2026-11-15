@@ -94,5 +94,16 @@
     "disclose_queue": true
   },
   "release_gate": null,
-  "action_mode": "coordinates-v1"
+  "action_mode": "coordinates-v1",
+  "task_id": "08-cycle-to-lethal",
+  "instruction_sha256": "e214d97db8a17bd84d715904e43fd60a7382db6d29b394cc837867b26d936eec",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

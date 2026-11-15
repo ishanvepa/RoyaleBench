@@ -5,9 +5,10 @@ from unittest.mock import PropertyMock, patch
 
 import msgspec
 import pytest
+from valkyrie.sdk.task_content import task_digest
 
 from cr_arena.build_v7 import EVIDENCE, OUT, VERSION, catalog, instruction
-from cr_arena.coordinate_benchmark import packaged_protocol_digest, protocol_digest
+from cr_arena.coordinate_benchmark import packaged_protocol_digest
 from cr_arena.decks import validate_deck
 from cr_arena.royale_task import make_referee
 from cr_arena.telemetry import digest
@@ -70,6 +71,8 @@ def test_packaged_cohort_matches_validated_states_and_runtime():
     if not (OUT / "manifest.json").exists():
         pytest.skip("build the v7 cohort first")
     manifest = json.loads((OUT / "manifest.json").read_text())
+    published = {row["task_id"]: row["digest"] for row in
+                 json.loads((EVIDENCE / "publication.json").read_text())["tasks"]}
     benchmark = load_benchmark(OUT)
     assert set(benchmark.tasks) == {c["id"] for c in catalog()}
     assert manifest["version"] == VERSION
@@ -77,7 +80,9 @@ def test_packaged_cohort_matches_validated_states_and_runtime():
     for cfg in catalog():
         task = benchmark.tasks[cfg["id"]]
         assert not task_problems(task)
-        assert packaged_protocol_digest(task.path) == manifest["protocol_sha256"] == protocol_digest()
+        # This published snapshot stays fixed as the working runtime evolves.
+        assert task_digest(task.path) == published[cfg["id"]]
+        assert packaged_protocol_digest(task.path) == manifest["protocol_sha256"]
         packaged = json.loads((task.path / "tests/task.json").read_text())
         assert packaged == json.loads((task.path / "environment/task.json").read_text())
         assert packaged["scenario"] == cfg["scenario"]

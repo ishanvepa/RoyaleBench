@@ -34,8 +34,11 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
 - [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
 - [`docs/phone_play.md`](docs/phone_play.md): launch interactive play and share a temporary public link.
-- [`docs/rendering.md`](docs/rendering.md): shared live/replay graphics, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
-- [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks.
+- [`docs/public_play.md`](docs/public_play.md): arena lobby, player names and deck selection, ten-match public Planner play, persistent CSV leaderboard, fixed Hog Cycle opponent, preloaded masks, and unranked hosting checks.
+- [`docs/public_play_plan.md`](docs/public_play_plan.md): implementation scope, checklist, and validation for public play.
+- [`docs/public_play_validation.json`](docs/public_play_validation.json): historical five-match and current ten-match measurements, latency limits, and deployment status.
+- [`docs/rendering.md`](docs/rendering.md): lobby miniature, card previews and match result dialog, shared live/replay graphics, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
+- [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from the web app and browse the arena.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
 - [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
@@ -43,7 +46,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
 - [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
-- [`data/README.md`](data/README.md): documentation for project data.
+- [`data/README.md`](data/README.md): documentation for project data, including the tracked deck-strength data (CrownScribe archetype win rates in `data/deck_strength.csv` and head-to-head matchups in `data/deck_matchups.csv`, ranked by `cr_arena/deck_strength.py`).
 
 ## Project references
 

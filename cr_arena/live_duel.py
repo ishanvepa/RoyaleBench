@@ -45,13 +45,14 @@ def play_live(specs: list[dict], decks: list[list[str]], seed: int, delay: int =
     e = game.engine
     ctx = mp.get_context("spawn")
     conns, procs = [], []
+    shutdown = ctx.Event()
     stats = [{"asked": 0, "answered": 0, "waits": 0, "sent": 0, "accepted": 0, "refused": 0, "discarded": 0,
               "think_s": [], "play_think_s": []} for _ in specs]
     pool = ThreadPoolExecutor(2)
     try:
         for team, spec in enumerate(specs):
             parent, child = ctx.Pipe()
-            proc = ctx.Process(target=_bot_worker, args=(child, decks, seed, spec, delay, team), daemon=False)
+            proc = ctx.Process(target=_bot_worker, args=(child, decks, seed, spec, delay, shutdown, team), daemon=False)
             proc.start()
             child.close()
             conns.append(parent)
@@ -106,6 +107,7 @@ def play_live(specs: list[dict], decks: list[list[str]], seed: int, delay: int =
                 time.sleep(wait)
         wall = time.perf_counter() - t0
     finally:
+        shutdown.set()
         for conn in conns:
             try:
                 conn.send(None)

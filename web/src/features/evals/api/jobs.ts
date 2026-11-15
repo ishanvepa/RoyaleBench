@@ -11,6 +11,9 @@ export interface JobFilters {
   mine: boolean;
 }
 
+/** No filter at all: every job. Pages that summarise all jobs share this, so they share one cached request. */
+export const ALL_JOBS: JobFilters = { status: [], dataset: "", model: "", mine: false };
+
 const POLL_ACTIVE_MS = 3_000;
 
 export function useJobs(filters: JobFilters) {

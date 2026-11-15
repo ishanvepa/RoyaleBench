@@ -107,6 +107,17 @@
   ::selection {
     background: color-mix(in srgb, var(--rb-info) 30%, transparent);
   }
+  /* Hide the browser's up/down spinner arrows on number inputs; typing still works. */
+  input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+  }
   button,
   [role="button"] {
     cursor: pointer;

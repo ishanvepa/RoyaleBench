@@ -5,6 +5,13 @@ list or its presets. The browser/phone game and paused dashboard both read this
 catalog. Each entry has a stable ID, a display name, a bot type, and the modes in
 which it appears. Display order follows file order.
 
+The local default is `heuristic-bot`, using the existing readable defense, spell, and
+high-elixir attack rules with `attack_elixir = 8.0`. It is available in both human
+play modes. `python -m cr_arena.live --public` (or `cr_arena.share --public`)
+pins the opponent to `planner-bot` with `hog-2.6-cycle`, allows only the human
+to choose a deck, and caps active games at ten. Public Planner matches each use
+two search workers; the other bots remain available in ordinary local mode. See [public hosting](public_play.md).
+
 ```toml
 [bots.practice]
 modes = ["live", "turn-based"]

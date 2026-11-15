@@ -8,6 +8,12 @@ from rb_evals.valkyrie import ValkyrieError
 
 from ..context import AppContext
 from ..schemas.evals import EnvironmentOut, EvalsSettingsOut, Identity, ModelPresetOut, QueueSummary
+from .common import family_of, logo_url
+
+
+def _preset_out(model_id: str, secret_env: str) -> ModelPresetOut:
+    family = family_of(model_id)
+    return ModelPresetOut(id=model_id, secret_env=secret_env, family=family, logo_url=logo_url(family))
 
 
 def settings_out(ctx: AppContext) -> EvalsSettingsOut:
@@ -15,7 +21,7 @@ def settings_out(ctx: AppContext) -> EvalsSettingsOut:
     return EvalsSettingsOut(
         benchmark=c.benchmark, provider=c.provider, default_agent=c.default_agent,
         default_concurrency=c.default_concurrency, max_concurrency=c.max_concurrency,
-        confirm_over_tasks=c.confirm_over_tasks, models=[ModelPresetOut(id=m.id, secret_env=m.secret_env) for m in c.models])
+        confirm_over_tasks=c.confirm_over_tasks, models=[_preset_out(m.id, m.secret_env) for m in c.models])
 
 
 def environment(ctx: AppContext) -> EnvironmentOut:

@@ -91,7 +91,7 @@ class SearchV2Tests(unittest.TestCase):
         self.assertGreaterEqual(outcomes['v2']['tower_damage_dealt'], outcomes['v1']['tower_damage_dealt'])
         self.assertGreater(outcomes['v2']['tower_damage_dealt'], outcomes['wait']['tower_damage_dealt'])
 
-    def test_terminal_rollout_stops_without_work_and_scores_draw(self):
+    def test_terminal_rollout_stops_without_work_and_scores_the_decided_winner(self):
         from royalegym import MatchSetup
         from cr_arena.search_bot import evaluate, WIN
         g = self.game()
@@ -103,7 +103,8 @@ class SearchV2Tests(unittest.TestCase):
         score, ticks = bot._rollout(g.engine.save_state(), 0, g.legal_moves(0)[0], 'patient', 1, 45)
         self.assertEqual(ticks, 0)
         self.assertEqual(score, evaluate(g, 0))
-        self.assertEqual(score, 0)
+        self.assertEqual(g.state.winner, g.seed % 2)  # level on tower HP: the seed decides, never a draw
+        self.assertEqual(score, WIN if g.seed % 2 == 0 else -WIN)
         g.engine.reset(11, MatchSetup(decks=g.setup.decks, start_tick=100000,
                                      tower_hp=[[4824, 1000, 3052], [4824, 3052, 3052]]))
         g.engine.step([], 10000)

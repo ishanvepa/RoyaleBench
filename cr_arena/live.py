@@ -1,4 +1,4 @@
-"""Live play: a human plays a search or planning bot in real time, in the browser.
+"""Live play: a human plays a bot in real time, in the browser.
 
     uv run python -m cr_arena.live            # then open http://localhost:8600
 
@@ -14,10 +14,15 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import logging
+import math
 import multiprocessing as mp
+import os
 import random
 import time
+import uuid
 from collections import deque
+from contextlib import asynccontextmanager, suppress
 from pathlib import Path
 
 import uvicorn
@@ -25,29 +30,38 @@ from royalegym.action import PlacementOracle
 from royalegym.protocol import BIT_NO_DEPLOY, BIT_WATER, DeployCommand, DeployStatus, EntityKind, Placement, SpellMotion
 from royalegym.replay import save_trace
 from starlette.applications import Starlette
-from starlette.responses import HTMLResponse
+from starlette.responses import HTMLResponse, JSONResponse
 from starlette.routing import Route, WebSocketRoute
-from starlette.websockets import WebSocket, WebSocketDisconnect
+from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketDisconnected
 
 from .db import DB
 from .decks import CLASSIC_DECKS
 from .game import Game
+from .leaderboard import Leaderboard, guest_name, player_name as validate_player_name
 from .rendering import embed_renderer
 from .bots import human_bot_specs
 
 HUMAN, BOT = 0, 1
 BOT_SPECS = human_bot_specs("live")
 COMMAND_DELAY_TICKS = 21  # a play lands about 1 s after it is made, for both sides, as measured on the real client
-MAX_GAMES = 3  # games at once (each one runs its own bot processes); a fourth player is asked to wait
+MAX_GAMES = 10  # one server process; visitors choosing decks do not occupy a slot
+PUBLIC_BOT = "planner"
+PUBLIC_DECK = "hog-2.6-cycle"
+PUBLIC_PLANNER_WORKERS = 2  # a fixed budget per match, independent of connection order
 ACTIVE: set = set()
+MAX_SESSION_SECONDS = 15 * 60  # includes pauses, so abandoned tabs cannot hold a slot forever
+SEND_TIMEOUT_SECONDS = 1.0
+log = logging.getLogger(__name__)
 SEARCH_V2_MAX_AGE_TICKS = 80  # discard answers older than four seconds
 BOT_EVERY_TICKS = 5  # the bot is shown a fresh snapshot at most every 0.25 s of game time
-OUT_DIR = Path("runs/round_robin/human-play")
+OUT_DIR = Path(os.getenv("CR_ARENA_REPLAY_DIR", "runs/round_robin/human-play"))
 PAGE = Path(__file__).with_name("live.html")
+PLAYER_COOKIE = "cr_player"
 _NOT_YET = {DeployStatus.NOT_ENOUGH_ELIXIR, DeployStatus.TOO_EARLY}
 
 
-def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int, team: int = BOT) -> None:
+def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int, shutdown,
+                team: int = BOT) -> None:
     """Runs in its own process: receives an engine snapshot, answers with the bot's move."""
     import os
     import threading
@@ -65,7 +79,9 @@ def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int,
     bot = LiveBot(spec, decks, seed, team, delay)
     try:
         conn.send(None)  # ready (starting a process takes a second or two)
-        while True:
+        while not shutdown.is_set():
+            if not conn.poll(0.1):
+                continue
             root = conn.recv()
             if root is None:
                 return
@@ -100,9 +116,16 @@ def bot_answer_command(game: Game, answer: tuple, team: int = BOT) -> tuple[Depl
 class Session:
     """One real-time game for one browser tab."""
 
-    def __init__(self, ws: WebSocket, my_deck: str, opp_deck: str, seed: int, bot: str = "planner"):
+    def __init__(self, ws: WebSocket, my_deck: str, opp_deck: str, seed: int, bot: str = "heuristic",
+                 *, spec: dict | None = None, leaderboard: Leaderboard | None = None,
+                 player_id: str | None = None, player_name: str | None = None, ranked: bool = True):
         self.ws = ws
-        self.bot_spec = BOT_SPECS[bot]
+        self.match_id = uuid.uuid4().hex
+        # Scripted checks may save replays without contributing public scores.
+        self.leaderboard = leaderboard if ranked and player_name is not None else None
+        self.player_id = player_id or uuid.uuid4().hex
+        self.player_name = guest_name(self.player_id) if player_name is None else validate_player_name(player_name)
+        self.bot_spec = spec if spec is not None else BOT_SPECS[bot]
         self.deck_names = (my_deck, opp_deck)
         self.decks = [CLASSIC_DECKS[my_deck], CLASSIC_DECKS[opp_deck]]
         self.seed = seed
@@ -111,26 +134,40 @@ class Session:
         self.aim: dict[tuple[int, int], tuple[float, float]] = {}  # (team, card) -> where its waiting play was aimed
         self.sub = self.game.sub
         self.placement = PlacementOracle(self.game.arena, self.game.engine.rules(), self.game.cards)
+        self.mask_cache: dict[int, tuple[tuple, dict]] = {}
         self.cmds: deque[DeployCommand] = deque()
         self.paused = False
         self.t0 = time.time()
+        self.started_at = time.monotonic()
+        self.last_mask_at = -math.inf
+        self.closed = False
         # share the machine's cores between the games in progress
-        spec = self.bot_spec
-        if spec.get("type") == "planner" and spec.get("workers"):
-            spec = {**spec, "workers": max(2, 8 // (len(ACTIVE) + 1))}
-        ACTIVE.add(self)
+        worker_spec = self.bot_spec
+        if spec is None and worker_spec.get("type") == "planner" and worker_spec.get("workers"):
+            worker_spec = {**worker_spec, "workers": max(2, 8 // (len(ACTIVE) + 1))}
         ctx = mp.get_context("spawn")
+        self.shutdown = ctx.Event()
         self.conn, child = ctx.Pipe()
-        self.proc = ctx.Process(target=_bot_worker, args=(child, self.decks, seed, spec, self.delay), daemon=False)
-        self.proc.start()
-        child.close()
+        self.proc = ctx.Process(target=_bot_worker, args=(child, self.decks, seed, worker_spec, self.delay, self.shutdown), daemon=False)
+        try:
+            self.proc.start()
+        except BaseException:
+            self.conn.close()
+            raise
+        finally:
+            child.close()
+        ACTIVE.add(self)
         self.bot_busy = True  # until the worker reports it is ready
         self.bot_asked_tick = -10_000
+        self.bot_send: asyncio.Future | None = None
+        self.bot_sent_at = 0.0
+        self.bot_source_tick = 0
 
     # ------------------------------------------------------------------ messages out
     def init_msg(self) -> dict:
         g = self.game
         return {"t": "init", "opp": self.bot_spec["name"], "seed": self.seed, "decks": list(self.deck_names),
+                "player_name": self.player_name,
                 "cards": {c.card_id: [c.name, g.kind_of(c), c.elixir, c.footprint_tiles or 0] for c in g.cards},
                 "lockout": g.engine.rules().deploy_lockout_ticks, "delay": self.delay,
                 "arena": {"tiles_x": g.arena.tiles_x, "tiles_y": g.arena.tiles_y,
@@ -167,7 +204,32 @@ class Session:
             "sp": [[sp.team, sp.card_id, round(sp.x / sub, 2), round(sp.y / sub, 2), round(sp.aim_x / sub, 2),
                     round(sp.aim_y / sub, 2), SpellMotion(sp.motion).name] for sp in s.spells],
             "pr": [[p.team, round(p.x / sub, 2), round(p.y / sub, 2)] for p in s.projectiles],
+            # All four masks arrive with the first hand; later snapshots carry only updates.
+            "masks": self.placement_updates(s),
         }
+
+    def placement_updates(self, state) -> list[dict]:
+        """Preload masks and invalidate them when the hand or deployment geometry changes."""
+        updates = []
+        player = state.players[HUMAN]
+        own_princesses = tuple((e.uid, e.hp > 0, tuple(e.footprint or ())) for e in state.entities
+                              if e.team == HUMAN and e.kind == EntityKind.PRINCESS_TOWER)
+        for slot, cid in enumerate(player.hand):
+            card = self.game.card_by_id.get(cid)
+            if card and card.placement == Placement.MIRROR:
+                card = self.game.card_by_id.get(player.mirror_target)
+            geometry = self.placement.grid_key(state, HUMAN, card, self.game.arena.half) if card else ()
+            # Unknown placement classes are deliberately recomputed rather than cached unsafely.
+            if geometry is None:
+                geometry = ("tick", state.tick)
+            pending = any(p[0] == 0 and p[1] == cid for p in player.pending)
+            key = (cid, card.card_id if card else None, geometry, own_princesses, pending, state.game_over)
+            cached = self.mask_cache.get(slot)
+            if cached is None or cached[0] != key:
+                mask = self.mask(slot)
+                self.mask_cache[slot] = (key, mask)
+                updates.append(mask)
+        return updates
 
     def unit_types(self) -> list[str]:
         """The engine's unit-type names, so the page can tell a Golem from its Golemites."""
@@ -236,23 +298,54 @@ class Session:
         return reply
 
     async def send(self, msg: dict) -> None:
-        await self.ws.send_text(json.dumps(msg, separators=(",", ":")))
+        # A stalled browser may lose its own game, but cannot pin a slot indefinitely.
+        await asyncio.wait_for(self.ws.send_text(json.dumps(msg, separators=(",", ":"))),
+                               timeout=SEND_TIMEOUT_SECONDS)
 
     # ------------------------------------------------------------------ messages in
     def on_message(self, m: dict) -> dict | None:
         kind = m.get("t")
         if kind == "play":
-            x, y = int(float(m["x"]) * self.sub), int(float(m["y"]) * self.sub)
+            slot = m.get("slot")
+            if type(slot) is not int or not 0 <= slot < 4:
+                raise ValueError("Choose a card in your hand.")
+            x, y = float(m["x"]), float(m["y"])
+            if not (math.isfinite(x) and math.isfinite(y) and
+                    0 <= x < self.game.arena.tiles_x and 0 <= y < self.game.arena.tiles_y):
+                raise ValueError("Choose a position inside the arena.")
+            x, y = int(x * self.sub), int(y * self.sub)
             if len(self.cmds) < 4:
-                self.cmds.append(DeployCommand(HUMAN, int(m["slot"]), x, y))
+                self.cmds.append(DeployCommand(HUMAN, slot, x, y))
         elif kind == "mask":
-            return self.mask(int(m["slot"]))
+            slot = m.get("slot")
+            if type(slot) is not int or not 0 <= slot < 4:
+                raise ValueError("Choose a card in your hand.")
+            now = time.monotonic()
+            if now - self.last_mask_at >= 0.1:
+                self.last_mask_at = now
+                return self.mask(slot)
         elif kind == "pause":
             self.paused = bool(m.get("on"))
         return None
 
     # ------------------------------------------------------------------ the clock
     async def run(self) -> None:
+        try:
+            await self._run()
+        except (WebSocketDisconnect, WebSocketDisconnected, ConnectionError):
+            pass
+        except Exception:
+            log.exception("live game stopped")
+            with suppress(Exception):
+                await self.send({"t": "error", "message": "Game stopped. Please start a new game."})
+            with suppress(Exception):
+                await self.ws.close(code=1011)
+        finally:
+            # A finished game must free its slot even if its browser stays open.
+            ACTIVE.discard(self)
+            await asyncio.to_thread(self.close)
+
+    async def _run(self) -> None:
         g = self.game
         e = g.engine
         loop = asyncio.get_running_loop()
@@ -261,14 +354,25 @@ class Session:
         await self.send(self.init_msg())
         await self.send(self.snapshot())
         while not g.over:
+            if time.monotonic() - self.started_at >= MAX_SESSION_SECONDS:
+                await self.send({"t": "error", "message": "Game expired. Please start a new game."})
+                return
             if not self.paused:
                 cmds = []
                 if self.cmds:
                     cmds.append(self.cmds.popleft())
+                if self.bot_send is not None and self.bot_send.done():
+                    self.bot_send.result()  # propagate a failed pipe write instead of leaving a silent bot
+                    self.bot_send = None
+                if not self.proc.is_alive():
+                    raise RuntimeError("bot worker exited")
                 if self.bot_busy and self.conn.poll():
                     answer = self.conn.recv()
                     self.bot_busy = False
                     if answer is not None:  # None = the worker's "ready"
+                        await self.send({"t": "bot_timing",
+                                         "decision_ms": round((loop.time() - self.bot_sent_at) * 1000, 2),
+                                         "source_age_ticks": g.state.tick - self.bot_source_tick})
                         command, raw = bot_answer_command(g, answer)
                         if command is not None:
                             cmds.append(command)
@@ -293,7 +397,9 @@ class Session:
                             status = -1
                         await self.send(self.event(team, card, reason == 0, status, self.aim.pop((team, card), None), tick))
                 if not self.bot_busy and tick - self.bot_asked_tick >= BOT_EVERY_TICKS:
-                    loop.run_in_executor(None, self.conn.send, e.save_state())  # a pipe write can block: keep it off the clock
+                    self.bot_sent_at, self.bot_source_tick = loop.time(), g.state.tick
+                    self.bot_send = loop.run_in_executor(None, self.conn.send, e.save_state())
+                    self.bot_send.add_done_callback(lambda done: done.exception() if not done.cancelled() else None)
                     self.bot_busy, self.bot_asked_tick = True, tick
             await self.send(self.snapshot())
             due += tick_s
@@ -301,7 +407,9 @@ class Session:
             if delay < -0.25:  # fell badly behind (machine asleep, tab stalled): do not sprint to catch up
                 due = loop.time()
             await asyncio.sleep(max(0.0, delay))
-        await self.send({"t": "over", **self.save()})
+        ACTIVE.discard(self)
+        await asyncio.to_thread(self.close)
+        await self.send({"t": "over", **await asyncio.to_thread(self.save)})
 
     def event(self, team: int, card: int, ok: bool, status: int, spot, tick: int) -> dict:
         try:
@@ -318,13 +426,32 @@ class Session:
         winner, crowns, towers, ticks, trace = g.finish()
         out = {"winner": int(winner), "crowns": crowns, "saved": None}
         try:
-            mid = f"human__vs__{self.bot_spec['name']}__{time.strftime('%Y%m%d-%H%M%S')}"
+            mid = f"human__vs__{self.bot_spec['name']}__{self.match_id}"
             (OUT_DIR / "replays").mkdir(parents=True, exist_ok=True)
             rp = OUT_DIR / "replays" / f"{mid}.msgpack"
             if trace is not None:
                 save_trace(trace, rp)
             db = DB()
-            jid = db.get_or_create_job("human-play", "", ["human"], [], g.decision_ticks, 0,
+            try:
+                self._save_match(db, mid, rp, winner, crowns, towers, ticks, out)
+            finally:
+                db.close()
+        except Exception as exc:  # the game itself is over either way; say why it was not saved
+            log.exception("could not save live game")
+            out["save_error"] = f"{type(exc).__name__}: {exc}"
+        # A replay/storage failure should not discard a legitimately completed result.
+        if self.leaderboard is not None and g.over:
+            try:
+                self.leaderboard.record(self.match_id, self.player_id, self.player_name, int(winner))
+            except Exception:
+                log.exception("could not update leaderboard")
+                out["leaderboard_error"] = True
+        return out
+
+    def _save_match(self, db, mid, rp, winner, crowns, towers, ticks, out):
+        # SQLite serializes simultaneous completions; update the count in the same transaction.
+        with db.transaction():
+            jid = db.get_or_create_job("human-play", "", ["human"], [], self.game.decision_ticks, 0,
                                        "Games played by a human on the Play page")
             db.queue_matches(jid, [{"match_id": mid, "blue": "human", "red": self.bot_spec["name"], "seed": self.seed,
                                     "deck": {"blue": self.decks[0], "red": self.decks[1]}}])
@@ -333,78 +460,169 @@ class Session:
             db.match_finished(jid, {"match_id": mid, "winner": int(winner), "crowns": crowns, "tower_hp": towers,
                                     "ticks": ticks, "wall_s": round(time.time() - self.t0, 1),
                                     "stats_blue": {"mode": "live"}, "stats_red": {}})
-            n = db.query("SELECT COUNT(*) AS n FROM matches WHERE job_id = ?", (jid,))[0]["n"]
-            db.execute("UPDATE jobs SET total_matches = ?, status = 'done' WHERE id = ?", (n, jid))
+            db.execute("UPDATE jobs SET total_matches = (SELECT COUNT(*) FROM matches WHERE job_id = ?), "
+                       "status = 'done' WHERE id = ?", (jid, jid))
             out["saved"] = mid
-        except Exception as exc:  # the game itself is over either way; say why it was not saved
-            out["save_error"] = f"{type(exc).__name__}: {exc}"
         return out
 
     def close(self) -> None:
+        if self.closed:
+            return
+        self.closed = True
         ACTIVE.discard(self)
-        try:
-            self.conn.send(None)
-        except (OSError, ValueError):
-            pass
-        self.conn.close()
-        self.proc.join(timeout=0.5)
+        # Give Planner a chance to close its process pool instead of leaking its semaphores.
+        # This runs off the event loop and does not block the other matches' clocks.
+        self.shutdown.set()
+        self.proc.join(timeout=2.0)
         if self.proc.is_alive():
             self.proc.terminate()
+            self.proc.join(timeout=0.5)
+        self.conn.close()
 
 
-async def page(_request) -> HTMLResponse:
-    return HTMLResponse(embed_renderer(PAGE.read_text(encoding="utf-8")), headers={"Cache-Control": "no-store"})
+def player_identity(request) -> str:
+    value = request.cookies.get(PLAYER_COOKIE, "") if request is not None else ""
+    return value if len(value) == 32 and all(c in "0123456789abcdef" for c in value) else uuid.uuid4().hex
+
+
+def remember_player(response, request, player_id):
+    response.set_cookie(PLAYER_COOKIE, player_id, max_age=365 * 24 * 60 * 60,
+                        httponly=True, samesite="lax", secure=request is not None and request.url.scheme == "https")
+    return response
+
+
+async def page(request) -> HTMLResponse:
+    response = HTMLResponse(embed_renderer(PAGE.read_text(encoding="utf-8")), headers={"Cache-Control": "no-store"})
+    return remember_player(response, request, player_identity(request))
+
+
+async def leaderboard(request) -> JSONResponse:
+    player_id = player_identity(request)
+    try:
+        result = await asyncio.to_thread(request.app.state.leaderboard.standings, player_id)
+        response = JSONResponse(result, headers={"Cache-Control": "no-store"})
+    except Exception:
+        log.exception("could not read leaderboard")
+        response = JSONResponse({"error": "Leaderboard unavailable. Please try again."}, status_code=503,
+                                headers={"Cache-Control": "no-store"})
+    return remember_player(response, request, player_id)
 
 
 async def socket(ws: WebSocket) -> None:
     await ws.accept()
+    player_id = player_identity(ws)
     session: Session | None = None
     task: asyncio.Task | None = None
 
-    def stop() -> None:
+    async def stop() -> None:
         nonlocal session, task
         if task:
             task.cancel()
+            with suppress(asyncio.CancelledError):
+                await task
         if session:
-            session.close()
+            ACTIVE.discard(session)
+            await asyncio.to_thread(session.close)
         session = task = None
 
     try:
-        await ws.send_text(json.dumps({"t": "hello", "decks": CLASSIC_DECKS, "bots": BOT_SPECS}))
+        specs, fixed = ws.app.state.bot_specs, ws.app.state.fixed_opponent
+        await ws.send_json({"t": "hello", "decks": CLASSIC_DECKS, "bots": specs, "max_games": MAX_GAMES,
+                            "fixed_opponent": fixed})
         while True:
-            m = json.loads(await ws.receive_text())
+            try:
+                raw = await ws.receive_text()
+                if len(raw) > 4096:
+                    raise ValueError("Game message is too large.")
+                m = json.loads(raw)
+                if not isinstance(m, dict):
+                    raise ValueError("Expected an object.")
+            except ValueError:
+                await ws.send_json({"t": "invalid", "message": "Invalid game message."})
+                continue
             if m.get("t") == "start":
-                stop()
-                if len(ACTIVE) >= MAX_GAMES:
-                    await ws.send_text(json.dumps({"t": "busy", "n": len(ACTIVE)}))
+                try:
+                    ranked = m.get("ranked", True)
+                    if type(ranked) is not bool:
+                        raise ValueError("ranked must be true or false.")
+                    name = validate_player_name(m.get("player_name")) if ranked or "player_name" in m else None
+                except ValueError as exc:
+                    await ws.send_json({"t": "invalid", "message": str(exc)})
                     continue
-                mine = m.get("deck") if m.get("deck") in CLASSIC_DECKS else next(iter(CLASSIC_DECKS))
-                theirs = m.get("opp_deck") if m.get("opp_deck") in CLASSIC_DECKS else mine
-                bot = m.get("bot") if m.get("bot") in BOT_SPECS else "planner"
-                session = Session(ws, mine, theirs, int(m.get("seed") or random.randrange(1, 10_000)), bot)
+                mine, theirs = m.get("deck"), m.get("opp_deck", m.get("deck"))
+                bot, seed = m.get("bot", next(iter(specs))), m.get("seed", random.randrange(1, 10_000))
+                if fixed:
+                    bot, theirs = fixed["bot"], fixed["deck"]
+                if (not isinstance(mine, str) or mine not in CLASSIC_DECKS or
+                        not isinstance(theirs, str) or theirs not in CLASSIC_DECKS or
+                        not isinstance(bot, str) or bot not in specs or type(seed) is not int or not 0 <= seed < 2**32):
+                    await ws.send_json({"t": "invalid", "message": "Choose a valid bot and decks."})
+                    continue
+                await stop()
+                if len(ACTIVE) >= MAX_GAMES:
+                    await ws.send_json({"t": "busy", "n": len(ACTIVE),
+                                        "message": "Server at capacity — please try again shortly."})
+                    continue
+                try:
+                    session = Session(ws, mine, theirs, seed, bot, spec=specs[bot] if fixed else None,
+                                      leaderboard=ws.app.state.leaderboard, player_id=player_id, player_name=name,
+                                      ranked=ranked)
+                except Exception:
+                    log.exception("could not start live game")
+                    await ws.send_json({"t": "error", "message": "Could not start a game. Please try again."})
+                    continue
                 task = asyncio.create_task(session.run())
             elif m.get("t") == "quit":
-                stop()
-            elif session:
-                reply = session.on_message(m)
+                await stop()
+            elif session and task and not task.done():
+                try:
+                    reply = session.on_message(m)
+                except (ValueError, TypeError, KeyError, OverflowError):
+                    await ws.send_json({"t": "invalid", "message": "Invalid card or arena position."})
+                    continue
                 if reply:
                     await session.send(reply)
-    except WebSocketDisconnect:
+    except (WebSocketDisconnect, WebSocketDisconnected):
         pass
     finally:
-        stop()
+        await stop()
 
 
-app = Starlette(routes=[Route("/", page), WebSocketRoute("/ws", socket)])
+async def health(_request) -> JSONResponse:
+    return JSONResponse({"ok": True, "active_games": len(ACTIVE), "max_games": MAX_GAMES})
+
+
+@asynccontextmanager
+async def lifespan(_app):
+    # Initialize once before concurrent completions can try to create the SQLite schema.
+    def initialize():
+        DB().close()
+    await asyncio.to_thread(initialize)
+    yield
+
+
+def create_app(*, public: bool = False, leaderboard_path: Path | None = None) -> Starlette:
+    app = Starlette(routes=[Route("/", page), Route("/health", health), Route("/leaderboard", leaderboard),
+                            WebSocketRoute("/ws", socket)],
+                    lifespan=lifespan)
+    app.state.leaderboard = Leaderboard(leaderboard_path or Path(os.getenv("CR_ARENA_LEADERBOARD", OUT_DIR / "leaderboard.csv")))
+    app.state.bot_specs = {PUBLIC_BOT: {**BOT_SPECS[PUBLIC_BOT], "workers": PUBLIC_PLANNER_WORKERS}} if public else BOT_SPECS
+    app.state.fixed_opponent = {"bot": PUBLIC_BOT, "deck": PUBLIC_DECK} if public else None
+    return app
+
+
+app = create_app()
 
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8600)
+    ap.add_argument("--public", action="store_true", help="play Planner with its fixed Hog Cycle deck (ten games)")
     a = ap.parse_args()
     print(f"Live play: http://{a.host}:{a.port}")
-    uvicorn.run(app, host=a.host, port=a.port, log_level="warning")
+    uvicorn.run(create_app(public=a.public), host=a.host, port=a.port, log_level="warning",
+                workers=1, ws_max_size=4096, ws_max_queue=8)
 
 
 if __name__ == "__main__":

@@ -31,8 +31,8 @@ class BotRegistryTests(unittest.TestCase):
             build_bot({'type': 'typo', 'name': 'bad'})
 
     def test_catalog_modes_order_and_fresh_presets(self):
-        self.assertEqual(list(human_bot_specs('live')), ['planner', 'search', 'search-v2'])
-        self.assertEqual(list(human_bot_specs('turn-based')), ['search', 'search-v2'])
+        self.assertEqual(list(human_bot_specs('live')), ['heuristic', 'planner', 'search', 'search-v2'])
+        self.assertEqual(list(human_bot_specs('turn-based')), ['heuristic', 'search', 'search-v2'])
         first = human_bot_specs('live')
         first['search-v2']['opponent_mix'].clear()
         self.assertEqual(human_bot_specs('live')['search-v2']['opponent_mix'],

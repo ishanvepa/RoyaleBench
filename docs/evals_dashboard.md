@@ -40,6 +40,8 @@ The page tells you which of these is missing.
 | Benchmarks | The folders under `benchmarks/`, marked draft, published or modified, with their published versions. **Publish** pushes the folder to Valkyrie as a new revision (nothing changes if the content is unchanged). |
 | Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), and for each task its instruction, files and results across runs. |
 | Leaderboard | Models by harness with solved, pass rate, score, agent failures, infrastructure errors, time and cost. Click any column to sort. |
+| Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
+| Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
 
 One job is one Valkyrie run: one model on a whole benchmark or a subset. To compare models, start one job
 per model. Valkyrie stays the source of truth; finished runs and downloaded costs are cached under

@@ -17,6 +17,7 @@ def session_for(deck=DEFAULT_DECK, elixir=10000):
     game.engine.reset(2, msgspec.structs.replace(game.setup, elixir_milli=[elixir, elixir]))
     session.sub = game.sub
     session.placement = PlacementOracle(game.arena, game.engine.rules(), game.cards)
+    session.mask_cache = {}
     return session
 
 
@@ -32,6 +33,61 @@ def allowed(mask, x, y):
 
 
 class PlacementTests(unittest.TestCase):
+    def test_preloads_all_slots_then_reuses_masks_as_time_and_elixir_advance(self):
+        session = session_for(elixir=0)
+        initial = session.placement_updates(session.game.state)
+        self.assertEqual([m['slot'] for m in initial], [0, 1, 2, 3])
+        self.assertEqual([m['card'] for m in initial], list(session.game.state.players[0].hand))
+        self.assertEqual(session.placement_updates(session.game.state), [])
+        session.game.engine.step([], 200)
+        self.assertEqual(session.placement_updates(session.game.state), [])
+
+    def test_preloaded_geometry_updates_after_tower_destruction(self):
+        session = session_for()
+        game = session.game
+        slot = troop_slot(session)
+        before = {m['slot']: m for m in session.placement_updates(game.state)}
+        hp = [list(player.tower_hp) for player in game.state.players]
+        hp[0][1] = hp[1][1] = 0
+        game.engine.reset(2, msgspec.structs.replace(game.setup, tower_hp=hp))
+        updates = {m['slot']: m for m in session.placement_updates(game.state)}
+        self.assertFalse(allowed(before[slot], 3.5, 6.5))
+        self.assertTrue(allowed(updates[slot], 3.5, 6.5))
+        self.assertFalse(allowed(before[slot], 14.25, 20.25))
+        self.assertTrue(allowed(updates[slot], 14.25, 20.25))
+
+    def test_preloaded_masks_track_pending_hand_rotation_and_building_geometry(self):
+        session = session_for()
+        game = session.game
+        game.engine.set_command_delay_ticks(21)
+        game.engine.reset(2, game.setup)
+        game.engine.step([], 200)
+        slot = troop_slot(session)
+        before = {m['slot']: m for m in session.placement_updates(game.state)}
+        command = DeployCommand(0, slot, 6 * game.sub, 10 * game.sub)
+        self.assertEqual(game.engine.step([command], 1)[0].status, DeployStatus.OK)
+        updates = {m['slot']: m for m in session.placement_updates(game.state)}
+        self.assertEqual(updates[slot], session.mask(slot))
+        game.engine.step([], 21)
+        updates = {m['slot']: m for m in session.placement_updates(game.state)}
+        self.assertEqual(updates[slot]['card'], game.state.players[0].hand[slot])
+        self.assertNotEqual(updates[slot]['card'], before[slot]['card'])
+        for mask in updates.values():
+            self.assertEqual(mask, session.mask(mask['slot']))
+
+        # A newly placed building changes spatial blockers without changing the hand.
+        cannon = next(c.card_id for c in game.cards if c.name == 'Cannon')
+        deck = [cannon] + [cid for cid in game.setup.decks[0] if cid != cannon]
+        game.engine.reset(2, msgspec.structs.replace(game.setup, decks=[deck, deck], shuffle=ShuffleMode.NONE))
+        game.engine.step([], 200)
+        session.placement_updates(game.state)
+        self.assertEqual(game.engine.step([DeployCommand(1, 0, 8 * game.sub, 22 * game.sub)], 1)[0].status, DeployStatus.OK)
+        game.engine.step([], 21)
+        changed = session.placement_updates(game.state)
+        self.assertTrue(changed)
+        for mask in changed:
+            self.assertEqual(mask, session.mask(mask['slot']))
+
     def test_both_own_princess_footprints_are_blocked_without_expanding_the_edges(self):
         session = session_for()
         mask = session.mask(troop_slot(session))

@@ -29,6 +29,8 @@ export const routes: RouteObject[] = [
           { path: "benchmarks/:name", lazy: () => import("@/features/evals/benchmarks/BenchmarkPage") },
           { path: "benchmarks/:name/tasks/:taskId", lazy: () => import("@/features/evals/benchmarks/TaskPage") },
           { path: "leaderboard", lazy: () => import("@/features/evals/leaderboard/LeaderboardPage") },
+          { path: "overview", lazy: () => import("@/features/evals/overview/OverviewPage") },
+          { path: "models", lazy: () => import("@/features/evals/models/ModelsPage") },
         ],
       },
       {

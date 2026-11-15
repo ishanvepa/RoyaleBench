@@ -42,6 +42,14 @@ By default, decisions occur every 40 engine ticks, described by our current inte
 
 The model's interface hides the opponent's hand and elixir and expresses positions from the player's perspective. It offers a constrained placement menu, including visible spell targets, rather than unrestricted continuous placement. Results therefore measure strategy under this particular observation and action interface.
 
+Search v2 adds deterministic, budgeted root allocation and multi-policy rollouts
+through the same numbered benchmark interface. Its evaluator is shared with v1;
+both remain omniscient. It is a separately registered player and is available in
+the dashboard and real-time human-play selectors. The live adapter simulates the
+configured delay, excludes pending cards, stops at completed rounds after a soft
+deadline, and revalidates answers against the current battle. See the [implementation and strength evaluation](search_v2.md)
+for configurations, recorded comparisons, and remaining limitations.
+
 ## Dependency snapshot
 
 [`pyproject.toml`](../pyproject.toml) requests `royalegym[all]>=0.1.28`. The checked-in [`uv.lock`](../uv.lock) currently resolves:
@@ -62,7 +70,7 @@ The engine gives us controlled battle execution and recorded trajectories. Our b
 
 For each reported comparison, record the repository commit, dependency lockfile, dataset revision, model identifier, prompts and inference settings, decks, seeds, seat assignments, decision interval, command delay, opponent configuration, and scoring rules. Keep raw decisions and replays alongside the scores. Measure game outcomes separately from invalid responses and provider failures.
 
-Opponent information access also matters. The existing [`search_bot.py`](../cr_arena/search_bot.py) explicitly searches the true engine state, including hidden opponent information. Treat it as a privileged reference when reporting results. A fair opponent comparison requires matching the information available to each player or clearly disclosing the difference. A trained opponent would need the same review.
+Opponent information access also matters. The existing [`bots/search.py`](../cr_arena/bots/search.py) explicitly searches the true engine state, including hidden opponent information. Treat it as a privileged reference when reporting results. A fair opponent comparison requires matching the information available to each player or clearly disclosing the difference. A trained opponent would need the same review.
 
 Validate the card interactions used by our chosen tasks before making claims about Clash Royale strategy. Simulator mistakes, ambiguous instructions, and interface restrictions can all produce apparent model failures. Inspect representative replays and verify the grader before expanding expensive runs.
 

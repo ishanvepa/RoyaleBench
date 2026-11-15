@@ -1,0 +1,154 @@
+{
+  "config": {
+    "tournament": {
+      "out_dir": "runs/round_robin",
+      "seeds": [
+        1,
+        2,
+        3
+      ],
+      "decision_ticks": 40,
+      "parallel": 2,
+      "replays_per_pair": 6,
+      "anchor": "search-bot"
+    },
+    "decks": {
+      "classic": [
+        "giant-beatdown",
+        "hog-2.6-cycle",
+        "lavaloon"
+      ]
+    },
+    "players": [
+      {
+        "name": "search-bot",
+        "type": "search",
+        "rollouts": 4,
+        "horizon_s": 12.0,
+        "seed": 0
+      },
+      {
+        "name": "search-v2",
+        "type": "search-v2",
+        "information_mode": "omniscient",
+        "budget_ticks": 60000,
+        "max_rollouts": 240,
+        "screen_horizon_s": 4.0,
+        "horizon_s": 12.0,
+        "shortlist_size": 10,
+        "max_candidates": 64,
+        "opponent_mix": [
+          "legacy",
+          "aggressive",
+          "patient"
+        ],
+        "continuation_policy": "legacy",
+        "seed": 0,
+        "workers": 1
+      }
+    ]
+  },
+  "seeds": [
+    1
+  ],
+  "matchups": [
+    [
+      "giant-beatdown",
+      "giant-beatdown"
+    ],
+    [
+      "hog-2.6-cycle",
+      "hog-2.6-cycle"
+    ],
+    [
+      "lavaloon",
+      "lavaloon"
+    ]
+  ],
+  "commit": "35cdc26f5b286f57ea86db268dab757cd670e3f8",
+  "diff_sha256": "d9d7806f1e86ae6791c3ecde5c42d552df23106b9b070f7ecacd5f2146fb2d3d",
+  "uv_lock_sha256": "15cb2c6289a3fc24fb8c5d1b3db08485bcb5eec48958160f950d362ff2895088",
+  "source_sha256": {
+    "cr_arena/db.py": "75ea03d51a852935c58904713566c6cac0d53fa727af9549f14ccb6a2c31c516",
+    "cr_arena/search_v2.py": "0786751f8aebc50506451449f80a79ba72cc21b1bc91b7ec61b0e78b2506f20a",
+    "cr_arena/compare_search.py": "48922edb800cfb4b567cec0f65770559e1d217f0eb9b429007cc446f3377e281",
+    "cr_arena/game.py": "9157a70084b60dd297c7dcfaa9365792e17064ab8074ff42f9d1fc872c2f4581",
+    "cr_arena/duel.py": "e4a815e30c3a1ba732a6f4d17f68a994edaf6f09e604be4d6ec7b5963ca9bf3a",
+    "cr_arena/check_models.py": "620ab1aaafd7755ae8dbc89d0f9c970413cde2e33fbf94ab12d35a1758d41653",
+    "cr_arena/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cr_arena/site.py": "36a90f6792b378ce271a8b0649b28b8f4dddce6f80b8bd062df174610c57f36b",
+    "cr_arena/replay.py": "e2a6c32e2ef0c5af54a61663804ec75608e181e61ecfaccf33f335dc8d92510a",
+    "cr_arena/share.py": "eb4c39a002048ce8e8f6e6b7bfc0da12fc54beaa70038bc859d9c621f73e5d6c",
+    "cr_arena/players.py": "c7ce718224e5e69c22cadcc1b033cffb82ba3f6bf6b99b9d125a28dcca53df11",
+    "cr_arena/search_tactics.py": "304009a30dcaedd1259a25c610777ae09bc7a661ece1dbcd3a72e7f9d2cefe64",
+    "cr_arena/ratings.py": "4e1a1a33060b41d3024e1a16dcd1ca271bd24b6a89330111eb643defccc45f57",
+    "cr_arena/live.py": "25aa58c0891ab14fad3eefb75725cef025d6f06e9f02de95b810124b7a6556e1",
+    "cr_arena/planner_bot.py": "69d4443443f9f95150bc39907f290b849b46c9f5de14aec66c53adae478d4dad",
+    "cr_arena/decks.py": "49ba37a5455e0df002cf7ded064759748eb469dccba4fb7c4661acc4cb381ee9",
+    "cr_arena/migrate.py": "223a10afa3e63a0fb2516df0907e3482e99478bf24a3b8c5c0ee7e6b503fb698",
+    "cr_arena/tournament.py": "84116b72793476a6f2c3dab8087851fa68c9ff12b0851cb8a0e7cec3dfbe4595",
+    "cr_arena/match.py": "983943a006a449ce8a7ee29be4ddbc3674f934b17b682998d793b25d0f43b872",
+    "cr_arena/search_bot.py": "c852d2636e6ffca06a1df57cb28d41a58d4d61d794dd3d94c740e93f6dd546e3",
+    "configs/search_v2_legacy.toml": "f1a0730648672566164dabe0b6201a580122c136ef627d56be0ca213c8e2dd79"
+  },
+  "dependencies": {
+    "royalegym": "0.1.28",
+    "royalesim": "0.1.48"
+  },
+  "python": "3.12.4",
+  "decision_ticks": 40,
+  "command_delay_ticks": 0,
+  "information_mode": "omniscient",
+  "action_mode": "numbered",
+  "criterion": "Held-out improvement requires score > 0.5 and one-sided exact paired sign-test p < 0.05; tuning runs remain exploratory.",
+  "cases": [
+    {
+      "pair": "giant-beatdown__giant-beatdown__s1",
+      "matchup": "giant-beatdown__giant-beatdown",
+      "seed": 1,
+      "deck_a": "giant-beatdown",
+      "deck_b": "giant-beatdown",
+      "id": "giant-beatdown__giant-beatdown__s1__swap0"
+    },
+    {
+      "pair": "giant-beatdown__giant-beatdown__s1",
+      "matchup": "giant-beatdown__giant-beatdown",
+      "seed": 1,
+      "deck_a": "giant-beatdown",
+      "deck_b": "giant-beatdown",
+      "id": "giant-beatdown__giant-beatdown__s1__swap1"
+    },
+    {
+      "pair": "hog-2.6-cycle__hog-2.6-cycle__s1",
+      "matchup": "hog-2.6-cycle__hog-2.6-cycle",
+      "seed": 1,
+      "deck_a": "hog-2.6-cycle",
+      "deck_b": "hog-2.6-cycle",
+      "id": "hog-2.6-cycle__hog-2.6-cycle__s1__swap0"
+    },
+    {
+      "pair": "hog-2.6-cycle__hog-2.6-cycle__s1",
+      "matchup": "hog-2.6-cycle__hog-2.6-cycle",
+      "seed": 1,
+      "deck_a": "hog-2.6-cycle",
+      "deck_b": "hog-2.6-cycle",
+      "id": "hog-2.6-cycle__hog-2.6-cycle__s1__swap1"
+    },
+    {
+      "pair": "lavaloon__lavaloon__s1",
+      "matchup": "lavaloon__lavaloon",
+      "seed": 1,
+      "deck_a": "lavaloon",
+      "deck_b": "lavaloon",
+      "id": "lavaloon__lavaloon__s1__swap0"
+    },
+    {
+      "pair": "lavaloon__lavaloon__s1",
+      "matchup": "lavaloon__lavaloon",
+      "seed": 1,
+      "deck_a": "lavaloon",
+      "deck_b": "lavaloon",
+      "id": "lavaloon__lavaloon__s1__swap1"
+    }
+  ]
+}

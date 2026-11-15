@@ -1,6 +1,6 @@
 # Search v2: implementation context
 
-Status: proposed, November 14, 2026. This is Plan 1 from the bot alternatives discussion. No Search v2 implementation or strength result is implied by this document.
+Status: original proposal, November 14, 2026. This is Plan 1 from the bot alternatives discussion. The benchmark adapter is now implemented; see [implementation, comparisons, and limitations](search_v2.md). Human play also has a delayed live adapter with completed-round deadlines and stale-answer checks. Richer live placements and the remaining validation recommendations below are still proposals.
 
 ## Objective
 
@@ -14,10 +14,12 @@ Read [AGENTS.md](../AGENTS.md) for benchmark requirements and the [simulation fo
 
 | File | What to reuse or understand |
 | --- | --- |
-| [`cr_arena/search_bot.py`](../cr_arena/search_bot.py) | `SearchBot`, private simulation engine, root snapshot restoration, repeated two-sided rollouts, common random seeds across root moves, and a handwritten position evaluator. |
-| [`cr_arena/planner_bot.py`](../cr_arena/planner_bot.py) | `Planner.candidates`, troop/building placements, spell cluster targets, deployment legality checks, a second evaluator, and process-pool workers with one engine per worker. |
+| [`cr_arena/bots/search.py`](../cr_arena/bots/search.py) | `SearchBot`, private simulation engine, root snapshot restoration, repeated two-sided rollouts, common random seeds across root moves, and a handwritten position evaluator. |
+| [`cr_arena/bots/planner.py`](../cr_arena/bots/planner.py) | `Planner.candidates`, troop/building placements, spell cluster targets, deployment legality checks, a second evaluator, and process-pool workers with one engine per worker. |
 | [`cr_arena/game.py`](../cr_arena/game.py) | Engine construction, legal numbered moves, coordinate transforms, decision interval, command delay, and replay recording. |
-| [`cr_arena/players.py`](../cr_arena/players.py) | `Player`, `Decision`, `HeuristicBot`, and `build_player` registration. |
+| [`cr_arena/player_types.py`](../cr_arena/player_types.py) | Shared `Player` and `Decision` interfaces. |
+| [`cr_arena/bots/baselines.py`](../cr_arena/bots/baselines.py) | `HeuristicBot` and `RandomBot` continuation/reference policies. |
+| [`cr_arena/bots/registry.py`](../cr_arena/bots/registry.py) | Bot constructors and the shared human-play catalog; `players.build_player` delegates here. |
 | [`cr_arena/match.py`](../cr_arena/match.py) | Frozen-state simultaneous decisions, match outcomes, decision logs, and replay output. |
 | [`cr_arena/live.py`](../cr_arena/live.py) | Worker snapshots, live command delay, bot registration, and application of answers after the real battle has advanced. |
 | [`cr_arena/tournament.py`](../cr_arena/tournament.py) | Existing scheduling and result persistence; inspect before adding a comparison runner. |

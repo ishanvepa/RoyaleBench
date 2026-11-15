@@ -26,6 +26,8 @@ The exact task design, agent interface, and scoring method are still to be decid
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
 - [`README.md`](README.md): project entry point and links to quick guides.
 - [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, pinned dependencies, and benchmark validation priorities.
+- [`docs/bots.md`](docs/bots.md): shared bot catalog, registry, implementation layout, and adding opponents.
+- [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
 - [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
 - [`docs/phone_play.md`](docs/phone_play.md): launch interactive play and share a temporary public link.
 - [`docs/rendering.md`](docs/rendering.md): shared live/replay battle graphics, placement masks, and rendering checks.

@@ -1,0 +1,17 @@
+{
+  "tests_run": 44,
+  "skipped": 9,
+  "failures": 0,
+  "errors": 0,
+  "successful": true,
+  "command": "uv run --locked python -m unittest discover -s tests -q",
+  "test_source_sha256": {
+    "tests/test_decks.py": "f9d80ef071824202024df26204a4737bd08405d91de92941f03948ed7320377f",
+    "tests/test_battle.py": "56461402c673c59a110845d85754f1810f018f8567963153889aac6bc0db5adb",
+    "tests/test_players.py": "c22c8f698fc657c6a7d6cc720b5decfda0defa68589fa50b1a4cbc68f69d1e95",
+    "tests/test_storage.py": "f9936d0f3baff2c922773936a14fd982e8aaab4c4caff500f9559158874e6d9f",
+    "tests/test_search_v2.py": "095057cb0300f7e2d73b6b70c36d13d7c15fe310ade60259297dd601a39cac29",
+    "tests/test_site.py": "a239f32f86e13e4ba84115b0c9afe3b70f182d66dd2de4d4cc2882d151e98a81",
+    "tests/test_compare_search.py": "9172ffee583fd9b9b1c01818a6cee9b45164c2ee8813061a2dfad699547dd39b"
+  }
+}

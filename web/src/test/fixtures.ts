@@ -31,7 +31,7 @@ export const environment = (overrides: Partial<Environment> = {}): Environment =
     default_agent: "claude_code-v1.0.0",
     default_dataset: "royalebench-v3",
     default_concurrency: 1,
-    max_concurrency: 10,
+    max_concurrency: 50,
     confirm_over_tasks: 5,
     models: [{ id: "anthropic/claude-sonnet-4-6", secret_env: "ANTHROPIC_API_KEY", family: "claude", logo_url: "/api/assets/logos/claude" }],
   },

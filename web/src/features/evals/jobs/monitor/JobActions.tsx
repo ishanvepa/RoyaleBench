@@ -16,7 +16,7 @@ export function JobActions({ detail }: { detail: JobDetail }) {
   const counts = job.task_state_counts;
   const canAct = useCanStart();
   const env = useEnvironment();
-  const maxConcurrency = env.data?.settings.max_concurrency ?? 10;
+  const maxConcurrency = env.data?.settings.max_concurrency ?? 50;
   const action = useJobAction(job.id);
   const setConcurrency = useSetConcurrency(job.id);
 

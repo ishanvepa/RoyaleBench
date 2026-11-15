@@ -136,6 +136,9 @@ explicit confirmation) are in [`evals.toml`](../evals.toml). Benchmarks are auth
 `benchmark.toml` with a title, description and `kind` (`eval` or `smoke`). Do not add a `dataset.toml`:
 Valkyrie treats it as a lock on the task list.
 
+The current maximum concurrency is 50 tasks per run, for both new jobs and active runs. Change
+`[valkyrie].max_concurrency` in `evals.toml` to adjust the dashboard limit.
+
 ## Codex launch troubleshooting
 
 On November 14, 2026, the installed `codex-v1.0.0` contract restricted `defaults.model.choices`

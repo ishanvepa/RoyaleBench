@@ -31,7 +31,7 @@ class EvalsConfig:
     default_agent: str = "claude_code-v1.0.0"
     default_dataset: str = "royalebench-v3"
     default_concurrency: int = 1
-    max_concurrency: int = 10
+    max_concurrency: int = 50
     confirm_over_tasks: int = 5
     models: tuple[ModelPreset, ...] = ()
     benchmarks_dir: Path = ROOT / "benchmarks"

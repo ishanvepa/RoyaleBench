@@ -36,7 +36,8 @@ export const Replay = ({
   const duration = (source === "opus" ? 10.35 : 11.2) + 1.8;
   const ended = (frame / fps) * speed + start >= duration;
   const still = freeze;
-  // Full source is 486x866. Defense shows the lower half; attack the upper half.
+  // The portrait replay keeps the same aspect across capture resolutions.
+  // Defense shows the lower half; attack the upper half.
   const sizing: React.CSSProperties = { width: "100%", height: "100%" };
   const cameraStyle: React.CSSProperties =
     camera === "full"

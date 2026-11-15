@@ -29,10 +29,10 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
 - [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
-- [`demo/README.md`](demo/README.md): active 72-second Remotion demo, media layout, production status, and historical v01 cut.
+- [`demo/README.md`](demo/README.md): active 67-second Remotion demo, local export, media layout, and production status.
 - [`demo/remotion/README.md`](demo/remotion/README.md): editable video project, official Remotion skills used, asset preparation, preview, and export commands.
 - [`demo/storyboard.md`](demo/storyboard.md): timed headliner sequence and model/reference comparison.
-- [`demo/script.md`](demo/script.md): draft voiceover and evidence-based editorial notes.
+- [`demo/script.md`](demo/script.md): timed silent-viewing captions and evidence-based editorial notes.
 - [`demo/shot-list.md`](demo/shot-list.md): footage sources, capture queue, and edit checklist.
 - [`demo/evidence.json`](demo/evidence.json): selected Opus v6 run metadata, task outcome, trace excerpt, and validated reference provenance.
 - [`demo/production.json`](demo/production.json): current Remotion edit, capture provenance, historical first-cut media details, verification, and remaining production work.

@@ -1,8 +1,8 @@
 # RoyaleBench — Remotion edit
 
-Current edit: **72 seconds, 1920×1080, 30 fps**. Composition ID: `RoyaleBench`.
+Current edit: **67 seconds, 1920×1080, 30 fps**. Composition ID: `RoyaleBench`. The active v04 cut uses the game's navy panels, blue/red team colors, gold outcomes, elixir accents, card portraits, and replay graphics. It works without narration: captions carry the story, with a quiet original effects track at scene and deployment beats.
 
-The v03 video opens on Opus's loss and introduces the benchmark immediately. Both attempts share a six-play progress strip; the reference cuts to the winning connection. Explicitly timed Cannon and Log freezes explain the differences. The shared renderer now animates tower destruction and reveals victory/defeat on the full arena. The preview is silent; the previous computer voice is not used.
+The opening title reads “RoyaleBench: LLM Benchmark.” The first 13 seconds establish a fixed Clash Royale task state and win objective, and show the text observation → card-and-coordinate command → replay grade loop. The model's recorded defeat supplies the hook. The actual text observation and first command then appear before model and validated-reference replays run side by side at the same simulation time. Paired Cannon and Log freezes make two placement differences visible. The result is labeled as one historical v6@1 run.
 
 ## Preview and edit
 
@@ -10,51 +10,27 @@ From this directory:
 
 ```bash
 npm ci
-python prepare-assets.py
+python3 prepare-assets.py
 npm run dev -- --port 3010
 ```
 
-Open [RoyaleBench in Studio](http://localhost:3010/RoyaleBench). Keep the server running. The active timeline is in `src/RoyaleBench.tsx`; scenes and editable text are in `src/Scenes.tsx`.
+Open [RoyaleBench in Studio](http://localhost:3010/RoyaleBench). The active timeline is `src/RoyaleBenchV04.tsx`; scenes are in `src/GameScenes.tsx`, reusable game UI and captions in `src/GameUI.tsx`, and palette tokens in `src/design.ts`. The earlier v03 source remains for historical comparison. Gameplay shots retain source, camera, source start, and speed controls. Replay clocks, card order, outcomes, and aggregate score labels derive from the evidence record. Animations are frame based and seek deterministically.
 
-Each scene has an explicit timeline item. Text uses `Interactive` elements; gameplay shots expose source, crop, source start, and speed controls. Computed replay clocks, evidence-dependent labels, and aggregate score marks are programmatic. Frame-based animations remain deterministic when seeking or rendering.
+`prepare-assets.py` stages the local captured clips and freeze frames, generates card SVGs from the game's own `cr_arena/card_art.js` through `generate-card-art.cjs`, and creates the deterministic 67-second effects WAV through `generate-audio.py`. It does not call a model. The staged clips, WAV, and exports are ignored by Git; the generated card SVGs are tracked. For a fresh checkout, obtain the checksum-verified captures first; see [the production record](../production.json).
 
-`prepare-assets.py` stages the current renderer ending/impact captures from `../assets/captures/`, selected freeze frames, and the local macOS Impact font. These media/font copies are ignored by Git. It never starts model inference. For a fresh machine, obtain the original captures first; see [the production record](../production.json).
-
-## Checks and exports
+## Checks and export
 
 ```bash
 npm run lint
-npx remotion render RoyaleBench ../exports/v03-frames --frames=0,90,210,390,585,660,840,1095,1170,1230,1320,1410,1500,1590,1740,1830,1950,2070 --image-format=png --sequence --is-production=false
+npx remotion render RoyaleBench ../exports/review-v04-frames --frames=0,90,180,300,390,540,720,930,1110,1200,1410,1530,1800,1980 --image-format=png --sequence --is-production=false
+npx remotion render RoyaleBench ../exports/royalebench-demo-v04.mp4 --codec=h264 --crf=18
 ```
 
-The stills are for visual review. To export an MP4, use Studio's Render control, or:
+The first render makes stills for visual review. The second exports the full local MP4 with burned-in captions and effects. All Remotion packages are pinned to `4.0.543` in the lockfile. [Storyboard](../storyboard.md), [caption script](../script.md), and [evidence manifest](../evidence.json) describe the edit and the factual boundaries.
 
-```bash
-npx remotion render RoyaleBench ../exports/royalebench-demo-v03.mp4
-```
+## Rebuild the gameplay footage
 
-Use Remotion's bundled browser. All Remotion packages are pinned to `4.0.543` in the lockfile.
-
-## Polish review and decisions
-
-The 76-second v02 cut had a strong recorded loss/reference story and a coherent cream/charcoal palette. Its main weaknesses were late project context, replay comparisons that relied on memory, generic placement labels, and long static holds near the end.
-
-The 72-second v03 pass:
-
-- Identifies RoyaleBench at the opening and explains the benchmark in the setup.
-- Gives both attempts the same six-play strip, aligned to the verified deployment times; keeps recorded gameplay at normal speed.
-- Cuts the reference close-up to offense for its winning connection.
-- Separates Cannon and Log into named, timed comparison items. Circles point to the actual units/targets, with model/reference and loss/win labels.
-- Uses short eased entrances for key text, a clearer terminal treatment, and labeled result marks. Keeps the existing palette, display font, and hard cuts.
-- Trims one second from the comparison, one from the interface, and two from results. Includes an updated optional human narration script.
-
-The remaining production improvement is a measured human voice take and a restrained audio mix. The preview remains silent. No benchmark evidence or recorded action timing changed.
-
-Review the local `../exports/v03-contact-sheet.jpg` after rendering, alongside the [storyboard](../storyboard.md) and [narration](../script.md). Media is ignored by Git.
-
-## Refresh the ending footage
-
-The current clips are rebuilt from the checksum-verified `opus-source.html` and `reference-source.html` payloads with the shared renderer. Each includes 1.8 seconds of presentation after its recorded final tick. Full-arena shots use the `ending` variant; close-ups use the `impact` variant with the result banner suppressed. Simulation clocks stop at 10.35s and 11.20s respectively. Original v01/v02 captures remain intact.
+The four current clips come from the checksum-verified archived `opus-source.html` and `reference-source.html` payloads with the shared renderer. Each includes 1.8 seconds of presentation after its recorded final tick. Full-arena shots use the `ending` variant; close-ups use `impact` with the result banner suppressed. Simulation clocks stop at 10.35s and 11.20s. v04 captured at a 3840×2160 browser viewport, producing 1098×1953 board frames and 1098×1954 encoded clips. The underlying action records and results are unchanged.
 
 From the repository root:
 
@@ -63,7 +39,7 @@ python3 demo/prepare_ending_capture.py
 python3 -m http.server 8767 --bind 127.0.0.1 --directory demo/assets/captures
 ```
 
-Capture `opus-ending-capture.html`, `reference-ending-capture.html`, `opus-impact-capture.html`, and `reference-impact-capture.html` at that local server with `demo/capture.js`. The capture script reads each page's variant, output directory, and presentation tail. Then encode the four variants:
+Capture `opus-ending-capture.html`, `reference-ending-capture.html`, `opus-impact-capture.html`, and `reference-impact-capture.html` at that local server with `demo/capture.js`. The script reads each page's variant, output directory, and presentation tail. Then encode and stage the four variants:
 
 ```bash
 for source in opus reference; do
@@ -78,12 +54,10 @@ done
 python3 demo/remotion/prepare-assets.py
 ```
 
-The capture manifest is `demo/assets/captures/ending-capture-metadata.json`; the production record stores rendered clip hashes and dimensions. These are local ignored media. [Shared renderer behavior and validation](../../docs/rendering.md#tower-destruction-and-endings).
+Capture metadata lives in `demo/assets/captures/ending-capture-metadata.json`. See [shared renderer validation](../../docs/rendering.md#tower-destruction-and-endings) and the [demo source guide](../README.md).
 
 ## Sources and guidance
 
-- [Evidence manifest](../evidence.json): exact model run, result, and validated reference.
-- [Storyboard](../storyboard.md): current cut timing.
-- [Official Remotion skills](https://www.remotion.dev/docs/ai/skills): creation, markup, video layout, editable timelines, interactivity, Studio, media, local fonts, and review-frame rendering.
-
-Human narration, the final audio mix, and the submission MP4 remain production work.
+- [Official Remotion skills](https://www.remotion.dev/docs/ai/skills): markup, media, timeline, editable composition, and rendering guidance.
+- [Production record](../production.json): exact source provenance, capture and export hashes, and review checks.
+- [Shot list](../shot-list.md): capture and assembly status.

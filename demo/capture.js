@@ -1,7 +1,9 @@
 // Run with the Playwright CLI after opening opus-capture.html or reference-capture.html.
-// playwright-cli run-code --filename demo/capture.js
+// Pass this script to playwright-cli run-code after opening a prepared capture page.
 async (page) => {
-  await page.setViewportSize({ width: 1920, height: 1080 });
+  // Let the shared renderer draw a larger canvas before saving the board.
+  // The replay state and the 20 fps sampling stay exactly the same.
+  await page.setViewportSize({ width: 3840, height: 2160 });
   const source = new URL(page.url());
   const base = source.pathname.includes('reference') ? 'reference' : 'opus';
   const marker = page.locator('meta[name="demo-capture-variant"]');
@@ -24,5 +26,7 @@ async (page) => {
       scale: 'css',
     });
   }
-  return { name, frames: count, fps, duration: info.duration, directory };
+  const board = await page.locator('#board').boundingBox();
+  return { name, frames: count, fps, duration: info.duration, directory,
+    capturedBoard: board && { width: board.width, height: board.height } };
 }

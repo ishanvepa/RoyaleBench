@@ -1,6 +1,7 @@
 """Stage existing evidence footage for Remotion; never calls a model."""
 import json
 import shutil
+import subprocess
 from pathlib import Path
 
 project = Path(__file__).resolve().parent
@@ -22,6 +23,8 @@ for name in ["opus", "reference"]:
     shutil.copyfile(demo / f"assets/captures/{name}-impact-frames/{final:04d}.png", media / f"{name}-impact-final.png")
 shutil.copyfile(demo / "assets/captures/dashboard.png", media / "dashboard.png")
 shutil.copyfile("/System/Library/Fonts/Supplemental/Impact.ttf", fonts / "impact.ttf")
+subprocess.run(["node", str(project / "generate-card-art.cjs")], check=True)
+subprocess.run(["python3", str(project / "generate-audio.py")], check=True)
 evidence = json.loads((demo / "evidence.json").read_text())
 assert evidence["run"]["successful_objectives"] == 10
 assert evidence["model_attempt"]["outcome"]["result"] == "loss"

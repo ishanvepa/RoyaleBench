@@ -1,42 +1,34 @@
 {
-  "status": "Remotion v03 polish pass ready in Studio; 72-second silent preview, final narration/audio and MP4 export pending.",
-  "updated_at_utc": "2026-11-15T19:10:36.445283+00:00",
+  "status": "Remotion v04 67-second benchmark-context demo exported locally; publication pending.",
+  "updated_at_utc": "2026-11-15T20:58:18+00:00",
   "active_edit": {
     "project": "remotion",
     "composition_id": "RoyaleBench",
     "preview_url": "http://localhost:3010/RoyaleBench",
-    "duration_s": 72,
+    "duration_s": 67,
     "width": 1920,
     "height": 1080,
     "fps": 30,
     "remotion_version": "4.0.543",
-    "audio": "Silent. The v01 computer voice is not used.",
-    "visual_direction": "Cream/charcoal palette, recorded gameplay, matched six-play strips, precise timed comparisons, short eased entrances, and hard cuts.",
-    "source_footage": "Checksum-verified archived Opus and reference payloads, rendered with current shared graphics; original captures preserved. No model calls.",
-    "contact_sheet": "exports/v03-contact-sheet.jpg",
+    "audio": "No narration. Twelve burned-in silent-viewing caption cues and deterministic original effects at scene and deployment beats.",
+    "visual_direction": "Game-authored navy battle panels, team blue/red, gold outcomes, elixir accents and card portraits; synchronized recorded arenas and paired Cannon/Log freezes.",
+    "source_footage": "Checksum-verified archived Opus and reference payloads, recaptured at 1098x1953 board pixels with current shared renderer; original action records and outcomes unchanged. No model calls.",
+    "contact_sheet": "exports/v04-contact-sheet.jpg",
     "review_frames": [
       0,
       90,
-      210,
+      180,
+      300,
       390,
-      585,
-      660,
-      840,
-      1049,
-      1050,
-      1085,
-      1086,
-      1095,
-      1170,
-      1230,
-      1320,
+      570,
+      720,
+      930,
+      1110,
+      1200,
       1410,
-      1500,
-      1590,
-      1740,
-      1830,
-      1950,
-      2070
+      1530,
+      1800,
+      1980
     ],
     "skills_source": "https://www.remotion.dev/docs/ai/skills",
     "guidance_used": [
@@ -57,25 +49,22 @@
       "remotion-markup/timing",
       "remotion-interactivity/timeline-structure"
     ],
-    "editability": "Explicit scene sequences, Interactive text, gameplay source/crop/start/speed controls. Evidence clocks, time-dependent labels, and score marks are programmatic.",
-    "version": "v03",
+    "editability": "Eight explicit scene sequences; editable labels and gameplay source/camera/start/speed controls. Evidence clocks, card order, captions and score marks are programmatic.",
+    "version": "v04",
     "polish_changes": [
-      "Introduced the project and benchmark earlier.",
-      "Matched six-play progress strips to identical recorded deployment times.",
-      "Cut reference close-up to attack at replay 10.00s.",
-      "Clarified Cannon and Log freeze comparisons with precise markers and clocks.",
-      "Added short eased title entrances, readable interface and grouped result marks.",
-      "Trimmed four seconds from comparison, interface, and result holds.",
-      "Updated optional human narration to the 72-second timeline."
+      "Changed the opening headline to 'RoyaleBench: LLM Benchmark', then revealed the recorded defeat.",
+      "Explained fixed battle states, the tower-race objective, text observations, card-and-coordinate commands, and replay grading immediately after the opening.",
+      "Moved the actual text observation and first recorded command directly after the task diagram, before the synchronized model/reference replays.",
+      "Retimed the twelve caption cues and original effects to the new scene order.",
+      "Retained game-authored palette, card portraits, higher-resolution recorded footage, and paired Cannon/Log freezes."
     ],
-    "workspace": "/Users/ben/.codex/worktrees/fa84/RoyaleBench/demo/remotion",
+    "workspace": "/Users/ben/.codex/worktrees/dd22/RoyaleBench/demo/remotion",
     "ending_animation": {
       "renderer": "../cr_arena/battle_renderer.js",
       "presentation_tail_s": 1.8,
       "simulation_clock_advances_during_tail": false,
       "full_arena": "Tower burst and result banner",
       "closeups": "Tower burst only; result banner suppressed to avoid cropped ribbons",
-      "preview": "exports/renderer-endings.gif",
       "capture": {
         "fps": 20,
         "presentation_tail_s": 1.8,
@@ -98,15 +87,15 @@
             },
             "ending": {
               "path": "assets/captures/opus-ending-replay.mp4",
-              "sha256": "241661776f8ca2df3acb057d7b32fd2c081ff3c57c6a2fa7f33e6334bbbd3593",
-              "bytes": 379229,
+              "sha256": "f923b9a2a620d90a34ab47a9469dd7241846751aa08ec08cf2404886edd9df30",
+              "bytes": 1005508,
               "probe": {
                 "programs": [],
                 "stream_groups": [],
                 "streams": [
                   {
-                    "width": 486,
-                    "height": 866,
+                    "width": 1098,
+                    "height": 1954,
                     "r_frame_rate": "20/1",
                     "nb_frames": "244"
                   }
@@ -118,15 +107,15 @@
             },
             "impact": {
               "path": "assets/captures/opus-impact-replay.mp4",
-              "sha256": "f68b7fe40089f9daa197cfedf033c454340022e4c5a1261ee56b57efeed90608",
-              "bytes": 307806,
+              "sha256": "ea9653c0b5d2b595c7f185a637106d85ae6f5f11a7701e6e81578f8365739c64",
+              "bytes": 736390,
               "probe": {
                 "programs": [],
                 "stream_groups": [],
                 "streams": [
                   {
-                    "width": 486,
-                    "height": 866,
+                    "width": 1098,
+                    "height": 1954,
                     "r_frame_rate": "20/1",
                     "nb_frames": "244"
                   }
@@ -153,15 +142,15 @@
             },
             "ending": {
               "path": "assets/captures/reference-ending-replay.mp4",
-              "sha256": "573150bbf218d2f870fecb80038c2e815913cec2abb96aa0bd9319af12598127",
-              "bytes": 442779,
+              "sha256": "f2a78e8f7612c4626e2f61d4b23cb3a62ee956089c744a2c8dc3cb25ad106b5a",
+              "bytes": 1054134,
               "probe": {
                 "programs": [],
                 "stream_groups": [],
                 "streams": [
                   {
-                    "width": 486,
-                    "height": 866,
+                    "width": 1098,
+                    "height": 1954,
                     "r_frame_rate": "20/1",
                     "nb_frames": "261"
                   }
@@ -173,15 +162,15 @@
             },
             "impact": {
               "path": "assets/captures/reference-impact-replay.mp4",
-              "sha256": "427734eba7265b5a349ee8984f8a9c96b3e9d3cc0c14d0499c442f0549267d00",
-              "bytes": 360522,
+              "sha256": "9775155b31629417e90270d78a5ffd83e048fa22633871caf268df11e68dce5c",
+              "bytes": 836612,
               "probe": {
                 "programs": [],
                 "stream_groups": [],
                 "streams": [
                   {
-                    "width": 486,
-                    "height": 866,
+                    "width": 1098,
+                    "height": 1954,
                     "r_frame_rate": "20/1",
                     "nb_frames": "261"
                   }
@@ -192,27 +181,57 @@
               }
             }
           }
+        },
+        "viewport": {
+          "width": 3840,
+          "height": 2160
+        },
+        "board_frame": {
+          "width": 1098,
+          "height": 1953
         }
       }
+    },
+    "export": {
+      "path": "exports/royalebench-demo-v04.mp4",
+      "sha256": "6ea03d400c08d54123c90f69592b84a5c342cbb7fd15af92fa962a314c1468e8",
+      "bytes": 6250561,
+      "duration_s": 67.008,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "audio_sample_rate": 48000,
+      "audio_channels": 2,
+      "audio_peak_db": -20.6,
+      "composition_duration_s": 67,
+      "video_frames": 2010
+    },
+    "effects_source": {
+      "path": "remotion/public/media/sfx-v04.wav",
+      "sha256": "f916d3b81c72f8f2df319f618151490e05d3f6d74d8e11202ecc7eedb02e0efc",
+      "duration_s": 67
     }
   },
   "checks": {
-    "lint_and_typecheck": "passed",
-    "bundled_browser_review_stills": "22 distinct frames rendered with the Remotion bundled browser, including corrected annotations and frames immediately before/after the reference camera cut and win reveal.",
-    "visual_review": "Reviewed title, setup, both replays and outcomes, winning attack crop, Cannon/Log comparison markers, text observation/command, results, and end card.",
-    "studio_preview": "Composition loads and seeks without browser console errors; reference victory reviewed in Studio at 37 seconds.",
+    "lint_and_typecheck": "passed after final context and timing edits",
+    "bundled_browser_review_stills": "Reviewed the new opening headline at frame 55 and its clearance before the defeat reveal at frame 90; final encoded contact sheet inspected.",
+    "visual_review": "'RoyaleBench: LLM Benchmark' fits cleanly over the arena. The task diagram leads directly into the actual text observation and command before gameplay. Comparison, Cannon/Log freezes, result and end card remain legible.",
+    "studio_preview": "Loaded the 67-second v04 composition in Remotion Studio; the timeline shows the text-observation scene directly after the benchmark task scene. At frame 570 the command, portrait and board loaded with no error overlay.",
     "evidence": "Reuses the verified v01 evidence manifest and matching v6 reference.",
     "documentation_links": "passed",
-    "source_footage": "Archived source HTML SHA-256 values verified; underlying payloads, card order, deployment ticks, winner, score and final hashes unchanged. New presentation clips use current shared renderer.",
-    "timeline": "Nine contiguous scenes, no gaps or overlaps, 2160 frames / 72 seconds at 30 fps.",
+    "source_footage": "Archived source HTML hashes verified; replay payloads, card order, deployment ticks, winners and final hashes unchanged. Four high-resolution presentation clips captured and hashed.",
+    "timeline": "Eight contiguous scenes, no gaps or overlaps, 2010 frames / 67 seconds at 30 fps; actual interface scene occupies seconds 13–24 before synchronized attempts.",
     "ending_animation": "37 renderer tests and 9 replay/embedding tests pass; live benchmark reference test passes. Browser verified deferred dialogs for win/loss/draw/case pass/fail, reset on new match, and reduced motion. Seven updated demo ending frames rendered and reviewed.",
-    "api_task_replays": "Additional dashboard API suite could not load: the available Python environment lacks valkyrie-sdk (and requires system httpx). No API-service code changed."
+    "api_task_replays": "Additional dashboard API suite could not load: the available Python environment lacks valkyrie-sdk (and requires system httpx). No API-service code changed.",
+    "audio": "67-second 48 kHz original effects WAV; exported AAC stereo peaks at -20.6 dB, with no narration.",
+    "full_video_and_audio_decode": "passed for the final 67-second MP4 with updated opening title",
+    "export_probe": "1920x1080 H.264 30 fps, 2010 video frames, 67.008-second container; 48 kHz stereo AAC audio."
   },
   "remaining": [
-    "Record and measure optional final human narration; no system voice is included.",
-    "Add final audio mix and retime narration captions if voice is recorded.",
-    "Export the MP4 when the visual edit is approved.",
-    "Publish the submission video and update the root README."
+    "Watch the local export at normal size with sound and muted before submission.",
+    "Publish the submission video and add its public URL to the root README."
   ],
   "previous_v01": {
     "status": "First review cut; final voice and publication pending.",

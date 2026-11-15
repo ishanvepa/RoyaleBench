@@ -1,25 +1,21 @@
-# Optional human narration — 72-second edit
+# Silent-viewing captions — 67-second edit
 
-The [v03 Remotion preview](remotion/README.md) is silent. This script is ready for a human timed read, with room to watch the gameplay. Record and measure the take before adding audio or captions. The earlier Samantha scratch voice is not used.
+The active [v04 Remotion cut](remotion/README.md) has no narration. These lines are burned into the video at the exact times below; a quiet original effects track marks scene changes and matched deployments.
 
-| Time | Narration |
+| Time | Caption |
 | --- | --- |
-| 0–4s | Claude Opus lost this. Could the same cards have won? |
-| 4–9s | Eighteen seconds of overtime. Your tower: 250 health. Next tower down wins. |
-| 9–21s | Opus freezes the Giant, places a Cannon, and cycles into Fireball and Hog Rider. Then it sends Log at the enemy tower. The Giant gets through first. |
-| 21–25s | That Log went on offense. The defense still needed help. |
-| 25–38s | Here's the validated reference. Same position. Same six cards, in the same order, at the same times. Different placements. This time, Log hits the Giant, and the Hog gets through. |
-| 38–43s | Compare the Cannon placements. The reference places it higher, closer to the left lane. |
-| 43–48s | Then compare the Log targets: the enemy tower, or the incoming Giant. |
-| 48–56s | RoyaleBench gives models text observations. They choose a card and coordinates. The simulation pauses while they think. |
-| 56–64s | In this run, Opus completed ten of fourteen task objectives. Tasks run on Valkyrie and Modal, with independent replay verification. |
-| 64–72s | The right cards are only the beginning. This is RoyaleBench. |
+| 0–4s | RoyaleBench tests gameplay decisions by language models. |
+| 4–8.5s | Each task begins from a fixed Clash Royale battle state. |
+| 8.5–13s | The model reads text, chooses a card and coordinates; a verifier replays the actions. |
+| 13–18s | Here is the actual text observation. |
+| 18–24s | The model chooses a card slot and arena coordinates. |
+| 24–28s | Same six cards. Same order, timing, and 15 elixir. |
+| 28–33s | The placements differ. |
+| 33–37s | Opus loses. The validated reference wins. |
+| 37–43s | Reference Cannon: half a tile left, one tile higher. |
+| 43–50s | Model Log: enemy tower. Reference Log: incoming Giant. |
+| 50–59s | In one v6 run, Opus completed 10 of 14 task objectives. |
+| 59–63s | The validated reference finds the winning connection. |
+| 63–67s | No caption; leave the end card clear. |
 
-## Recording and editorial notes
-
-- Timing is an allocation, not a measured voice duration. Leave the final title readable after the last word; adjust the edit after the human take if needed.
-- Say “task objectives” for 10/14: v6 includes objectives besides match wins.
-- Attribute the result to one recorded run; it is not a repeated-run model ranking.
-- Describe visible decisions. The trace does not record private reasoning.
-- Cannon and Log are visible examples of placement differences across the full sequences; avoid claiming either is the sole cause.
-- The reference uses the same card order. Hog is not in the starting hand.
+The editable source of truth is `remotion/src/GameUI.tsx`. The comparison identifies visible placement differences, not a sole cause of the outcome. The score is task objective success in one historical v6@1 run; v6 contains objectives besides match wins. The model receives text observations, and the arena is the replay visualization for viewers.

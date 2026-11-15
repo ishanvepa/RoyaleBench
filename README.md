@@ -65,7 +65,7 @@ Remove `--slice 0:1` for a full 21-task run. Record the immutable dataset revisi
 - [cr_arena](cr_arena): simulator interface, task packaging, verifier support, and reference playback.
 - [rb_evals](rb_evals), [rb_server](rb_server), [web](web): evaluation service and dashboard.
 - [runs/royalebench-v9](runs/royalebench-v9): compact validation and resolution evidence; [runs/README.md](runs/README.md) explains artifact retention.
-- [demo](demo/README.md): 72-second Remotion edit and evidence record. The final video export and public link are pending.
+- [demo](demo/README.md): 67-second Remotion edit, local MP4 export, and evidence record. The public video link is pending.
 - [docs/royalebench_v9.md](docs/royalebench_v9.md): scoring, exact source packages, validation, and publication. Earlier version guides preserve development provenance.
 
 ## Limitations

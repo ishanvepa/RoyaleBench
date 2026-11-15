@@ -1,6 +1,6 @@
 # Capture and edit checklist
 
-The active v03 edit is the [72-second Remotion composition](remotion/README.md). Original footage is reused with larger crops. Its preview is silent and does not use the v01 computer voice. This checklist also preserves the original capture history.
+The active v04 edit is the [67-second Remotion composition](remotion/README.md). Its first 13 seconds explain the benchmark task and agent loop. Recorded gameplay was recaptured at 1098×1953 board pixels and encoded at 1098×1954. Captions and quiet original effects replace narration. This checklist also preserves the original capture history.
 
 ## Sources
 
@@ -19,10 +19,10 @@ These localhost links require the dashboard on port 8000. During capture the v6 
 | 03 | Full reference continuation | Same framing and simulation-time alignment; winning connection and shared victory animation. | Captured |
 | 04 | Observation and action insert | Selected initial observation fields and the actual first command, typeset for readability. | Composed |
 | 05 | Run results insert | Actual run overview screenshot; no personal account details shown. | Captured |
-| 06 | Comparison graphics | Cannon and Log target markers; explicit freeze clocks; matched labels and outcomes. | Reviewed v03 |
+| 06 | Comparison graphics | Paired Cannon and Log target markers; explicit freeze clocks; matched labels and outcomes. | Reviewed v04 |
 | 07 | Results card | 10/14 task objectives; 10 completed / 4 missed; one attempt per task, v6@1. | Composed |
 | 08 | End card | Project name and configured repository origin. | Composed |
-| 09 | Voiceover | Updated optional 72-second human script; no voice in current preview. | Script ready |
+| 09 | Caption and effects track | Twelve timed caption cues, no narration, original restrained clicks, thumps and chimes. | Exported v04 |
 
 ## Assembly
 
@@ -31,12 +31,12 @@ These localhost links require the dashboard on port 8000. During capture the v6 
 - [x] Assemble the hook, model loss, and comparison before adding dashboard footage.
 - [x] Synchronize comparison footage at elapsed 0; retain each outcome at its actual time.
 - [x] Label the reference clearly and add initial placement highlights.
-- [x] Generate temporary narration within the scene durations.
-- [x] Add approximate captions; keep text clear of tower health and key units.
+- [x] Use exact on-screen caption intervals; keep text clear of tower health and key units.
+- [x] Generate an original effects track tied to scene and deployment beats.
 - [x] Confirm displayed numbers against the evidence manifest.
-- [ ] Record final narration and retime captions to that recording.
-- [ ] Review at normal size with sound, then muted for caption readability.
-- [ ] Export final MP4 and record its duration, shared location, and published URL in `README.md`.
+- [x] Export the 67-second local MP4 and review representative encoded frames and audio statistics.
+- [ ] Watch the full cut at normal size with sound, then muted for caption readability.
+- [ ] Publish the video and record its public URL in `README.md`.
 
 ## Asset naming
 

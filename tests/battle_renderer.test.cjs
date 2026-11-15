@@ -435,3 +435,35 @@ test('other cards and flying troops keep the rotating miniature', () => {
   for (const [card, unit, options] of others)
     assert.ok(troopScene(card, unit, [1, 0], options).operations.some(op => op[0] === 'rotate'), card);
 });
+
+test('classic buildings keep hit targets and aim their weapons at the enemy side', () => {
+  const names = ['Cannon', 'Tombstone', 'InfernoTower', 'Tesla', 'Xbow'];
+  const buildingCards = Object.fromEntries(names.map((n, i) => [10 + i, [n]]));
+  const state = {en: names.flatMap((n, i) => [
+    [100 + i, 0, 1, 10 + i, 3 + 3 * i, 9, 500, 500, n === 'Tombstone' ? 1 : .6, 0, -1],
+    [200 + i, 1, 1, 10 + i, 3 + 3 * i, 23, 500, 500, n === 'Tombstone' ? 1 : .6, 0, -1, 0, -256],
+  ]), sp: [], pr: []};
+  for (const flip of [false, true]) {
+    const {renderer, operations} = fixture();
+    renderer.observe(state, 0);
+    const hits = renderer.draw(state, state, 1, 50, {scale: 20, cards: buildingCards, flip});
+    for (const hit of hits.filter(h => h.entity[2] === 1)) {
+      const [, , , , x, y, , , rad] = hit.entity;
+      assert.deepEqual([...hit.p], [(flip ? 18 - x : x) * 20, (flip ? y : 32 - y) * 20]);
+      assert.equal(hit.rad, Math.max(20 * .48, rad * 20));
+    }
+    // Cannon, Inferno nozzle and X-Bow turn; blue (no facing) and red (facing down) both point across the river
+    const at = new Map(hits.map(h => [h.p.join(), h.entity]));
+    let current = null;
+    const turns = [];
+    for (const [op, ...args] of operations) {
+      if (op === 'translate' && at.has(args.join())) current = at.get(args.join());
+      if (op === 'rotate') turns.push([current[1], args[0]]);
+    }
+    assert.equal(turns.length, 6);
+    for (const [team, angle] of turns) {
+      const across = (team === 0) !== flip ? 0 : Math.PI;
+      assert.ok(Math.abs(angle - across) < 1e-9, `team ${team} flip ${flip}: ${angle}`);
+    }
+  }
+});

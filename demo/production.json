@@ -1,0 +1,373 @@
+{
+  "status": "Remotion v02 visual edit ready in Studio; silent preview, final narration/audio and MP4 export pending.",
+  "updated_at_utc": "2026-11-15T18:24:05.280918+00:00",
+  "active_edit": {
+    "project": "remotion",
+    "composition_id": "RoyaleBench",
+    "preview_url": "http://localhost:3008/RoyaleBench",
+    "duration_s": 76,
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "remotion_version": "4.0.543",
+    "audio": "Silent. The v01 computer voice is not used.",
+    "visual_direction": "Gameplay close-ups, hard cuts, cream/charcoal palette, condensed display type, brief annotations.",
+    "source_footage": "Existing recorded Opus and Docker-validated reference captures; no new model calls.",
+    "contact_sheet": "exports/v02-contact-sheet.jpg",
+    "review_frames": [
+      90,
+      210,
+      390,
+      660,
+      990,
+      1260,
+      1590,
+      1860,
+      2190
+    ],
+    "skills_source": "https://www.remotion.dev/docs/ai/skills",
+    "guidance_used": [
+      "remotion-create",
+      "remotion-markup",
+      "remotion-interactivity",
+      "remotion-studio",
+      "remotion-render",
+      "video-layout",
+      "video-editing",
+      "compositions",
+      "multi-scene-video",
+      "timeline-structure",
+      "cropping",
+      "embedding-videos",
+      "local-fonts"
+    ],
+    "editability": "Explicit scene sequences, Interactive text, gameplay source/crop/start/speed controls. Evidence clocks, time-dependent labels, and score marks are programmatic."
+  },
+  "checks": {
+    "lint_and_typecheck": "passed",
+    "bundled_browser_review_stills": "Nine frames rendered successfully with the bundled Remotion browser.",
+    "visual_review": "Reviewed cold open, setup, gameplay crops, Log freeze, reference, Cannon comparison, CLI observation, results, and end card.",
+    "studio_preview": "Composition loaded without an error overlay; seeking verified.",
+    "evidence": "Reuses the verified v01 evidence manifest and matching v6 reference.",
+    "documentation_links": "passed"
+  },
+  "remaining": [
+    "Review the full visual edit for pacing in Studio.",
+    "Record final human narration if desired; no system voice is included.",
+    "Add final audio mix and any narration captions.",
+    "Export the MP4 when the visual edit is settled.",
+    "Publish the submission video and update the root README."
+  ],
+  "previous_v01": {
+    "status": "First review cut; final voice and publication pending.",
+    "recorded_at_utc": "2026-11-15T18:05:11.573266+00:00",
+    "video": {
+      "path": "exports/royalebench-demo-v01.mp4",
+      "sha256": "24586f66b95df8689861a9fd1b8c2b1e6d897ede7f6b8218b5d1805ea4880726",
+      "bytes": 3986811,
+      "duration_s": 90,
+      "width": 1920,
+      "height": 1080,
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "audio_sample_rate": 48000,
+      "audio_channels": 2,
+      "output_fps": 30,
+      "composition_fps": 20
+    },
+    "captions": {
+      "path": "exports/royalebench-demo-v01.srt",
+      "burned_in": true,
+      "timing": "Approximate, distributed by word count within measured temporary voice segments; retime for final narration."
+    },
+    "preview": "exports/export-qa-contact-sheet.jpg",
+    "capture": {
+      "source": "Recorded referee replays rendered with the existing battle renderer, captured through Playwright.",
+      "model_run_id": "45124458-3a52-4e73-b380-ee42f6934b19",
+      "task_id": "04-critical-cycle-and-connect",
+      "fps": 20,
+      "model_frames": 208,
+      "reference_frames": 225,
+      "reference_source": "runs/royalebench-v6/docker/04-critical-cycle-and-connect",
+      "reference_validation": {
+        "task": "04-critical-cycle-and-connect",
+        "family": 4,
+        "reward": 1,
+        "integrity": 1,
+        "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+        "config_sha256": "c87b0acb550397cbdbba48cf4d96e8ceb3566d70f0d2667a8639d541e001a7ae",
+        "image": "sha256:f76e04e031f0d686267b4cd6c18a0a52b1c4962c7e6d15e4910fde147d249d5b",
+        "isolated": true,
+        "restart_verified": true,
+        "capture_complete": true,
+        "trace_frames": 225,
+        "replay_hashes_verified": true,
+        "capture_schema_version": "1.0",
+        "network": "none",
+        "elapsed_s": 22.735,
+        "source": "royalebench/royalebench-win@2",
+        "task_digest": "sha256:d3db754e52ac464d41811b6877afe65a34f62bb20617d0b32d8b021fccfbafb8",
+        "negative_rewards": {
+          "empty": 0.0,
+          "malformed": 0.0,
+          "wrong-type": 0.0
+        }
+      },
+      "source_replays": {
+        "opus": {
+          "duration_s": 10.35,
+          "start_tick": 5640,
+          "end_tick": 5847,
+          "source_frames": 105,
+          "source_html_sha256": "8eb8bde7d4a3244b3a3ac3860ae507df6d769f224db17a6afcabd46c58eacae8",
+          "deploys": [
+            {
+              "tick": 5640,
+              "team": 0,
+              "slot": 0,
+              "card": 30,
+              "x": 63000,
+              "y": 198000,
+              "status": 0
+            },
+            {
+              "tick": 5680,
+              "team": 0,
+              "slot": 0,
+              "card": 93,
+              "x": 135000,
+              "y": 189000,
+              "status": 0
+            },
+            {
+              "tick": 5720,
+              "team": 0,
+              "slot": 0,
+              "card": 108,
+              "x": 63000,
+              "y": 459000,
+              "status": 0
+            },
+            {
+              "tick": 5760,
+              "team": 0,
+              "slot": 0,
+              "card": 21,
+              "x": 63000,
+              "y": 270000,
+              "status": 0
+            },
+            {
+              "tick": 5800,
+              "team": 0,
+              "slot": 3,
+              "card": 119,
+              "x": 63000,
+              "y": 441000,
+              "status": 0
+            },
+            {
+              "tick": 5840,
+              "team": 0,
+              "slot": 3,
+              "card": 30,
+              "x": 79200,
+              "y": 162000,
+              "status": 0
+            }
+          ],
+          "result": {
+            "winner": 1,
+            "crowns": [
+              0,
+              1
+            ],
+            "final_tick": 5847,
+            "final_hash": "f19e915d432c0ba4"
+          }
+        },
+        "reference": {
+          "duration_s": 11.2,
+          "start_tick": 5640,
+          "end_tick": 5864,
+          "source_frames": 113,
+          "source_html_sha256": "4631c92949ce2a31c4f65611b64caa50164eafa70d1a566e6a46e40ef943e8aa",
+          "deploys": [
+            {
+              "tick": 5640,
+              "team": 0,
+              "slot": 0,
+              "card": 30,
+              "x": 63000,
+              "y": 180000,
+              "status": 0
+            },
+            {
+              "tick": 5680,
+              "team": 0,
+              "slot": 0,
+              "card": 93,
+              "x": 126000,
+              "y": 207000,
+              "status": 0
+            },
+            {
+              "tick": 5720,
+              "team": 0,
+              "slot": 0,
+              "card": 108,
+              "x": 63000,
+              "y": 459000,
+              "status": 0
+            },
+            {
+              "tick": 5760,
+              "team": 0,
+              "slot": 0,
+              "card": 21,
+              "x": 63000,
+              "y": 270000,
+              "status": 0
+            },
+            {
+              "tick": 5800,
+              "team": 0,
+              "slot": 3,
+              "card": 119,
+              "x": 89676,
+              "y": 155214,
+              "status": 0
+            },
+            {
+              "tick": 5840,
+              "team": 0,
+              "slot": 3,
+              "card": 30,
+              "x": 80910,
+              "y": 175788,
+              "status": 0
+            }
+          ],
+          "result": {
+            "winner": 0,
+            "crowns": [
+              1,
+              0
+            ],
+            "final_tick": 5864,
+            "final_hash": "a7691b83ebc7a24f"
+          }
+        }
+      },
+      "dashboard_insert": "Actual screenshot of the run overview.",
+      "opening_frame": "First recorded replay frame, including the first deployment cue.",
+      "interpolation": "Existing battle renderer; straight-line interpolation between recorded frames."
+    },
+    "audio": {
+      "voice": "Temporary macOS Samantha computer voice.",
+      "mean_volume_db": -20.4,
+      "peak_volume_db": -5.0,
+      "scenes": [
+        {
+          "scene": "hook",
+          "allocated_s": 10,
+          "voice_s": 8.818095,
+          "rate_wpm": 150,
+          "voice": "macOS Samantha (temporary)"
+        },
+        {
+          "scene": "attempt",
+          "allocated_s": 15,
+          "voice_s": 6.183175,
+          "rate_wpm": 150,
+          "voice": "macOS Samantha (temporary)"
+        },
+        {
+          "scene": "failure",
+          "allocated_s": 10,
+          "voice_s": 5.597188,
+          "rate_wpm": 150,
+          "voice": "macOS Samantha (temporary)"
+        },
+        {
+          "scene": "comparison",
+          "allocated_s": 18,
+          "voice_s": 13.254785,
+          "rate_wpm": 150,
+          "voice": "macOS Samantha (temporary)"
+        },
+        {
+          "scene": "method",
+          "allocated_s": 15,
+          "voice_s": 13.101134,
+          "rate_wpm": 150,
+          "voice": "macOS Samantha (temporary)"
+        },
+        {
+          "scene": "results",
+          "allocated_s": 14,
+          "voice_s": 13.328163,
+          "rate_wpm": 165,
+          "voice": "macOS Samantha (temporary)"
+        },
+        {
+          "scene": "close",
+          "allocated_s": 8,
+          "voice_s": 4.849977,
+          "rate_wpm": 150,
+          "voice": "macOS Samantha (temporary)"
+        }
+      ]
+    },
+    "checks": {
+      "full_video_and_audio_decode": "passed",
+      "duration_resolution_and_codecs": "passed",
+      "temporal_review_frames_s": [
+        3,
+        16,
+        28,
+        39,
+        44,
+        48,
+        58,
+        74,
+        86
+      ],
+      "sampled_frames_visual_review": "Reviewed layout, placement markers, captions, results, and end card.",
+      "reference_configuration_matches_packaged_v6_task": true,
+      "arena_payloads_match": true,
+      "deployment_card_ids_and_ticks_match": true,
+      "local_documentation_links": "passed",
+      "python_compile_and_js_syntax": "passed",
+      "git_diff_whitespace": "passed"
+    },
+    "remaining": [
+      "Review the complete cut with sound for pacing.",
+      "Replace temporary computer voice with final narration.",
+      "Retime captions for final narration.",
+      "Refine transitions and placement highlights after feedback.",
+      "Publish the submission video and update the root README."
+    ],
+    "distribution": "Video, captured frames, and audio are local ignored media; scripts, plans, and evidence are tracked source candidates."
+  },
+  "relocation": {
+    "original_checkout": "/Users/ben/.codex/worktrees/98fa/RoyaleBench",
+    "current_checkout": "/Users/ben/Workspace/RoyaleBench",
+    "destination_branch": "main",
+    "scope": "Demo source, existing media, installed local runtime, and demo documentation links only.",
+    "archived_benchmark_paths": "Evidence source paths refer to the original benchmark checkout; captured replay HTML and validation metadata are carried with the demo.",
+    "source_and_media_checksums_verified_before_relocation": 539,
+    "source_copy_removed_after_verification": true,
+    "source_files_verified_before_removal": 539,
+    "main_preview_url": "http://localhost:3008/RoyaleBench",
+    "main_validation": {
+      "lint_and_typecheck": "passed",
+      "review_frames_rendered": [
+        210,
+        390
+      ],
+      "rendered_pixels_identical_to_original": true,
+      "unrelated_files_unchanged": 11
+    }
+  }
+}

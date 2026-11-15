@@ -1,0 +1,13 @@
+# Large recordings, editor projects, and rendered outputs stay local.
+/assets/captures/*
+!/assets/captures/.gitkeep
+/assets/audio/*
+!/assets/audio/.gitkeep
+/assets/graphics/*
+!/assets/graphics/.gitkeep
+/edit/*
+!/edit/.gitkeep
+/exports/*
+!/exports/.gitkeep
+/remotion/public/media/
+/remotion/public/fonts/

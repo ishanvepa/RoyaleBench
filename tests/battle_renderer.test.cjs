@@ -234,3 +234,59 @@ test('crowded troop labels never draw on top of each other', () => {
     assert.ok(labels.length >= 4, `most of the crowd is named (${labels.length})`);
   }
 });
+
+
+// Classic-deck flyers: [uid, team, kind, card, x, y, hp, maxHp, radius, flags, slot, fx, fy]
+const airCards = {0: ['Knight'], 5: ['Minions'], 6: ['Balloon'], 15: ['BabyDragon'], 29: ['LavaHound'],
+  37: ['InfernoDragon'], 39: ['MegaMinion'], 49: ['Bats']};
+const airHeight = {5: 1.5, 6: 3, 15: 3.5, 39: 1.5, 49: 2};
+function airDraw(en, options = {}, prev = null) {
+  const {renderer, operations} = fixture();
+  const a = {en: prev || en, sp: [], pr: []}, b = {en, sp: [], pr: []};
+  renderer.observe(a, 0); renderer.observe(b, 100);
+  operations.length = 0;
+  // now = 0 keeps the hover term at sin(uid * 1.7)
+  const hits = renderer.draw(a, b, options.t ?? 1, options.now ?? 0, {scale: 20, cards: airCards, ...options});
+  return {hits, operations};
+}
+const hover = uid => Math.sin(uid * 1.7) * 0.04 * 20;
+
+test('each classic flyer is lifted by its own flying height above an unchanged ground point', () => {
+  for (const flip of [false, true])
+    for (const [card, height] of Object.entries(airHeight)) {
+      const {hits} = airDraw([[3, 1, 0, +card, 4, 8, 100, 100, .5, 1, -1, 0, 1]], {flip});
+      assert.equal(hits[0].p[0], (flip ? 18 - 4 : 4) * 20);
+      const groundY = (flip ? 8 : 32 - 8) * 20;
+      assert.ok(Math.abs(hits[0].p[1] - (groundY - (height * 0.3 * 20 + hover(3)))) < 1e-9, `card ${card}`);
+    }
+});
+
+test('flyer shadows sit on the interpolated ground point before any ground unit is drawn', () => {
+  const prev = [[1, 0, 0, 0, 4, 6, 100, 100, .5, 0, -1, 0, 1], [2, 0, 0, 49, 2, 6, 100, 100, .5, 1, -1, 0, 1]];
+  const now = [[1, 0, 0, 0, 4, 6, 100, 100, .5, 0, -1, 0, 1], [2, 0, 0, 49, 4, 10, 100, 100, .5, 1, -1, 0, 1]];
+  const {hits, operations} = airDraw(now, {t: .5}, prev);
+  const shadow = operations.findIndex(op => op[0] === 'fillStyle' && /^rgba\(12,24,16/.test(op[1]));
+  const ellipse = operations.slice(0, shadow).reverse().find(op => op[0] === 'ellipse');
+  assert.deepEqual(ellipse.slice(1, 3), [3 * 20, (32 - 8) * 20]);
+  const knightBase = operations.findIndex(op => op[0] === 'fillStyle' && op[1] === '#d3c49d');
+  assert.ok(shadow > 0 && shadow < knightBase, 'shadow precedes the ground knight');
+  assert.equal(hits[1].entity[0], 2, 'flyers are drawn, and hit-tested, after ground units');
+  assert.equal(hits[1].p[0], 3 * 20);
+});
+
+test('Lava Pups spawned by the hound are told apart by radius and labelled as pups', () => {
+  const en = [[7, 1, 0, 29, 9, 20, 3581, 3581, .75, 1, -1, 0, -1], [8, 1, 0, 29, 9, 16, 215, 215, .45, 1, -1, 0, -1]];
+  const {hits, operations} = airDraw(en);
+  const labels = operations.filter(op => op[0] === 'fillText').map(op => op[1]);
+  assert.deepEqual(labels.sort(), ['Lava Hound', 'Lava Pups']);
+  assert.ok(Math.abs(hits[0].p[1] - ((32 - 20) * 20 - (4 * 0.3 * 20 + hover(7)))) < 1e-9);
+  assert.ok(Math.abs(hits[1].p[1] - ((32 - 16) * 20 - (3.5 * 0.3 * 20 + hover(8)))) < 1e-9);
+  // traces without radii fall back to health
+  const old = airDraw([[8, 1, 0, 29, 9, 16, 215, 215, 0, 1, -1, 0, -1]]);
+  assert.ok(old.operations.some(op => op[0] === 'fillText' && op[1] === 'Lava Pups'));
+});
+
+test('flyers outside the classic decks keep the generic half-tile lift', () => {
+  const {hits} = airDraw([[4, 0, 0, 37, 4, 8, 100, 100, .5, 1, -1, 0, 1]]);
+  assert.equal(hits[0].p[1], (32 - 8) * 20 - 10);
+});

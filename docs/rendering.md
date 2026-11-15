@@ -80,6 +80,34 @@ pending-play loops in `draw`, and hit timing from `observe` into `drawFx`. On
 macOS with Command Line Tools for Swift 6.3, REA's process helper fails to build
 against the macOS 27 SDK. Set
 `SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk` for the run.
+## Flying units
+
+The flyers in `CLASSIC_DECKS` (Baby Dragon, Balloon, Bats, Lava Hound, Mega Minion
+and Minions, plus Lava Pups spawned by a Lava Hound) have their own miniatures and
+elevation. Each unit's `flying_height` comes from RoyaleAPI's
+[`cards_stats.json`](https://royaleapi.github.io/cr-api-data/json/cards_stats.json):
+1.5 tiles for Minions and Mega Minion, 2 for Bats, 3 for Balloon, 3.5 for Baby Dragon
+and Lava Pups, and 4 for Lava Hound. The body is drawn 0.3 screen tiles above the
+ground per tile of height, with a slight hover. Its shadow and a thin team ring stay
+on the interpolated ground position and are drawn before all ground units. Flyers
+are drawn after every ground unit and tower, far before near, so their hit targets,
+health bars and labels follow the raised body. Other flying cards keep the generic
+half-tile lift.
+
+The engine gives Lava Pups the Lava Hound card id, so the renderer identifies them by
+radius (0.45 vs 0.75 tiles), or by health in traces without radii, and labels them
+"Lava Pups". REA 6.9.0 traced the `flying` flag through `battle_renderer.js` before
+this change. It showed that the flag affected only a fixed half-tile body offset and
+a shadow drawn during the depth-sorted entity pass. On macOS 27, REA's helper needs
+`SDKROOT` set to the 26.5 Command Line Tools SDK.
+
+The Arena 1 reference video shows only Bats among these flyers. Its frames at 8:14–8:17
+(Bats over a Giant at the right bridge) confirm that flyers are drawn over ground
+troops, with shadows on the ground below. The miniatures for the other flyers are
+original designs informed by the card heights above.
+
+![Classic-deck flyers before and after](images/flying-units-before-after.png)
+![Reference frame at 8:17 beside the previous and current renderer](images/flying-units-reference-match.png)
 
 `live.html` handles the WebSocket stream, HUD, and placement controls. `replay.html`
 adapts RoyaleGym's named trace columns into the same drawing contract and handles

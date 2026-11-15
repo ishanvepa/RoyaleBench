@@ -205,9 +205,15 @@ class ResultsCache:
     def save_results(self, run_id: str, results: dict) -> None:
         folder = self._run(run_id)
         folder.mkdir(parents=True, exist_ok=True)
-        tmp = folder / "results.json.tmp"
-        tmp.write_text(json.dumps(results), encoding="utf-8")
-        os.replace(tmp, folder / "results.json")
+        # A page request and the periodic cost refresh can populate the same run concurrently.
+        handle = tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=folder, suffix=".tmp", delete=False)
+        tmp = Path(handle.name)
+        try:
+            with handle:
+                handle.write(json.dumps(results))
+            os.replace(tmp, folder / "results.json")
+        finally:
+            tmp.unlink(missing_ok=True)
 
     def task_dir(self, run_id: str, task_id: str) -> Path:
         return self._run(run_id) / "tasks" / self._safe(task_id)

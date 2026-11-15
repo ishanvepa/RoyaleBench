@@ -5,7 +5,9 @@
 
 import dataclasses
 import time
+import threading
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -47,7 +49,85 @@ class EnvironmentTests(ApiCase):
         self.assertEqual(env["settings"]["benchmark"], "royalebench")  # local settings still available
 
 
+class CostRefreshTests(ApiCase):
+    def test_refresh_downloads_missing_finished_costs_and_reuses_cache(self):
+        from rb_server.cost_refresh import CostRefresher
+        from rb_evals import results as R
+
+        active_id = self.start(task_ids=["t1"])
+        refresher = CostRefresher(self.ctx)
+        with patch.object(self.fake, "download_artifact", wraps=self.fake.download_artifact) as download:
+            refresher.refresh(lambda done, total: None)
+            self.assertGreater(download.call_count, 0)
+            self.assertNotIn(active_id, [call.args[0] for call in download.call_args_list])
+            self.assertEqual(R.uncached_task_count(self.ctx.cache, self.fake.list_runs(self.cfg.benchmark)), 0)
+            count = download.call_count
+            refresher.refresh(lambda done, total: None)
+            self.assertEqual(download.call_count, count)
+            # The next check picks up this job only after every task has finished.
+            self.advance(30)
+            refresher.refresh(lambda done, total: None)
+            self.assertIn(active_id, [call.args[0] for call in download.call_args_list])
+        job = self.client.get(JOBS + "/claude-smoke").json()["job"]
+        self.assertGreater(job["cost_usd"], 0)
+
+    def test_scheduler_runs_on_startup_repeats_and_stops(self):
+        from rb_server.cost_refresh import COST_CHECK_SECONDS, CostRefresher
+
+        self.assertEqual(COST_CHECK_SECONDS, 10)
+        repeated = threading.Event()
+        calls = []
+
+        def start(work):
+            calls.append(work)
+            if len(calls) >= 2:
+                repeated.set()
+            return True
+
+        refresher = CostRefresher(self.ctx, interval=0.01)
+        with patch.object(self.ctx.costs, "start", side_effect=start):
+            refresher.start()
+            try:
+                self.assertTrue(repeated.wait(timeout=2))
+            finally:
+                refresher.close()
+        self.assertFalse(refresher._thread.is_alive())
+
+
 class JobListTests(ApiCase):
+    def test_per_run_costs_download_and_appear_in_list_and_detail(self):
+        run_id = self.start(task_ids=["t1", "t2"], label="costed run")
+        self.advance(30)
+        before = self.client.get(f"{JOBS}/{run_id}").json()["job"]
+        self.assertIsNone(before["cost_usd"])
+        self.assertEqual((before["cost_known"], before["costs_pending"]), (0, 2))
+        self.assertEqual(self.client.post(JOBS + "/costs", json=[run_id]).status_code, 200)
+        for _ in range(100):
+            status = self.client.get("/api/evals/leaderboard/costs").json()
+            if status["state"] != "running":
+                break
+            time.sleep(0.01)
+        self.assertEqual(status["state"], "done")
+        detail = self.client.get(f"{JOBS}/{run_id}").json()["job"]
+        listed = next(j for j in self.client.get(JOBS).json()["jobs"] if j["id"] == run_id)
+        self.assertGreater(detail["cost_usd"], 0)
+        self.assertEqual((detail["cost_known"], detail["costs_pending"]), (2, 0))
+        self.assertAlmostEqual(detail["cost_usd"], detail["cost_per_task"] * 2)
+        for field in ("cost_usd", "cost_per_task", "cost_known", "costs_pending"):
+            self.assertEqual(detail[field], listed[field])
+        other = self.client.get(f"{JOBS}/claude-smoke").json()["job"]
+        self.assertIsNone(other["cost_usd"])  # only the selected run was downloaded
+
+    def test_partial_costs_include_zero_cost_tasks(self):
+        from rb_evals.results import fetch_task_files
+        run_id = self.start(task_ids=["t1", "t2"])
+        self.advance(30)
+        folder = fetch_task_files(self.fake, self.ctx.cache, run_id, "t1", final=True)
+        summary = next(folder.rglob("summary.json"))
+        summary.write_text('{"metrics": {"cost": 0}}', encoding="utf-8")
+        job = self.client.get(f"{JOBS}/{run_id}").json()["job"]
+        self.assertEqual((job["cost_usd"], job["cost_per_task"], job["cost_known"], job["costs_pending"]), (0, 0, 1, 1))
+
     def test_lists_runs_newest_first_with_provider_family(self):
         body = self.client.get(JOBS).json()
         self.assertEqual(body["total"], 7)

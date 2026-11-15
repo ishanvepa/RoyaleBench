@@ -6,17 +6,30 @@ import { StatusPill } from "@/components/domain/StatusPill";
 import { Duration } from "@/components/domain/values";
 import { DataTable } from "@/components/ui/data-table";
 import { formatReward } from "@/lib/format";
+import { useBenchmark } from "../../api/benchmarks";
 import { useJobTasks } from "../../api/jobs";
+import { DifficultyBadge } from "../../benchmarks/badges";
 import { TaskPanel } from "./TaskPanel";
 
-const col = createColumnHelper<TaskRow>();
+const col = createColumnHelper<TaskRow & { difficulty: string }>();
 const ORDER = ["IN_PROGRESS", "EVALUATING", "BUILDING", "ERROR", "STOPPED", "PENDING", "FINISHED"];
 
 export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDetail; runId: string; selected: string; onSelect: (task: string) => void }) {
   const tasks = useJobTasks(runId, detail.active);
+  const benchmark = useBenchmark(detail.job.dataset);
+  const rows = useMemo(() => {
+    const difficulties = new Map(benchmark.data?.tasks.map((task) => [task.id, task.difficulty]));
+    return (tasks.data?.tasks ?? []).map((task) => ({ ...task, difficulty: difficulties.get(task.task) ?? "" }));
+  }, [tasks.data?.tasks, benchmark.data?.tasks]);
   const columns = useMemo(
     () => [
       col.accessor("task", { header: "Task", cell: (c) => <span className="font-mono text-[13px]">{c.getValue()}</span> }),
+      col.accessor((r) => r.difficulty || undefined, {
+        id: "difficulty",
+        header: "Difficulty",
+        sortUndefined: "last",
+        cell: (c) => <DifficultyBadge difficulty={c.getValue() ?? ""} />,
+      }),
       col.accessor((r) => ORDER.indexOf(r.status), {
         id: "status",
         header: "Status",
@@ -61,7 +74,7 @@ export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDet
             <DataTable
               caption="Tasks in this run"
               columns={columns}
-              data={data.tasks}
+              data={rows}
               getRowId={(r) => r.task}
               initialSorting={[{ id: "status", desc: false }]}
               selectedRowId={selected || null}

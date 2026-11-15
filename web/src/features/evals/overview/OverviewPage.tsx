@@ -16,7 +16,7 @@ import { jobColumns } from "../jobs/columns";
 /** How many jobs the table below the totals shows; the Jobs page has the rest. */
 const RECENT = 10;
 
-const COLUMNS = [jobColumns.status, jobColumns.job, jobColumns.benchmark, jobColumns.model, jobColumns.progress, jobColumns.score, jobColumns.started, jobColumns.duration];
+const COLUMNS = [jobColumns.status, jobColumns.job, jobColumns.benchmark, jobColumns.model, jobColumns.progress, jobColumns.score, jobColumns.cost, jobColumns.started, jobColumns.duration];
 
 const sum = (values: number[]) => values.reduce((a, b) => a + b, 0);
 const startedAt = (job: JobRow) => (job.started_at ? Date.parse(job.started_at) : 0);

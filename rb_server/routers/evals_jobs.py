@@ -12,6 +12,7 @@ from ..schemas.common import ActionOut
 from ..schemas.evals import (
     ConcurrencyIn,
     ConcurrencyOut,
+    CostsStatus,
     EnvironmentOut,
     ErrorsOut,
     JobDetail,
@@ -51,6 +52,11 @@ def preview_job(body: JobSpecIn, ctx: Ctx):
              summary="Start a job (a Valkyrie run on Modal)")
 def start_job(body: JobSpecIn, ctx: Ctx):
     return jobs_service.start_job(ctx, body)
+
+
+@router.post("/jobs/costs", response_model=CostsStatus, summary="Download task costs for selected finished runs")
+def start_job_costs(ctx: Ctx, run_ids: Annotated[list[str], Body(max_length=1000)]):
+    return jobs_service.start_job_costs(ctx, run_ids)
 
 
 @router.get("/jobs/{run_id}", response_model=JobDetail)

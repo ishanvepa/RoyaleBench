@@ -41,7 +41,7 @@ export function useJob(runId: string) {
   return useQuery({
     queryKey: qk.evals.job(runId),
     queryFn: () => unwrap(api.GET("/api/evals/jobs/{run_id}", { params: { path: { run_id: runId } } })),
-    refetchInterval: (query) => (query.state.data?.active ? POLL_ACTIVE_MS : false),
+    refetchInterval: (query) => (query.state.data?.active ? POLL_ACTIVE_MS : query.state.data?.job.costs_pending ? 30_000 : false),
   });
 }
 

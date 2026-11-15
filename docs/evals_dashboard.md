@@ -34,9 +34,9 @@ The page tells you which of these is missing.
 
 | Page | What it does |
 | --- | --- |
-| Jobs | Every Valkyrie run, filterable by status, model and benchmark. Filters live in the URL. |
+| Jobs | Every Valkyrie run, filterable by status, model and benchmark, with sortable API cost and average cost per task for each run. Fetch missing costs for the visible runs here. Filters live in the URL. |
 | New job | Pick a published benchmark and revision, run **all of it or selected tasks**, choose harness, model and API-key secret, set concurrency. A live review shows the task count, any problems, and the equivalent `valkyrie run start` command. Sandboxes are always Modal. |
-| Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Task rows open the agent's trace. |
+| Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, API cost and average cost per task, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Fetch missing costs for this run here. Task rows show difficulty badges (easy green, medium amber, hard red) from current local benchmark metadata, with a dash when unavailable, and open the agent's trace. |
 | Benchmarks | The folders under `benchmarks/`, marked draft, published or modified, with their published versions. **Publish** pushes the folder to Valkyrie as a new revision (nothing changes if the content is unchanged). |
 | Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), difficulty badges (easy green, medium amber, hard red), and for each task its instruction, files and results across runs. |
 | Leaderboard | Models by harness with solved, pass rate, score, agent failures, infrastructure errors, time and cost. Click any column to sort. |
@@ -48,6 +48,21 @@ per model. Valkyrie stays the source of truth; finished runs and downloaded cost
 `runs/evals/` (git-ignored). Cost comes from the harness's own summary in each task's output (Claude Code
 writes one) and does not include Modal's sandbox charges.
 
+Run cost metrics are available for **finished runs** and share the leaderboard's task-output cache.
+The real dashboard server automatically fetches missing cost data **when a job finishes completely**,
+checking run status every **10 seconds**, even when no browser is open. This includes smoke tests and
+already-finished runs found at startup. Cached outputs are reused,
+automatic and manual downloads cannot overlap, and failed downloads are retried on the next check.
+This runs while the server is running; simulated Valkyrie mode keeps manual downloads for predictable demos.
+Open pages check download status and pending run costs every 30 seconds, polling faster during a download.
+The Jobs and Job monitor pages offer **Fetch cost data**, show background download progress, and refresh
+the figures when it completes. The Overview's recent jobs also show each run's API cost. Unknown cost is
+shown as a dash; a reported zero is `$0`. An asterisk marks a partial total, with task coverage shown on
+hover and on the monitor. Cost per task averages only tasks with known costs. Run totals include all tasks
+with reported costs, including infrastructure failures; the leaderboard excludes infrastructure failures
+from its model-scoring pool and associated cost totals. Failed, stopped, and active runs have no run-level
+cost metrics yet. Downloading costs does not launch evaluations.
+
 New real runs are enrolled in [data collection](data_collection.md). A server-side worker archives
 their raw artifacts, normalizes telemetry, exports analysis tables, and verifies a durable copy outside
 the dashboard cache. The standalone collector works when this server is closed. Existing runs are not backfilled.
@@ -57,6 +72,55 @@ explicit confirmation) are in [`evals.toml`](../evals.toml). Benchmarks are auth
 [task design](task_design.md): `benchmarks/<name>/<task-id>/` in Harbor format, plus an optional
 `benchmark.toml` with a title, description and `kind` (`eval` or `smoke`). Do not add a `dataset.toml`:
 Valkyrie treats it as a lock on the task list.
+
+## Codex launch troubleshooting
+
+On November 14, 2026, the installed `codex-v1.0.0` contract restricted `defaults.model.choices`
+to six older, unprefixed model IDs. Starting `openai/gpt-6.1-sol` returned HTTP 500 before a run
+was created, both from this dashboard and the Valkyrie CLI. The API-key secret mapping was correct.
+
+The team's installed harness was repaired by downloading it, applying the repository's
+[repair script](../tools/repair_codex_harness.py), and pushing the same harness name again:
+
+```powershell
+valkyrie agent download codex-v1.0.0 -o runs/evals/harness-inspect
+uv run python tools/repair_codex_harness.py runs/evals/harness-inspect/codex-v1.0.0
+valkyrie agent push runs/evals/harness-inspect/codex-v1.0.0
+```
+
+Keep shell scripts in LF format: downloaded harnesses installed from Windows can contain CRLF
+despite this repository's `.gitattributes` (downloaded files are outside Git's checkout rules).
+Run `4832a0e1-58b8-4205-abda-dbeb941ff415` failed before installing dependencies with
+`setup.sh: line 2: $'\r': command not found` and `set: pipefail\r: invalid option name`.
+Converting `setup.sh` as above fixes that shell parsing error. The uploaded archive was read back
+and its `setup.sh` verified to contain no carriage returns (SHA-256
+`c11383359efccd72dbb6fa5880c36c6fa927a1812f62206623b85d2f78cfe5a6`).
+
+The LF-only verification run `645774c9-cc67-4bd7-852d-d32a319e1fc1` completed dependency installation
+and started Codex, then failed with HTTP 401, `Missing bearer or basic authentication in header`.
+The repair script also forwards the injected `OPENAI_API_KEY` to the Codex subprocess as
+`CODEX_API_KEY`, the environment override documented for
+[`codex exec`](https://learn.chatgpt.com/docs/non-interactive-mode). This avoids relying on the
+installer's home-directory credential file being available during agent execution. The existing
+Valkyrie secret mapping remains `OPENAI_API_KEY` to the user's named secret.
+
+Its `collect_outputs.py` already strips the
+`openai/` prefix before passing the model to Codex. Removing the contract allowlist lets the model
+provider validate availability; it does not establish that every model in `evals.toml` is supported.
+Reinstalling the upstream harness may restore the old restriction.
+
+After this change, Valkyrie accepted one task from `royalebench/royalebench-v1@1` with
+`openai/gpt-6.1-sol`, `OPENAI_API_KEY` mapped to `openai-api-key-ishan`, Modal, and concurrency 1.
+Run ID: `3247f17f-ba3a-452e-81ba-f1fab57f5cc1` (label `royalebench-codex-launch-check-fixed`).
+That initial check subsequently failed with the CRLF shell error described above; launch acceptance
+alone does not verify installation, API authentication, task completion, or scoring.
+
+With all three repairs applied, run `667585dd-658f-4879-b6b3-fd37b09a5715`
+(`royalebench-codex-auth-check`) successfully installed dependencies, authenticated, and played
+`01-immediate-lethal` on the same dataset revision, model, secret, provider, and concurrency.
+The model ran `cr act 5` (Fireball on the enemy's left princess tower); the separate verifier
+recorded `reward: 1.0`, `integrity: 1.0`, and `objective_met: 1.0`. This verifies the repaired
+execution path for one task, not the complete eleven-task benchmark.
 
 ## Legacy
 

@@ -13,6 +13,34 @@ const task = (status: string, overrides: Partial<TaskRow> = {}): TaskRow => ({
 afterEach(() => vi.useRealTimers());
 
 describe("Job monitor", () => {
+  it("downloads this run's costs and refreshes the metrics when complete", async () => {
+    let downloaded = false;
+    let state = "idle";
+    let requested: unknown;
+    server.use(
+      http.get("*/api/evals/jobs/:runId", () => HttpResponse.json(jobDetail({}, {
+        total: 2, cost_usd: downloaded ? 0.6 : null, cost_per_task: downloaded ? 0.3 : null,
+        cost_known: downloaded ? 2 : 0, costs_pending: downloaded ? 0 : 2,
+      }))),
+      http.get("*/api/evals/leaderboard/costs", () => {
+        const current = state;
+        if (state === "running") { state = "done"; downloaded = true; }
+        return HttpResponse.json({ state: current, done: downloaded ? 2 : 0, total: 2, error: null });
+      }),
+      http.post("*/api/evals/jobs/costs", async ({ request }) => {
+        requested = await request.json();
+        state = "running";
+        return HttpResponse.json({ state, done: 0, total: 2, error: null });
+      }),
+    );
+    const { user } = renderApp("/evals/jobs/run-1");
+    await user.click(await screen.findByRole("button", { name: "Fetch cost data" }));
+    expect(requested).toEqual(["run-1"]);
+    expect(await screen.findByText("$0.600", {}, { timeout: 4000 })).toBeInTheDocument();
+    expect(screen.getByText("$0.300")).toBeInTheDocument();
+    expect(screen.getByText("Known for 2 of 2 tasks; excludes Modal charges")).toBeInTheDocument();
+  }, 10_000);
+
   it("shows a finished job: status, counts, score and the tasks", async () => {
     renderApp("/evals/jobs/run-1");
     expect(await screen.findByRole("heading", { name: "smoke-run", level: 1 })).toBeInTheDocument();

@@ -38,6 +38,8 @@ export const environment = (overrides: Partial<Environment> = {}): Environment =
 });
 
 export const jobRow = (overrides: Partial<JobRow> = {}): JobRow => ({
+  cost_known: 0,
+  costs_pending: 0,
   id: "run-1",
   job: "smoke-run",
   status: "FINISHED",

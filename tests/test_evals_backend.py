@@ -327,6 +327,24 @@ class ResultsTests(unittest.TestCase):
                 self.assertTrue(cache.task_dir(hostile, hostile).resolve().is_relative_to(root), hostile)
                 self.assertTrue(cache.task_dir("r1", hostile).resolve().is_relative_to(root), hostile)
 
+    def test_concurrent_cache_writers_do_not_share_a_temporary_file(self):
+        import threading
+        from concurrent.futures import ThreadPoolExecutor
+
+        barrier = threading.Barrier(2)
+        replace = os.replace
+
+        def simultaneous_replace(source, target):
+            barrier.wait(timeout=2)
+            replace(source, target)
+
+        with tempfile.TemporaryDirectory() as folder:
+            cache = results.ResultsCache(Path(folder))
+            with patch("rb_evals.results.os.replace", side_effect=simultaneous_replace):
+                with ThreadPoolExecutor(max_workers=2) as pool:
+                    list(pool.map(lambda value: cache.save_results("r1", {"a": value}), [1, 2]))
+            self.assertIn(cache.results("r1"), [{"a": 1}, {"a": 2}])
+
 
 def record(model, agent, tasks, started=None, run_id="r", dataset="smoke"):
     full = [{"task": f"t{i}", "reward": None, "solved": False, "agent_s": None, "counted": True, "cost": None,

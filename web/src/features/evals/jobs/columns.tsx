@@ -4,8 +4,9 @@ import type { JobRow } from "@/api/types";
 import { ModelLabel } from "@/components/domain/ModelLabel";
 import { ProgressCell } from "@/components/domain/SegmentedProgress";
 import { StatusPill } from "@/components/domain/StatusPill";
-import { Duration, RelativeTime, Score } from "@/components/domain/values";
+import { Duration, Money, RelativeTime, Score } from "@/components/domain/values";
 import { harnessName } from "@/lib/format";
+import { RunCost } from "./JobCosts";
 
 const col = createColumnHelper<JobRow>();
 
@@ -53,6 +54,14 @@ export const jobColumns = {
     cell: (c) => <Score value={c.row.original.score} />,
   }),
   startedBy: col.accessor((r) => r.started_by.split("@")[0] ?? "", { id: "by", header: "Started by", cell: (c) => <span className="text-subtle">{c.getValue() || "–"}</span> }),
+  cost: col.accessor((r) => r.cost_usd ?? undefined, {
+    id: "cost", header: "API cost", sortUndefined: "last", sortDescFirst: true,
+    meta: { align: "right" }, cell: (c) => <RunCost job={c.row.original} />,
+  }),
+  costPerTask: col.accessor((r) => r.cost_per_task ?? undefined, {
+    id: "cost_per_task", header: "Cost / task", sortUndefined: "last", sortDescFirst: true,
+    meta: { align: "right" }, cell: (c) => <Money usd={c.row.original.cost_per_task} />,
+  }),
   started: col.accessor((r) => (r.started_at ? Date.parse(r.started_at) : 0), {
     id: "started",
     header: "Started",

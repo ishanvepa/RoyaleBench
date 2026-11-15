@@ -69,6 +69,10 @@ class JobRow(BaseModel):
     total: int
     progress: float
     score: float | None = None
+    cost_usd: float | None = None
+    cost_per_task: float | None = None
+    cost_known: int = 0
+    costs_pending: int = 0
     started_by: str
     started_at: datetime | None = None
     duration_s: float | None = None

@@ -5,7 +5,7 @@ import { ModelLabel } from "@/components/domain/ModelLabel";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
 import { SegmentedProgress } from "@/components/domain/SegmentedProgress";
 import { StatusPill } from "@/components/domain/StatusPill";
-import { Duration, Score } from "@/components/domain/values";
+import { Duration, Money, Score } from "@/components/domain/values";
 import { Banner } from "@/components/ui/banner";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Metric } from "@/components/ui/metric";
@@ -20,6 +20,7 @@ import { ErrorsTab } from "./monitor/ErrorsTab";
 import { JobActions } from "./monitor/JobActions";
 import { LogsTab } from "./monitor/LogsTab";
 import { TasksTab } from "./monitor/TasksTab";
+import { JobCosts, RunCost } from "./JobCosts";
 
 const TABS = ["tasks", "logs", "errors", "config"] as const;
 const searchSchema = z.object({ tab: enumParam(TABS, "tasks"), task: stringParam() });
@@ -80,12 +81,15 @@ function Monitor({ detail }: { detail: JobDetail }) {
         </Banner>
       ) : null}
 
-      <dl className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <dl className="mb-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         <Metric label="Tasks done" value={`${job.done}/${job.total}`} hint={detail.concurrency ? `Concurrency ${detail.concurrency}` : undefined} />
         <Metric label="Score" value={<Score value={job.score} />} hint={job.score == null ? "Shown when the run finishes" : undefined} />
         <Metric label={detail.active ? "Elapsed" : "Duration"} value={<Duration seconds={elapsed} />} />
         <Metric label="Time left" value={timeLeft} hint={queueHint} />
+        <Metric label="API cost" value={<RunCost job={job} />} hint={`Known for ${job.cost_known ?? 0} of ${job.total} tasks; excludes Modal charges`} />
+        <Metric label="Cost / task" value={<Money usd={job.cost_per_task} />} hint={job.status === "FINISHED" ? "Average over tasks with known cost" : "Available after the run finishes"} />
       </dl>
+      <JobCosts jobs={[job]} />
       <SegmentedProgress counts={job.task_state_counts} total={job.total} legend className="mb-8" />
 
       <Tabs value={state.tab} onValueChange={(tab) => setState({ tab: tab as (typeof TABS)[number] })}>

@@ -397,24 +397,24 @@ test('classic ground troops stand upright and mirror instead of rotating', () =>
     'IceSpirits', 'Knight', 'MiniPekka', 'Musketeer', 'Pekka', 'Princess', 'Wizard']) {
     const right = troopScene(card, card, [1, 0]), left = troopScene(card, card, [-1, 0]);
     assert.ok(!right.operations.some(op => op[0] === 'rotate'), card);
-    assert.ok(right.operations.some(op => op[0] === 'scale' && op[1] === 10 && op[2] === 10), card);
-    assert.ok(left.operations.some(op => op[0] === 'scale' && op[1] === -10 && op[2] === 10), card);
+    assert.ok(right.operations.some(op => op[0] === 'scale' && op[1] === 15 && op[2] === 15), card);
+    assert.ok(left.operations.some(op => op[0] === 'scale' && op[1] === -15 && op[2] === 15), card);
   }
 });
 
 test('flipping the board mirrors a ground troop with its screen motion', () => {
   const plain = troopScene('Knight', 'Knight', [1, 0]), flipped = troopScene('Knight', 'Knight', [1, 0], {flip: true});
-  assert.ok(plain.operations.some(op => op[0] === 'scale' && op[1] === 10));
-  assert.ok(flipped.operations.some(op => op[0] === 'scale' && op[1] === -10));
+  assert.ok(plain.operations.some(op => op[0] === 'scale' && op[1] === 15));
+  assert.ok(flipped.operations.some(op => op[0] === 'scale' && op[1] === -15));
   // walking up the screen shows the back; the same motion seen from the other side shows the face
   assert.notEqual(troopScene('Knight', 'Knight', [0, 1]).ops, troopScene('Knight', 'Knight', [0, -1]).ops);
 });
 
-test('ground troop poses keep the entity position and hit target', () => {
+test('ground troop poses keep the entity position with a larger visual hit target', () => {
   for (const facing of [[1, 0], [-1, 0], [0, 1], [0, -1], [0, 0]]) {
     const hit = troopScene('Pekka', 'Pekka', facing, {radius: .75}).hits[0];
     assert.deepEqual([...hit.p], [120, 460]);
-    assert.equal(hit.rad, 15);
+    assert.equal(hit.rad, 22.5);
   }
 });
 

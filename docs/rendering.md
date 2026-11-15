@@ -20,6 +20,34 @@ analysis tool and is not needed at runtime.
 
 ![Arena preview from a recorded battle](images/arena-preview.png)
 
+The five buildings in the classic decks have their own miniatures in `BUILDING_ART`.
+They are drawn in units of the entity radius, so positions, radii and tooltip
+hit targets are unchanged. Other buildings keep the generic block.
+
+- Cannon: a gunmetal barrel with a team band, on an octagonal turret with four splayed wooden feet.
+- Tombstone: a sandstone headstone with a skull and a team-coloured panel, standing over a grave pit.
+- Inferno Tower: an iron column on a glowing furnace ring, with a team collar and a gold nozzle.
+- Tesla: a cross-braced wooden lattice with a steel-blue coil cap and sparks.
+- X-Bow: a crossbow with a stock, limbs, string and bolt, on a team-trimmed hex mount.
+
+Cannon, Inferno Tower and X-Bow turn toward the engine-reported facing. When an older
+trace has no facing, they point across the river. The shapes were matched against these
+gameplay frames (timestamps are seconds into each video):
+
+| Building | Reference |
+| --- | --- |
+| Tesla | [Arena 1 video](https://www.youtube.com/watch?v=PD6QCK7GzA8), 396–403 s and 678 s |
+| Cannon | [“This is 2.6 Hog Cycle”](https://www.youtube.com/watch?v=9ZRbzzNldHM), about 100–112 s |
+| Tombstone | [“LAVA LOON TOMBSTONE is BACK!”](https://www.youtube.com/watch?v=C3hsOTZjvrk), about 200–202 s |
+| Inferno Tower | [Inferno Tower Log Bait, Grand Challenge](https://www.youtube.com/watch?v=RDe17O0xsi0), about 223–233 s |
+| X-Bow | [2.9 X-Bow Cycle ladder gameplay](https://www.youtube.com/watch?v=6onluFV6SNQ), about 217–226 s |
+
+The Arena 1 video shows no Cannon, Tombstone, Inferno Tower or X-Bow.
+In November 2026, REA 6.9.0's `analyze-javascript-application` could not run on macOS 27.
+Its Swift helper for checking process ownership failed to compile. The partial result
+recorded a file digest but skipped parsing, so the drawing path (`drawEntity` →
+`drawBuilding`) was traced by reading the source.
+
 The [Arena 1 gameplay video](https://www.youtube.com/watch?v=PD6QCK7GzA8)
 is saved locally at `data/references/arena-1-PD6QCK7GzA8.mp4` for a future
 reference-matching pass; see [data documentation](../data/README.md#visual-reference).

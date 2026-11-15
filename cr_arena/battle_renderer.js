@@ -778,9 +778,28 @@
     }
     return { reset, observe, draw, addEffect: (f) => fx.push(f) };
   }
+  // Aim previews for the eight classic-deck spells, in tiles. The engine does not report spell
+  // areas, so these are display-only approximations; legality always comes from the mask.
+  const SPELL_AIM = Object.freeze({
+    Fireball: { radius: 2.5 },
+    Zap: { radius: 2.5 },
+    Arrows: { radius: 4 },
+    Rocket: { radius: 2 },
+    Lightning: { radius: 3.5 },
+    Poison: { radius: 3.5 },
+    GoblinBarrel: { radius: 1.5 },
+    Log: { lane: [3.9, 10.1] }, // width, forward length (rolls toward the opponent)
+  });
   // The mask, shading and tap all refer to the SAME half-cell. A mask cell
   // describes its centre; never expand it back into a whole-tile rectangle.
   const placement = Object.freeze({
+    // Describe what to preview for a card: kind is the engine's TROOP / BUILDING / SPELL.
+    cue(name, kind, footprint) {
+      const k = String(kind || "").toUpperCase();
+      if (k === "SPELL") return { kind: "spell", name, ...(SPELL_AIM[name] || { radius: 1 }) };
+      if (k === "BUILDING") return { kind: "building", name, size: footprint > 0 ? footprint : 2 };
+      return { kind: "troop", name };
+    },
     at(x, y, grid) {
       if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
       const cx = Math.floor(x * grid.half),
@@ -799,29 +818,97 @@
         grid.m[point.cy * grid.width + point.cx] === "1"
       );
     },
-    draw(ctx, grid, scale, hover) {
-      const cell = scale / grid.half;
-      ctx.fillStyle = "rgba(200,30,30,.34)";
-      for (let cy = 0; cy < grid.height; cy++)
-        for (let cx = 0; cx < grid.width; cx++) {
-          if (grid.m[cy * grid.width + cx] === "0")
-            ctx.fillRect(cx * cell, (grid.height - cy - 1) * cell, cell, cell);
+    // Shades every blocked half-cell (one fillRect each), outlines where blocked meets
+    // allowed, then previews the card at the hovered half-cell's centre.
+    draw(ctx, grid, scale, hover, cue = null) {
+      const cell = scale / grid.half,
+        W = grid.width,
+        H = grid.height,
+        blocked = (cx, cy) =>
+          cx >= 0 && cx < W && cy >= 0 && cy < H && grid.m[cy * W + cx] === "0";
+      ctx.fillStyle = "rgba(214,52,30,.36)";
+      for (let cy = 0; cy < H; cy++)
+        for (let cx = 0; cx < W; cx++) {
+          if (blocked(cx, cy))
+            ctx.fillRect(cx * cell, (H - cy - 1) * cell, cell, cell);
         }
-      if (!hover) return;
-      const ok = placement.allowed(grid, hover);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = ok ? "#fff" : "#ff5a4a";
-      ctx.fillStyle = ok ? "rgba(255,255,255,.25)" : "rgba(255,90,74,.25)";
+      if (!ctx.beginPath) return; // shading-only contexts (tests) stop here
       ctx.beginPath();
-      ctx.arc(
-        hover.x * scale,
-        (grid.height / grid.half - hover.y) * scale,
-        scale * 0.75,
-        0,
-        7,
-      );
-      ctx.fill();
+      for (let cy = 0; cy < H; cy++)
+        for (let cx = 0; cx < W; cx++) {
+          if (!blocked(cx, cy)) continue;
+          const x0 = cx * cell,
+            y0 = (H - cy - 1) * cell;
+          const edge = (nx, ny, ax, ay, bx, by) => {
+            if (nx < 0 || nx >= W || ny < 0 || ny >= H || blocked(nx, ny)) return;
+            ctx.moveTo(ax, ay);
+            ctx.lineTo(bx, by);
+          };
+          edge(cx, cy + 1, x0, y0, x0 + cell, y0); // top on screen
+          edge(cx, cy - 1, x0, y0 + cell, x0 + cell, y0 + cell);
+          edge(cx - 1, cy, x0, y0, x0, y0 + cell);
+          edge(cx + 1, cy, x0 + cell, y0, x0 + cell, y0 + cell);
+        }
+      ctx.strokeStyle = "rgba(255,112,84,.95)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([]);
       ctx.stroke();
+      if (!hover) return;
+      const ok = placement.allowed(grid, hover),
+        px = hover.x * scale,
+        py = (H / grid.half - hover.y) * scale,
+        line = ok ? "#fff" : "#ff5a4a",
+        wash = ok ? "rgba(255,255,255,.22)" : "rgba(255,90,74,.28)";
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = line;
+      ctx.fillStyle = wash;
+      let top = py - scale * 0.75;
+      if (cue && cue.kind === "spell" && cue.lane) {
+        const [w, len] = cue.lane;
+        ctx.setLineDash([6, 4]);
+        ctx.fillRect(px - (w / 2) * scale, py - len * scale, w * scale, len * scale);
+        ctx.strokeRect(px - (w / 2) * scale, py - len * scale, w * scale, len * scale);
+        ctx.setLineDash([]);
+        top = py - scale * 0.9;
+      } else if (cue && cue.kind === "spell") {
+        ctx.beginPath();
+        ctx.arc(px, py, cue.radius * scale, 0, 7);
+        ctx.fill();
+        ctx.setLineDash([6, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        top = py - cue.radius * scale;
+      } else if (cue && cue.kind === "building") {
+        const s = cue.size * scale;
+        ctx.fillRect(px - s / 2, py - s / 2, s, s);
+        ctx.strokeRect(px - s / 2, py - s / 2, s, s);
+        top = py - s / 2;
+      } else {
+        ctx.beginPath();
+        ctx.arc(px, py, scale * 0.75, 0, 7);
+        ctx.fill();
+        ctx.stroke();
+      }
+      // The snapped half-cell itself: where the play is sent.
+      ctx.fillStyle = line;
+      ctx.fillRect(px - cell / 2 + 1, py - cell / 2 + 1, cell - 2, cell - 2);
+      if (!cue || !cue.name) return;
+      const label = cue.name.replace(/([a-z])([A-Z])/g, "$1 $2") + (ok ? "" : " — not here");
+      ctx.font = "700 " + Math.max(11, Math.round(scale * 0.62)) + "px system-ui";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      const tw = ctx.measureText ? ctx.measureText(label).width : label.length * 7,
+        lh = Math.max(16, scale * 0.95),
+        ly = Math.max(lh / 2 + 2, top - lh / 2 - 6),
+        lx = Math.min(Math.max(px, tw / 2 + 8), (W / grid.half) * scale - tw / 2 - 8);
+      ctx.fillStyle = ok ? "rgba(12,20,34,.82)" : "rgba(120,20,12,.88)";
+      if (ctx.roundRect) {
+        ctx.beginPath();
+        ctx.roundRect(lx - tw / 2 - 7, ly - lh / 2, tw + 14, lh, lh / 2);
+        ctx.fill();
+      } else ctx.fillRect(lx - tw / 2 - 7, ly - lh / 2, tw + 14, lh);
+      ctx.fillStyle = "#fff";
+      ctx.fillText(label, lx, ly);
     },
   });
   window.BattleRenderer = Object.freeze({

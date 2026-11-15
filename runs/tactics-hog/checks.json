@@ -1,0 +1,354 @@
+{
+  "dataset_status": "published",
+  "docker": {
+    "capture_complete": true,
+    "capture_schema_version": "1.0",
+    "config_sha256": "650d5acbe461272bc37224383fe3e437572a63629849fde2dffc356c5bf9e95c",
+    "elapsed_s": 14.179,
+    "family": 5,
+    "image": "sha256:f4c234db18c28359589120f36e383dee4537de43f60d1370fcb669011fb5c418",
+    "integrity": 1,
+    "isolated": true,
+    "network": "none",
+    "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+    "replay_hashes_verified": true,
+    "restart_verified": true,
+    "reward": 1,
+    "task": "05-hog-body-block",
+    "trace_frames": 321
+  },
+  "new_task_digest": "sha256:b1301894b8a73544c242ef89080826765ddfb8294906e36f616f3654ed213d08",
+  "source_dataset": "royalebench/royalebench-tactics@3",
+  "source_packages_unchanged": true,
+  "source_task_digests": {
+    "01-timed-spell-a": "sha256:0e2579caba181db0a46561f1bf26d2783715cd77e92a4b36534ab5ac1d56aa79",
+    "01-timed-spell-b": "sha256:88ed284092d6c1e3b203dc0a587c07dc4d3c2cb62288d893799eb8b83a5e73b8",
+    "02-reserve-counter-a": "sha256:de2e93bb3a6483ae81950340b87e7228fdff1f3a081cd5e617220c41c991e9b9",
+    "03-tower-race-a": "sha256:5f06f83b6c8d7b3535586c06ac806aa7f0cd4f305273f1c81e05f45824d6b028",
+    "03-tower-race-b": "sha256:3e63725e4c80ca0cbbafa4f1c1fff40733cd4b375ad047c94516334828d2e277",
+    "04-tower-trade-a": "sha256:e707547ce030dbdaa350936aede97bca180c4eb98f6f95d0261ebde27be4a3fc",
+    "04-tower-trade-b": "sha256:154132631b6934320601057e344b48f97cdfe06120224c721ef572203eb6d81b"
+  },
+  "task": "05-hog-body-block",
+  "task_count": 8,
+  "validation": {
+    "cases": {
+      "both-half-second-earlier": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.0077,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.058,
+          "plays": [
+            {
+              "card": "IceGolemite",
+              "cost": 2,
+              "decision": 0,
+              "x": 27000,
+              "y": 207000
+            },
+            {
+              "card": "Skeletons",
+              "cost": 1,
+              "decision": 1,
+              "x": 63000,
+              "y": 243000
+            }
+          ],
+          "rejected_actions": 0,
+          "result": "unfinished",
+          "spent_elixir": 3,
+          "ticks": 520,
+          "tower_damage": 634
+        },
+        "reward": 0
+      },
+      "empty": {
+        "reward": 0
+      },
+      "ice-only": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.0077,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.2031,
+          "plays": [
+            {
+              "card": "IceGolemite",
+              "cost": 2,
+              "decision": 1,
+              "x": 27000,
+              "y": 207000
+            }
+          ],
+          "rejected_actions": 0,
+          "result": "unfinished",
+          "spent_elixir": 2,
+          "ticks": 520,
+          "tower_damage": 2219
+        },
+        "reward": 0
+      },
+      "malformed": {
+        "reward": 0
+      },
+      "one-tile-lower": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.0077,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.029,
+          "plays": [
+            {
+              "card": "IceGolemite",
+              "cost": 2,
+              "decision": 1,
+              "x": 27000,
+              "y": 207000
+            },
+            {
+              "card": "Skeletons",
+              "cost": 1,
+              "decision": 2,
+              "x": 63000,
+              "y": 225000
+            }
+          ],
+          "rejected_actions": 0,
+          "result": "unfinished",
+          "spent_elixir": 3,
+          "ticks": 520,
+          "tower_damage": 317
+        },
+        "reward": 0
+      },
+      "overspend": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.145,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.2031,
+          "plays": [
+            {
+              "card": "HogRider",
+              "cost": 4,
+              "decision": 6,
+              "x": 261000,
+              "y": 243000
+            }
+          ],
+          "rejected_actions": 0,
+          "result": "unfinished",
+          "spent_elixir": 4,
+          "ticks": 520,
+          "tower_damage": 2219
+        },
+        "reward": 0
+      },
+      "reference": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.0,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.0,
+          "plays": [
+            {
+              "card": "IceGolemite",
+              "cost": 2,
+              "decision": 1,
+              "x": 27000,
+              "y": 207000
+            },
+            {
+              "card": "Skeletons",
+              "cost": 1,
+              "decision": 2,
+              "x": 63000,
+              "y": 243000
+            }
+          ],
+          "rejected_actions": 0,
+          "result": "unfinished",
+          "spent_elixir": 3,
+          "ticks": 520,
+          "tower_damage": 0
+        },
+        "reward": 1
+      },
+      "rejected-placement": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.0,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.2031,
+          "plays": [],
+          "rejected_actions": 1,
+          "result": "unfinished",
+          "spent_elixir": 0,
+          "ticks": 520,
+          "tower_damage": 2219
+        },
+        "reward": 0
+      },
+      "skeletons-only": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.0,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.058,
+          "plays": [
+            {
+              "card": "Skeletons",
+              "cost": 1,
+              "decision": 2,
+              "x": 63000,
+              "y": 243000
+            }
+          ],
+          "rejected_actions": 0,
+          "result": "unfinished",
+          "spent_elixir": 1,
+          "ticks": 520,
+          "tower_damage": 634
+        },
+        "reward": 0
+      },
+      "wait": {
+        "deterministic": true,
+        "outcome": {
+          "crowns_against": 0,
+          "crowns_for": 0,
+          "elapsed_s": 16.0,
+          "enemy_tower_damage_frac": 0.0,
+          "opponent_plays": [],
+          "own_tower_damage_frac": 0.2031,
+          "plays": [],
+          "rejected_actions": 0,
+          "result": "unfinished",
+          "spent_elixir": 0,
+          "ticks": 520,
+          "tower_damage": 2219
+        },
+        "reward": 0
+      },
+      "wrong-schema": {
+        "reward": 0
+      }
+    },
+    "config_sha256": "f682cea9e7e4fa10447c938045b93587021626efa1fde3d2cb0b8406bf89c58c",
+    "reference_log_sha256": "0d87088e0fd2cd5c8fe974812cea0231deb877f427cea6a569e25d3fbf1d35f2",
+    "task": "05-hog-body-block"
+  },
+  "version": "2.1.0",
+  "tests": {
+    "passed": 85,
+    "failed": 0,
+    "duration_s": 121.83,
+    "command": "python -m pytest -q tests/test_tactics_hog.py tests/test_tactics.py tests/test_coordinate_task.py tests/test_royalebench_v3.py tests/test_royalebench_v1.py tests/test_royale_task.py"
+  },
+  "dataset": "royalebench/royalebench-tactics@4",
+  "dataset_digest": "sha256:8a468bd203236fea62133d669ab6eaddc0364090e184452e4665163530b7003a",
+  "published_tags": [
+    "hog-body-block",
+    "tactics-v4"
+  ],
+  "pilot": {
+    "run_id": "ee02edf8-63d6-4608-9bdc-98b2ee6dd187",
+    "dataset": "royalebench/royalebench-tactics@4",
+    "task": "05-hog-body-block",
+    "model": "anthropic/claude-opus-5-5",
+    "harness": "claude_code-v1.0.0",
+    "provider": "modal",
+    "concurrency": 1,
+    "status": "FINISHED",
+    "rewards": {
+      "reward": 0.0,
+      "win": 0.0,
+      "crowns_for": 0.0,
+      "crowns_against": 0.0,
+      "enemy_tower_damage_frac": 0.0154,
+      "own_tower_damage_frac": 0.087,
+      "completed": 1.0,
+      "integrity": 1.0,
+      "decisions": 8.0,
+      "fast_decision_frac": 0.0,
+      "spent_elixir": 3.0,
+      "tower_damage": 951.0,
+      "objective_met": 0.0,
+      "rejected_actions": 0.0
+    },
+    "outcome": {
+      "result": "unfinished",
+      "crowns_for": 0,
+      "crowns_against": 0,
+      "enemy_tower_damage_frac": 0.0154,
+      "own_tower_damage_frac": 0.087,
+      "ticks": 520,
+      "tower_damage": 951,
+      "spent_elixir": 3,
+      "plays": [
+        {
+          "decision": 0,
+          "card": "IceGolemite",
+          "x": 63000,
+          "y": 216000,
+          "cost": 2
+        },
+        {
+          "decision": 2,
+          "card": "Skeletons",
+          "x": 63000,
+          "y": 234000,
+          "cost": 1
+        }
+      ],
+      "opponent_plays": [],
+      "elapsed_s": 16.0,
+      "rejected_actions": 0
+    },
+    "agent_time_s": 60.04660779599999,
+    "api_cost_usd": 0.2081308,
+    "api_cost_excludes_sandbox": true,
+    "capture": {
+      "artifact_count": 98,
+      "complete": true,
+      "counts": {
+        "commands": 73,
+        "events": 331,
+        "matches": 1,
+        "model_calls": 11,
+        "observations": 9,
+        "states": 66
+      },
+      "gaps": [],
+      "schema_version": "1.0"
+    },
+    "independent_replay_verified": true,
+    "replay_frames": 321,
+    "archive_checksum_errors": [],
+    "raw_artifacts": "runs/analysis/ee02edf8-63d6-4608-9bdc-98b2ee6dd187",
+    "durable_archive": "local durable archive; host-specific path omitted",
+    "failure_classification": "Model placement/timing error; completed all eight decisions, no rejected actions, integrity 1. Ice Golem at elapsed 0s (3.5,12.0), Skeletons at elapsed 1s (3.5,13.0); Hog dealt three hits (951 damage). Reference waits 0.5s, deploys Ice Golem at (1.5,11.5), then Skeletons at elapsed 1s (3.5,13.5), taking zero damage. Single attempt; no success-rate estimate."
+  }
+}

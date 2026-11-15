@@ -1,0 +1,78 @@
+{
+  "run_id": "f186e6ff-11df-4612-be6a-205298ba1b8a",
+  "dataset": "royalebench/royalebench-tactics@5",
+  "task": "05-hog-body-block",
+  "model": "anthropic/claude-opus-5-5",
+  "harness": "claude_code-v1.0.0",
+  "provider": "modal",
+  "concurrency": 1,
+  "status": "FINISHED",
+  "rewards": {
+    "reward": 0.0,
+    "win": 0.0,
+    "crowns_for": 0.0,
+    "crowns_against": 1.0,
+    "enemy_tower_damage_frac": 0.0154,
+    "own_tower_damage_frac": 0.3681,
+    "completed": 1.0,
+    "integrity": 1.0,
+    "decisions": 8.0,
+    "fast_decision_frac": 0.25,
+    "spent_elixir": 3.0,
+    "tower_damage": 635.0,
+    "objective_met": 0.0,
+    "rejected_actions": 0.0
+  },
+  "outcome": {
+    "result": "unfinished",
+    "crowns_for": 0,
+    "crowns_against": 1,
+    "enemy_tower_damage_frac": 0.0154,
+    "own_tower_damage_frac": 0.3681,
+    "ticks": 520,
+    "tower_damage": 635,
+    "spent_elixir": 3,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "IceGolemite",
+        "x": 63000,
+        "y": 234000,
+        "cost": 2
+      },
+      {
+        "decision": 2,
+        "card": "Skeletons",
+        "x": 63000,
+        "y": 225000,
+        "cost": 1
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 16.0,
+    "rejected_actions": 0
+  },
+  "agent_time_s": 40.395893145,
+  "api_cost_usd": 0.1891206,
+  "api_cost_excludes_sandbox": true,
+  "capture": {
+    "artifact_count": 97,
+    "complete": true,
+    "counts": {
+      "commands": 73,
+      "events": 331,
+      "matches": 1,
+      "model_calls": 11,
+      "observations": 9,
+      "states": 66
+    },
+    "gaps": [],
+    "schema_version": "1.0"
+  },
+  "independent_replay_verified": true,
+  "replay_frames": 321,
+  "archive_checksum_errors": [],
+  "raw_artifacts": "runs/analysis/f186e6ff-11df-4612-be6a-205298ba1b8a",
+  "durable_archive": "local durable archive; host-specific path omitted",
+  "failure_classification": "Model placement/timing error: Ice Golem at elapsed 0s (3.5,13.0), Skeletons at elapsed 1s (3.5,12.5). Hog bypassed the block and destroyed the one-HP tower. Completed all eight decisions; spent three; no rejections; integrity 1. One attempt is not a success-rate estimate."
+}

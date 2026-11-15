@@ -30,6 +30,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
 - [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
 - [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, compact opponent-play observations, pinned dependencies, and benchmark validation priorities.
+- [`docs/hog_body_block.md`](docs/hog_body_block.md): TikTok extraction and scripted Hog Rider / Ice Golem / Skeletons body-block recreation, replay verification, placement sensitivity, and controls.
 - [`docs/bots.md`](docs/bots.md): shared bot catalog, registry, implementation layout, adding opponents, live/turn-based bot strength comparisons, paired live duels, and planner settings.
 - [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
 - [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
@@ -49,7 +50,10 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`runs/royalebench-v5/checks.json`](runs/royalebench-v5/checks.json): v5 static, Docker, negative-control, and hosted publication checks.
 - [`runs/royalebench-v3/checks-revision2.json`](runs/royalebench-v3/checks-revision2.json): v3 `@2` publication digest, protocol hash, validation counts and hosted Qwen pilot pointer.
 - [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
-- [`docs/tactics.md`](docs/tactics.md): coordinate Tactics on the v3 foundation, four task families, bounded spatial contrasts, historical menu results and release evidence.
+- [`docs/tactics.md`](docs/tactics.md): coordinate Tactics on the v3 foundation, five task families including one-HP-tower three-elixir Hog defense, unchanged source packages, bounded spatial contrasts, historical menu results and release evidence.
+- [`runs/tactics-hog-one-hit/checks.json`](runs/tactics-hog-one-hit/checks.json): one-HP Hog defense revision, three-elixir start and total budget, reference and failure controls, container checks, and hosted pilot evidence.
+- [`runs/tactics-hog/checks.json`](runs/tactics-hog/checks.json): expanded Tactics revision, new Hog task reference and negative controls, preserved source digests, container checks, and hosted pilot evidence.
+- [`runs/tactics-hog/model-pilot.json`](runs/tactics-hog/model-pilot.json): Opus 5.5 Hog defense pilot on Tactics `@4`, independently verified placement failure, cost, and archived trace locations.
 - [`runs/tactics-coordinates/checks.json`](runs/tactics-coordinates/checks.json): Tactics `@3` foundation/runtime hashes, focused tests, container checks, coordinate sweeps and hosted pilot evidence.
 - [`docs/coordinate_harness.md`](docs/coordinate_harness.md): separate coordinate-action pilot, CLI, illegal-action handling, replay grading, reference validation, and comparison with frozen v1.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, filter the leaderboard to full benchmark runs and compare model scores, watch recorded task gameplay and validated reference resolutions, inspect per-run and per-task API costs, benchmark task rankings by average pass rate and cost, and task difficulty, repair harness issues, and browse the arena.

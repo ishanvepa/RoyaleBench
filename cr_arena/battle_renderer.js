@@ -20,6 +20,12 @@
     bridge: "#a87540",
     gold: "#f2c230",
   });
+  // Indicator inks: a dark outline keeps bars and text legible on grass, water and units alike.
+  const INK = "#111823",
+    TRACK = ["#17345e", "#5c2516"],
+    TEXT = ["#d7e8ff", "#ffdcca"],
+    STUN = "#fff06a",
+    CHIP_MS = 700;
   const KING = 2,
     PRINCESS = 3,
     BUILDING = 1;
@@ -90,9 +96,12 @@
       firstSeen = new Map(),
       hitAt = new Map(),
       shieldMax = new Map(),
+      stunMax = new Map(),
+      chip = new Map(),
       spellFrom = new Map();
     let previous = null,
-      drawn = [];
+      drawn = [],
+      bars = [];
     const X = (tx) => (flip ? TX - tx : tx) * T;
     const Y = (ty) => (flip ? ty : TY - ty) * T;
     function reset() {
@@ -101,6 +110,8 @@
       firstSeen.clear();
       hitAt.clear();
       shieldMax.clear();
+      stunMax.clear();
+      chip.clear();
       spellFrom.clear();
     }
     function observe(s, now) {
@@ -118,11 +129,22 @@
               team: e[1],
               at: now,
             });
-          else if (n[6] < e[6] || (n[15] || 0) < (e[15] || 0)) hitAt.set(uid, now);
+          else if (n[6] < e[6] || (n[15] || 0) < (e[15] || 0)) {
+            hitAt.set(uid, now);
+            if (n[6] < e[6]) {
+              // Recent damage stays visible on the bar briefly; repeated hits extend one chip.
+              const c = chip.get(uid);
+              chip.set(uid, { from: c && now - c.at < CHIP_MS ? c.from : e[6], at: now });
+            }
+          }
         }
       }
       for (const e of s.en) {
         if (!firstSeen.has(e[0])) firstSeen.set(e[0], prev ? now : -1e9);
+        // A stun's full length is the most it has been since it started, so its ring can drain.
+        const was = prev?.by.get(e[0]);
+        if (!(e[13] > 0)) stunMax.delete(e[0]);
+        else if (!stunMax.has(e[0]) || e[13] > (was?.[13] || 0)) stunMax.set(e[0], e[13]);
         // the bar shows the shield left against the most it has been
         if (e[15] > (shieldMax.get(e[0]) || 0)) shieldMax.set(e[0], e[15]);
       }
@@ -224,17 +246,48 @@
       ctx.lineWidth = Math.max(1, T * 0.055);
       ctx.strokeRect(T * 0.12, T * 0.12, TX * T - T * 0.24, TY * T - T * 0.24);
     }
-    function shieldBar(x, y, w, frac) {
-      ctx.fillStyle = "rgba(0,0,0,.55)";
-      ctx.fillRect(x - w / 2, y, w, 3);
-      ctx.fillStyle = "#cfe3ff";
-      ctx.fillRect(x - w / 2, y, w * Math.max(0, Math.min(1, frac)), 3);
+    function bar(x, y, w, h, frac, color, track) {
+      const left = x - w / 2;
+      ctx.fillStyle = INK;
+      ctx.beginPath();
+      ctx.roundRect(left - 1, y - 1, w + 2, h + 2, Math.min(3, h / 2 + 1));
+      ctx.fill();
+      ctx.fillStyle = track;
+      ctx.fillRect(left, y, w, h);
+      ctx.fillStyle = color;
+      ctx.fillRect(left, y, w * Math.max(0, Math.min(1, frac)), h);
     }
-    function hpBar(x, y, w, frac, team) {
-      ctx.fillStyle = "rgba(0,0,0,.55)";
-      ctx.fillRect(x - w / 2, y, w, 4);
-      ctx.fillStyle = team === 0 ? C.blue : C.red;
-      ctx.fillRect(x - w / 2, y, w * Math.max(0, Math.min(1, frac)), 4);
+    function shieldBar(x, y, w, frac) {
+      bar(x, y, w, 3, frac, "#cfe3ff", "#3c4a5c");
+    }
+    // Health against max, with recently lost health as a pale segment that fades out.
+    function hpBar(x, y, w, h, frac, team, lost, lostAlpha) {
+      bar(x, y, w, h, frac, team === 0 ? C.blue : C.red, TRACK[team] || TRACK[1]);
+      const left = x - w / 2,
+        f = Math.max(0, Math.min(1, frac)),
+        g = Math.max(f, Math.min(1, lost));
+      if (g > f && lostAlpha > 0) {
+        ctx.globalAlpha = 0.85 * lostAlpha;
+        ctx.fillStyle = "#fff4c2";
+        ctx.fillRect(left + w * f, y, w * (g - f), h);
+        ctx.globalAlpha = 1;
+      }
+      if (h >= 5) {
+        ctx.fillStyle = "rgba(255,255,255,.32)";
+        ctx.fillRect(left, y, w * f, Math.max(1, h * 0.28));
+      }
+    }
+    // Recording canvases used by tests may not measure text; estimate from the font size then.
+    function textWidth(text) {
+      const w = ctx.measureText(text)?.width;
+      return Number.isFinite(w) ? w : text.length * (parseFloat(/(\d+)px/.exec(ctx.font)?.[1]) || 11) * 0.6;
+    }
+    function outlined(text, x, y, fill, width = 3) {
+      ctx.lineWidth = width;
+      ctx.strokeStyle = INK;
+      ctx.strokeText(text, x, y);
+      ctx.fillStyle = fill;
+      ctx.fillText(text, x, y);
     }
     function polygon(points, fill, stroke = null, width = 0.1) {
       ctx.beginPath();
@@ -498,46 +551,116 @@
           const [x0, y0, x1, y1] = e[14];
           r = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) * T / 2;
         }
-        drawTower(e, px, py, r, hit, fill, edge);
+        drawTower(e, px, py, r, 0, fill, edge);
       } else if (kind === BUILDING) {
-        drawBuilding(name, px, py, r, fill, edge, hit);
+        drawBuilding(name, px, py, r, fill, edge, 0);
       } else {
         const screenX = flip ? -fxv : fxv,
           screenY = flip ? fyv : -fyv,
           facing = Math.hypot(screenX, screenY) > 0.1 ? Math.atan2(screenX, -screenY) : 0;
-        drawTroop(name, px, py, r, fill, edge, hit, facing);
+        drawTroop(name, px, py, r, fill, edge, 0, facing);
       }
       ctx.globalAlpha = 1;
-      if (e[13] > 0) {
-        ctx.strokeStyle = "#ffd400";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath();
-        ctx.arc(px, py, r + 3.5, 0, 7);
-        ctx.stroke();
+      if (hit > 0) {
+        // Hit feedback is a brief light wash over the miniature; its team colors stay visible.
+        ctx.globalAlpha = (tower ? 0.38 : 0.5) * hit;
+        ctx.fillStyle = "#fff";
+        if (tower) {
+          const [x0, y0, x1, y1] = kind === PRINCESS && e[14] ? e[14] : [];
+          const left = x0 === undefined ? px - r : Math.min(X(x0), X(x1)),
+            top = x0 === undefined ? py - r : Math.min(Y(y0), Y(y1)),
+            w = x0 === undefined ? 2 * r : Math.abs(x1 - x0) * T,
+            h = x0 === undefined ? 2 * r : Math.abs(y1 - y0) * T;
+          ctx.beginPath();
+          ctx.roundRect(left, top, w, h, Math.min(6, r * 0.3));
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(px, py, r * 0.85, 0, 7);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
       }
-      const shield = e[15] || 0;
-      const barY = Math.max(12, py - r - 8);
-      if (tower || hp < maxHp || shield > 0)
-        hpBar(px, barY, Math.max(16, 2 * r), maxHp ? hp / maxHp : 0, team);
-      if (shield > 0)
-        shieldBar(px, barY - 4, Math.max(16, 2 * r), shield / (shieldMax.get(uid) || shield));
-      if (tower) {
-        ctx.fillStyle = "#16202e";
-        ctx.font = "700 11px ui-monospace, Menlo, monospace";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-        ctx.fillText(Math.round(hp), px, Math.max(10, barY - 3));
-      }
+      if (e[13] > 0) stunRing(px, py, r, e[13] / (stunMax.get(uid) || e[13]), now);
+      if (deploying) deployRing(px, py, r, team, now);
       drawn.push({ p: [px, py], rad: r, entity: e });
-      if (deploying) {
-        ctx.strokeStyle = "#fff";
-        ctx.setLineDash([3, 3]);
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.arc(px, py, r + 3, 0, 7);
-        ctx.stroke();
-        ctx.setLineDash([]);
+      const shield = e[15] || 0,
+        c = chip.get(uid),
+        age = c ? now - c.at : Infinity;
+      if (tower || hp < maxHp || shield > 0)
+        bars.push({ tower, team, px, py, r, uid, shield, hp, maxHp,
+          lost: age >= 0 && age < CHIP_MS && maxHp ? c.from / maxHp : 0,
+          lostAlpha: age >= 0 && age < CHIP_MS ? 1 - age / CHIP_MS : 0 });
+    }
+    // A jagged electric ring; its bright arc drains as the stun wears off.
+    function stunRing(px, py, r, left, now) {
+      const R = r + 4,
+        n = Math.max(10, Math.round(R / 2.5)),
+        phase = Math.floor(now / 70) % 2;
+      ctx.beginPath();
+      for (let i = 0; i <= n; i++) {
+        const a = (i / n) * Math.PI * 2,
+          k = R + ((i + phase) % 2 ? 2 : -1.5);
+        if (i) ctx.lineTo(px + Math.cos(a) * k, py + Math.sin(a) * k);
+        else ctx.moveTo(px + Math.cos(a) * k, py + Math.sin(a) * k);
       }
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = INK;
+      ctx.globalAlpha = 0.55;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "#bfe9ff";
+      ctx.stroke();
+      ctx.lineWidth = 3;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = STUN;
+      ctx.beginPath();
+      ctx.arc(px, py, R + 2.5, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0, Math.min(1, left)));
+      ctx.stroke();
+      ctx.lineCap = "butt";
+    }
+    // A unit still dropping in: a turning dashed ring in its team color over a dark edge.
+    function deployRing(px, py, r, team, now) {
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = INK;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.arc(px, py, r + 3, 0, 7);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = team === 0 ? "#9cc8ff" : "#ffb08e";
+      ctx.setLineDash([4, 3]);
+      ctx.lineDashOffset = -(now / 40) % 7;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.lineDashOffset = 0;
+    }
+    // Bars draw after every miniature, so a crowd never hides a unit's health. Tower bars draw last.
+    function drawBars(boxes) {
+      for (const pass of [false, true])
+        for (const b of bars) {
+          if (b.tower !== pass) continue;
+          const w = b.tower ? 2 * b.r : Math.max(T * 0.9, Math.min(2 * b.r, T * 2.4)),
+            h = b.tower ? Math.max(5, Math.round(T * 0.28)) : Math.max(4, Math.round(T * 0.2)),
+            y = Math.max(b.tower ? 14 : 6, b.py - b.r - (b.tower ? 9 : 7));
+          hpBar(b.px, y, w, h, b.maxHp ? b.hp / b.maxHp : 0, b.team, b.lost, b.lostAlpha);
+          if (b.shield > 0)
+            shieldBar(b.px, y - 5, w, b.shield / (shieldMax.get(b.uid) || b.shield));
+          boxes.push([b.px - w / 2 - 1, y - (b.shield > 0 ? 6 : 1), w + 2, h + (b.shield > 0 ? 7 : 2)]);
+          if (b.tower) {
+            const size = Math.max(11, Math.round(T * 0.48));
+            ctx.font = "800 " + size + "px ui-monospace, Menlo, monospace";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "alphabetic";
+            const text = String(Math.round(b.hp)),
+              ty = Math.max(size, y - 3);
+            outlined(text, b.px, ty, "#fff", 3);
+            const tw = textWidth(text);
+            boxes.push([b.px - tw / 2 - 2, ty - size, tw + 4, size + 2, 1]);
+          }
+        }
     }
     function drawFx(now) {
       fx = fx.filter((f) => now - f.at < 450);
@@ -579,6 +702,7 @@
 
     function draw(a, b, t, now, options = {}) {
       drawn = [];
+      bars = [];
       ctx.globalAlpha = 1;
       ctx.setLineDash([]);
       ctx.lineCap = "butt";
@@ -629,32 +753,94 @@
           (p[0][9] & 1) - (q[0][9] & 1) || (flip ? p[2] - q[2] : q[2] - p[2]),
       ); // ground first, then flying; far before near
       for (const [e, x, y, hp] of list) drawEntity(e, x, y, hp, now);
-      const named = []; // one name per group of the same unit standing together
-      ctx.font = "700 " + Math.max(9, Math.round(T * 0.5)) + "px system-ui";
+      const boxes = [];
+      drawBars(boxes);
+      // Spell names keep their places; troop labels make room for them.
+      ctx.font = "600 11px system-ui";
+      for (const sp of b.sp) {
+        const text = isFlight(sp) ? (cards[sp[1]] ? pretty(cards[sp[1]][0]) : "") : pretty(cards[sp[1]]?.[0] || ""),
+          tx = isFlight(sp) ? X(sp[4]) : X(sp[2]),
+          ty = isFlight(sp) ? Y(sp[5]) - 2.4 * T : Y(sp[3]) - T - 3,
+          w = textWidth(text);
+        if (text) boxes.push([tx - w / 2 - 2, ty - 11, w + 4, 14, 1]);
+      }
+      for (const p of b.me?.pend || []) {
+        // your own plays that have not landed yet: a stopwatch that runs down where the card will land
+        const q = a.me?.pend?.find((o) => o[0] === p[0]),
+          left = q ? lerp(q[4], p[4], t) : p[4],
+          frac = Math.max(0, Math.min(1, left / Math.max(1, delayTicks)));
+        const px = X(p[2]),
+          py = Y(p[3]),
+          R = Math.max(7, T * 0.55),
+          name = cards[p[1]] ? pretty(cards[p[1]][0]) : "";
+        ctx.fillStyle = "rgba(255,255,255,.18)";
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.arc(px, py, T * 0.95, 0, 7);
+        ctx.fill();
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = INK;
+        ctx.fillRect(px - R * 0.22, py - R - R * 0.38, R * 0.44, R * 0.4);
+        disk(px, py, R + 1.5, R + 1.5, INK);
+        disk(px, py, R, R, "#f7f3e6");
+        if (frac > 0) {
+          ctx.fillStyle = C.blue;
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.arc(px, py, R * 0.82, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * frac);
+          ctx.closePath();
+          ctx.fill();
+        }
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(px, py);
+        ctx.lineTo(px, py - R * 0.8);
+        ctx.stroke();
+        ctx.font = "700 " + Math.max(10, Math.round(T * 0.46)) + "px system-ui";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "alphabetic";
+        const ty = py - R - R * 0.45 - 3,
+          w = textWidth(name);
+        outlined(name, px, ty, TEXT[0]);
+        boxes.push([px - w / 2 - 2, ty - 12, w + 4, 14, 1], [px - R - 2, py - R * 1.4, 2 * R + 4, R * 2.4 + 2, 1]);
+      }
+      // One name per group of the same unit standing together. Newer units are named first. A name
+      // that would cover a bar or another name moves above or beside its unit; failing that it may
+      // cross a bar, and it is left out only when every place would cover other text.
+      const named = [],
+        size = Math.max(9, Math.round(T * 0.46));
+      ctx.font = "700 " + size + "px system-ui";
       ctx.textAlign = "center";
       ctx.textBaseline = "top";
       ctx.lineJoin = "round";
-      for (const [e, x, y] of list) {
-        if (e[2] === KING || e[2] === PRINCESS || !cards[e[3]]) continue;
-        if (
-          named.some(
-            (n) =>
-              n[0] === e[1] &&
-              n[1] === e[3] &&
-              Math.abs(n[2] - x) < 2.2 &&
-              Math.abs(n[3] - y) < 2.2,
-          )
-        )
+      const order = list
+        .filter(([e]) => e[2] !== KING && e[2] !== PRINCESS && cards[e[3]])
+        .sort((p, q) => (firstSeen.get(q[0][0]) ?? 0) - (firstSeen.get(p[0][0]) ?? 0) || p[0][0] - q[0][0]);
+      const clear = (box, textOnly) =>
+        box[0] >= 0 && box[0] + box[2] <= TX * T && box[1] >= 0 && box[1] + box[3] <= TY * T &&
+        !boxes.some((o) => (!textOnly || o[4]) &&
+          box[0] < o[0] + o[2] && o[0] < box[0] + box[2] && box[1] < o[1] + o[3] && o[1] < box[1] + box[3]);
+      for (const [e, x, y] of order) {
+        if (named.some((n) => n[0] === e[1] && n[1] === e[3] && Math.abs(n[2] - x) < 2.2 && Math.abs(n[3] - y) < 2.2))
           continue;
         named.push([e[1], e[3], x, y]);
         const r = Math.max(T * 0.48, e[8] * T),
-          ly = Y(y) + r + 2 - (e[9] & 1 ? T * 0.5 : 0),
-          label = pretty(cards[e[3]][0]);
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "rgba(10,16,28,.85)";
-        ctx.strokeText(label, X(x), ly);
-        ctx.fillStyle = e[1] === 0 ? "#cfe3ff" : "#ffd9c7";
-        ctx.fillText(label, X(x), ly);
+          cy = Y(y) - (e[9] & 1 ? T * 0.5 : 0),
+          label = pretty(cards[e[3]][0]),
+          w = textWidth(label) + 4,
+          top = bars.find((bar) => bar.uid === e[0]) ? cy - r - 7 - Math.max(4, Math.round(T * 0.2)) - 2 : cy - r - 2;
+        const ux = X(x),
+          spots = [[ux, cy + r + 2], [ux, top - size - 2], [ux + r + 3 + w / 2, cy - size / 2],
+            [ux - r - 3 - w / 2, cy - size / 2], [ux, cy + r + 2 + size]];
+        const spot = spots.find(([lx, ly]) => clear([lx - w / 2, ly, w, size + 1], false)) ||
+          spots.find(([lx, ly]) => clear([lx - w / 2, ly, w, size + 1], true));
+        if (!spot) continue;
+        boxes.push([spot[0] - w / 2, spot[1], w, size + 1, 1]);
+        outlined(label, spot[0], spot[1], TEXT[e[1]] || TEXT[1]);
       }
       const same = a.pr.length === b.pr.length;
       b.pr.forEach((p, i) => {
@@ -673,37 +859,6 @@
         ctx.fill();
         ctx.stroke();
       });
-      for (const p of b.me?.pend || []) {
-        // your own plays that have not landed yet: a marker with a clock that runs down
-        const q = a.me?.pend?.find((o) => o[0] === p[0]),
-          left = q ? lerp(q[4], p[4], t) : p[4];
-        const px = X(p[2]),
-          py = Y(p[3]),
-          name = cards[p[1]] ? pretty(cards[p[1]][0]) : "";
-        ctx.fillStyle = "rgba(255,255,255,.22)";
-        ctx.beginPath();
-        ctx.arc(px, py, T * 0.8, 0, 7);
-        ctx.fill();
-        ctx.strokeStyle = "#fff";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(
-          px,
-          py,
-          T * 0.8,
-          -Math.PI / 2,
-          -Math.PI / 2 +
-            2 *
-              Math.PI *
-              Math.max(0, Math.min(1, left / Math.max(1, delayTicks))),
-        );
-        ctx.stroke();
-        ctx.fillStyle = "#16202e";
-        ctx.font = "600 11px system-ui";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "alphabetic";
-        ctx.fillText(name, px, py - T - 2);
-      }
       for (const sp of b.sp.filter((s) => !isFlight(s))) {
         const px = X(sp[2]),
           py = Y(sp[3]),

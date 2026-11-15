@@ -24,6 +24,63 @@ The [Arena 1 gameplay video](https://www.youtube.com/watch?v=PD6QCK7GzA8)
 is saved locally at `data/references/arena-1-PD6QCK7GzA8.mp4` for a future
 reference-matching pass; see [data documentation](../data/README.md#visual-reference).
 
+## Battle indicators
+
+Indicators cover what appears in matches between the seven classic decks: health
+and shield bars, troop names, units still deploying, your pending plays, hit
+feedback, and stuns such as those from Zap and Electro Wizard. They follow the
+reference video's conventions, such as outlined bars, white tower numbers and a
+stopwatch for a waiting play, while keeping this project's own graphics.
+
+- Bars have a dark outline over a dark team-colored track. Health lost in the last
+  0.7 s shows as a fading pale segment. Bars draw after every miniature, so a crowd
+  never hides them. Tower bars and white outlined tower numbers draw last.
+- A hit briefly lightens the unit or the tower footprint instead of turning it
+  solid white, so its team color stays visible.
+- A stunned unit has a jagged electric ring, and a yellow arc that drains as the
+  stun wears off. The full length is the stun's largest value since it began.
+- A deploying unit has a turning dashed ring in its team color.
+- A pending play is a stopwatch at its landing spot. The blue wedge is the delay
+  left, and the card name sits above it.
+- Troop names start below their unit. A name that would cover a bar, a tower
+  number, a spell or pending label, or another name moves above or beside its
+  unit. If every spot is taken, it may cross a bar but never other text. Newer
+  units get first choice.
+
+Indicator state is derived from consecutive snapshots in `observe`, and `reset`
+clears it, so seeking reproduces the same frame. Drawing never alters snapshots,
+and hit targets keep the same positions and radii. Entity art, terrain, spells
+and the HUD are unchanged.
+
+![Matched frames: before (top) and after (bottom), both orientations](images/indicator-before-after.png)
+
+Matched screenshots come from real classic-deck games. Each deck plays the next
+deck in the list with the live command delay, and the busiest frame is kept,
+favoring stuns and pending plays:
+
+```sh
+uv run python -m tests.visual.capture_scenes runs/indicator_scenes.json
+uv run python -m http.server 8791 --bind 127.0.0.1   # from the repository root
+git show HEAD:cr_arena/battle_renderer.js > runs/indicator_check/baseline_renderer.js
+NODE_PATH=/path/to/node_modules node tests/visual/screenshot_scenes.cjs http://127.0.0.1:8791 \
+  runs/indicator_check/before /runs/indicator_check/baseline_renderer.js
+NODE_PATH=/path/to/node_modules node tests/visual/screenshot_scenes.cjs http://127.0.0.1:8791 \
+  runs/indicator_check/after
+cmp runs/indicator_check/before/hits.json runs/indicator_check/after/hits.json
+```
+
+The screenshot script needs the `playwright` npm package with Chromium installed.
+`hits.json` records every hit target in both orientations, so `cmp` shows whether
+a change moved any target.
+
+The indicator paths were traced with REA 6.9.0
+(`analyze-javascript-application` on a copy of the renderer). It reported
+`draw → drawEntity → hpBar/shieldBar`, the stun and deploy rings, the label and
+pending-play loops in `draw`, and hit timing from `observe` into `drawFx`. On
+macOS with Command Line Tools for Swift 6.3, REA's process helper fails to build
+against the macOS 27 SDK. Set
+`SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk` for the run.
+
 `live.html` handles the WebSocket stream, HUD, and placement controls. `replay.html`
 adapts RoyaleGym's named trace columns into the same drawing contract and handles
 playback, scrubbing, flipping, and tooltips. Its playback controls were adapted

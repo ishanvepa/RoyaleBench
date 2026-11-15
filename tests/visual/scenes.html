@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- Draws recorded battle frames in both orientations for indicator screenshots.
+     Serve the repository root over HTTP, then open
+     /tests/visual/scenes.html?scene=0[&renderer=/path/to/battle_renderer.js][&data=/runs/indicator_scenes.json] -->
+<meta charset="utf-8">
+<style>
+  body { margin: 0; background: #1b2230; color: #dde; font: 13px system-ui; }
+  #row { display: flex; gap: 12px; padding: 12px; }
+  figure { margin: 0; } figcaption { padding: 4px 0; }
+</style>
+<div id="row"></div>
+<script>
+  const q = new URLSearchParams(location.search);
+  const load = (src) => new Promise((ok, fail) => {
+    const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = fail;
+    document.head.append(s);
+  });
+  (async () => {
+    await load(q.get("renderer") || "/cr_arena/battle_renderer.js");
+    const scenes = await (await fetch(q.get("data") || "/runs/indicator_scenes.json")).json();
+    const sc = scenes[Number(q.get("scene") || 0)], scale = Number(q.get("scale") || 24);
+    for (const flip of [false, true]) {
+      const fig = document.createElement("figure"), canvas = document.createElement("canvas");
+      canvas.width = sc.arena.tiles_x * scale; canvas.height = sc.arena.tiles_y * scale;
+      fig.append(canvas);
+      const cap = document.createElement("figcaption");
+      cap.textContent = `${sc.decks[0]} (blue) vs ${sc.decks[1]} (red), tick ${sc.b.k}, ${flip ? "flipped" : "blue at bottom"}`;
+      fig.append(cap);
+      document.getElementById("row").append(fig);
+      const r = BattleRenderer.create(canvas, sc.arena);
+      const a = structuredClone(sc.a), b = structuredClone(sc.b);
+      r.observe(a, 0); r.observe(b, 100);
+      // Drawn 40 ms after the newest frame arrives, so fresh hits still show their feedback.
+      const hits = r.draw(a, b, 1, 140, {scale, flip, cards: sc.cards, delayTicks: sc.delay});
+      fig.dataset.hits = JSON.stringify(hits.map((h) => [Math.round(h.p[0] * 100) / 100, Math.round(h.p[1] * 100) / 100,
+        Math.round(h.rad * 100) / 100, h.entity ? h.entity[0] : "spell"]));
+    }
+    document.body.dataset.ready = "1";
+  })();
+</script>

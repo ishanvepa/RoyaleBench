@@ -75,7 +75,7 @@ importable from `cr_arena.players` for compatibility.
 Run the relevant checks with:
 
 ```bash
-uv run --locked python -m unittest tests.test_bot_registry tests.test_human_search_v2 -v
+uv run --locked python -m unittest tests.test_bot_registry tests.test_human_search_v2 tests.test_planner -v
 ```
 
 ## Which bot is strongest
@@ -110,6 +110,63 @@ and the models' numbered menu, so its live result is not only speed or richer
 placements. Most margins were one crown. Search v1 versus Search v2 remains
 unsettled: these runs played only one decided game between them. All three bots
 read the true engine state.
+
+These comparisons used the planner before its third ply (below).
+
+## Measuring live bots
+
+`cr_arena/duel.py` plays bots against each other under live conditions: free placement, the
+21-tick command delay, and decisions on a fixed tick schedule (planner every 8 ticks, numbered-move
+bots every 20). Thinking takes no game time, and every supported bot is deterministic, so a run
+repeats exactly. Each (deck, seed) is played with seats swapped.
+
+```bash
+uv run --locked python -m cr_arena.duel --a planner:prefilter=false --b planner --games 12 --parallel 4 --out runs/duel/prefilter-ab
+```
+
+A spec is a bot type plus settings, for example `planner:top_k=6,horizon_s=8`. With `--out`, games are
+appended to `games.jsonl` (a rerun resumes) and `summary.json` reports W/D/L, seat-swapped pairs won
+and lost with a one-sided sign test, and the mean tower margin (share of own tower HP kept minus the
+opponent's, from -1 to 1). The tower margin is more sensitive than wins in small runs. Use `--seed0` to
+pick a fresh seed range for a held-out check after tuning. Each game runs on one core and takes
+about 1–10 minutes (longest for overtime games between planners); 12 games at `--parallel 4` take
+about 30–45 minutes.
+
+### Planner settings
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `horizon_s` | 10.0 | Look-ahead per candidate |
+| `top_k` | 4 | Candidates checked against the opponent's reply |
+| `margin` | 40 | Gain over waiting, in tower HP, needed to play |
+| `two_ply` | true | Check the opponent's worst reply |
+| `three_ply` | true | After the opponent's reply, try our own answer to it (for the `answer_k` replies that hurt most). About 3× the decision cost |
+| `answer_k` | 3 | Worst replies that get our answer |
+| `prefilter` | true | Original rule: only plays that already beat waiting by `margin` *without a reply* are checked against replies. `false` checks a shortlist of the `top_k` best plus each other card's best spot, so defensive plays that only pay off once the opponent moves are not pruned early |
+| `workers` | 0 | Process-pool size |
+
+The live planner (`bots/live.py`) and the turn-based `PlannerPlayer` (numbered moves, used by
+`turn_duel`, the tournament and any run config with `type = "planner"`) share these defaults. All of them
+can be set on a planner entry in `configs/bots.toml` or a run config.
+
+### Results (2026-11-14, one deck per seed, seats swapped)
+
+"Original" is the planner before the third ply (`three_ply=false`, `prefilter=true`).
+
+| A | B | Seeds | A W-D-L | Pairs won-lost (of 6) | Mean tower margin |
+|---|---|---|---|---|---|
+| original | heuristic | 1–6 | 11-0-1 | 5-0 (p=0.03) | +0.41 |
+| original + `prefilter=false` | heuristic | 1–6 | 11-0-1 | 5-0 (p=0.03) | +0.41 |
+| original + `prefilter=false` | original | 1–6 | 4-0-8 | 0-2 | +0.01 |
+| original + `three_ply` | original | 1–6 | 10-0-2 | 4-0 (p=0.06) | +0.14 |
+| original + `three_ply`, `prefilter=false` | original | 1–6 | 8-0-4 | 3-1 | +0.11 |
+| original + `three_ply` | original | 7–12 (held out) | 9-0-3 | 3-0 (p=0.13) | +0.08 |
+
+Over both seed ranges the third ply is 19-5 against the original, winning 7 seat-swapped pairs and
+losing none (p≈0.008), so it is the default. Removing the prefilter did not help, with or without the
+third ply, and it doubles the cost, so `prefilter` stays `true`. With the third ply, the original planner's
+average decision rises from about 100 ms to about 300 ms on one core (up to about 1 s on Hog Cycle). The
+live server spreads this over its process pool. Raw games are in `runs/duel/`.
 
 See [human play](phone_play.md) for launch commands and [Search v2](search_v2.md)
 for the search design and frozen comparison results.

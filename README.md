@@ -4,6 +4,8 @@
 
 RoyaleBench evaluates decisions in a deterministic Clash Royale simulator. An agent sees a paused mid-match position, plays a card at board coordinates with `cr play SLOT X Y`, or advances time with `cr wait`. The verifier independently replays its actions against a fixed opponent and scores the stated objective. Tasks test placement, timing, elixir discipline, defense, and conversion into tower damage.
 
+Read the [RoyaleBench writeup](https://ishanvepa171--royalebench-writeup.us-east.modal.run/) for the benchmark background, results, and recorded gameplay.
+
 ## Submission dataset
 
 **[RoyaleBench v9](docs/royalebench_v9.md)** is the 21-task submission dataset, published as `royalebench/royalebench-v9@1` (digest `sha256:e9e4396c2792964e4246eeb1002a6f4d8b2f72ba0b697be6c807f967be87ecc2`). Its task packages are in [benchmarks/royalebench-v9](benchmarks/royalebench-v9). It combines 18 unchanged v8 tasks with three Tactics defenses: a one-hit Hog body block, a Mini P.E.K.K.A. kite, and Fireball knockback against a Balloon.

@@ -153,12 +153,13 @@ class Session:
             flags = (1 if e.flying else 0) | (2 if e.deploy_ticks > 0 else 0)
             ents.append([e.uid, e.team, int(e.kind), e.card_id, round(e.x / sub, 3), round(e.y / sub, 3), e.hp, e.max_hp,
                          round(e.radius / sub, 3), flags, e.tower_slot, e.facing[0], e.facing[1], e.stun_ticks,
-                         [v / sub for v in e.footprint] if e.footprint is not None else None])
+                         [v / sub for v in e.footprint] if e.footprint is not None else None,
+                         e.shield, e.status_flags, e.charge])
         return {
             "t": "s", "k": s.tick, "left": round(left, 2), "ot": ot, "rate": s.elixir_rate, "paused": self.paused,
             # elixir shown net of plays that are on their way; "pend" = [slot, card, x, y, ticks left]
             "me": {"e": me.elixir_milli - me.pending_cost * 1000,
-                   "pend": [[p[0], p[1], round(p[2] / sub, 2), round(p[3] / sub, 2), p[4]] for p in me.pending],
+                   "pend": self.pending_plays(me),
                    "hand": [[cid, costs[i]] for i, cid in enumerate(me.hand)],
                    "next": me.next_card, "crowns": me.crowns},
             "op": {"crowns": op.crowns},
@@ -167,6 +168,20 @@ class Session:
                     round(sp.aim_y / sub, 2), SpellMotion(sp.motion).name] for sp in s.spells],
             "pr": [[p.team, round(p.x / sub, 2), round(p.y / sub, 2)] for p in s.projectiles],
         }
+
+    def pending_plays(self, me) -> list[list]:
+        """The human's plays on their way, each [hand slot, card, x, y, ticks left]. The engine's
+        rows are [kind, card, x, y, ticks left, cost] with kind 0 for a play: they name the card,
+        not the slot, so the slot is the one still holding that card (the hand only changes once
+        the play lands, and a deck holds each card once)."""
+        out, taken = [], set()
+        for kind, card, x, y, ticks, *_ in me.pending:
+            if kind != 0:
+                continue  # a button press, not a card
+            slot = next((i for i, cid in enumerate(me.hand) if cid == card and i not in taken), -1)
+            taken.add(slot)
+            out.append([slot, card, round(x / self.sub, 2), round(y / self.sub, 2), ticks])
+        return out
 
     def mask(self, slot: int) -> dict:
         """Spatial eligibility at half-cell centres, independent of elixir and cooldown."""

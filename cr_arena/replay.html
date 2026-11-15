@@ -151,7 +151,9 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
       return [r[EF.uid], r[EF.team], r[EF.kind], r[EF.card_id], r[EF.x] / S, r[EF.y] / S,
         r[EF.hp], r[EF.max_hp], r[EF.radius] / S, (r[EF.flying] ? 1 : 0) | (r[EF.deploy_ticks] > 0 ? 2 : 0),
         r[EF.tower_slot], facing[0], facing[1], EF.stun_ticks === undefined ? 0 : r[EF.stun_ticks],
-        EF.footprint === undefined || !r[EF.footprint] ? null : r[EF.footprint].map(function (v) { return v / S; })];
+        EF.footprint === undefined || !r[EF.footprint] ? null : r[EF.footprint].map(function (v) { return v / S; }),
+        EF.shield === undefined ? 0 : r[EF.shield], EF.status_flags === undefined ? -1 : r[EF.status_flags],
+        EF.charge === undefined ? -1 : r[EF.charge]];
     }), sp: (FF.spells === undefined ? [] : f[FF.spells] || []).map(function (q) {
       return [q[SF.team], q[SF.card_id], q[SF.x] / S, q[SF.y] / S, q[SF.aim_x] / S,
         q[SF.aim_y] / S, motionNames[q[SF.motion]]];
@@ -360,6 +362,7 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
     var kindName = Object.keys(KIND).filter(function (k) { return KIND[k] === hit[EF.kind]; })[0];
     tip.textContent = (cardName(hit[EF.card_id]) || kindName) + "  (" + NAMES[hit[EF.team]] +
       ", uid " + hit[EF.uid] + ")\nhp " + hit[EF.hp] + " / " + hit[EF.max_hp] +
+      (EF.shield !== undefined && hit[EF.shield] > 0 ? "\nshield " + hit[EF.shield] : "") +
       "\ntile (" + (hit[EF.x] / S).toFixed(2) + ", " + (hit[EF.y] / S).toFixed(2) + ")" +
       "\nradius " + (hit[EF.radius] / S).toFixed(3) + " tiles" +
       (hit[EF.flying] ? "\nflying" : "") +

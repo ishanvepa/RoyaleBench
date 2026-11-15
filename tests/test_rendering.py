@@ -84,13 +84,22 @@ class RenderingTests(unittest.TestCase):
             self.assertEqual(footprint > 0, kind == 'BUILDING', name)
 
     def test_live_hand_art_covers_exactly_the_classic_deck_cards(self):
-        html = (ROOT / 'cr_arena/live.html').read_text()
-        table = re.search(r'const CARD_FACE = \{(.*?)\};', html, re.S).group(1)
-        faces = dict(re.findall(r'(\w+): "([^"]+)"', table))
+        art = (ROOT / 'cr_arena/card_art.js').read_text()
+        faces = re.findall(r'^    (\w+): \["(?:common|rare|epic|legendary)",', art, re.M)
         classic = {card for deck in CLASSIC_DECKS.values() for card in deck}
         self.assertEqual(len(classic), 35)
         self.assertEqual(set(faces), classic)
-        self.assertEqual(len(set(faces.values())), len(faces), 'each card needs its own symbol')
+        self.assertEqual(len(faces), len(classic))
+        if shutil.which('node'):
+            result = subprocess.run(['node'], input=art + '\nconsole.log(JSON.stringify('
+                                    'CardArt.names.map(name => CardArt.svg(name))));',
+                                    text=True, check=True, capture_output=True)
+            portraits = json.loads(result.stdout)
+            self.assertEqual(len(set(portraits)), len(classic), 'each card needs its own portrait')
+        live = asyncio.run(page(None)).body.decode()
+        self.assertIn(art, live)
+        self.assertNotIn('__CARD_ART__', live)
+        self.assertNotIn('<script src=', live)
 
     def test_replay_names_unit_types_for_spawned_units(self):
         view = extract_view(patched_html(SAMPLE, stride=100))

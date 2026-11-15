@@ -34,7 +34,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
 - [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
 - [`docs/phone_play.md`](docs/phone_play.md): launch interactive play and share a temporary public link.
-- [`docs/rendering.md`](docs/rendering.md): shared live/replay graphics, Arena 1 terrain and tower references, classic-deck units and spells, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
+- [`docs/rendering.md`](docs/rendering.md): shared live/replay graphics, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from the web app and browse the arena.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.

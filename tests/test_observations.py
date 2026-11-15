@@ -120,6 +120,9 @@ class ShieldsAndStatus(unittest.TestCase):
         self.assertIn(f"+ shield {prince.shield}", game.describe(0, game.legal_moves(0)))
         session = Session.__new__(Session)
         session.game, session.sub, session.paused = game, game.sub, False
+        from royalegym.action import PlacementOracle
+        session.placement = PlacementOracle(game.arena, game.engine.rules(), game.cards)
+        session.mask_cache = {}
         row = next(r for r in session.snapshot()["en"] if r[0] == prince.uid)
         self.assertEqual(row[15], prince.shield)
 
@@ -129,6 +132,9 @@ class LivePending(unittest.TestCase):
         game = game_with([], [], delay=21)
         session = Session.__new__(Session)
         session.game, session.sub, session.paused = game, game.sub, False
+        from royalegym.action import PlacementOracle
+        session.placement = PlacementOracle(game.arena, game.engine.rules(), game.cards)
+        session.mask_cache = {}
         hand = game.state.players[0].hand
         slot = next(i for i in (3, 2, 1) if game.kind_of(game.card_by_id[hand[i]]) != "SPELL")
         mv = next(m for m in game.legal_moves(0) if m.slot == slot)

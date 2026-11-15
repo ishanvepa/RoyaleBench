@@ -13,6 +13,7 @@ from pathlib import Path
 
 import msgspec
 from royalegym.render import extract_view, parse_page
+from royalegym.action import PlacementOracle
 from royalegym.replay import load_trace, save_trace
 
 import re
@@ -64,8 +65,11 @@ class RenderingTests(unittest.TestCase):
         session.bot_spec = {'name': 'test'}
         session.deck_names = ('test', 'test')
         session.paused = False
+        session.placement = PlacementOracle(session.game.arena, session.game.engine.rules(), session.game.cards)
+        session.mask_cache = {}
         init = session.init_msg()
         snapshot = session.snapshot()
+        self.assertEqual(len(snapshot['masks']), 4)
         json.dumps([init, snapshot])
         self.assertEqual(init['arena']['grid'], session.game.arena.grid)
         self.assertEqual(init['arena']['half'], session.game.arena.half)

@@ -1,9 +1,14 @@
 # Play against the bots on your phone
 
-The live browser game supports `planner-bot`, `search-bot`, and `search-v2`, with independent
+The live browser game supports `heuristic-bot`, `planner-bot`, `search-bot`, and `search-v2`, with independent
 choices of player and opponent decks. No model API credentials are needed.
 The shared [bot catalog](../configs/bots.toml) controls these choices; see
 [bot setup](bots.md) to change presets or add an opponent.
+
+For public play against Planner's fixed Hog Cycle deck, use `uv run --frozen python -m cr_arena.share --public`.
+It allows five active matches and shows “Server at
+capacity” on a sixth start. See [public play](public_play.md) for permanent hosting
+on Modal and the five-match load check.
 
 ## One-time setup
 
@@ -36,7 +41,7 @@ then starts a Cloudflare Quick Tunnel. Open the printed
 Your devices can stay on their existing Wi-Fi; they only need internet access.
 
 Choose **search-v2** in the opponent selector to play the selected Search v2
-preset, or choose either existing bot. Search v2 thinks in a separate process,
+preset, or choose another bot. Search v2 thinks in a separate process,
 uses the same command delay as you, and discards outdated card choices. It uses
 a soft 1.2-second search deadline at completed comparison rounds; a round can
 finish after that target. Its live results are separate from the paused benchmark.

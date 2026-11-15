@@ -1,0 +1,434 @@
+{
+  "recorded_at": "2026-11-14T19:24:10.940296-08:00",
+  "environment": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+  "base_commit": "95c12609f2d25d8ac7f50217176161ad64fc145b",
+  "source_state": "working tree implementing docs/public_play_plan.md",
+  "server_command": "uv run --frozen python -m cr_arena.live --public --port 8615",
+  "check_command": "uv run --frozen python -m cr_arena.check_live --url http://127.0.0.1:8615 --full-games",
+  "scope": "Historical heuristic measurements plus the current Planner/Hog Cycle release with preloaded masks.",
+  "deployment_status": "Planner/Hog Cycle release deployed on the existing native Modal Server URL; player-only deck selection and preloaded masks verified.",
+  "browser_check": {
+    "browser": "Chromium",
+    "viewport": [
+      390,
+      844
+    ],
+    "sample_seconds": 3,
+    "request_animation_frame_fps": 60,
+    "max_frame_ms": 17,
+    "horizontal_overflow": false,
+    "note": "Desktop browser at phone dimensions, not a physical phone performance test.",
+    "capacity_message_visible": true,
+    "mobile_quit_verified": true,
+    "console_errors_after_reload": 0,
+    "reconnect_after_server_restart_verified": true
+  },
+  "result": {
+    "passed": true,
+    "url": "http://127.0.0.1:8615",
+    "seconds_limit": 600,
+    "sixth_refused": true,
+    "slot_reused": true,
+    "matches": [
+      {
+        "completed": true,
+        "saved": "human__vs__heuristic-bot__d74a64d3f99b4615b4c93ef0f6421d2c",
+        "actions": 69,
+        "ticks_per_second": 20.0,
+        "snapshot_gap_p95_ms": 54.69,
+        "snapshot_gap_max_ms": 323.81,
+        "mask_p95_ms": 16.43,
+        "input_to_pending_p95_ms": 49.52
+      },
+      {
+        "completed": true,
+        "saved": "human__vs__heuristic-bot__e2a973684ff8440db11978bc7fc89ef1",
+        "actions": 58,
+        "ticks_per_second": 20.0,
+        "snapshot_gap_p95_ms": 55.31,
+        "snapshot_gap_max_ms": 168.38,
+        "mask_p95_ms": 12.43,
+        "input_to_pending_p95_ms": 46.53
+      },
+      {
+        "completed": true,
+        "saved": "human__vs__heuristic-bot__c556d37f46354713af07fc924e5bfbe6",
+        "actions": 45,
+        "ticks_per_second": 20.0,
+        "snapshot_gap_p95_ms": 55.32,
+        "snapshot_gap_max_ms": 210.64,
+        "mask_p95_ms": 16.5,
+        "input_to_pending_p95_ms": 48.44
+      },
+      {
+        "completed": true,
+        "saved": "human__vs__heuristic-bot__a972545708ba4fdaa56ca919d7936561",
+        "actions": 47,
+        "ticks_per_second": 20.0,
+        "snapshot_gap_p95_ms": 55.77,
+        "snapshot_gap_max_ms": 211.19,
+        "mask_p95_ms": 22.62,
+        "input_to_pending_p95_ms": 56.67
+      },
+      {
+        "completed": true,
+        "saved": "human__vs__heuristic-bot__940226e5cdf1433dba2b01a6bd9f939b",
+        "actions": 47,
+        "ticks_per_second": 20.0,
+        "snapshot_gap_p95_ms": 55.76,
+        "snapshot_gap_max_ms": 213.81,
+        "mask_p95_ms": 17.81,
+        "input_to_pending_p95_ms": 48.06
+      }
+    ]
+  },
+  "regression_checks": {
+    "python_tests": 216,
+    "python_skipped": 9,
+    "python_result": "passed",
+    "renderer_tests": 32,
+    "renderer_result": "passed"
+  },
+  "minimal_runtime_check": {
+    "installed_packages": 21,
+    "group": "play",
+    "result": {
+      "passed": true,
+      "url": "http://127.0.0.1:8617",
+      "seconds_limit": 10.0,
+      "sixth_refused": true,
+      "slot_reused": true,
+      "matches": [
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 12,
+          "ticks_per_second": 19.99,
+          "snapshot_gap_p95_ms": 58.08,
+          "snapshot_gap_max_ms": 62.0,
+          "mask_p95_ms": 26.23,
+          "input_to_pending_p95_ms": 44.11
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 12,
+          "ticks_per_second": 20.01,
+          "snapshot_gap_p95_ms": 56.62,
+          "snapshot_gap_max_ms": 60.23,
+          "mask_p95_ms": 12.61,
+          "input_to_pending_p95_ms": 34.95
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 11,
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 55.87,
+          "snapshot_gap_max_ms": 59.05,
+          "mask_p95_ms": 23.5,
+          "input_to_pending_p95_ms": 40.01
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 12,
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 56.01,
+          "snapshot_gap_max_ms": 58.15,
+          "mask_p95_ms": 16.08,
+          "input_to_pending_p95_ms": 40.04
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 12,
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 57.97,
+          "snapshot_gap_max_ms": 61.6,
+          "mask_p95_ms": 23.16,
+          "input_to_pending_p95_ms": 48.0
+        }
+      ]
+    },
+    "replay_save_smoke_check": "passed"
+  },
+  "hosted": {
+    "checked_at": "2026-11-14T19:41:40.495927-08:00",
+    "url": "https://b-charest04--royalebench-play-playserver.us-west.modal.direct",
+    "compatibility_url": "https://b-charest04--royalebench-play-serve.us-west.modal.run/",
+    "deployment_url": "https://modal.com/apps/b-charest04/main/deployed/royalebench-play",
+    "server_type": "native Modal Server running one Uvicorn process",
+    "capacity_verified": true,
+    "browser_redirect_verified": true,
+    "browser_console_errors": 0,
+    "websocket_ping_rtt_ms": [
+      181.1,
+      102.6,
+      113.9,
+      119.0,
+      103.1,
+      152.6,
+      147.1,
+      130.6,
+      110.1,
+      100.0
+    ],
+    "server_local_mask_compute_ms": [
+      6.33,
+      6.85,
+      15.72,
+      6.47
+    ],
+    "latency_target_met": false,
+    "full_game_check": "Stopped to free the five slots for the user; no hosted full-game completion or replay-save claim.",
+    "result": {
+      "passed": false,
+      "url": "https://b-charest04--royalebench-play-playserver.us-west.modal.direct",
+      "seconds_limit": 15.0,
+      "sixth_refused": true,
+      "slot_reused": true,
+      "matches": [
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 12,
+          "ticks_per_second": 19.85,
+          "snapshot_gap_p95_ms": 124.81,
+          "snapshot_gap_max_ms": 179.76,
+          "mask_p95_ms": 249.79,
+          "input_to_pending_p95_ms": 190.35
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 12,
+          "ticks_per_second": 19.85,
+          "snapshot_gap_p95_ms": 124.92,
+          "snapshot_gap_max_ms": 179.69,
+          "mask_p95_ms": 240.66,
+          "input_to_pending_p95_ms": 334.94
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 11,
+          "ticks_per_second": 19.92,
+          "snapshot_gap_p95_ms": 124.37,
+          "snapshot_gap_max_ms": 179.67,
+          "mask_p95_ms": 239.19,
+          "input_to_pending_p95_ms": 132.04
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 11,
+          "ticks_per_second": 19.85,
+          "snapshot_gap_p95_ms": 125.02,
+          "snapshot_gap_max_ms": 180.06,
+          "mask_p95_ms": 204.02,
+          "input_to_pending_p95_ms": 136.39
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 11,
+          "ticks_per_second": 19.92,
+          "snapshot_gap_p95_ms": 125.43,
+          "snapshot_gap_max_ms": 401.16,
+          "mask_p95_ms": 209.51,
+          "input_to_pending_p95_ms": 198.92
+        }
+      ]
+    }
+  },
+  "current_release": "planner-hog-preloaded-masks",
+  "planner_release": {
+    "checked_at": "2026-11-14T19:57:03.351095-08:00",
+    "opponent": "planner-bot",
+    "opponent_deck": "hog-2.6-cycle",
+    "planner_workers_per_game": 2,
+    "reserved_physical_cpu_cores": 16,
+    "reserved_memory_mib": 8192,
+    "local": {
+      "passed": true,
+      "url": "http://127.0.0.1:8615",
+      "seconds_limit": 30.0,
+      "sixth_refused": true,
+      "slot_reused": true,
+      "matches": [
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 7,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 55.4,
+          "snapshot_gap_max_ms": 123.55,
+          "mask_updates_received": 22,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 53.61
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 16,
+          "bot_actions": 6,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 54.18,
+          "snapshot_gap_max_ms": 130.26,
+          "mask_updates_received": 29,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 60.67
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 6,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 55.92,
+          "snapshot_gap_max_ms": 106.99,
+          "mask_updates_received": 15,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 62.24
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 6,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 54.72,
+          "snapshot_gap_max_ms": 136.03,
+          "mask_updates_received": 21,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 63.16
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 8,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 54.18,
+          "snapshot_gap_max_ms": 117.59,
+          "mask_updates_received": 25,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 57.69
+        }
+      ]
+    },
+    "hosted": {
+      "passed": false,
+      "url": "https://b-charest04--royalebench-play-playserver.us-west.modal.direct",
+      "seconds_limit": 30.0,
+      "sixth_refused": true,
+      "slot_reused": true,
+      "matches": [
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 8,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 129.96,
+          "snapshot_gap_max_ms": 187.98,
+          "mask_updates_received": 26,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 193.14
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 16,
+          "bot_actions": 6,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 19.99,
+          "snapshot_gap_p95_ms": 129.24,
+          "snapshot_gap_max_ms": 173.11,
+          "mask_updates_received": 29,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 220.36
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 6,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 129.79,
+          "snapshot_gap_max_ms": 187.86,
+          "mask_updates_received": 19,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 205.22
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 6,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 19.99,
+          "snapshot_gap_p95_ms": 129.37,
+          "snapshot_gap_max_ms": 186.34,
+          "mask_updates_received": 21,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 185.38
+        },
+        {
+          "completed": false,
+          "saved": null,
+          "actions": 13,
+          "bot_actions": 7,
+          "opponent": "planner-bot",
+          "opponent_deck": "hog-2.6-cycle",
+          "ticks_per_second": 20.0,
+          "snapshot_gap_p95_ms": 128.12,
+          "snapshot_gap_max_ms": 169.97,
+          "mask_updates_received": 26,
+          "preloaded_masks_ready": true,
+          "input_to_pending_p95_ms": 181.53
+        }
+      ]
+    },
+    "browser": {
+      "viewport": [
+        390,
+        844
+      ],
+      "player_deck": "lavaloon",
+      "opponent_deck": "hog-2.6-cycle",
+      "preloaded_masks": 4,
+      "placement_requests_sent_on_card_selection_and_play": 0,
+      "play_sent": true,
+      "opponent_controls_visible": false,
+      "hosted_setup_ui_verified": true,
+      "console_errors": 0
+    },
+    "regression_checks": {
+      "python_tests": 219,
+      "python_skipped": 9,
+      "python_result": "passed",
+      "renderer_tests": 32,
+      "renderer_result": "passed"
+    },
+    "limits": "Hosted five-match functional checks passed at ~20 ticks/second; the 150 ms WAN input target remains unmet (worst per-match p95 220.36 ms). No hosted full-game completion claim for Planner."
+  }
+}

@@ -29,12 +29,20 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
 - [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
+- [`demo/README.md`](demo/README.md): active 76-second Remotion demo, media layout, production status, and historical v01 cut.
+- [`demo/remotion/README.md`](demo/remotion/README.md): editable video project, official Remotion skills used, asset preparation, preview, and export commands.
+- [`demo/storyboard.md`](demo/storyboard.md): timed headliner sequence and model/reference comparison.
+- [`demo/script.md`](demo/script.md): draft voiceover and evidence-based editorial notes.
+- [`demo/shot-list.md`](demo/shot-list.md): footage sources, capture queue, and edit checklist.
+- [`demo/evidence.json`](demo/evidence.json): selected Opus v6 run metadata, task outcome, trace excerpt, and validated reference provenance.
+- [`demo/production.json`](demo/production.json): current Remotion edit, capture provenance, historical first-cut media details, verification, and remaining production work.
 - [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, compact opponent-play observations, pinned dependencies, and benchmark validation priorities.
+- [`docs/hog_body_block.md`](docs/hog_body_block.md): TikTok extraction and scripted Hog Rider / Ice Golem / Skeletons body-block recreation, replay verification, placement sensitivity, and controls.
 - [`docs/bots.md`](docs/bots.md): shared bot catalog, registry, implementation layout, adding opponents, live/turn-based bot strength comparisons, paired live duels, and planner settings.
 - [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
 - [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
 - [`docs/phone_play.md`](docs/phone_play.md): launch interactive play and share a temporary public link.
-- [`docs/public_play.md`](docs/public_play.md): arena lobby, player names and deck selection, seven-match public Planner play at local-play strength without pausing, persistent CSV leaderboard, fixed Hog Cycle opponent, preloaded masks, permanent RoyaleBench share link, results before worker cleanup, and unranked hosting checks.
+- [`docs/public_play.md`](docs/public_play.md): arena lobby, player names and deck selection, seven-match public Planner play at local-play strength without pausing, Tactics @5 Try Benchmark challenge and reference resolution, persistent CSV leaderboard, fixed Hog Cycle opponent, preloaded masks, permanent RoyaleBench share link, results before worker cleanup, and unranked hosting checks.
 - [`docs/public_play_plan.md`](docs/public_play_plan.md): implementation scope, checklist, and validation for public play.
 - [`docs/public_play_validation.json`](docs/public_play_validation.json): historical five-match and ten-match measurements (two Planner workers per match; the seven-match eight-worker deployment is not yet measured), latency limits, and deployment status.
 - [`docs/rendering.md`](docs/rendering.md): dark replay viewer and synchronized agent decisions, lobby miniature, card previews and match result dialog, shared live/replay graphics, mobile troop sizing, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
@@ -57,7 +65,10 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`runs/royalebench-v5/checks.json`](runs/royalebench-v5/checks.json): v5 static, Docker, negative-control, and hosted publication checks.
 - [`runs/royalebench-v3/checks-revision2.json`](runs/royalebench-v3/checks-revision2.json): v3 `@2` publication digest, protocol hash, validation counts and hosted Qwen pilot pointer.
 - [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
-- [`docs/tactics.md`](docs/tactics.md): coordinate Tactics on the v3 foundation, four task families, bounded spatial contrasts, historical menu results and release evidence.
+- [`docs/tactics.md`](docs/tactics.md): coordinate Tactics on the v3 foundation, five task families including one-HP-tower three-elixir Hog defense, unchanged source packages, bounded spatial contrasts, historical menu results and release evidence.
+- [`runs/tactics-hog-one-hit/checks.json`](runs/tactics-hog-one-hit/checks.json): one-HP Hog defense revision, three-elixir start and total budget, reference and failure controls, container checks, and hosted pilot evidence.
+- [`runs/tactics-hog/checks.json`](runs/tactics-hog/checks.json): expanded Tactics revision, new Hog task reference and negative controls, preserved source digests, container checks, and hosted pilot evidence.
+- [`runs/tactics-hog/model-pilot.json`](runs/tactics-hog/model-pilot.json): Opus 5.5 Hog defense pilot on Tactics `@4`, independently verified placement failure, cost, and archived trace locations.
 - [`runs/tactics-coordinates/checks.json`](runs/tactics-coordinates/checks.json): Tactics `@3` foundation/runtime hashes, focused tests, container checks, coordinate sweeps and hosted pilot evidence.
 - [`docs/coordinate_harness.md`](docs/coordinate_harness.md): separate coordinate-action pilot, CLI, illegal-action handling, replay grading, reference validation, and comparison with frozen v1.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, filter the leaderboard to full benchmark runs and compare model scores, watch recorded task gameplay and validated reference resolutions, inspect per-run and per-task API costs, benchmark task rankings by average pass rate and cost, and task difficulty, repair harness issues, and browse the arena.

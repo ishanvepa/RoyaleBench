@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "recorded_at_utc": "2026-11-15T17:57:13.541738+00:00",
+  "status": "Planning evidence snapshot; footage capture pending.",
+  "headliner": {
+    "run_id": "45124458-3a52-4e73-b380-ee42f6934b19",
+    "task_id": "04-critical-cycle-and-connect",
+    "dashboard_url": "http://localhost:8000/evals/jobs/45124458-3a52-4e73-b380-ee42f6934b19?task=04-critical-cycle-and-connect"
+  },
+  "run": {
+    "dataset_version": "royalebench/royalebench-v6@1",
+    "model": "anthropic/claude-opus-5-5",
+    "harness": "claude_code-v1.0.0",
+    "provider": "modal",
+    "status": "FINISHED",
+    "completed_tasks": 14,
+    "total_tasks": 14,
+    "successful_objectives": 10,
+    "objective_success_percent": 71.42857142857143,
+    "interpretation": "Single recorded run; one attempt per task. Aggregate measures task objectives, including non-win objectives."
+  },
+  "starting_state": {
+    "remaining_overtime_s": 18,
+    "own_left_tower_hp": 250,
+    "enemy_left_tower_hp": 450,
+    "own_elixir": 7,
+    "incoming_unit": "Giant",
+    "starting_hand": [
+      "IceSpirits",
+      "Skeletons",
+      "IceGolemite",
+      "Log"
+    ],
+    "source": "http://localhost:8000/api/evals/jobs/45124458-3a52-4e73-b380-ee42f6934b19/tasks/04-critical-cycle-and-connect/trace"
+  },
+  "model_attempt": {
+    "outcome": {
+      "result": "loss",
+      "crowns_for": 0,
+      "crowns_against": 1,
+      "enemy_tower_damage_frac": 0.2527,
+      "own_tower_damage_frac": 0.3127,
+      "ticks": 5847,
+      "tower_damage": 250,
+      "spent_elixir": 15,
+      "plays": [
+        {
+          "decision": 0,
+          "card": "IceSpirits",
+          "x": 63000,
+          "y": 198000,
+          "cost": 1
+        },
+        {
+          "decision": 1,
+          "card": "Cannon",
+          "x": 135000,
+          "y": 189000,
+          "cost": 3
+        },
+        {
+          "decision": 2,
+          "card": "Fireball",
+          "x": 63000,
+          "y": 459000,
+          "cost": 4
+        },
+        {
+          "decision": 3,
+          "card": "HogRider",
+          "x": 63000,
+          "y": 270000,
+          "cost": 4
+        },
+        {
+          "decision": 4,
+          "card": "Log",
+          "x": 63000,
+          "y": 441000,
+          "cost": 2
+        },
+        {
+          "decision": 5,
+          "card": "IceSpirits",
+          "x": 79200,
+          "y": 162000,
+          "cost": 1
+        }
+      ],
+      "opponent_plays": [],
+      "elapsed_s": 10.35,
+      "rejected_actions": 0
+    },
+    "rewards": {
+      "reward": 0.0,
+      "win": 0.0,
+      "crowns_for": 0.0,
+      "crowns_against": 1.0,
+      "enemy_tower_damage_frac": 0.2527,
+      "own_tower_damage_frac": 0.3127,
+      "completed": 1.0,
+      "integrity": 1.0,
+      "decisions": 6.0,
+      "fast_decision_frac": 0.0,
+      "spent_elixir": 15.0,
+      "tower_damage": 250.0,
+      "objective_met": 0.0,
+      "rejected_actions": 0.0
+    },
+    "source": "http://localhost:8000/api/evals/jobs/45124458-3a52-4e73-b380-ee42f6934b19/tasks/04-critical-cycle-and-connect",
+    "trace_excerpt": "Hog Rider is crossing toward the enemy tower, which is at 291. Next I'm sending Log to chip it lower."
+  },
+  "validated_reference": {
+    "source_path": "runs/royalebench-win/docker/04-critical-cycle-and-connect/match_report.json",
+    "sha256": "d35fdc3879c6cc1f4d0df578dc7ae1a179a2dd0ff5ff53151696e6e6f9a22856",
+    "outcome": {
+      "result": "win",
+      "crowns_for": 1,
+      "crowns_against": 0,
+      "enemy_tower_damage_frac": 0.3127,
+      "own_tower_damage_frac": 0.2564,
+      "ticks": 5864,
+      "tower_damage": 0,
+      "spent_elixir": 15,
+      "plays": [
+        {
+          "decision": 0,
+          "card": "IceSpirits",
+          "x": 63000,
+          "y": 180000,
+          "cost": 1
+        },
+        {
+          "decision": 1,
+          "card": "Cannon",
+          "x": 126000,
+          "y": 207000,
+          "cost": 3
+        },
+        {
+          "decision": 2,
+          "card": "Fireball",
+          "x": 63000,
+          "y": 459000,
+          "cost": 4
+        },
+        {
+          "decision": 3,
+          "card": "HogRider",
+          "x": 63000,
+          "y": 270000,
+          "cost": 4
+        },
+        {
+          "decision": 4,
+          "card": "Log",
+          "x": 89676,
+          "y": 155214,
+          "cost": 2
+        },
+        {
+          "decision": 5,
+          "card": "IceSpirits",
+          "x": 80910,
+          "y": 175788,
+          "cost": 1
+        }
+      ],
+      "opponent_plays": [],
+      "elapsed_s": 11.2,
+      "rejected_actions": 0
+    },
+    "rewards": {
+      "reward": 1.0,
+      "win": 1.0,
+      "crowns_for": 1.0,
+      "crowns_against": 0.0,
+      "enemy_tower_damage_frac": 0.3127,
+      "own_tower_damage_frac": 0.2564,
+      "completed": 1.0,
+      "integrity": 1.0,
+      "decisions": 6.0,
+      "fast_decision_frac": 1.0,
+      "spent_elixir": 15.0,
+      "tower_damage": 0.0,
+      "objective_met": 1.0,
+      "rejected_actions": 0.0
+    },
+    "provenance": "Win@2 source reference; v6 retains the source task bytes. See docs/royalebench_v6.md and benchmarks/royalebench-v6/manifest.json."
+  },
+  "comparison": {
+    "same_card_order": true,
+    "same_total_elixir": 15,
+    "reference_tower_damage": 0,
+    "coordinate_units": "Outcome plays use internal coordinates: 18000 units per tile. CLI observations use own-frame tiles.",
+    "interpretation": "Complete sequences differ in placement, including offensive versus defensive Log. This comparison does not isolate a single action as the sole cause."
+  },
+  "capture_provenance": {
+    "reference_source_path": "runs/royalebench-v6/docker/04-critical-cycle-and-connect/replay.html",
+    "reference_replay_sha256": "70a1e4a106e45f76305ef6c564cb4a45235bf857aee6655b8c8cbceada69845b",
+    "validation_path": "runs/royalebench-v6/docker/04-critical-cycle-and-connect/v6_validation.json",
+    "comparison_checks": [
+      "Arena payloads match.",
+      "Card IDs and deployment ticks match for all six actions."
+    ],
+    "dashboard_reference_status": "v6 resolution endpoint returned unavailable; capture uses the saved Docker-validated v6 replay directly.",
+    "repository_url": "https://github.com/ishanvepa/RoyaleBench",
+    "repository_url_source": "git remote origin"
+  }
+}

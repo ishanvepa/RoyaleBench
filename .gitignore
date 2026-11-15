@@ -32,5 +32,7 @@ web/playwright-report/
 data/references/*.mp4
 runs/indicator_scenes.json
 runs/indicator_check/
+runs/tactics-hog/docker/
+runs/tactics-hog-one-hit/docker/
 .playwright-cli/
 output/playwright/

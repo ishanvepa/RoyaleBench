@@ -1,0 +1,166 @@
+{
+  "task": "11-giant-mirror-three-crown",
+  "config_sha256": "fb3229dc016764a2dcf600847cda3a72ab1e5cba0b9d57bbfbd142b84d658e40",
+  "protocol_sha256": "f5fd98188bc1c05a9c076393215a35b6879df205d3225a3de586f132a009c6c1",
+  "reference_log_sha256": "2b98c588c7f777925bf7654a78658890147251f3ea054cd44ccf676a8a8c36f3",
+  "reward": 1,
+  "integrity": 1,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "spell-rush": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0,
+    "partial": 0.0
+  },
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 3,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 1.0,
+    "own_tower_damage_frac": 0.0205,
+    "ticks": 2860,
+    "tower_damage": 224,
+    "spent_elixir": 32,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Musketeer",
+        "x": 261000,
+        "y": 261000,
+        "cost": 4
+      },
+      {
+        "decision": 1,
+        "card": "Minions",
+        "x": 63000,
+        "y": 261000,
+        "cost": 3
+      },
+      {
+        "decision": 5,
+        "card": "Knight",
+        "x": 153000,
+        "y": 207000,
+        "cost": 3
+      },
+      {
+        "decision": 9,
+        "card": "Archer",
+        "x": 261000,
+        "y": 261000,
+        "cost": 3
+      },
+      {
+        "decision": 13,
+        "card": "Zap",
+        "x": 117000,
+        "y": 405000,
+        "cost": 2
+      },
+      {
+        "decision": 17,
+        "card": "Musketeer",
+        "x": 261000,
+        "y": 351000,
+        "cost": 4
+      },
+      {
+        "decision": 21,
+        "card": "Minions",
+        "x": 63000,
+        "y": 261000,
+        "cost": 3
+      },
+      {
+        "decision": 26,
+        "card": "Knight",
+        "x": 261000,
+        "y": 171000,
+        "cost": 3
+      },
+      {
+        "decision": 28,
+        "card": "Archer",
+        "x": 261000,
+        "y": 171000,
+        "cost": 3
+      },
+      {
+        "decision": 30,
+        "card": "Fireball",
+        "x": 261000,
+        "y": 405000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 1400,
+        "card": "Knight",
+        "x": 63000,
+        "y": 405000
+      },
+      {
+        "tick": 1520,
+        "card": "Archer",
+        "x": 261000,
+        "y": 333000
+      },
+      {
+        "tick": 1680,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 333000
+      },
+      {
+        "tick": 1880,
+        "card": "Minions",
+        "x": 117000,
+        "y": 423000
+      },
+      {
+        "tick": 1960,
+        "card": "Zap",
+        "x": 243000,
+        "y": 405000
+      },
+      {
+        "tick": 2160,
+        "card": "Knight",
+        "x": 261000,
+        "y": 405000
+      },
+      {
+        "tick": 2320,
+        "card": "Archer",
+        "x": 63000,
+        "y": 513000
+      },
+      {
+        "tick": 2480,
+        "card": "Musketeer",
+        "x": 261000,
+        "y": 513000
+      },
+      {
+        "tick": 2560,
+        "card": "Minions",
+        "x": 261000,
+        "y": 513000
+      },
+      {
+        "tick": 2640,
+        "card": "Zap",
+        "x": 261000,
+        "y": 297000
+      }
+    ],
+    "elapsed_s": 73.0,
+    "rejected_actions": 0
+  },
+  "decisions": 37,
+  "frontier_model_runs": [],
+  "reference_policy": "privileged Planner search; the actual log is the solvability proof"
+}

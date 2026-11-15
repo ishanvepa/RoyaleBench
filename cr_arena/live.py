@@ -19,10 +19,12 @@ import math
 import multiprocessing as mp
 import os
 import random
+import tempfile
 import time
 import uuid
 from collections import deque
 from contextlib import asynccontextmanager, suppress
+from functools import lru_cache
 from pathlib import Path
 
 import uvicorn
@@ -40,6 +42,7 @@ from .game import Game
 from .leaderboard import Leaderboard, guest_name, player_name as validate_player_name
 from .rendering import embed_renderer
 from .bots import human_bot_specs
+from .royale_task import make_referee
 
 HUMAN, BOT = 0, 1
 BOT_SPECS = human_bot_specs("live")
@@ -66,6 +69,8 @@ SEARCH_V2_MAX_AGE_TICKS = 80  # discard answers older than four seconds
 BOT_EVERY_TICKS = 5  # the bot is shown a fresh snapshot at most every 0.25 s of game time
 OUT_DIR = Path(os.getenv("CR_ARENA_REPLAY_DIR", "runs/round_robin/human-play"))
 PAGE = Path(__file__).with_name("live.html")
+BENCHMARK_TASK = Path(__file__).resolve().parent.parent / "benchmarks/royalebench-tactics/05-hog-body-block/environment/task.json"
+BENCHMARK_REFERENCE = BENCHMARK_TASK.parent.parent / "solution/reference.jsonl"
 PLAYER_COOKIE = "cr_player"
 _NOT_YET = {DeployStatus.NOT_ENOUGH_ELIXIR, DeployStatus.TOO_EARLY}
 
@@ -509,6 +514,111 @@ class Session:
         self.conn.close()
 
 
+class BenchmarkSession(Session):
+    """Human controls the exact published coordinate scenario, one decision at a time."""
+
+    def __init__(self, ws: WebSocket, cfg: dict, player_id: str, player_name: str | None):
+        self.ws = ws
+        self.ref = make_referee(cfg, record=True)
+        self.game = self.ref.game
+        self.match_id = uuid.uuid4().hex
+        self.player_id = player_id
+        self.player_name = guest_name(player_id) if player_name is None else player_name
+        self.bot_spec = {"name": "Planner bot"}
+        self.deck_names = ("Benchmark defense", "Scenario Hog")
+        self.decks = [cfg["agent_deck"], cfg["opponent_deck"]]
+        self.seed = cfg["seed"]
+        self.delay = 0
+        self.sub = self.game.sub
+        self.placement = PlacementOracle(self.game.arena, self.game.engine.rules(), self.game.cards)
+        self.mask_cache = {}
+        self.last_mask_at = -math.inf
+        self.started_at = time.monotonic()
+        self.closed = False
+        self.starting = False
+        self.actions: asyncio.Queue[dict] = asyncio.Queue(maxsize=1)
+        self.resolving = False
+        ACTIVE.add(self)
+
+    def init_msg(self) -> dict:
+        return dict(super().init_msg(), mode="benchmark")
+
+    def snapshot(self) -> dict:
+        result = super().snapshot()
+        ref = self.ref
+        result["left"] = round(max(0, (ref.end_tick - ref.tick) * self.game.state.tick_ms / 1000), 2)
+        result["ot"] = False
+        result["benchmark"] = {"decision": ref.decision, "max_decisions": ref.scenario["max_decisions"],
+                               "spent": ref.spent, "budget": ref.scenario["spend_budget"]}
+        return result
+
+    def on_message(self, m: dict) -> dict | None:
+        from .coordinate_task import action_schema
+
+        if m.get("t") not in ("play", "wait"):
+            return None
+        if self.ref.over:
+            raise ValueError("The challenge is finished.")
+        action = ({"cmd": "wait"} if m["t"] == "wait" else
+                  {"cmd": "play", "slot": m.get("slot"), "x": m.get("x"), "y": m.get("y")})
+        action_schema(action)
+        if self.resolving or self.actions.full():
+            raise ValueError("Wait for the current decision to resolve.")
+        self.actions.put_nowait(action)
+        return None
+
+    def _take_turn(self, action: dict) -> tuple[dict, str]:
+        _, metadata = self.ref.prepare_action(action)
+        return metadata, self.ref.act_action(action)
+
+    async def _run(self) -> None:
+        await self.send(self.init_msg())
+        await self.send(await asyncio.to_thread(self.snapshot))
+        while not self.ref.over:
+            remaining = MAX_SESSION_SECONDS - (time.monotonic() - self.started_at)
+            if remaining <= 0:
+                await self.send({"t": "error", "message": "Challenge expired. Please start again."})
+                return
+            try:
+                action = await asyncio.wait_for(self.actions.get(), timeout=remaining)
+            except asyncio.TimeoutError:
+                await self.send({"t": "error", "message": "Challenge expired. Please start again."})
+                return
+            self.resolving = True
+            metadata, result = await asyncio.to_thread(self._take_turn, action)
+            await self.send({"t": "benchmark_turn", "action": action, "accepted": metadata["accepted"],
+                             "rejection": metadata["rejection"], "result": result})
+            snapshot = await asyncio.to_thread(self.snapshot)
+            self.resolving = False
+            await self.send(snapshot)
+        await self.send({"t": "over", "mode": "benchmark", **await asyncio.to_thread(self.save)})
+
+    def save(self) -> dict:
+        ref = self.ref
+        outcome = ref.outcome()
+        success = ref.success()
+        _, crowns, _, _, trace = self.game.finish()
+        result = {"success": success, "crowns": crowns, "tower_damage": outcome["tower_damage"],
+                  "spent": ref.spent, "budget": ref.scenario["spend_budget"], "saved": None}
+        try:
+            if trace is not None:
+                folder = OUT_DIR / "replays"
+                folder.mkdir(parents=True, exist_ok=True)
+                name = f"benchmark-hog-{self.match_id}.msgpack"
+                save_trace(trace, folder / name)
+                result["saved"] = name
+        except Exception:
+            log.exception("could not save benchmark replay")
+        return result
+
+    def close(self) -> None:
+        if self.closed:
+            return
+        self.closed = True
+        ACTIVE.discard(self)
+        self.ref.opponent.close()
+
+
 def player_identity(request) -> str:
     value = request.cookies.get(PLAYER_COOKIE, "") if request is not None else ""
     return value if len(value) == 32 and all(c in "0123456789abcdef" for c in value) else uuid.uuid4().hex
@@ -537,10 +647,52 @@ async def leaderboard(request) -> JSONResponse:
     return remember_player(response, request, player_id)
 
 
+@lru_cache(maxsize=1)
+def benchmark_resolution_html() -> str:
+    """Replay the packaged, authenticated reference with the current viewer."""
+    from .coordinate_task import replay_coordinates
+    from .replay import patched_html
+
+    cfg = json.loads(BENCHMARK_TASK.read_text())
+    entries = [json.loads(line) for line in BENCHMARK_REFERENCE.read_text().splitlines()]
+    ref = make_referee(cfg, record=True)
+    decisions = []
+    try:
+        for entry in entries:
+            action = entry["action"]
+            if action["cmd"] == "wait":
+                label, move = "Wait", "Wait 0.5 seconds"
+            else:
+                card = ref.game.card_name(ref.game.state.players[0].hand[action["slot"]])
+                label = "Play " + card
+                move = f"{card} at ({action['x']}, {action['y']})"
+            elapsed = (ref.tick - ref.start_tick) / 20
+            decisions.append({"team": 0, "tick": ref.tick, "label": f"Decision {ref.decision + 1}: {label}",
+                              "steps": [{"kind": "action", "title": f"At {elapsed:.1f} seconds", "text": move}]})
+            replay_coordinates(ref, [entry])
+        if not ref.over or not ref.success():
+            raise RuntimeError("Packaged benchmark reference did not clear the challenge")
+        _, _, _, _, trace = ref.game.finish()
+        with tempfile.TemporaryDirectory(prefix="royalebench-resolution-") as folder:
+            path = Path(folder) / "reference.msgpack"
+            save_trace(trace, path)
+            return patched_html(path, title="RoyaleBench · Hog defense resolution", decisions=decisions,
+                                decisions_note="Validated Tactics @5 reference. The clock advances 0.5 seconds "
+                                               "per decision; remaining time resolves as waits.",
+                                scenario_result="Challenge cleared: zero tower damage, three elixir spent, "
+                                                "left tower survives at 1 HP.")
+    finally:
+        ref.opponent.close()
+
+
+async def benchmark_resolution(_request) -> HTMLResponse:
+    return HTMLResponse(await asyncio.to_thread(benchmark_resolution_html), headers={"Cache-Control": "no-store"})
+
+
 async def socket(ws: WebSocket) -> None:
     await ws.accept()
     player_id = player_identity(ws)
-    session: Session | None = None
+    session: Session | BenchmarkSession | None = None
     task: asyncio.Task | None = None
 
     async def stop() -> None:
@@ -556,8 +708,16 @@ async def socket(ws: WebSocket) -> None:
 
     try:
         specs, fixed = ws.app.state.bot_specs, ws.app.state.fixed_opponent
+        challenge = ws.app.state.benchmark
         await ws.send_json({"t": "hello", "decks": CLASSIC_DECKS, "bots": specs, "max_games": MAX_GAMES,
-                            "fixed_opponent": fixed})
+                            "fixed_opponent": fixed,
+                            "benchmark": {"title": challenge["title"], "objective": challenge["objective"],
+                                          "prompt": "An enemy Hog Rider is closing on your one-HP left tower. "
+                                                    "Keep every crown tower untouched for 16 seconds. "
+                                                    "You start with 3 elixir and may spend at most 3 total.",
+                                          "deck": challenge["agent_deck"], "horizon": challenge["scenario"]["horizon_s"],
+                                          "budget": challenge["scenario"]["spend_budget"],
+                                          "decisions": challenge["scenario"]["max_decisions"]}})
         while True:
             try:
                 raw = await ws.receive_text()
@@ -570,32 +730,35 @@ async def socket(ws: WebSocket) -> None:
                 await ws.send_json({"t": "invalid", "message": "Invalid game message."})
                 continue
             if m.get("t") == "start":
+                benchmark = m.get("mode") == "benchmark"
                 try:
-                    ranked = m.get("ranked", True)
+                    ranked = m.get("ranked", True) if not benchmark else False
                     if type(ranked) is not bool:
                         raise ValueError("ranked must be true or false.")
-                    name = validate_player_name(m.get("player_name")) if ranked or "player_name" in m else None
+                    name = validate_player_name(m.get("player_name")) if ranked or m.get("player_name") else None
                 except ValueError as exc:
                     await ws.send_json({"t": "invalid", "message": str(exc)})
                     continue
-                mine, theirs = m.get("deck"), m.get("opp_deck", m.get("deck"))
-                bot, seed = m.get("bot", next(iter(specs))), m.get("seed", random.randrange(1, 10_000))
-                if fixed:
-                    bot, theirs = fixed["bot"], fixed["deck"]
-                if (not isinstance(mine, str) or mine not in CLASSIC_DECKS or
-                        not isinstance(theirs, str) or theirs not in CLASSIC_DECKS or
-                        not isinstance(bot, str) or bot not in specs or type(seed) is not int or not 0 <= seed < 2**32):
-                    await ws.send_json({"t": "invalid", "message": "Choose a valid bot and decks."})
-                    continue
+                if not benchmark:
+                    mine, theirs = m.get("deck"), m.get("opp_deck", m.get("deck"))
+                    bot, seed = m.get("bot", next(iter(specs))), m.get("seed", random.randrange(1, 10_000))
+                    if fixed:
+                        bot, theirs = fixed["bot"], fixed["deck"]
+                    if (not isinstance(mine, str) or mine not in CLASSIC_DECKS or
+                            not isinstance(theirs, str) or theirs not in CLASSIC_DECKS or
+                            not isinstance(bot, str) or bot not in specs or type(seed) is not int or not 0 <= seed < 2**32):
+                        await ws.send_json({"t": "invalid", "message": "Choose a valid bot and decks."})
+                        continue
                 await stop()
                 if len(ACTIVE) >= MAX_GAMES:
                     await ws.send_json({"t": "busy", "n": len(ACTIVE),
                                         "message": "Server at capacity — please try again shortly."})
                     continue
                 try:
-                    session = Session(ws, mine, theirs, seed, bot, spec=specs[bot] if fixed else None,
-                                      leaderboard=ws.app.state.leaderboard, player_id=player_id, player_name=name,
-                                      ranked=ranked)
+                    session = (BenchmarkSession(ws, ws.app.state.benchmark, player_id, name) if benchmark else
+                               Session(ws, mine, theirs, seed, bot, spec=specs[bot] if fixed else None,
+                                       leaderboard=ws.app.state.leaderboard, player_id=player_id, player_name=name,
+                                       ranked=ranked))
                 except Exception:
                     log.exception("could not start live game")
                     await ws.send_json({"t": "error", "message": "Could not start a game. Please try again."})
@@ -632,11 +795,13 @@ async def lifespan(_app):
 
 def create_app(*, public: bool = False, leaderboard_path: Path | None = None) -> Starlette:
     app = Starlette(routes=[Route("/", page), Route("/health", health), Route("/leaderboard", leaderboard),
+                            Route("/benchmark/resolution", benchmark_resolution),
                             WebSocketRoute("/ws", socket)],
                     lifespan=lifespan)
     app.state.leaderboard = Leaderboard(leaderboard_path or Path(os.getenv("CR_ARENA_LEADERBOARD", OUT_DIR / "leaderboard.csv")))
     app.state.bot_specs = {PUBLIC_BOT: {**BOT_SPECS[PUBLIC_BOT], "workers": PUBLIC_PLANNER_WORKERS}} if public else BOT_SPECS
     app.state.fixed_opponent = {"bot": PUBLIC_BOT, "deck": PUBLIC_DECK} if public else None
+    app.state.benchmark = json.loads(BENCHMARK_TASK.read_text())
     return app
 
 

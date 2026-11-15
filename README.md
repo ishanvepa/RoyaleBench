@@ -24,4 +24,5 @@ Modal provides the sandbox compute for evaluation tasks run through Valkyrie (`-
 - [Valkyrie sandbox provider setup](https://docs.valkyrie.vals.ai/get-started/sandbox-providers): connect Modal credentials to Valkyrie.
 - [Modal getting started](https://modal.com/docs/guide/getting-started): account, CLI, and authentication setup.
 - [Modal Sandboxes](https://modal.com/docs/guide/sandboxes): isolated task execution and resource configuration.
+- [Match tasks](docs/match_tasks.md): full matches played through the `cr` CLI on Valkyrie, with isolated referee and replay grading.
 - [Project smoke test](docs/valkyrie_smoke.md): project-specific credential setup and a minimal evaluation run.

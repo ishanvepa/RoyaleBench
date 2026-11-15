@@ -1,0 +1,48 @@
+{"decision": 0, "tick": 120, "move": 27, "label": "27. Giant (5 elixir, troop) @ behind right tower", "think_s": 9.798, "wall": 1794707517.153}
+{"decision": 1, "tick": 160, "move": 0, "label": "0. wait (save elixir)", "think_s": 13.867, "wall": 1794707531.025}
+{"decision": 2, "tick": 200, "move": 44, "label": "44. Knight (3 elixir, troop) @ behind right tower", "think_s": 18.481, "wall": 1794707549.51}
+{"decision": 3, "tick": 240, "move": 0, "label": "0. wait (save elixir)", "think_s": 3.737, "wall": 1794707553.252}
+{"decision": 4, "tick": 280, "move": 0, "label": "0. wait (save elixir)", "think_s": 7.169, "wall": 1794707560.426}
+{"decision": 5, "tick": 320, "move": 6, "label": "6. Minions (3 elixir, troop) @ behind right tower", "think_s": 8.801, "wall": 1794707569.231}
+{"decision": 6, "tick": 400, "move": 0, "label": "0. wait (save elixir)", "think_s": 20.324, "wall": 1794707589.566}
+{"decision": 7, "tick": 440, "move": 0, "label": "0. wait (save elixir)", "think_s": 12.927, "wall": 1794707602.499}
+{"decision": 8, "tick": 480, "move": 20, "label": "20. Archer (3 elixir, troop) @ in front of left tower", "think_s": 29.987, "wall": 1794707632.491}
+{"decision": 9, "tick": 560, "move": 0, "label": "0. wait (save elixir)", "think_s": 22.437, "wall": 1794707654.94}
+{"decision": 10, "tick": 600, "move": 0, "label": "0. wait (save elixir)", "think_s": 14.364, "wall": 1794707669.311}
+{"decision": 11, "tick": 640, "move": 1, "label": "1. Zap (2 elixir, spell) @ on enemy Knight at (15.5, 20.7)", "think_s": 10.26, "wall": 1794707679.577}
+{"decision": 12, "tick": 760, "move": 0, "label": "0. wait (save elixir)", "think_s": 17.463, "wall": 1794707697.063}
+{"decision": 13, "tick": 800, "move": 0, "label": "0. wait (save elixir)", "think_s": 18.776, "wall": 1794707715.844}
+{"decision": 14, "tick": 840, "move": 14, "label": "14. Giant (5 elixir, troop) @ behind right tower", "think_s": 19.817, "wall": 1794707735.667}
+{"decision": 15, "tick": 1040, "move": 6, "label": "6. Knight (3 elixir, troop) @ behind right tower", "think_s": 10.38, "wall": 1794707746.067}
+{"decision": 16, "tick": 1200, "move": 2, "label": "2. Minions (3 elixir, troop) @ right bridge", "think_s": 13.575, "wall": 1794707759.659}
+{"decision": 17, "tick": 1360, "move": 0, "label": "0. wait (save elixir)", "think_s": 21.782, "wall": 1794707781.463}
+{"decision": 18, "tick": 1400, "move": 2, "label": "2. Musketeer (4 elixir, troop) @ right bridge", "think_s": 21.033, "wall": 1794707802.501}
+{"decision": 19, "tick": 1520, "move": 0, "label": "0. wait (save elixir)", "think_s": 18.522, "wall": 1794707821.039}
+{"decision": 20, "tick": 1560, "move": 0, "label": "0. wait (save elixir)", "think_s": 24.678, "wall": 1794707845.721}
+{"decision": 21, "tick": 1600, "move": 16, "label": "16. Archer (3 elixir, troop) @ right bridge", "think_s": 29.896, "wall": 1794707875.621}
+{"decision": 22, "tick": 1680, "move": 1, "label": "1. Zap (2 elixir, spell) @ on enemy Minions at (15.7, 17.6)", "think_s": 12.081, "wall": 1794707887.713}
+{"decision": 23, "tick": 1880, "move": 0, "label": "0. wait (save elixir)", "think_s": 12.61, "wall": 1794707900.343}
+{"decision": 24, "tick": 1920, "move": 11, "label": "11. Fireball (4 elixir, spell) @ enemy right princess tower", "think_s": 4.941, "wall": 1794707905.287}
+{"decision": 25, "tick": 2080, "move": 10, "label": "10. Minions (3 elixir, troop) @ right bridge", "think_s": 15.027, "wall": 1794707920.328}
+{"decision": 26, "tick": 2240, "move": 2, "label": "2. Knight (3 elixir, troop) @ right bridge", "think_s": 28.127, "wall": 1794707948.47}
+{"decision": 27, "tick": 2440, "move": 10, "label": "10. Musketeer (4 elixir, troop) @ right bridge", "think_s": 34.814, "wall": 1794707983.304}
+{"decision": 28, "tick": 2520, "move": 9, "label": "9. Zap (2 elixir, spell) @ on enemy Knight at (15.0, 16.8)", "think_s": 19.169, "wall": 1794708002.481}
+{"decision": 29, "tick": 2600, "move": 11, "label": "11. Fireball (4 elixir, spell) @ enemy right princess tower", "think_s": 45.342, "wall": 1794708047.831}
+{"decision": 30, "tick": 2720, "move": 10, "label": "10. Minions (3 elixir, troop) @ right bridge", "think_s": 30.465, "wall": 1794708078.32}
+{"decision": 31, "tick": 2800, "move": 10, "label": "10. Knight (3 elixir, troop) @ right bridge", "think_s": 38.557, "wall": 1794708116.887}
+{"decision": 32, "tick": 2880, "move": 20, "label": "20. Cannon (3 elixir, building) @ in front of right tower", "think_s": 14.558, "wall": 1794708131.454}
+{"decision": 33, "tick": 2920, "move": 0, "label": "0. wait (save elixir)", "think_s": 27.673, "wall": 1794708159.133}
+{"decision": 34, "tick": 2960, "move": 3, "label": "3. Archer (3 elixir, troop) @ in front of left tower", "think_s": 19.095, "wall": 1794708178.233}
+{"decision": 35, "tick": 3000, "move": 0, "label": "0. wait (save elixir)", "think_s": 30.775, "wall": 1794708209.014}
+{"decision": 36, "tick": 3040, "move": 0, "label": "0. wait (save elixir)", "think_s": 31.509, "wall": 1794708240.529}
+{"decision": 37, "tick": 3080, "move": 30, "label": "30. Musketeer (4 elixir, troop) @ in front of right tower", "think_s": 24.92, "wall": 1794708265.454}
+{"decision": 38, "tick": 3120, "move": 2, "label": "2. Zap (2 elixir, spell) @ on enemy Knight at (14.8, 14.7)", "think_s": 31.494, "wall": 1794708296.954}
+{"decision": 39, "tick": 3200, "move": 2, "label": "2. Minions (3 elixir, troop) @ right bridge", "think_s": 50.138, "wall": 1794708347.104}
+{"decision": 40, "tick": 3280, "move": 0, "label": "0. wait (save elixir)", "think_s": 27.627, "wall": 1794708374.753}
+{"decision": 41, "tick": 3320, "move": 25, "label": "25. Knight (3 elixir, troop) @ right bridge", "think_s": 34.152, "wall": 1794708408.916}
+{"decision": 42, "tick": 3360, "move": 0, "label": "0. wait (save elixir)", "think_s": 30.004, "wall": 1794708438.926}
+{"decision": 43, "tick": 3400, "move": 4, "label": "4. Fireball (4 elixir, spell) @ enemy right princess tower", "think_s": 35.792, "wall": 1794708474.724}
+{"decision": 44, "tick": 3480, "move": 0, "label": "0. wait (save elixir)", "think_s": 31.493, "wall": 1794708506.229}
+{"decision": 45, "tick": 3520, "move": 0, "label": "0. wait (save elixir)", "think_s": 40.791, "wall": 1794708547.026}
+{"decision": 46, "tick": 3560, "move": 2, "label": "2. Musketeer (4 elixir, troop) @ right bridge", "think_s": 116.56, "wall": 1794708663.592}
+{"decision": 47, "tick": 3600, "move": 3, "label": "3. Zap (2 elixir, spell) @ on enemy Minions at (14.5, 18.8)", "think_s": 34.81, "wall": 1794708698.408}

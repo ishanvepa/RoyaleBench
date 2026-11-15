@@ -1,0 +1,511 @@
+{
+    "benchmark_id": "eb818255-7a36-435d-aef8-9bbb9ef709ae",
+    "benchmark_name": "royalebench",
+    "started_at": "2026-11-15T01:50:48.045115",
+    "finished_at": "2026-11-15T02:45:41.690573",
+    "status": "FINISHED",
+    "benchmark_arguments": {
+        "contract": {
+            "name": "claude_code-v1.0.0",
+            "model": "anthropic/claude-sonnet-4-6",
+            "install_cmd": "bash setup.sh",
+            "run_cmd": "bash -lc 'set -o pipefail && mkdir -p /logs && AGENT_OUTPUT_ROOT=/logs python3 /bundle/claude_code-v1.0.0/collect_outputs.py {problem_statement_path} --task-id {task_id} --model {model}'",
+            "final_output": "/logs",
+            "output_artifacts": [],
+            "egress_allowlist": [],
+            "allow_provider_tools": false,
+            "isolate_agent_uid": false,
+            "inference_settings_attested": true
+        },
+        "agent_attempts": [],
+        "concurrency": 6,
+        "dataset": "clash-royale",
+        "dataset_version": {
+            "id": "royalebench/clash-royale@2"
+        },
+        "sandbox_provider": "modal",
+        "sandbox_provider_secret_name": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/modal-credentials",
+        "environment": "aws",
+        "properties": {
+            "region": "us-east-1",
+            "s3_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+            "log_group": "/valkyrie/benchmarks-prod/tenants/49113804-bbae-46cc-82a7-70f78706d1e5",
+            "log_retention_days": 365
+        }
+    },
+    "final_evaluation": {
+        "id": "5cde867f-f37b-4be8-ade1-12d96ca18bde",
+        "org_id": "49113804-bbae-46cc-82a7-70f78706d1e5",
+        "benchmark": "eb818255-7a36-435d-aef8-9bbb9ef709ae",
+        "final_score": 33.33333333333333,
+        "properties": {
+            "total": 6,
+            "n_trials": 6,
+            "n_errors": 0,
+            "metrics": [
+                {
+                    "completed": 1.0,
+                    "crowns_against": 0.6666666666666666,
+                    "crowns_for": 0.3333333333333333,
+                    "decisions": 49.0,
+                    "enemy_tower_damage_frac": 0.29045,
+                    "fast_decision_frac": 0.0,
+                    "integrity": 1.0,
+                    "own_tower_damage_frac": 0.4221,
+                    "reward": 0.3333333333333333,
+                    "win": 0.3333333333333333
+                }
+            ],
+            "reward_stats": {
+                "reward": {
+                    "0.0": [
+                        "match-heuristic-s1-blue",
+                        "match-heuristic-s2-blue",
+                        "match-heuristic-s2-red",
+                        "match-heuristic-s3-blue"
+                    ],
+                    "1.0": [
+                        "match-heuristic-s3-red",
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "win": {
+                    "0.0": [
+                        "match-heuristic-s1-blue",
+                        "match-heuristic-s2-blue",
+                        "match-heuristic-s2-red",
+                        "match-heuristic-s3-blue"
+                    ],
+                    "1.0": [
+                        "match-heuristic-s3-red",
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "crowns_for": {
+                    "0.0": [
+                        "match-heuristic-s1-blue",
+                        "match-heuristic-s2-blue",
+                        "match-heuristic-s2-red",
+                        "match-heuristic-s3-blue"
+                    ],
+                    "1.0": [
+                        "match-heuristic-s3-red",
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "crowns_against": {
+                    "1.0": [
+                        "match-heuristic-s1-blue",
+                        "match-heuristic-s2-blue",
+                        "match-heuristic-s2-red",
+                        "match-heuristic-s3-blue"
+                    ],
+                    "0.0": [
+                        "match-heuristic-s3-red",
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "enemy_tower_damage_frac": {
+                    "0.1535": [
+                        "match-heuristic-s1-blue"
+                    ],
+                    "0.7248": [
+                        "match-heuristic-s3-red"
+                    ],
+                    "0.097": [
+                        "match-heuristic-s2-blue"
+                    ],
+                    "0.316": [
+                        "match-heuristic-s2-red"
+                    ],
+                    "0.0453": [
+                        "match-heuristic-s3-blue"
+                    ],
+                    "0.4061": [
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "own_tower_damage_frac": {
+                    "0.4673": [
+                        "match-heuristic-s1-blue"
+                    ],
+                    "0.3109": [
+                        "match-heuristic-s3-red"
+                    ],
+                    "0.652": [
+                        "match-heuristic-s2-blue"
+                    ],
+                    "0.3364": [
+                        "match-heuristic-s2-red"
+                    ],
+                    "0.449": [
+                        "match-heuristic-s3-blue"
+                    ],
+                    "0.317": [
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "completed": {
+                    "1.0": [
+                        "match-heuristic-s1-blue",
+                        "match-heuristic-s3-red",
+                        "match-heuristic-s2-blue",
+                        "match-heuristic-s2-red",
+                        "match-heuristic-s3-blue",
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "integrity": {
+                    "1.0": [
+                        "match-heuristic-s1-blue",
+                        "match-heuristic-s3-red",
+                        "match-heuristic-s2-blue",
+                        "match-heuristic-s2-red",
+                        "match-heuristic-s3-blue",
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "decisions": {
+                    "57.0": [
+                        "match-heuristic-s1-blue"
+                    ],
+                    "45.0": [
+                        "match-heuristic-s3-red"
+                    ],
+                    "42.0": [
+                        "match-heuristic-s2-blue"
+                    ],
+                    "48.0": [
+                        "match-heuristic-s2-red"
+                    ],
+                    "55.0": [
+                        "match-heuristic-s3-blue"
+                    ],
+                    "47.0": [
+                        "match-heuristic-s1-red"
+                    ]
+                },
+                "fast_decision_frac": {
+                    "0.0": [
+                        "match-heuristic-s1-blue",
+                        "match-heuristic-s3-red",
+                        "match-heuristic-s2-blue",
+                        "match-heuristic-s2-red",
+                        "match-heuristic-s3-blue",
+                        "match-heuristic-s1-red"
+                    ]
+                }
+            },
+            "score_key": "reward",
+            "mean_reward": 0.3333333333333333
+        }
+    },
+    "average_task_breakdown": {
+        "sandbox_build_duration": 17.145099724333324,
+        "agent_run_duration": 1487.0507838659998,
+        "evaluation_run_duration": 37.83210443300002,
+        "sandbox_run_duration": 1538.322554108
+    },
+    "evaluation_results": {
+        "match-heuristic-s1-blue": {
+            "task_id": "match-heuristic-s1-blue",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.1535,
+                "own_tower_damage_frac": 0.4673,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 57.0,
+                "fast_decision_frac": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.1535,
+                    "own_tower_damage_frac": 0.4673,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 57.0,
+                    "fast_decision_frac": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.1535,\n  \"own_tower_damage_frac\": 0.4673,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 57.0,\n  \"fast_decision_frac\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.1535,\n  \"own_tower_damage_frac\": 0.4673,\n  \"ticks\": 3908\n },\n \"decisions_applied\": 57,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "evaluation_run_duration": 35.71614520900039,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 3186.687812393,
+                "sandbox_run_duration": 3235.027323301,
+                "sandbox_build_duration": 0.6371828229999892,
+                "agent_run_duration": 3186.687809677,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        },
+        "match-heuristic-s3-blue": {
+            "task_id": "match-heuristic-s3-blue",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.0453,
+                "own_tower_damage_frac": 0.449,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 55.0,
+                "fast_decision_frac": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.0453,
+                    "own_tower_damage_frac": 0.449,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 55.0,
+                    "fast_decision_frac": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.0453,\n  \"own_tower_damage_frac\": 0.449,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 55.0,\n  \"fast_decision_frac\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.0453,\n  \"own_tower_damage_frac\": 0.449,\n  \"ticks\": 4188\n },\n \"decisions_applied\": 55,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "evaluation_run_duration": 37.511027642000045,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 2305.574746529,
+                "sandbox_run_duration": 2357.269135729,
+                "sandbox_build_duration": 18.09781634699999,
+                "agent_run_duration": 2305.574744215,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        },
+        "match-heuristic-s2-red": {
+            "task_id": "match-heuristic-s2-red",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.316,
+                "own_tower_damage_frac": 0.3364,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 48.0,
+                "fast_decision_frac": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.316,
+                    "own_tower_damage_frac": 0.3364,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 48.0,
+                    "fast_decision_frac": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.316,\n  \"own_tower_damage_frac\": 0.3364,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 48.0,\n  \"fast_decision_frac\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.316,\n  \"own_tower_damage_frac\": 0.3364,\n  \"ticks\": 3637\n },\n \"decisions_applied\": 48,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "evaluation_run_duration": 42.5131749279999,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 1210.813378674,
+                "sandbox_run_duration": 1268.36394302,
+                "sandbox_build_duration": 16.35840635699998,
+                "agent_run_duration": 1210.8133752370002,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        },
+        "match-heuristic-s3-red": {
+            "task_id": "match-heuristic-s3-red",
+            "rewards": {
+                "reward": 1.0,
+                "win": 1.0,
+                "crowns_for": 1.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.7248,
+                "own_tower_damage_frac": 0.3109,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 45.0,
+                "fast_decision_frac": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 1.0,
+                    "win": 1.0,
+                    "crowns_for": 1.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.7248,
+                    "own_tower_damage_frac": 0.3109,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 45.0,
+                    "fast_decision_frac": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.7248,\n  \"own_tower_damage_frac\": 0.3109,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 45.0,\n  \"fast_decision_frac\": 0.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.7248,\n  \"own_tower_damage_frac\": 0.3109,\n  \"ticks\": 3600\n },\n \"decisions_applied\": 45,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "evaluation_run_duration": 36.169435299999805,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 884.9966457009999,
+                "sandbox_run_duration": 932.719373051,
+                "sandbox_build_duration": 21.843293113000016,
+                "agent_run_duration": 884.9966426729999,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        },
+        "match-heuristic-s1-red": {
+            "task_id": "match-heuristic-s1-red",
+            "rewards": {
+                "reward": 1.0,
+                "win": 1.0,
+                "crowns_for": 1.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.4061,
+                "own_tower_damage_frac": 0.317,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 47.0,
+                "fast_decision_frac": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 1.0,
+                    "win": 1.0,
+                    "crowns_for": 1.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.4061,
+                    "own_tower_damage_frac": 0.317,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 47.0,
+                    "fast_decision_frac": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.4061,\n  \"own_tower_damage_frac\": 0.317,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 47.0,\n  \"fast_decision_frac\": 0.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.4061,\n  \"own_tower_damage_frac\": 0.317,\n  \"ticks\": 3600\n },\n \"decisions_applied\": 47,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "evaluation_run_duration": 37.24781916200004,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 729.5834899629999,
+                "sandbox_run_duration": 782.3294723030001,
+                "sandbox_build_duration": 28.57718364699997,
+                "agent_run_duration": 729.5834869109999,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        },
+        "match-heuristic-s2-blue": {
+            "task_id": "match-heuristic-s2-blue",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.097,
+                "own_tower_damage_frac": 0.652,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 42.0,
+                "fast_decision_frac": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.097,
+                    "own_tower_damage_frac": 0.652,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 42.0,
+                    "fast_decision_frac": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.097,\n  \"own_tower_damage_frac\": 0.652,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 42.0,\n  \"fast_decision_frac\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.097,\n  \"own_tower_damage_frac\": 0.652,\n  \"ticks\": 3600\n },\n \"decisions_applied\": 42,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "evaluation_run_duration": 37.83502435699995,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 604.648647322,
+                "sandbox_run_duration": 654.226077244,
+                "sandbox_build_duration": 17.356716059000007,
+                "agent_run_duration": 604.648644483,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        }
+    }
+}

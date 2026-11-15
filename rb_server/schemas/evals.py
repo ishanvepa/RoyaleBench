@@ -159,6 +159,13 @@ class TraceOut(BaseModel):
     cache_read_tokens: int | None = None
 
 
+class ReplayOut(BaseModel):
+    available: bool
+    html: str = ""
+    partial: bool = False
+    message: str = ""
+
+
 class LogLine(BaseModel):
     timestamp: datetime
     task_id: str | None = None

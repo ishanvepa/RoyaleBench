@@ -52,8 +52,8 @@ Your name is remembered in this browser and used for completed leaderboard
 results. Use **Edit name** in deck selection to change it. Choose your deck,
 and, in local mode, an opponent and its deck, then press **Enter battle**. Each
 preset shows its playstyle and an eight-card preview. Tap a card and then
-tap a legal location on the arena to deploy it. Use **Change deck** to return
-to setup and switch opponents. Finished games save to `runs/arena.db`, with
+tap a legal location on the arena to deploy it. Matches run continuously with no
+pause control. Use **Change deck** to return to setup and switch opponents. Finished games save to `runs/arena.db`, with
 replays under `runs/round_robin/human-play/replays/`.
 
 The play page disables page-zoom gestures, including double taps and pinches,

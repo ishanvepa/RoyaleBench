@@ -53,7 +53,7 @@ PUBLIC_DECK = "hog-2.6-cycle"
 PLANNER_WORKERS = 8
 PUBLIC_PLANNER_WORKERS = PLANNER_WORKERS  # a fixed budget per match, independent of connection order
 ACTIVE: set = set()
-MAX_SESSION_SECONDS = 15 * 60  # includes pauses, so abandoned tabs cannot hold a slot forever
+MAX_SESSION_SECONDS = 15 * 60  # abandoned tabs cannot hold a slot forever
 SEND_TIMEOUT_SECONDS = 1.0
 # The clock holds at tick 0 until the bot and its search pool are ready, so a cold start cannot
 # cost the bot the opening; a worker that never reports ready cannot hold the match past this.
@@ -146,7 +146,6 @@ class Session:
         self.placement = PlacementOracle(self.game.arena, self.game.engine.rules(), self.game.cards)
         self.mask_cache: dict[int, tuple[tuple, dict]] = {}
         self.cmds: deque[DeployCommand] = deque()
-        self.paused = False
         self.t0 = time.time()
         self.started_at = time.monotonic()
         self.last_mask_at = -math.inf
@@ -204,7 +203,7 @@ class Session:
                          e.shield, e.status_flags, e.charge,
                          units[e.unit_type] if 0 <= e.unit_type < len(units) else None])
         return {
-            "t": "s", "k": s.tick, "left": round(left, 2), "ot": ot, "rate": s.elixir_rate, "paused": self.paused,
+            "t": "s", "k": s.tick, "left": round(left, 2), "ot": ot, "rate": s.elixir_rate,
             "starting": self.starting,
             # elixir shown net of plays that are on their way; "pend" = [slot, card, x, y, ticks left]
             "me": {"e": me.elixir_milli - me.pending_cost * 1000,
@@ -336,8 +335,6 @@ class Session:
             if now - self.last_mask_at >= 0.1:
                 self.last_mask_at = now
                 return self.mask(slot)
-        elif kind == "pause":
-            self.paused = bool(m.get("on"))
         return None
 
     # ------------------------------------------------------------------ the clock
@@ -388,50 +385,49 @@ class Session:
             if time.monotonic() - self.started_at >= MAX_SESSION_SECONDS:
                 await self.send({"t": "error", "message": "Game expired. Please start a new game."})
                 return
-            if not self.paused:
-                cmds = []
-                if self.cmds:
-                    cmds.append(self.cmds.popleft())
-                if self.bot_send is not None and self.bot_send.done():
-                    self.bot_send.result()  # propagate a failed pipe write instead of leaving a silent bot
-                    self.bot_send = None
-                if not self.proc.is_alive():
-                    raise RuntimeError("bot worker exited")
-                if self.bot_busy and self.conn.poll():
-                    answer = self.conn.recv()
-                    self.bot_busy = False
-                    if answer is not None:  # None = the worker's "ready"
-                        await self.send({"t": "bot_timing",
-                                         "decision_ms": round((loop.time() - self.bot_sent_at) * 1000, 2),
-                                         "source_age_ticks": g.state.tick - self.bot_source_tick})
-                        command, raw = bot_answer_command(g, answer)
-                        if command is not None:
-                            cmds.append(command)
-                        if raw:
-                            await self.send({"t": "bot", "raw": raw})
-                tick = g.state.tick
-                res = e.step(cmds, 1)
-                g.recorder.record_step(tick, 1, list(cmds), res)
-                g.recorder.record_frame(e)
-                for r in res:  # the answer to a command made this tick
-                    ok = r.status == DeployStatus.OK
-                    spot = (round(r.x / self.sub, 2), round(r.y / self.sub, 2))
-                    if ok and self.delay:
-                        self.aim[(r.team, r.card_id)] = spot  # it lands later: reported below when it does
-                    elif ok or r.team == HUMAN:
-                        await self.send(self.event(r.team, r.card_id, ok, r.status, spot, tick))
-                for _t, team, kind, card, reason in (e.step_commands_run() or []):  # delayed plays that landed
-                    if kind == "deploy" and (reason == 0 or team == HUMAN):
-                        try:  # the engine's own reason code -> DeployStatus
-                            status = e._status(reason) if reason else 0
-                        except Exception:
-                            status = -1
-                        await self.send(self.event(team, card, reason == 0, status, self.aim.pop((team, card), None), tick))
-                if not g.over and not self.bot_busy and tick - self.bot_asked_tick >= BOT_EVERY_TICKS:
-                    self.bot_sent_at, self.bot_source_tick = loop.time(), g.state.tick
-                    self.bot_send = loop.run_in_executor(None, self.conn.send, e.save_state())
-                    self.bot_send.add_done_callback(lambda done: done.exception() if not done.cancelled() else None)
-                    self.bot_busy, self.bot_asked_tick = True, tick
+            cmds = []
+            if self.cmds:
+                cmds.append(self.cmds.popleft())
+            if self.bot_send is not None and self.bot_send.done():
+                self.bot_send.result()  # propagate a failed pipe write instead of leaving a silent bot
+                self.bot_send = None
+            if not self.proc.is_alive():
+                raise RuntimeError("bot worker exited")
+            if self.bot_busy and self.conn.poll():
+                answer = self.conn.recv()
+                self.bot_busy = False
+                if answer is not None:  # None = the worker's "ready"
+                    await self.send({"t": "bot_timing",
+                                     "decision_ms": round((loop.time() - self.bot_sent_at) * 1000, 2),
+                                     "source_age_ticks": g.state.tick - self.bot_source_tick})
+                    command, raw = bot_answer_command(g, answer)
+                    if command is not None:
+                        cmds.append(command)
+                    if raw:
+                        await self.send({"t": "bot", "raw": raw})
+            tick = g.state.tick
+            res = e.step(cmds, 1)
+            g.recorder.record_step(tick, 1, list(cmds), res)
+            g.recorder.record_frame(e)
+            for r in res:  # the answer to a command made this tick
+                ok = r.status == DeployStatus.OK
+                spot = (round(r.x / self.sub, 2), round(r.y / self.sub, 2))
+                if ok and self.delay:
+                    self.aim[(r.team, r.card_id)] = spot  # it lands later: reported below when it does
+                elif ok or r.team == HUMAN:
+                    await self.send(self.event(r.team, r.card_id, ok, r.status, spot, tick))
+            for _t, team, kind, card, reason in (e.step_commands_run() or []):  # delayed plays that landed
+                if kind == "deploy" and (reason == 0 or team == HUMAN):
+                    try:  # the engine's own reason code -> DeployStatus
+                        status = e._status(reason) if reason else 0
+                    except Exception:
+                        status = -1
+                    await self.send(self.event(team, card, reason == 0, status, self.aim.pop((team, card), None), tick))
+            if not g.over and not self.bot_busy and tick - self.bot_asked_tick >= BOT_EVERY_TICKS:
+                self.bot_sent_at, self.bot_source_tick = loop.time(), g.state.tick
+                self.bot_send = loop.run_in_executor(None, self.conn.send, e.save_state())
+                self.bot_send.add_done_callback(lambda done: done.exception() if not done.cancelled() else None)
+                self.bot_busy, self.bot_asked_tick = True, tick
             await self.send(self.snapshot())
             due += tick_s
             delay = due - loop.time()

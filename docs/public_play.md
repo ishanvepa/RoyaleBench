@@ -16,8 +16,8 @@ phones, the final Enter battle button stays visible while browsing the decks.
 
 The deck picker uses no match slot. An eighth start receives **“Server at capacity —
 please try again shortly.”** Finish, quit, disconnect, or worker failure releases
-a slot. A game expires after 15 minutes including pauses. Reconnect starts a new
-game rather than resuming the previous one.
+a slot. Matches run continuously with no pause control and expire after 15
+minutes. Reconnect starts a new game rather than resuming the previous one.
 
 Completed battles open a result dialog over the dimmed arena, using the lobby's
 navy panels, crown emblem, and gold **Battle again** button. Victory, defeat, and
@@ -156,7 +156,7 @@ It runs Uvicorn in one warm native Modal Server with 64 reserved physical CPU co
 memory, plus a persistent Modal Volume. Each match gets eight Planner search workers, matching a lone local game;
 the worker budget does not depend on which player connected first. Native Servers proxy WebSockets directly
 to the game process to reduce transport latency. The application expires matches
-after 15 minutes, including pauses. Compute and request routing are both set to
+after 15 minutes. Compute and request routing are both set to
 `us-west` for the initial California audience. Region selection carries Modal's
 documented pricing multiplier.
 

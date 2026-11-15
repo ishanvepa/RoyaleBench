@@ -44,10 +44,14 @@ from .bots import human_bot_specs
 HUMAN, BOT = 0, 1
 BOT_SPECS = human_bot_specs("live")
 COMMAND_DELAY_TICKS = 21  # a play lands about 1 s after it is made, for both sides, as measured on the real client
-MAX_GAMES = 10  # one server process; visitors choosing decks do not occupy a slot
+MAX_GAMES = 7  # one server process; visitors choosing decks do not occupy a slot
 PUBLIC_BOT = "planner"
 PUBLIC_DECK = "hog-2.6-cycle"
-PUBLIC_PLANNER_WORKERS = 2  # a fixed budget per match, independent of connection order
+# Planner has no time budget: fewer workers means slower answers on staler positions, not shallower
+# search. A lone local game gets this many, and every public match gets the same, so shared play
+# matches local strength. Hosting reserves about nine cores per match (eight workers plus the bot).
+PLANNER_WORKERS = 8
+PUBLIC_PLANNER_WORKERS = PLANNER_WORKERS  # a fixed budget per match, independent of connection order
 ACTIVE: set = set()
 MAX_SESSION_SECONDS = 15 * 60  # includes pauses, so abandoned tabs cannot hold a slot forever
 SEND_TIMEOUT_SECONDS = 1.0
@@ -144,7 +148,7 @@ class Session:
         # share the machine's cores between the games in progress
         worker_spec = self.bot_spec
         if spec is None and worker_spec.get("type") == "planner" and worker_spec.get("workers"):
-            worker_spec = {**worker_spec, "workers": max(2, 8 // (len(ACTIVE) + 1))}
+            worker_spec = {**worker_spec, "workers": max(2, PLANNER_WORKERS // (len(ACTIVE) + 1))}
         ctx = mp.get_context("spawn")
         self.shutdown = ctx.Event()
         self.conn, child = ctx.Pipe()
@@ -618,7 +622,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8600)
-    ap.add_argument("--public", action="store_true", help="play Planner with its fixed Hog Cycle deck (ten games)")
+    ap.add_argument("--public", action="store_true", help="play Planner with its fixed Hog Cycle deck (seven games)")
     a = ap.parse_args()
     print(f"Live play: http://{a.host}:{a.port}")
     uvicorn.run(create_app(public=a.public), host=a.host, port=a.port, log_level="warning",

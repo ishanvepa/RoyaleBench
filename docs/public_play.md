@@ -1,6 +1,6 @@
-# Public play: ten concurrent matches
+# Public play: seven concurrent matches
 
-One warm server supports at most **ten active matches**. Visitors choose their
+One warm server supports at most **seven active matches**. Visitors choose their
 own deck from the seven presets, then face **planner-bot playing Hog 2.6 Cycle**.
 The opponent and its deck are fixed on the server. The public UI shows no bot or
 opponent-deck selectors. Local mode retains the full bot catalog and both deck
@@ -14,7 +14,7 @@ battle** to begin. **Back to arena** returns to the lobby and keeps the selected
 deck. The **How to play** button explains deployment, elixir, and winning. On
 phones, the final Enter battle button stays visible while browsing the decks.
 
-The deck picker uses no match slot. An eleventh start receives **“Server at capacity —
+The deck picker uses no match slot. An eighth start receives **“Server at capacity —
 please try again shortly.”** Finish, quit, disconnect, or worker failure releases
 a slot. A game expires after 15 minutes including pauses. Reconnect starts a new
 game rather than resuming the previous one.
@@ -86,7 +86,25 @@ also works through a redirect.
 See the [implementation plan](public_play_plan.md) and
 [validation record](public_play_validation.json). The `planner_release` section
 retains the historical five-match Planner measurements; `vertical_scale` records
-the ten-match deployment and its load tests.
+the earlier ten-match deployment and its load tests.
+
+### Planner strength parity (seven matches, eight workers)
+
+Planner searches every candidate with no time budget, so its worker count sets how
+long each decision takes, not how deep it searches. The ten-match deployment gave each
+match two workers while a lone local game gets eight. On busy defensive positions,
+two workers took a median 167 ms (p90 819 ms, max 1.3 s) per decision against 64 ms
+(p90 384 ms, max 0.5 s) with eight, and hosted runs logged worst decisions of 3.3–4.1
+s. Planner's answers are not discarded when stale, so slow decisions arrived as late
+defense and spells aimed where units used to be: shared play was measurably weaker.
+
+Each public match now gets `PLANNER_WORKERS` (eight), the same budget as a lone
+local game, and a test keeps the two equal. Eight workers plus the bot process need
+about nine cores per match, so the cap fell from ten to seven and the Modal
+reservation doubled to 64 physical cores (seven matches × nine cores, plus the game
+loop). Each match uses about 1.4 GB, so 16 GiB remains sufficient. The seven-match
+deployment has not yet been load-checked; the measurements below are from the
+two-worker ten-match deployment.
 
 On November 14, 2026, the 32-core / 16-GiB deployment completed and saved all ten
 scripted matches, with the eleventh start refused and a quit slot successfully
@@ -132,8 +150,8 @@ links depend on the local computer staying awake and running the command.
 ## Permanent hosting on Modal
 
 [`modal_play.py`](../modal_play.py) deploys the existing Starlette game directly.
-It runs Uvicorn in one warm native Modal Server with 32 reserved physical CPU cores and 16 GiB of
-memory, plus a persistent Modal Volume. Each match gets two Planner search workers;
+It runs Uvicorn in one warm native Modal Server with 64 reserved physical CPU cores and 16 GiB of
+memory, plus a persistent Modal Volume. Each match gets eight Planner search workers, matching a lone local game;
 the worker budget does not depend on which player connected first. Native Servers proxy WebSockets directly
 to the game process to reduce transport latency. The application expires matches
 after 15 minutes, including pauses. Compute and request routing are both set to
@@ -161,8 +179,8 @@ remains healthy and serves its capacity message.
 
 `min_containers=1` keeps the game server warm and incurs idle hosting charges
 while deployed. `max_containers=1` keeps game capacity in one process. Request
-autoscaling is disabled; setup visitors and the eleventh player reach the application
-and see its capacity response. **The game's match cap is ten.** A separate
+autoscaling is disabled; setup visitors and the eighth player reach the application
+and see its capacity response. **The game's match cap is seven.** A separate
 redirect Function preserves the original link and scales to zero when unused.
 Do not increase the game container count or deploy another game process against
 the same volume.
@@ -195,11 +213,11 @@ Reference: [Modal Servers](https://modal.com/docs/guide/servers),
 [regions](https://modal.com/docs/guide/region-selection),
 [volumes](https://modal.com/docs/guide/volumes).
 
-## Check ten-match responsiveness
+## Check seven-match responsiveness
 
-Use a disposable server with all ten slots free. The check starts ten unranked scripted
-players cycling the seven presets against Planner's fixed Hog Cycle deck, verifies an
-eleventh start is refused, reuses a freed slot while the other nine are occupied,
+Use a disposable server with all seven slots free. The check starts seven unranked scripted
+players, one per preset, against Planner's fixed Hog Cycle deck, verifies an
+eighth start is refused, reuses a freed slot while the other six are occupied,
 then deploys cards using the pushed masks. It also requires each bot to make a successful play.
 
 ```bash
@@ -209,8 +227,8 @@ uv run --frozen python -m cr_arena.check_live --full-games --output /tmp/live-ch
 ```
 
 Use `--url https://YOUR_DEPLOYED_URL.modal.direct` to check the hosted server, preferably
-from near its region. `--full-games` allows ten minutes and requires all ten
-matches to finish and save. The check prints per-match tick rates, snapshot gaps,
+from near its region. `--full-games` allows ten minutes and requires every
+match to finish and save. The check prints per-match tick rates, snapshot gaps,
 preloaded mask availability/update counts, successful bot plays, and time from
 input to the server reporting a pending deployment. It also reports bot response
 time and source-snapshot age, measured on the server from snapshot submission to

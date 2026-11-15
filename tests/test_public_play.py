@@ -1,4 +1,4 @@
-"""Ten-game admission, worker lifecycle, and concurrent live-game persistence."""
+"""Capacity admission, worker lifecycle, and concurrent live-game persistence."""
 
 import asyncio
 import json
@@ -7,6 +7,7 @@ import time
 import unittest
 from contextlib import ExitStack, suppress
 from pathlib import Path
+import unittest.mock
 from unittest.mock import patch
 
 import msgspec
@@ -47,36 +48,63 @@ class PublicPlayTests(unittest.TestCase):
         for session in list(live.ACTIVE):
             session.close()
 
-    def test_ten_games_eleventh_refused_and_quit_disconnect_release_slots(self):
+    def test_capacity_games_next_refused_and_quit_disconnect_release_slots(self):
+        cap = live.MAX_GAMES
         with ExitStack() as stack:
             client = stack.enter_context(TestClient(live.create_app(public=True)))
-            sockets = [stack.enter_context(client.websocket_connect('/ws')) for _ in range(12)]
+            sockets = [stack.enter_context(client.websocket_connect('/ws')) for _ in range(cap + 2)]
             for ws in sockets:
                 hello = ws.receive_json()
-                self.assertEqual(hello['max_games'], 10)
+                self.assertEqual(hello['max_games'], cap)
                 self.assertEqual(list(hello['bots']), ['planner'])
                 self.assertEqual(hello['fixed_opponent'], {'bot': 'planner', 'deck': 'hog-2.6-cycle'})
             self.assertEqual(client.get('/health').json()['active_games'], 0)
-            for ws in sockets[:10]:
+            for ws in sockets[:cap]:
                 ws.send_json(START)
                 init = receive(ws, 'init')
                 self.assertEqual(init['opp'], 'planner-bot')
                 self.assertEqual(init['decks'], ['giant-beatdown', 'hog-2.6-cycle'])
-            self.assertEqual(client.get('/health').json()['active_games'], 10)
-            sockets[10].send_json(START)
-            busy = receive(sockets[10], 'busy')
-            self.assertEqual(busy['n'], 10)
+            self.assertEqual(client.get('/health').json()['active_games'], cap)
+            sockets[cap].send_json(START)
+            busy = receive(sockets[cap], 'busy')
+            self.assertEqual(busy['n'], cap)
             self.assertEqual(busy['message'], 'Server at capacity — please try again shortly.')
             sockets[0].send_json({'t': 'quit'})
-            self.wait_count(client, 9)
-            sockets[10].send_json(START)
-            receive(sockets[10], 'init')
+            self.wait_count(client, cap - 1)
+            sockets[cap].send_json(START)
+            receive(sockets[cap], 'init')
             sockets[1].close()
-            self.wait_count(client, 9)
-            sockets[11].send_json(START)
-            receive(sockets[11], 'init')
-            self.assertEqual(client.get('/health').json()['active_games'], 10)
+            self.wait_count(client, cap - 1)
+            sockets[cap + 1].send_json(START)
+            receive(sockets[cap + 1], 'init')
+            self.assertEqual(client.get('/health').json()['active_games'], cap)
         self.assertEqual(len(live.ACTIVE), 0)
+
+    def test_public_planner_gets_the_same_workers_as_a_lone_local_game(self):
+        # Planner has no time budget, so fewer workers means staler answers: keep the two modes equal.
+        public = live.create_app(public=True).state.bot_specs['planner']
+        self.assertEqual(public['workers'], live.PLANNER_WORKERS)
+        launched = []
+
+        class Proc:
+            def __init__(self, target, args, daemon):
+                launched.append(args[3])
+
+            def start(self):
+                pass
+
+        class Ctx:
+            Process = Proc
+
+            def Event(self):
+                return None
+
+            def Pipe(self):
+                return unittest.mock.Mock(), unittest.mock.Mock()
+
+        with patch.object(live.mp, 'get_context', lambda _kind: Ctx()), patch.object(live, 'ACTIVE', set()):
+            live.Session(MemorySocket(), 'giant-beatdown', 'hog-2.6-cycle', 11, 'planner')
+        self.assertEqual(launched[0]['workers'], live.PLANNER_WORKERS)
 
     def wait_count(self, client, count):
         deadline = time.monotonic() + 5

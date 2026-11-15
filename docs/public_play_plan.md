@@ -1,8 +1,8 @@
 # Public play implementation plan
 
-Scope: one always-on server, at most ten active matches, the existing live
+Scope: one always-on server, at most seven active matches, the existing live
 renderer and seven preset decks, and the existing Planner bot with its deck fixed to Hog 2.6 Cycle. Browsing the
-deck picker consumes no match slot. An eleventh start receives “Server at capacity —
+deck picker consumes no match slot. An eighth start receives “Server at capacity —
 please try again shortly.” Slots return when matches end, disconnect, or quit.
 
 ## Original public implementation (historical)
@@ -26,8 +26,8 @@ please try again shortly.” Slots return when matches end, disconnect, or quit.
 
 ## Acceptance and operational limits
 
-Ten matches must advance concurrently at approximately 20 ticks/second; an eleventh
-cannot start. Warm local input/placement responses should remain under 150 ms at
+Seven matches must advance concurrently at approximately 20 ticks/second; an eighth
+cannot start. Each public Planner gets the same worker budget as a lone local game. Warm local input/placement responses should remain under 150 ms at
 p95. Report actual measurements and distinguish them from internet latency and
 the intentional 21-tick (1.05-second) deployment delay shared by both players.
 
@@ -107,3 +107,18 @@ Regression validation after lobby integration: 42 Python checks and 32 renderer 
 five-match baseline used the new 32-core instance, not the previous 16-core one.
 Server-side bot response timings include IPC, scheduling, and lazy search-pool
 startup; they exclude the initial bot-worker ready handshake.
+
+## Planner parity with local play
+
+Shared-play Planner felt weaker than local Planner. Root cause: two search workers
+per public match versus eight for a lone local game. Planner has no time budget, so
+fewer workers mean slower decisions on staler positions (see
+[public play](public_play.md#planner-strength-parity-seven-matches-eight-workers)).
+
+- [x] Give every public match `PLANNER_WORKERS` (eight), shared with the local
+  single-game budget, and test that the two stay equal.
+- [x] Lower admission to seven matches and reserve 64 physical CPU cores
+  (about nine per match plus the game loop); keep 16 GiB (about 1.4 GB per match).
+- [ ] Deploy and run `check_live --full-games` against the hosted server; compare
+  bot decision p95/max with a lone local game.
+- [ ] Record the results under a new section in the validation JSON.

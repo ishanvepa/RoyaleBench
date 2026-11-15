@@ -42,7 +42,9 @@ Martina Plantijn, and Berkeley Mono font faces. These fonts load from Vals AI's
 public font URLs, with system fallbacks when offline; no font binaries are
 redistributed. [`writeup.css`](writeup-assets/writeup.css) styles the article,
 tables, diagrams, charts, and responsive layouts. Both standalone replay pages
-also load the shared theme. Their recorded frames and game graphics are unchanged.
+and the model trace reader also load the shared theme. Their recorded frames and
+game graphics are unchanged. [`trace.css`](writeup-assets/trace.css) adds the
+trace reader's numbered timeline, compact state summaries, and responsive navigation.
 
 Keep these stylesheets alongside the HTML when copying or publishing the page.
 Replay regeneration applies the same theme automatically and records renewed
@@ -87,11 +89,19 @@ or change official rewards.
 
 The synchronized **v6@1** case is separate historical evidence, from run
 `45124458-3a52-4e73-b380-ee42f6934b19`. It is not counted as an extra v9 result.
-The playback caption links to [`opus-trace.txt`](writeup-assets/opus-trace.txt),
-a readable export of that task's recorded assistant messages, commands, and tool
-outputs in source order. Session metadata and empty reasoning blocks are omitted;
-message text is unchanged. The header records the source trajectory SHA-256, and
-the seven commands (initial observation plus six plays) match the saved run.
+The playback caption opens the themed [`model trace reader`](writeup-assets/opus-trace.html).
+It presents an initial observation and six numbered plays, with the observed
+time left, elixir, and left-tower HP before each play. Recorded assistant commentary
+appears before its command; full tool outputs and the model's post-match reflection
+expand individually. An expand/collapse control toggles all seven tool outputs.
+The sidebar links to each play and tracks the visible step; on phones it becomes
+a horizontally scrollable sequence. The page is generated from
+[`opus-trace.txt`](writeup-assets/opus-trace.txt), which remains available to read
+or download. The original assistant messages, commands, and tool outputs stay in
+source order. Session metadata and empty reasoning blocks are omitted from the
+text export; message text is unchanged. The provenance panel records the source
+trajectory and public transcript SHA-256 values. The seven commands (initial
+observation plus six plays) match the saved run.
 The two replay pages use the current shared renderer and original recorded frames;
 both traces are independently verified during rebuilding. All six model/reference
 card IDs and deployment ticks match, but several placements differ, so the
@@ -132,6 +142,9 @@ inspection, and synchronized playback in a minimal DOM, without a browser.
 The browser regression check uses the existing `web/` Playwright dependencies
 and installed Chromium. It checks local-file and HTTP readiness, play/pause,
 advancing boards, both final frames, reset, and reload with external fonts blocked.
+It also opens the trace reader from the comparison, checks every command and tool
+output against the text export, exercises output and reflection expansion, follows
+the play navigation, and checks 1360-, 390-, and 320-pixel layouts.
 Visual review should cover desktop and phone widths, filtering, task-cell
 inspection, and synchronized playback through both endings.
 
@@ -143,6 +156,7 @@ prose or styles does not require fetching any evaluation artifacts.
 ```powershell
 python tools/build_writeup.py --refresh
 uv run --frozen python tools/build_writeup.py --replays
+python tools/build_writeup.py --trace
 ```
 
 `--refresh` requires the ignored local `runs/evals/` cache and accepts only full,
@@ -158,6 +172,10 @@ trace under `runs/royalebench-v6/docker/04-critical-cycle-and-connect/`. It veri
 both traces, matches their coordinates to `demo/evidence.json`, checks deployment
 parity, and regenerates the two standalone HTML assets and provenance. These are
 local operations; no new evaluation is performed.
+
+`--trace` regenerates the themed trace reader from the tracked public text export;
+it needs no evaluation cache or archived model artifacts. `--check` verifies that
+the reader matches that source and the current presentation generator.
 
 When changing the cohort, also review the static findings and headline numbers in
 the article, then recheck the browser layout. Capability labels are editorial

@@ -10,14 +10,14 @@ const { chromium } = require('../web/node_modules/playwright');
 const docs = path.resolve(__dirname, '../docs');
 const server = http.createServer(async (request, response) => {
   const pathname = new URL(request.url, 'http://localhost').pathname;
-  if (pathname !== '/' && !/^\/writeup-assets\/[a-z-]+\.(html|css)$/.test(pathname)) {
+  if (pathname !== '/' && pathname !== '/writeup.html' && !/^\/writeup-assets\/[a-z-]+\.(html|css|txt)$/.test(pathname)) {
     response.writeHead(404).end();
     return;
   }
   try {
     const filename = pathname === '/' ? 'writeup.html' : pathname.slice(1);
     const body = await fs.readFile(path.join(docs, filename));
-    response.setHeader('Content-Type', filename.endsWith('.css') ? 'text/css' : 'text/html');
+    response.setHeader('Content-Type', filename.endsWith('.css') ? 'text/css' : filename.endsWith('.txt') ? 'text/plain' : 'text/html');
     response.end(body);
   } catch {
     response.writeHead(404).end();
@@ -87,8 +87,54 @@ async function check(browser, url) {
     await page.reload();
     await page.locator('.replay-shell').scrollIntoViewIfNeeded();
     await page.waitForFunction(() => !document.querySelector('#replay-play').disabled);
+
+    const [trace] = await Promise.all([
+      context.waitForEvent('page'),
+      page.getByRole('link', { name: 'Read model trace' }).click(),
+    ]);
+    trace.on('pageerror', (error) => errors.push(error.message));
+    await trace.waitForLoadState();
+    assert.equal(await trace.title(), 'Opus model trace — RoyaleBench');
+    const transcript = await fs.readFile(path.join(docs, 'writeup-assets/opus-trace.txt'), 'utf8');
+    const commands = [...transcript.matchAll(/^COMMAND\r?\n([^\r\n]+)/gm)].map(match => match[1]);
+    assert.deepEqual(await trace.locator('.trace-command code').allTextContents(), commands);
+    const outputs = [...transcript.matchAll(/^TOOL OUTPUT\r?\n([\s\S]*?)(?=^(?:COMMAND|ASSISTANT)\r?$|(?![\s\S]))/gm)]
+      .map(match => match[1].trim().replace(/\r\n/g, '\n'));
+    assert.equal(outputs.length, 7);
+    assert.deepEqual(await trace.locator('.trace-output pre code').allTextContents(), outputs);
+    assert.equal(await trace.locator('.trace-output[open]').count(), 0);
+    await trace.getByRole('button', { name: 'Expand all tool outputs' }).click();
+    assert.equal(await trace.locator('.trace-output[open]').count(), 7);
+    await trace.getByRole('button', { name: 'Collapse all tool outputs' }).click();
+    assert.equal(await trace.locator('.trace-output[open]').count(), 0);
+    await trace.locator('#play-5 .trace-output summary').click();
+    assert.equal(await trace.locator('#play-5 .trace-output').getAttribute('open'), '');
+    assert.match(await trace.locator('#play-5 .trace-message').textContent(), /Next I'm sending Log to chip it lower\./);
+    await trace.locator('#play-5 .trace-output summary').click();
+    await trace.locator('.trace-reflection summary').click();
+    assert.equal(await trace.locator('.trace-reflection li').count(), 6);
+    await trace.locator('.trace-reflection summary').click();
+
+    for (const width of [1360, 390, 320]) {
+      await trace.setViewportSize({ width, height: 1000 });
+      await trace.evaluate(() => scrollTo(0, 0));
+      assert.equal(await trace.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `Trace overflows at ${width}px`);
+      await trace.locator('.trace-sidebar a[href="#play-5"]').click();
+      await trace.waitForFunction(() => document.querySelector('.trace-sidebar a[href="#play-5"]').getAttribute('aria-current') === 'step');
+      if (new URL(url).protocol === 'file:' && width !== 320) {
+        const screenshots = path.resolve(__dirname, '../output/playwright');
+        await fs.mkdir(screenshots, { recursive: true });
+        await trace.screenshot({ path: path.join(screenshots, `opus-trace-play-${width}.png`) });
+        await trace.evaluate(() => { document.documentElement.style.scrollBehavior = 'auto'; scrollTo(0, 0); });
+        await trace.screenshot({ path: path.join(screenshots, `opus-trace-${width}.png`) });
+      }
+      await trace.locator('.trace-sidebar a[href="#outcome"]').click();
+      await trace.waitForFunction(() => document.querySelector('.trace-sidebar a[href="#outcome"]').getAttribute('aria-current') === 'step');
+    }
+    await trace.getByRole('link', { name: 'Back to comparison' }).click();
+    await trace.waitForFunction(() => !document.querySelector('#replay-play').disabled);
     assert.deepEqual(errors, []);
-    console.log(`Passed ${new URL(url).protocol}: task-type rates/sorting/filter, cost/move options and tooltips, ready, play/pause, both boards advance, final frames, reset, reload.`);
+    console.log(`Passed ${new URL(url).protocol}: charts/filters, synchronized playback/reset/reload, themed trace source identity, expand/collapse, reflection, navigation and desktop/mobile layout.`);
   } finally {
     await context.close();
   }

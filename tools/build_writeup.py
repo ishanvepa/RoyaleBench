@@ -2,6 +2,7 @@
 
 python tools/build_writeup.py --refresh       # requires the local Evals cache
 uv run python tools/build_writeup.py --replays # requires the archived demo traces
+python tools/build_writeup.py --trace         # restyle the saved public transcript
 python tools/build_writeup.py --check         # works from a fresh checkout
 """
 from __future__ import annotations
@@ -181,6 +182,186 @@ def style_replay(page: str) -> str:
     return page
 
 
+def trace_page() -> str:
+    """Present the public transcript in source order; never generate model text."""
+    source = ASSETS / "opus-trace.txt"
+    raw = source.read_text(encoding="utf-8")
+    parts = re.split(r"^(COMMAND|TOOL OUTPUT|ASSISTANT)\n", raw, flags=re.M)
+    metadata = dict(re.findall(r"^([^:\n]+): (.+)$", parts[0], re.M))
+    records = [(parts[i], parts[i + 1].strip()) for i in range(1, len(parts), 2)]
+    command_indexes = [i for i, (role, _) in enumerate(records) if role == "COMMAND"]
+    assert len(command_indexes) == 7 and records[0] == ("COMMAND", "cr")
+    assert [role for role, _ in records].count("ASSISTANT") == 2
+    for i in command_indexes:
+        assert records[i + 1][0] == "TOOL OUTPUT"
+
+    def field(output, pattern):
+        match = re.search(pattern, output, re.M)
+        assert match, f"Transcript field missing: {pattern}"
+        return match[1]
+
+    def message(value):
+        # Only the transcript's paragraph, bold, and numbered-list formatting.
+        blocks = []
+        for paragraph in value.split("\n\n"):
+            escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", html.escape(paragraph))
+            lines = escaped.splitlines()
+            if all(re.match(r"\d+\. ", line) for line in lines):
+                items = "".join("<li>" + re.sub(r"^\d+\. ", "", line) + "</li>" for line in lines)
+                blocks.append(f"<ol>{items}</ol>")
+            else:
+                blocks.append(f"<p>{escaped}</p>")
+        return "\n".join(blocks)
+
+    def state(output):
+        fields = [
+            ("Time left · OT", field(output, r"^TIME LEFT: (\S+)")),
+            ("Elixir", field(output, r"^YOUR ELIXIR: (.+)")),
+            ("Your left tower", field(output, r"^YOUR TOWERS: .*?left princess tower (\d+)/") + " HP"),
+            ("Enemy left tower", field(output, r"^ENEMY TOWERS .*?left princess tower (\d+)/") + " HP"),
+        ]
+        return '<dl class="trace-state">' + "".join(
+            f"<div><dt>{label}</dt><dd>{html.escape(value)}</dd></div>" for label, value in fields
+        ) + "</dl>"
+
+    def output_details(output, label):
+        return (f'<details class="trace-output"><summary>{label}</summary>'
+                f'<pre><code>{html.escape(output)}</code></pre></details>')
+
+    initial = records[1][1]
+    cards = [f'''<section class="trace-step" id="observation" aria-labelledby="observation-title">
+      <header class="trace-step-heading"><span class="trace-step-number">00</span>
+        <div><p class="trace-kicker">Initial observation</p><h2 id="observation-title">Read the arena</h2></div>
+        <span class="trace-time">0.0s elapsed</span></header>
+      {state(initial)}
+      <div class="trace-command"><span>Command</span><code>cr</code></div>
+      {output_details(initial, 'View initial tool output')}
+    </section>''']
+    nav = ['<a href="#observation"><span>00</span>Initial observation</a>']
+    names = {"IceSpirits": "Ice Spirit", "HogRider": "Hog Rider"}
+    previous_output = initial
+    for number, i in enumerate(command_indexes[1:], 1):
+        command = records[i][1]
+        output = records[i + 1][1]
+        card = field(output, r"^Your move: played (\S+) @")
+        title = names.get(card, card)
+        elapsed = field(previous_output, r"SCENARIO: .*?elapsed ([\d.]+)s")
+        commentary = ""
+        if records[i - 1][0] == "ASSISTANT":
+            commentary = ('<div class="trace-message"><p class="trace-kicker">Assistant · before this play</p>'
+                          + message(records[i - 1][1]) + '</div>')
+        coords = field(output, r"^Your move: played \S+ @ (.+)")
+        cards.append(f'''<section class="trace-step" id="play-{number}" aria-labelledby="play-{number}-title">
+      <header class="trace-step-heading"><span class="trace-step-number">{number:02}</span>
+        <div><p class="trace-kicker">Play {number} of 6</p><h2 id="play-{number}-title">{html.escape(title)}</h2></div>
+        <span class="trace-time">{elapsed}s elapsed</span></header>
+      <p class="trace-state-label">State before the play</p>
+      {state(previous_output)}
+      {commentary}
+      <div class="trace-command"><span>Command</span><code>{html.escape(command)}</code></div>
+      <p class="trace-response"><span>Tool response</span>Played {html.escape(title)} at <code>{html.escape(coords)}</code></p>
+      {output_details(output, 'View full tool output')}
+    </section>''')
+        nav.append(f'<a href="#play-{number}"><span>{number:02}</span>{html.escape(title)}</a>')
+        previous_output = output
+    assert records[-1][0] == "ASSISTANT"
+    terminal = field(previous_output, r"^(GAME OVER: .+)$")
+    cards.append(f'''<section class="trace-step trace-ending" id="outcome" aria-labelledby="outcome-title">
+      <header class="trace-step-heading"><span class="trace-step-number">↳</span>
+        <div><p class="trace-kicker">Match ended</p><h2 id="outcome-title">Loss · 0–1</h2></div></header>
+      <p class="trace-terminal">{html.escape(terminal)}</p>
+      <details class="trace-reflection"><summary>Read the model’s post-match reflection</summary>
+        <p class="trace-note">Recorded assistant message. The suggested fixes are the model’s own assessment.</p>
+        <div class="trace-message">{message(records[-1][1])}</div>
+      </details>
+    </section>''')
+    nav.append('<a href="#outcome"><span>↳</span>Outcome &amp; reflection</a>')
+    provenance = "".join(f"<div><dt>{html.escape(key)}</dt><dd>{html.escape(metadata[key])}</dd></div>"
+                         for key in ["Model", "Dataset", "Run", "Task", "Source", "Source SHA-256"])
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Opus model trace — RoyaleBench</title>
+  <meta name="description" content="Follow the six recorded Opus plays, commands, observations, and outcome from the RoyaleBench comparison.">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="writeup.css">
+  <link rel="stylesheet" href="trace.css">
+</head>
+<body class="trace-page">
+  <a class="skip" href="#trace">Skip to trace</a>
+  <header class="nav"><div class="nav-inner">
+    <a class="brand" href="../writeup.html#case-study">RoyaleBench</a>
+    <nav aria-label="Trace navigation"><a href="../writeup.html#case-study">← Back to comparison</a>
+      <a href="opus-trace.txt" download>Download transcript ↓</a></nav>
+  </div></header>
+  <main class="trace-layout" id="trace">
+    <header class="trace-intro">
+      <p class="eyebrow">Recorded gameplay / v6@1 case study</p>
+      <h1>Opus model trace</h1>
+      <p class="trace-deck">Follow the six plays, commands, and observations from the critical cycle and connect task in recorded order.</p>
+      <div class="trace-summary"><span>Claude Opus 5.5</span><span>6 card plays</span><span>15 elixir spent</span>
+        <span class="outcome-loss">Loss · 0–1</span></div>
+    </header>
+    <aside class="trace-sidebar"><nav aria-label="Jump to a play"><p class="trace-kicker">The sequence</p>
+      {''.join(nav)}</nav>
+      <p>Elapsed times mark when each command was issued. Tower HP and elixir show the observation before that play.</p>
+    </aside>
+    <div class="trace-content">
+      <div class="trace-toolbar"><p>Commands &amp; observations</p><button id="trace-expand" type="button" hidden>Expand all tool outputs</button></div>
+      <p class="trace-note">Win within 18 seconds of overtime. Your left tower starts at 250 HP; the enemy’s at 450 HP. An enemy Giant is approaching.</p>
+      {''.join(cards)}
+      <details class="trace-provenance"><summary>Source &amp; provenance</summary>
+        <p>This historical v6@1 attempt is separate from the v9 leaderboard. Assistant messages and full tool outputs are preserved from the public transcript; compact state summaries are extracted from those observations.</p>
+        <dl>{provenance}<div><dt>Public transcript SHA-256</dt><dd>{digest(source)}</dd></div></dl>
+        <p>Session metadata and empty reasoning blocks are omitted from the transcript.</p>
+        <a href="opus-trace.txt">Open original text ↗</a>
+      </details>
+    </div>
+  </main>
+  <script>
+    const outputs = [...document.querySelectorAll('.trace-output')];
+    const expand = document.getElementById('trace-expand');
+    const updateExpand = () => {{
+      expand.textContent = outputs.every(output => output.open) ? 'Collapse all tool outputs' : 'Expand all tool outputs';
+    }};
+    expand.hidden = false;
+    expand.addEventListener('click', () => {{
+      const open = !outputs.every(output => output.open);
+      outputs.forEach(output => {{ output.open = open; }});
+      updateExpand();
+    }});
+    outputs.forEach(output => output.addEventListener('toggle', updateExpand));
+    const links = [...document.querySelectorAll('.trace-sidebar a')];
+    const steps = [...document.querySelectorAll('.trace-step')];
+    const updateCurrent = () => {{
+      const ending = steps.at(-1).getBoundingClientRect();
+      // The last card may be fully visible before its heading reaches the top.
+      const atEnd = scrollY + innerHeight >= document.documentElement.scrollHeight - 2 ||
+        (ending.top >= 88 && ending.bottom <= innerHeight);
+      const active = atEnd ? steps.at(-1) : [...steps].reverse().find(step => step.getBoundingClientRect().top <= 180) || steps[0];
+      links.forEach(link => {{
+        if (link.hash === '#' + active.id) link.setAttribute('aria-current', 'step');
+        else link.removeAttribute('aria-current');
+      }});
+    }};
+    let scheduled = false;
+    window.addEventListener('scroll', () => {{
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => {{ updateCurrent(); scheduled = false; }});
+    }}, {{ passive: true }});
+    window.addEventListener('resize', updateCurrent);
+    outputs.forEach(output => output.addEventListener('toggle', updateCurrent));
+    updateCurrent();
+  </script>
+</body>
+</html>
+'''
+
+
 def replays():
     # Import only for rebuilding media. A clean checkout can inspect the frozen page without RoyaleGym.
     import sys
@@ -295,17 +476,21 @@ def check():
     provenance = read(ASSETS / "replay-provenance.json")
     for name, replay in provenance["replays"].items():
         assert replay["export_sha256"] == digest(ASSETS / f"{name}-replay.html")
-    print("Checked dataset identity, all 252 rewards and costs, embedded evidence, links and replay checksums.")
+    assert (ASSETS / "opus-trace.html").read_text(encoding="utf-8") == trace_page(), "Rebuild the trace with --trace"
+    print("Checked dataset identity, all 252 rewards and costs, embedded evidence, links, replay checksums and transcript identity.")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--refresh", action="store_true")
     parser.add_argument("--replays", action="store_true")
+    parser.add_argument("--trace", action="store_true")
     parser.add_argument("--check", action="store_true")
     options = parser.parse_args()
     if options.refresh:
         refresh()
     if options.replays:
         replays()
+    if options.trace:
+        (ASSETS / "opus-trace.html").write_text(trace_page(), encoding="utf-8", newline="\n")
     check()

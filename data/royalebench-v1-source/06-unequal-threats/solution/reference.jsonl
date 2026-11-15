@@ -1,0 +1,10 @@
+{"decision": 0, "tick": 2800, "move": 17, "label": "17. Knight (3 elixir, troop) @ left bridge", "think_s": 5.0}
+{"decision": 1, "tick": 2840, "move": 3, "label": "3. Cannon (3 elixir, building) @ in front of left tower", "think_s": 5.0}
+{"decision": 2, "tick": 2880, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 3, "tick": 2920, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 4, "tick": 2960, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 5, "tick": 3000, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 6, "tick": 3040, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 7, "tick": 3080, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 8, "tick": 3120, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 9, "tick": 3160, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}

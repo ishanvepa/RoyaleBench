@@ -87,7 +87,10 @@ function NewJobForm({ environment, benchmarks }: { environment: Environment; ben
   const published = benchmarks.filter((b) => b.versions > 0);
   const requested = search.get("benchmark");
   const initialDataset =
-    published.find((b) => b.name === requested)?.name ?? published.find((b) => b.kind !== "smoke")?.name ?? published[0]?.name ?? "";
+    published.find((b) => b.name === requested)?.name ??
+    published.find((b) => b.name === settings.default_dataset)?.name ??
+    published.find((b) => b.kind !== "smoke")?.name ??
+    published[0]?.name ?? "";
   const initialModel = settings.models[0]?.id ?? CUSTOM_MODEL;
   const initialAgent = environment.agents.includes(settings.default_agent) ? settings.default_agent : (environment.agents[0] ?? "");
 

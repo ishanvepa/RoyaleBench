@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench coordinates pilot"
+kind = "eval"
+description = "Direct coordinate actions on three frozen v1 states; paused text interface. Model calibration pending."

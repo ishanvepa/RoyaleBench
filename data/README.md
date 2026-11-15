@@ -1,5 +1,13 @@
 # Data snapshot
 
+## Frozen RoyaleBench v1 build inputs
+
+[`royalebench-v1-source`](royalebench-v1-source) is a byte-for-byte source snapshot of
+`benchmarks/royalebench-v1` from commit `e514cc3e71cef4c11ab224fb4191f16438625d1e` (the
+published `royalebench/royalebench-v1@1` inputs). RoyaleBench coordinates and v3 use it only
+to preserve their derivation; it is never mounted into a player image. Later v1 package revisions
+remain in `benchmarks/royalebench-v1` and must not change v3 provenance.
+
 `arena.db.gz`: a gzip'd copy of `runs/arena.db`, the SQLite database every run writes to and the dashboard
 reads. Snapshot taken 2026-11-07 (45 benchmark games plus earlier test jobs; ~37k logged decisions).
 

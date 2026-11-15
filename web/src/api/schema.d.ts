@@ -1264,6 +1264,8 @@ export interface components {
             default_agent: string;
             /** Default Concurrency */
             default_concurrency: number;
+            /** Default Dataset */
+            default_dataset: string;
             /** Max Concurrency */
             max_concurrency: number;
             /** Models */

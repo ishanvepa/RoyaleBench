@@ -1,0 +1,13 @@
+{
+  "task": "09-tower-race-defend",
+  "family": 9,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+  "config_sha256": "ac1cebaa3f5cd378533a562300926e48cc9c61185764f096c9176c03d14b7db7",
+  "image": "sha256:e6eff9ee76effde25b45df87d0a03bc73f6f0b85b771f87ac5b1fc1fd48adb26",
+  "isolated": true,
+  "restart_verified": true,
+  "network": "none",
+  "elapsed_s": 9.744
+}

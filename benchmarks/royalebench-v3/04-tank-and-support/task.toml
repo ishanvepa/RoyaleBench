@@ -1,0 +1,51 @@
+schema_version = "1.4"
+artifacts = [
+    { source = "/var/lib/royale", destination = "royale" },
+]
+
+[task]
+name = "royalebench/v3-04-tank-and-support"
+description = "Separate tank and support. Preserve both princess towers for 20 seconds and spend at most 9 elixir. | action_mode=coordinates-v1 | version=3.0.0"
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "medium"
+opponent = "planner"
+deck = "log-bait"
+seed = 104
+seat = "blue"
+decision_ticks = 40
+dataset_version = "3.0.0"
+family = 4
+opponent_deck = "giant-beatdown"
+control = false
+action_mode = "coordinates-v1"
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = [
+    "api.anthropic.com",
+    "api.openai.com",
+    "openrouter.ai",
+]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

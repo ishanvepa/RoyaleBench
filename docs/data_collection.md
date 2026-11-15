@@ -9,6 +9,10 @@ new runs must select `@2` or its current tag to receive the capture. Scenario co
 instructions, reference actions, opponent and scoring are unchanged. Rebuilding future snapshots
 requires the validation gates in the [v1 guide](royalebench_v1.md).
 
+The default [v3 benchmark](royalebench_v3.md) and historical [coordinate pilot](coordinate_harness.md) record raw coordinate attempts,
+acceptance/rejection metadata and application ticks. Rejected deployments consume an interval
+as `rejected_action`; exports count them as error waits rather than voluntary waits.
+
 ## What gets captured
 
 | Record | Contents |

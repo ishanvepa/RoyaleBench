@@ -315,7 +315,7 @@ class Game:
         return None if best is None else (best[1], best[2])
 
     # ------------------------------------------------------------------ text view
-    def describe(self, team: int, moves: list[Move]) -> str:
+    def describe(self, team: int, moves: list[Move] | None) -> str:
         s = self.state
         me, en = s.players[team], s.players[1 - team]
         left, ot = self.time_left_s()
@@ -363,7 +363,8 @@ class Game:
             lines.append("SINCE YOUR LAST DECISION:\n" + "\n".join(f"  - {ev}" for ev in mem.events[-8:]))
         if mem.history:
             lines.append("YOUR LAST MOVES:\n" + "\n".join(f"  - {h}" for h in mem.history[-5:]))
-        lines.append("LEGAL MOVES:\n" + "\n".join(m.label() for m in moves))
+        if moves is not None:
+            lines.append("LEGAL MOVES:\n" + "\n".join(m.label() for m in moves))
         return "\n".join(lines)
 
     def tower_name(self, team: int, e) -> str:

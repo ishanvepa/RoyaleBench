@@ -8,6 +8,8 @@ each task supplies only its own private config, protected solution, and verifier
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 import hashlib
 import json
 import shutil
@@ -19,6 +21,13 @@ from royalegym import RustEngine
 from royalegym.replay import load_trace, verify_trace
 
 from .royalebench_v1 import protocol_digest
+
+
+def protocol_for(cfg, task=None):
+    if cfg.get("action_mode") == "coordinates-v1":
+        from .coordinate_benchmark import packaged_protocol_digest, protocol_digest as coordinate_digest
+        return packaged_protocol_digest(task) if task is not None else coordinate_digest()
+    return protocol_digest()
 
 
 def docker(*args):
@@ -35,7 +44,7 @@ def mount(source, target, readonly=True):
 def validate(task, image, out):
     started = time.perf_counter()
     cfg = json.loads((task / "tests/task.json").read_text())
-    name = f"royale-v1-{task.name}"
+    name = f"{task.parent.name}-{task.name}"
     dest = (out / task.name).resolve()
     dest.mkdir(parents=True, exist_ok=True)
     # docker cp nests into an existing directory; replace only this generated export.
@@ -90,7 +99,7 @@ def validate(task, image, out):
         if not (dest / f"carried/capture/{table}.jsonl").stat().st_size:
             raise RuntimeError(f"empty carried {table}")
     result = dict(task=task.name, family=cfg["family"], reward=1, integrity=1,
-                  protocol_sha256=protocol_digest(),
+                  protocol_sha256=protocol_for(cfg, task),
                   config_sha256=hashlib.sha256(json.dumps(cfg, sort_keys=True).encode()).hexdigest(),
                   image=docker("image", "inspect", image, "--format", "{{.Id}}").strip(),
                   isolated=True, restart_verified=True, capture_complete=True,
@@ -102,36 +111,47 @@ def validate(task, image, out):
     return result
 
 
-def main():
+def main(default_benchmark=Path("benchmarks/royalebench-v1")):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--tasks", type=int, nargs="*")
-    ap.add_argument("--benchmark", type=Path, default=Path("benchmarks/royalebench-v1"))
-    ap.add_argument("--out", type=Path, default=Path("runs/royalebench-v1/docker"))
+    ap.add_argument("--benchmark", type=Path, default=default_benchmark)
+    ap.add_argument("--jobs", type=int, choices=range(1, 5), default=1,
+                    help="independent validation containers (default: sequential)")
+    ap.add_argument("--out", type=Path)
     args = ap.parse_args()
     manifest = json.loads((args.benchmark / "manifest.json").read_text())
-    if manifest["protocol_sha256"] != protocol_digest():
+    first_cfg = json.loads((args.benchmark / manifest["runnable_tasks"][0] / "tests/task.json").read_text())
+    first_task = args.benchmark / manifest["runnable_tasks"][0]
+    current_protocol = protocol_for(first_cfg, first_task)
+    args.out = args.out or Path("runs") / args.benchmark.name / "docker"
+    if manifest["protocol_sha256"] != current_protocol:
         raise SystemExit("rebuild the dataset after the protocol change")
     tasks = [args.benchmark / name for name in manifest["runnable_tasks"]]
+    if first_cfg.get("action_mode") == "coordinates-v1":
+        for task in tasks:
+            cfg = json.loads((task / "tests/task.json").read_text())
+            if protocol_for(cfg, task) != current_protocol:
+                raise SystemExit("coordinate tasks must ship one common protocol")
     tasks = [p for p in tasks if not args.tasks or int(p.name[:2]) in args.tasks]
     if not tasks:
         raise SystemExit("no matching runnable tasks")
-    image = "royalebench-v1:validation"
-    print("Building common v1 image...", flush=True)
+    image = f"{args.benchmark.name}:validation"
+    print(f"Building common {args.benchmark.name} image...", flush=True)
     # Always build the same base task, including when validating a subset.
     docker("build", "--platform", "linux/amd64", "-t", image,
            args.benchmark / manifest["runnable_tasks"][0] / "environment")
-    for task in tasks:
-        validate(task, image, args.out)
+    with ThreadPoolExecutor(max_workers=args.jobs) as pool:
+        list(pool.map(partial(validate, image=image, out=args.out), tasks))
     args.out.mkdir(parents=True, exist_ok=True)
     image_id = docker("image", "inspect", image, "--format", "{{.Id}}").strip()
     configs = {name: hashlib.sha256(json.dumps(json.loads(
         (args.benchmark / name / "tests/task.json").read_text()), sort_keys=True).encode()).hexdigest()
         for name in manifest["runnable_tasks"]}
     results = [json.loads(p.read_text()) for p in sorted(args.out.glob("*/docker_validation.json"))]
-    results = [r for r in results if r.get("protocol_sha256") == protocol_digest()
+    results = [r for r in results if r.get("protocol_sha256") == current_protocol
                and r.get("image") == image_id and r["task"] in configs
                and r.get("config_sha256") == configs[r["task"]]]
-    (args.out / "validation.json").write_text(json.dumps(dict(protocol_sha256=protocol_digest(),
+    (args.out / "validation.json").write_text(json.dumps(dict(protocol_sha256=current_protocol,
                          image=image_id,
                          tasks=results), indent=2)+"\n")
 

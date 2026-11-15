@@ -36,6 +36,35 @@ beforeEach(() => {
 });
 
 describe("New job page", () => {
+  it.each([
+    ["/evals/jobs/new", "RoyaleBench v3", "royalebench-v3"],
+    ["/evals/jobs/new?benchmark=alpha", "Alpha", "alpha"],
+  ])("prefers the configured benchmark and respects explicit links: %s", async (path, title, dataset) => {
+    useJobHandlers();
+    server.use(
+      http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList([
+        benchmarkRow({ name: "alpha", title: "Alpha" }),
+        benchmarkRow({ name: "royalebench-v3", title: "RoyaleBench v3" }),
+      ]))),
+      http.get("*/api/evals/benchmarks/:name", ({ params }) =>
+        HttpResponse.json(benchmarkDetail({ name: String(params.name) }))),
+    );
+    renderApp(path);
+    expect(await screen.findByLabelText("Benchmark")).toHaveTextContent(title);
+    await waitFor(() => expect(previews.at(-1)?.dataset).toBe(dataset), WAIT);
+  });
+
+  it("falls back to a published benchmark when the configured default is unpublished", async () => {
+    useJobHandlers();
+    server.use(http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList([
+      benchmarkRow({ name: "alpha", title: "Alpha" }),
+      benchmarkRow({ name: "royalebench-v3", title: "RoyaleBench v3", versions: 0, latest_revision: null, state: "draft" }),
+    ]))));
+    renderApp("/evals/jobs/new");
+    expect(await screen.findByLabelText("Benchmark")).toHaveTextContent("Alpha");
+    await waitFor(() => expect(previews.at(-1)?.dataset).toBe("alpha"), WAIT);
+  });
+
   it("starts with sensible defaults taken from the environment", async () => {
     useJobHandlers();
     renderApp("/evals/jobs/new?benchmark=alpha");

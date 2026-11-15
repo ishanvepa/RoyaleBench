@@ -19,7 +19,7 @@ def _preset_out(model_id: str, secret_env: str) -> ModelPresetOut:
 def settings_out(ctx: AppContext) -> EvalsSettingsOut:
     c = ctx.cfg
     return EvalsSettingsOut(
-        benchmark=c.benchmark, provider=c.provider, default_agent=c.default_agent,
+        benchmark=c.benchmark, provider=c.provider, default_agent=c.default_agent, default_dataset=c.default_dataset,
         default_concurrency=c.default_concurrency, max_concurrency=c.max_concurrency,
         confirm_over_tasks=c.confirm_over_tasks, models=[_preset_out(m.id, m.secret_env) for m in c.models])
 

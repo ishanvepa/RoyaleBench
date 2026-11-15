@@ -33,6 +33,7 @@ class EvalsSettingsOut(BaseModel):
     benchmark: str
     provider: str
     default_agent: str
+    default_dataset: str
     default_concurrency: int
     max_concurrency: int
     confirm_over_tasks: int

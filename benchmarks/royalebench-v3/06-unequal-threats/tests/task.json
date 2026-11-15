@@ -1,0 +1,105 @@
+{
+  "id": "06-unequal-threats",
+  "family": 6,
+  "title": "Prioritize unequal threats",
+  "difficulty": "medium",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 106,
+  "agent_team": 0,
+  "agent_deck": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+  ],
+  "opponent_deck": [
+    "Pekka",
+    "BattleRam",
+    "ElectroWizard",
+    "MiniPekka",
+    "Bats",
+    "Zap",
+    "Poison",
+    "Wizard"
+  ],
+  "player_deck_name": "giant-beatdown",
+  "opponent_deck_name": "pekka-bridge-spam",
+  "csv_win_rate": 51.4,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Keep both princess towers alive for 20 seconds. Spend at most 8 elixir in total, including at most 4 on placements in the right lane (x > 10.5).",
+  "scenario": {
+    "start_tick": 2800,
+    "horizon_s": 20,
+    "elixir": 6,
+    "opponent_elixir": 0,
+    "order": [
+      "Cannon",
+      "Musketeer",
+      "Knight",
+      "Zap",
+      "Giant",
+      "Archer",
+      "Minions",
+      "Fireball"
+    ],
+    "opponent_order": [
+      "Pekka",
+      "BattleRam",
+      "ElectroWizard",
+      "MiniPekka",
+      "Bats",
+      "Zap",
+      "Poison",
+      "Wizard"
+    ],
+    "units": [
+      {
+        "card": "BattleRam",
+        "team": 1,
+        "x": 3.5,
+        "y": 14
+      },
+      {
+        "card": "Bats",
+        "team": 1,
+        "x": 14.5,
+        "y": 14
+      }
+    ],
+    "grading": "defend",
+    "tower_hp": [
+      [
+        4824,
+        458,
+        2289
+      ],
+      [
+        4824,
+        3052,
+        3052
+      ]
+    ],
+    "spend_budget": 8,
+    "damage_limit": 10000,
+    "right_lane_budget": 4
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1"
+}

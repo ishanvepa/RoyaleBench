@@ -409,11 +409,13 @@ def export_tables(folder: Path, rows: dict):
     players = []
     for key, ds in groups.items():
         asked = [d for d in ds if d["action_source"] not in ("forced_wait", "verifier_wait")]
+        voluntary_waits = sum(d["kind"] == "WAIT" and d["ok"]
+                              and d["action_source"] != "rejected_action" for d in asked)
         resource = resource_totals[key]
         players.append({"match_id": key[0], "attempt_id": key[1], "team": key[2], "intervals": len(ds),
-            "choices": len(asked), "voluntary_waits": sum(d["kind"] == "WAIT" and d["ok"] for d in asked),
-            "error_waits": sum(not d["ok"] for d in asked),
-            "wait_rate": sum(d["kind"] == "WAIT" and d["ok"] for d in asked) / len(asked) if asked else None,
+            "choices": len(asked), "voluntary_waits": voluntary_waits,
+            "error_waits": sum(not d["ok"] or d["action_source"] == "rejected_action" for d in asked),
+            "wait_rate": voluntary_waits / len(asked) if asked else None,
             "elixir_spent": sum(d["cost"] for d in ds if d["accepted"]),
             "overflow_elixir": resource["overflow_fine"] / resource["scale"] if resource["ticks"] and resource["exact"] else None,
             "at_cap_s": resource["at_cap_ticks"] * resource["tick_ms"] / 1000 if resource["ticks"] and resource["exact"] else None,

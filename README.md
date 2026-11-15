@@ -14,9 +14,29 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 [TODO: State the specific capability gap supported by the final results.]
 
-## RoyaleBench v1
+## RoyaleBench v3
 
-The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. Use `royalebench/royalebench-v1@3` for automatic replay and telemetry capture with the Modal Qwen endpoint allowed during play. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands, or [Qwen on Modal](docs/qwen_modal.md) for that model's setup. The full-match results below use the earlier benchmark and opponent.
+[RoyaleBench v3](docs/royalebench_v3.md) is the default benchmark. Its 11 continuation scenarios
+against Planner use direct coordinate actions: `cr play SLOT X Y` and `cr wait`, with paused text
+observations and independent replay grading. Starting positions and objectives match the released
+v1 set; cycle-history and comeback candidates remain gated. Build with
+`uv run python -m cr_arena.build_v3 --jobs 2`. The dashboard prefers v3 for new jobs once published.
+See the guide and manifest for release validation and model-run evidence.
+Published as `royalebench/royalebench-v3@1` (tag `v3`); all 11 references pass isolated Docker
+validation and deterministic replay. Full-cohort model calibration remains pending.
+The published v3 lethal control passes with Sonnet 4.6 on Valkyrie/Modal (reward 1, integrity 1).
+
+## Historical v1 and coordinate pilot
+
+The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. Use `royalebench/royalebench-v1@3` for automatic replay and telemetry capture with the Modal Qwen endpoint allowed during play. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands, or [Qwen on Modal](docs/qwen_modal.md) for that model's setup. The frozen `@1` snapshot remains the menu baseline for the three-task harness comparison below. The full-match results further below use the earlier benchmark and opponent.
+
+The separate [coordinate-action pilot](docs/coordinate_harness.md) uses three matching v1 positions
+with `cr play SLOT X Y` and `cr wait`, retaining text observations and paused turns. It removes
+prepared placement choices and grades direct coordinates through independent replay. The frozen
+v1 menu dataset remains unchanged. In one Sonnet 4.6 attempt per task and interface, coordinates
+passed **3/3** and the matching frozen menu tasks passed **2/3**, all with integrity 1. This small
+pilot verifies operation and does not establish that coordinate actions increase difficulty.
+See the guide for exact revisions, costs, action traces, and the menu cycling failure.
 
 ## Preliminary full-match results
 
@@ -75,6 +95,7 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 ## Quick guides
 
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
+- [RoyaleBench v3](docs/royalebench_v3.md): default full continuation benchmark using coordinate actions, release validation, and run commands.
 - [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch task replays and agent traces, and browse the original arena (`uv run python -m rb_server`).
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.

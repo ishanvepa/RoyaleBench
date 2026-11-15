@@ -84,6 +84,16 @@ fetched again on opening so a retry or resume does not reuse an earlier attempt.
 transfer failures can be retried. Playback never starts a model or sandbox. Fake mode's `arena-lite`
 tasks show explicitly labelled sample gameplay; its smoke tasks have no replay.
 
+**RoyaleBench v3** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It
+uses coordinate actions across all 11 released scenarios. Explicit benchmark links override the
+default, and an unpublished/unavailable default falls back to an available published benchmark.
+See the [v3 guide](royalebench_v3.md) for validation and launch commands.
+
+The historical **RoyaleBench coordinates pilot** is discovered separately from **RoyaleBench v1**. It uses
+three matching positions with direct coordinate actions; see the [protocol guide](coordinate_harness.md).
+The guide records its published revision and small Sonnet 4.6 comparison; local reference
+validation remains distinct from model results.
+
 New real runs are enrolled in [data collection](data_collection.md). A server-side worker archives
 their raw artifacts, normalizes telemetry, exports analysis tables, and verifies a durable copy outside
 the dashboard cache. The standalone collector works when this server is closed. Existing runs are not backfilled.

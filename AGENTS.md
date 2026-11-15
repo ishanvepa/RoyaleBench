@@ -39,7 +39,9 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/public_play_validation.json`](docs/public_play_validation.json): historical five-match and ten-match measurements (two Planner workers per match; the seven-match eight-worker deployment is not yet measured), latency limits, and deployment status.
 - [`docs/rendering.md`](docs/rendering.md): lobby miniature, card previews and match result dialog, shared live/replay graphics, mobile troop sizing, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
-- [`docs/royalebench_v1.md`](docs/royalebench_v1.md): RoyaleBench v1 continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
+- [`docs/royalebench_v3.md`](docs/royalebench_v3.md): default coordinate-action benchmark, all 11 released scenarios, scoring, validation, dashboard default, and Harbor/Valkyrie workflow.
+- [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
+- [`docs/coordinate_harness.md`](docs/coordinate_harness.md): separate coordinate-action pilot, CLI, illegal-action handling, replay grading, reference validation, and comparison with frozen v1.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch recorded task gameplay, inspect per-run API costs and task difficulty, repair harness issues, and browse the arena.
 - [`docs/qwen_modal.md`](docs/qwen_modal.md): use the existing mini-SWE-agent harness with the Modal Qwen endpoint, configure API-key/base-URL references, and run a one-task Valkyrie pilot.
 - [`docs/inkling_modal.md`](docs/inkling_modal.md): Inkling endpoint setup, revision `@4` network access, and secure credential/model discovery; live configuration awaits the matching proxy secret.
@@ -55,7 +57,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
 - [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
-- [`data/README.md`](data/README.md): documentation for project data, including the tracked deck-strength data (CrownScribe archetype win rates in `data/deck_strength.csv` and head-to-head matchups in `data/deck_matchups.csv`, ranked by `cr_arena/deck_strength.py`).
+- [`data/README.md`](data/README.md): documentation for project data, including the frozen v1@1 build inputs used by v3, tracked deck-strength data (CrownScribe archetype win rates in `data/deck_strength.csv` and head-to-head matchups in `data/deck_matchups.csv`, ranked by `cr_arena/deck_strength.py`).
 
 ## Project references
 

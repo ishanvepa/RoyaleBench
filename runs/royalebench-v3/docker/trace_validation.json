@@ -1,0 +1,46 @@
+[
+  {
+    "task": "01-immediate-lethal",
+    "errors": []
+  },
+  {
+    "task": "02-efficient-defense",
+    "errors": []
+  },
+  {
+    "task": "03-spell-placement",
+    "errors": []
+  },
+  {
+    "task": "04-tank-and-support",
+    "errors": []
+  },
+  {
+    "task": "05-successive-threats",
+    "errors": []
+  },
+  {
+    "task": "06-unequal-threats",
+    "errors": []
+  },
+  {
+    "task": "07-counterpush",
+    "errors": []
+  },
+  {
+    "task": "08-cycle-to-lethal",
+    "errors": []
+  },
+  {
+    "task": "09-tower-race-commit",
+    "errors": []
+  },
+  {
+    "task": "09-tower-race-defend",
+    "errors": []
+  },
+  {
+    "task": "10-protect-the-lead",
+    "errors": []
+  }
+]

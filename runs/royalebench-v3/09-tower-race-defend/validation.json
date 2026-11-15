@@ -1,0 +1,39 @@
+{
+  "task": "09-tower-race-defend",
+  "reward": 1,
+  "integrity": 1.0,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0
+  },
+  "config_sha256": "ac1cebaa3f5cd378533a562300926e48cc9c61185764f096c9176c03d14b7db7",
+  "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+  "reference_log_sha256": "44be8e64ec1a14a25dd45c58cadbae4e91950950c5325cae107f0a87d542e327",
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2514,
+    "ticks": 5442,
+    "tower_damage": 0,
+    "spent_elixir": 3,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 2.1,
+    "rejected_actions": 0
+  },
+  "decisions": 2,
+  "menu_baseline_reward": 1,
+  "frontier_model_runs": []
+}

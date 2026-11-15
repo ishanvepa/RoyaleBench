@@ -11,6 +11,36 @@ please try again shortly.”** Finish, quit, disconnect, or worker failure relea
 a slot. A game expires after 15 minutes including pauses. Reconnect starts a new
 game rather than resuming the previous one.
 
+## Persistent leaderboard
+
+The deck picker and match result screen link to an all-time leaderboard showing
+player names, wins, and losses. Most wins rank first; fewer losses break ties,
+and identical records share a rank. The board shows the top 50 plus your own
+record, even when you are outside the top 50. It refreshes when setup opens,
+after a completed game, or when you press **Refresh**.
+
+Each server appends completed wins/losses to one CSV file. Draws, quits,
+disconnects, expired games, and worker failures do not change standings. A match
+ID prevents duplicate results if saving is retried. Results come from the game
+engine; the HTTP endpoint accepts no score submissions. The CSV write uses the
+existing single-server setup and a thread lock for simultaneous finishes.
+
+Until name entry is added, a persistent browser cookie identifies each player as
+`Player ABC123`. The cookie lasts one year; clearing cookies, changing browsers,
+or using a different tunnel hostname creates a new identity. This is a casual
+leaderboard with no accounts. To integrate future names, set `Session.player_name`
+from the name flow; `Session.player_id` remains the stable aggregation key. The
+CSV's `player_name` column supplies the displayed name, using the latest result.
+
+`GET /leaderboard` returns `entries`, `you`, and `total`. Each entry includes
+`rank`, `name`, `wins`, `losses`, and `is_you`. The default local file is
+`runs/round_robin/human-play/leaderboard.csv`; override it with
+`CR_ARENA_LEADERBOARD`. Local and public modes on the same file share standings,
+so use separate file paths if running practice and public servers together.
+On Modal, the file is `/data/leaderboard.csv` on the existing persistent volume.
+It survives normal restarts and redeploys under the volume's durability behavior
+described below. Old matches have no player identity and are not backfilled.
+
 All four legal-placement masks arrive with the initial hand. Hand changes and
 changes to deployment geometry push replacement masks with the same game update.
 Selecting a card reads its cached mask immediately, without sending a placement
@@ -87,7 +117,7 @@ redirect Function preserves the original link and scales to zero when unused.
 Do not increase the game container count or deploy another game process against
 the same volume.
 
-The volume `royalebench-play-data` holds `/data/arena.db` and
+The volume `royalebench-play-data` holds `/data/arena.db`, `/data/leaderboard.csv`, and
 `/data/human-play/replays/`. Modal commits changes in the background, and the app
 also flushes the volume on clean shutdown. The latest uncommitted writes can be
 lost on abrupt termination. Active matches live in memory and end on a container
@@ -146,6 +176,6 @@ second instead of retaining a match indefinitely.
 Regression checks:
 
 ```bash
-uv run --frozen python -m unittest tests.test_public_play tests.test_bot_registry tests.test_human_search_v2 tests.test_placement tests.test_rendering -v
+uv run --frozen python -m unittest tests.test_live_leaderboard tests.test_public_play tests.test_bot_registry tests.test_human_search_v2 tests.test_placement tests.test_rendering -v
 node --test tests/battle_renderer.test.cjs
 ```

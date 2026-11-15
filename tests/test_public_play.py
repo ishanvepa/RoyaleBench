@@ -9,10 +9,12 @@ from contextlib import ExitStack
 from pathlib import Path
 from unittest.mock import patch
 
+import msgspec
 from starlette.testclient import TestClient
 
 from cr_arena import live
 from cr_arena.db import DB
+from cr_arena.leaderboard import Leaderboard
 
 
 START = {"t": "start", "deck": "giant-beatdown", "seed": 11}
@@ -83,7 +85,11 @@ class PublicPlayTests(unittest.TestCase):
         self.fail(f'Expected {count} active games')
 
     def test_public_mode_pins_opponent_and_deck_and_rejects_malformed_input(self):
-        with TestClient(live.create_app(public=True)) as client, client.websocket_connect('/ws') as ws:
+        with ExitStack() as stack:
+            client = stack.enter_context(TestClient(live.create_app(public=True)))
+            client.get('/')
+            player_id = client.cookies[live.PLAYER_COOKIE]
+            ws = stack.enter_context(client.websocket_connect('/ws'))
             ws.receive_json()
             for message in ([], {**START, 'seed': -1},
                             {**START, 'deck': []}):
@@ -102,6 +108,7 @@ class PublicPlayTests(unittest.TestCase):
                 ws.send_json(message)
                 receive(ws, 'invalid')
             self.assertEqual(len(live.ACTIVE), 1)
+            self.assertEqual(next(iter(live.ACTIVE)).player_id, player_id)
             receive(ws, 's')
 
     def test_worker_failure_slow_socket_and_expiry_free_slot(self):
@@ -131,10 +138,17 @@ class PublicPlayTests(unittest.TestCase):
                 asyncio.run(scenario(kind))
 
     def test_five_natural_completions_save_unique_replays_and_release_open_sockets(self):
-        async def finish_games():
-            sessions = [live.Session(MemorySocket(), 'giant-beatdown', 'giant-beatdown', seed)
+        async def finish_games(board):
+            sessions = [live.Session(MemorySocket(), 'giant-beatdown', 'giant-beatdown', seed,
+                                     leaderboard=board, player_id='test-player')
                         for seed in range(5)]
-            for session in sessions:
+            for index, session in enumerate(sessions):
+                hp = [list(player.tower_hp) for player in session.game.state.players]
+                if index:  # Two wins, two losses, and one draw through the engine's tiebreak.
+                    hp[index % 2][1] = 1000
+                setup = msgspec.structs.replace(session.game.setup, tower_hp=hp)
+                session.game.engine.reset(session.seed, setup)
+                session.game.recorder.begin(session.game.engine, session.seed, setup)
                 session.game.engine.step([], 20_000)
                 self.assertTrue(session.game.over)
             await asyncio.gather(*(session.run() for session in sessions))
@@ -151,7 +165,18 @@ class PublicPlayTests(unittest.TestCase):
             # Create the schema once, as the deployed process does before serving traffic.
             DB(db_path).close()
             with patch.object(live, 'OUT_DIR', Path(tmp)), patch.object(live, 'DB', lambda: DB(db_path)):
-                ids = asyncio.run(finish_games())
+                board = Leaderboard(Path(tmp) / 'leaderboard.csv')
+                ids = asyncio.run(finish_games(board))
+                # Finished engine outcomes, rather than client-submitted scores, feed the CSV.
+                db = DB(db_path)
+                try:
+                    winners = [r['winner'] for r in db.query('SELECT winner FROM matches')]
+                finally:
+                    db.close()
+                you = Leaderboard(board.path).standings('test-player')['you']
+                self.assertEqual(you['wins'], winners.count(0))
+                self.assertEqual(you['losses'], winners.count(1))
+                self.assertEqual((you['wins'], you['losses']), (2, 2))
             self.assertEqual(len(set(ids)), 5)
             self.assertEqual(len(list((Path(tmp) / 'replays').glob('*.msgpack'))), 5)
             db = DB(db_path)

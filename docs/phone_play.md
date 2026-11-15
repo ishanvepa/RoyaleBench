@@ -50,6 +50,9 @@ Choose an opponent and decks, then press **Start game**. Tap a card and then
 tap a legal location on the arena to deploy it. Use **Change deck** to return
 to setup and switch opponents. Finished games save to `runs/arena.db`, with
 replays under `runs/round_robin/human-play/replays/`.
+The setup screen includes a persistent wins/losses leaderboard backed by
+`runs/round_robin/human-play/leaderboard.csv`, with a placeholder name per browser
+until name entry is added. See [leaderboard behavior and storage](public_play.md#persistent-leaderboard).
 
 Keep your Mac awake and the command running. Press **Ctrl+C** to stop the
 tunnel, game server, and bot workers. If either service exits, the launcher

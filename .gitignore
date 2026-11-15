@@ -4,6 +4,7 @@ __pycache__/
 runs/arena.db
 runs/arena.db-*
 runs/**/replays/
+runs/**/leaderboard.csv
 runs/site/
 runs/*.out
 runs/replay-cache/

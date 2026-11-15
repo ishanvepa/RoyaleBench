@@ -37,6 +37,7 @@ from starlette.websockets import WebSocket, WebSocketDisconnect, WebSocketDiscon
 from .db import DB
 from .decks import CLASSIC_DECKS
 from .game import Game
+from .leaderboard import Leaderboard, guest_name
 from .rendering import embed_renderer
 from .bots import human_bot_specs
 
@@ -55,6 +56,7 @@ SEARCH_V2_MAX_AGE_TICKS = 80  # discard answers older than four seconds
 BOT_EVERY_TICKS = 5  # the bot is shown a fresh snapshot at most every 0.25 s of game time
 OUT_DIR = Path(os.getenv("CR_ARENA_REPLAY_DIR", "runs/round_robin/human-play"))
 PAGE = Path(__file__).with_name("live.html")
+PLAYER_COOKIE = "cr_player"
 _NOT_YET = {DeployStatus.NOT_ENOUGH_ELIXIR, DeployStatus.TOO_EARLY}
 
 
@@ -114,8 +116,13 @@ class Session:
     """One real-time game for one browser tab."""
 
     def __init__(self, ws: WebSocket, my_deck: str, opp_deck: str, seed: int, bot: str = "heuristic",
-                 *, spec: dict | None = None):
+                 *, spec: dict | None = None, leaderboard: Leaderboard | None = None,
+                 player_id: str | None = None):
         self.ws = ws
+        self.match_id = uuid.uuid4().hex
+        self.leaderboard = leaderboard
+        self.player_id = player_id or uuid.uuid4().hex
+        self.player_name = guest_name(self.player_id)  # Future name entry can set this before playing.
         self.bot_spec = spec if spec is not None else BOT_SPECS[bot]
         self.deck_names = (my_deck, opp_deck)
         self.decks = [CLASSIC_DECKS[my_deck], CLASSIC_DECKS[opp_deck]]
@@ -410,19 +417,26 @@ class Session:
         winner, crowns, towers, ticks, trace = g.finish()
         out = {"winner": int(winner), "crowns": crowns, "saved": None}
         try:
-            mid = f"human__vs__{self.bot_spec['name']}__{uuid.uuid4().hex}"
+            mid = f"human__vs__{self.bot_spec['name']}__{self.match_id}"
             (OUT_DIR / "replays").mkdir(parents=True, exist_ok=True)
             rp = OUT_DIR / "replays" / f"{mid}.msgpack"
             if trace is not None:
                 save_trace(trace, rp)
             db = DB()
             try:
-                return self._save_match(db, mid, rp, winner, crowns, towers, ticks, out)
+                self._save_match(db, mid, rp, winner, crowns, towers, ticks, out)
             finally:
                 db.close()
         except Exception as exc:  # the game itself is over either way; say why it was not saved
             log.exception("could not save live game")
             out["save_error"] = f"{type(exc).__name__}: {exc}"
+        # A replay/storage failure should not discard a legitimately completed result.
+        if self.leaderboard is not None and g.over:
+            try:
+                self.leaderboard.record(self.match_id, self.player_id, self.player_name, int(winner))
+            except Exception:
+                log.exception("could not update leaderboard")
+                out["leaderboard_error"] = True
         return out
 
     def _save_match(self, db, mid, rp, winner, crowns, towers, ticks, out):
@@ -457,12 +471,37 @@ class Session:
         self.conn.close()
 
 
-async def page(_request) -> HTMLResponse:
-    return HTMLResponse(embed_renderer(PAGE.read_text(encoding="utf-8")), headers={"Cache-Control": "no-store"})
+def player_identity(request) -> str:
+    value = request.cookies.get(PLAYER_COOKIE, "") if request is not None else ""
+    return value if len(value) == 32 and all(c in "0123456789abcdef" for c in value) else uuid.uuid4().hex
+
+
+def remember_player(response, request, player_id):
+    response.set_cookie(PLAYER_COOKIE, player_id, max_age=365 * 24 * 60 * 60,
+                        httponly=True, samesite="lax", secure=request is not None and request.url.scheme == "https")
+    return response
+
+
+async def page(request) -> HTMLResponse:
+    response = HTMLResponse(embed_renderer(PAGE.read_text(encoding="utf-8")), headers={"Cache-Control": "no-store"})
+    return remember_player(response, request, player_identity(request))
+
+
+async def leaderboard(request) -> JSONResponse:
+    player_id = player_identity(request)
+    try:
+        result = await asyncio.to_thread(request.app.state.leaderboard.standings, player_id)
+        response = JSONResponse(result, headers={"Cache-Control": "no-store"})
+    except Exception:
+        log.exception("could not read leaderboard")
+        response = JSONResponse({"error": "Leaderboard unavailable. Please try again."}, status_code=503,
+                                headers={"Cache-Control": "no-store"})
+    return remember_player(response, request, player_id)
 
 
 async def socket(ws: WebSocket) -> None:
     await ws.accept()
+    player_id = player_identity(ws)
     session: Session | None = None
     task: asyncio.Task | None = None
 
@@ -508,7 +547,8 @@ async def socket(ws: WebSocket) -> None:
                                         "message": "Server at capacity — please try again shortly."})
                     continue
                 try:
-                    session = Session(ws, mine, theirs, seed, bot, spec=specs[bot] if fixed else None)
+                    session = Session(ws, mine, theirs, seed, bot, spec=specs[bot] if fixed else None,
+                                      leaderboard=ws.app.state.leaderboard, player_id=player_id)
                 except Exception:
                     log.exception("could not start live game")
                     await ws.send_json({"t": "error", "message": "Could not start a game. Please try again."})
@@ -543,9 +583,11 @@ async def lifespan(_app):
     yield
 
 
-def create_app(*, public: bool = False) -> Starlette:
-    app = Starlette(routes=[Route("/", page), Route("/health", health), WebSocketRoute("/ws", socket)],
+def create_app(*, public: bool = False, leaderboard_path: Path | None = None) -> Starlette:
+    app = Starlette(routes=[Route("/", page), Route("/health", health), Route("/leaderboard", leaderboard),
+                            WebSocketRoute("/ws", socket)],
                     lifespan=lifespan)
+    app.state.leaderboard = Leaderboard(leaderboard_path or Path(os.getenv("CR_ARENA_LEADERBOARD", OUT_DIR / "leaderboard.csv")))
     app.state.bot_specs = {PUBLIC_BOT: {**BOT_SPECS[PUBLIC_BOT], "workers": PUBLIC_PLANNER_WORKERS}} if public else BOT_SPECS
     app.state.fixed_opponent = {"bot": PUBLIC_BOT, "deck": PUBLIC_DECK} if public else None
     return app

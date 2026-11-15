@@ -58,6 +58,12 @@ downloaded from [JustAction, “terrorizing arena 1 players”](https://www.yout
 SHA-256: `b8eb9da25d3dcbcc94d9dfed278d70329d1c1ee0f0759d6ae7c36ac9541a0a55`.
 The 145 MB video is git-ignored; the source link and checksum remain in the repository.
 
+The tower artwork pass sampled it with ffmpeg at 00:30.000, 01:30.000,
+05:10.000, 05:12.000 and 05:15.000. Timestamped crops, code-inspection provenance,
+before/after comparisons and remaining differences are recorded in
+[Battle graphics](../docs/rendering.md#tower-reference-and-scope). The video was
+inspected visually; REA inspected the renderer JavaScript, not the video.
+
 To restore the same local reference:
 
 ```bash

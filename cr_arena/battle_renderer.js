@@ -162,6 +162,7 @@
       shieldMax = new Map(),
       stunMax = new Map(),
       chip = new Map(),
+      towerSites = new Map(),
       spellFrom = new Map();
     let previous = null,
       drawn = [],
@@ -176,6 +177,7 @@
       shieldMax.clear();
       stunMax.clear();
       chip.clear();
+      towerSites.clear();
       spellFrom.clear();
     }
     function observe(s, now) {
@@ -204,6 +206,7 @@
         }
       }
       for (const e of s.en) {
+        if (e[2] === KING || e[2] === PRINCESS) towerSites.set(e[0], e);
         if (!firstSeen.has(e[0])) firstSeen.set(e[0], prev ? now : -1e9);
         // A stun's full length is the most it has been since it started, so its ring can drain.
         const was = prev?.by.get(e[0]);
@@ -472,7 +475,7 @@
         ctx.stroke();
       }
     }
-    function drawTower(e, px, py, r, hit, fill, edge) {
+    function drawTower(e, px, py, r, hit, ruined = false) {
       let left = px - r,
         top = py - r,
         width = 2 * r,
@@ -484,55 +487,154 @@
         width = Math.abs(x1 - x0) * T;
         height = Math.abs(y1 - y0) * T;
       }
-      ctx.fillStyle = "rgba(20,29,21,.35)";
-      ctx.beginPath();
-      ctx.ellipse(left + width * 0.55, top + height * 0.88, width * 0.63, height * 0.3, 0, 0, 7);
-      ctx.fill();
-      // The first rectangle is the exact simulator footprint, including wide
-      // princess-tower footprints. Decorative pieces stay inside this outline.
-      ctx.fillStyle = hit > 0 ? "#fff" : "#8f8e79";
-      ctx.strokeStyle = "#4a4b45";
-      ctx.lineWidth = 2;
+      const king = e[2] === KING,
+        near = (e[5] < TY / 2) !== flip,
+        blue = e[1] === 0,
+        roof = blue ? "#287ec1" : "#cf404d",
+        roofLight = blue ? "#64b6ed" : "#f2767b",
+        roofDark = blue ? "#164c83" : "#872d3b";
+      // Ground contact stays at the supplied footprint. The camera-facing
+      // elevation changes with flipping, while the masonry remains upright.
+      polygon([
+        [left + width * .1, top + height * .51],
+        [left + width * .92, top + height * .71],
+        [left + width * .82, top + height * 1.04],
+        [left - width * .08, top + height * 1.07],
+      ], ruined ? "rgba(32,30,22,.18)" : "rgba(24,31,28,.32)");
+      ctx.save();
+      // Clip decoration to the exact simulator outline, including optional
+      // non-square princess footprints. This does not change tooltip targets.
       ctx.beginPath();
       ctx.roundRect(left, top, width, height, Math.min(6, r * 0.3));
-      ctx.fill();
-      ctx.stroke();
-      ctx.fillStyle = "#666f67";
-      ctx.fillRect(left + width * 0.07, top + height * 0.55, width * 0.86, height * 0.32);
-      ctx.fillStyle = "#c5bea1";
-      ctx.fillRect(left + width * 0.1, top + height * 0.12, width * 0.8, height * 0.47);
-      ctx.fillStyle = edge;
-      ctx.fillRect(left + width * 0.09, top + height * 0.2, width * 0.82, height * 0.12);
-      ctx.fillStyle = fill;
-      ctx.fillRect(left + width * 0.13, top + height * 0.08, width * 0.74, height * 0.32);
-      ctx.fillStyle = "rgba(255,255,255,.22)";
-      ctx.fillRect(left + width * 0.16, top + height * 0.1, width * 0.66, height * 0.05);
-      ctx.fillStyle = "#494b43";
-      ctx.fillRect(left + width * 0.45, top + height * 0.48, width * 0.1, height * 0.29);
-      for (const side of [0.04, 0.79]) {
-        ctx.fillStyle = "#d3c9a9";
-        ctx.fillRect(left + width * side, top + height * 0.04, width * 0.17, height * 0.18);
-        ctx.fillStyle = "#817b68";
-        ctx.fillRect(left + width * side, top + height * 0.19, width * 0.17, height * 0.06);
+      ctx.clip();
+      ctx.translate(left, top);
+      ctx.scale(width, height);
+      const rect = (x, y, w, h, color) => { ctx.fillStyle = color; ctx.fillRect(x, y, w, h); },
+        poly = (points, color, edge = null, line = .012) => polygon(points, color, edge, line),
+        oval = (x, y, rx, ry, color, edge = null, line = .012) => disk(x, y, rx, ry, color, edge, line),
+        crown = (x, y, w, h) => {
+          poly([[x,y+h],[x,y],[x+w*.27,y+h*.31],[x+w*.5,y-h*.13],
+            [x+w*.73,y+h*.31],[x+w,y],[x+w,y+h]], "#edbf4b", "#71562e", .018);
+          rect(x + w*.07, y + h*.72, w*.86, h*.16, "#ffe58b");
+        },
+        cap = (x, y, w, h) => {
+          rect(x, y + .035, w, h, "#91969a");
+          poly([[x,y+.025],[x+.025,y],[x+w,y],[x+w,y+h],
+            [x,y+h]], hit > 0 ? "#fff" : "#e7e5da");
+          rect(x + .022, y + .012, w - .038, .025, "#faf7e9");
+          rect(x + w - .025, y + .028, .025, h - .028, "#bec1bb");
+        };
+      if (ruined) {
+        // The reference leaves a low, pale stone ring and splintered deck,
+        // rather than fire or an intact dark tower at zero health.
+        poly([[.08,.43],[.76,.37],[.94,.57],[.85,.94],[.13,.92]], "#95866b");
+        rect(.22, .51, .57, .3, "#b1976e");
+        for (const [x,y] of [[.24,.53],[.38,.56],[.5,.49]])
+          poly([[x,y],[x+.045,y-.02],[x+.26,y+.28],[x+.2,y+.3]], "#e2bd7e", "#8d6b43", .01);
+        for (const [x,y,w,h] of [[.12,.46,.15,.3],[.27,.4,.25,.13],
+          [.56,.43,.27,.12],[.77,.58,.12,.22],[.23,.8,.25,.13],[.54,.79,.19,.12]]) cap(x,y,w,h);
+        for (const [x,y] of [[.08,.85],[.82,.9],[.48,.34],[.86,.48]])
+          poly([[x,y],[x+.06,y-.02],[x+.095,y+.035],[x+.025,y+.065]], "#ded9c8");
+        ctx.restore();
+        return;
       }
-      if (e[2] === KING) {
-        polygon([
-          [px - r * 0.34, top + height * 0.25],
-          [px - r * 0.35, top + height * 0.1],
-          [px - r * 0.12, top + height * 0.17],
-          [px, top + height * 0.03],
-          [px + r * 0.12, top + height * 0.17],
-          [px + r * 0.35, top + height * 0.1],
-          [px + r * 0.34, top + height * 0.25],
-        ], "#f1c943", "#7d5a25", 1.2);
-        disk(px, top + height * 0.16, r * 0.065, r * 0.065, "#fff2a4");
+      const inset = king ? .025 : .12,
+        l = inset, rr = 1 - inset, w = rr - l;
+      // A shallow side face and staggered cool-gray blocks give the wall
+      // depth without moving its simulator anchor or changing its radius.
+      poly([[l,.44],[rr,.44],[rr,.88],[rr-.05,.94],[l+.025,.94]], "#515e6a", "#3b4650");
+      poly([[rr-.08,.48],[rr,.44],[rr,.88],[rr-.08,.93]], "#46525f");
+      poly([[l,.47],[l+.07,.52],[l+.07,.92],[l+.025,.94]], "#7d858b");
+      const stones = ["#7e878d", "#747e87", "#879097", "#6d7882"];
+      for (let row = 0; row < 3; row++) {
+        const y = .54 + row * .12, count = row % 2 ? 4 : 3;
+        for (let col = 0; col < count; col++) {
+          const bw = (w - .16) / count, x = l + .08 + col * bw;
+          rect(x + .006, y, bw - .013, .105, hit > 0 ? "#fff" : stones[(row + col) % stones.length]);
+          rect(x + .018, y + .008, bw - .037, .012, "rgba(232,237,227,.16)");
+        }
+      }
+      rect(l+.06, .89, w-.12, .035, "#424f5c");
+      for (const x of [l+.13, .5, rr-.13])
+        poly([[x-.04,.873],[x+.04,.873],[x,.915]], "#a4aeb4");
+      // Timber fighting platform, team-colored coping, and ivory merlons.
+      rect(l+.055, .16, w-.11, .4, "#5b4735");
+      rect(l+.13, .19, w-.26, .34, "#ac8552");
+      for (let i = 0; i < 5; i++) rect(l+.14 + i*(w-.28)/5, .2, .012, .31, "#765a3b");
+      rect(l+.015, .25, .13, .29, roofDark);
+      rect(rr-.145, .25, .13, .29, roofDark);
+      rect(l+.02, .25, .11, .2, roof);
+      rect(rr-.135, .25, .11, .2, roof);
+      rect(l+.025, .255, .1, .035, roofLight);
+      rect(rr-.13, .255, .1, .035, roofLight);
+      cap(l, .14, .22, .13); cap(rr-.22, .14, .22, .13);
+      if (king && near) {
+        // The near king is seen from behind: blue/red hipped roof, recessed
+        // doorway and steps, with the gold-rimmed cannon above the ridge.
+        rect(.35, .71, .3, .22, "#35434e");
+        poly([[.39,.78],[.43,.72],[.57,.72],[.61,.78],[.61,.99],[.39,.99]], roofDark);
+        for (let i = 0; i < 4; i++) rect(.405, .81 + i*.043, .19, .02, roof);
+        poly([[.2,.52],[.28,.23],[.65,.19],[.79,.55]], "#172e43");
+        poly([[.21,.49],[.3,.2],[.65,.2],[.77,.52]], roof, roofDark, .018);
+        poly([[.3,.2],[.48,.16],[.65,.2],[.57,.34],[.26,.34]], roofLight);
+        poly([[.65,.2],[.77,.52],[.59,.49],[.57,.34]], roofDark);
+        rect(.26, .48, .48, .035, roofDark);
+        oval(.49,.235,.135,.08,"#273b4b");
+        poly([[.39,.22],[.405,.055],[.575,.055],[.61,.22]], "#3d5260", "#1a2937");
+        oval(.49,.069,.096,.066,"#dcb748", "#71542a", .018);
+        oval(.49,.069,.073,.05,"#101d25");
       } else {
-        polygon([
-          [px - r * 0.23, top + height * 0.26],
-          [px, top + height * 0.04],
-          [px + r * 0.23, top + height * 0.26],
-        ], "#f4d166", "#795b2b", 1);
+        // Tower occupants belong to the tower miniature, not troop rendering.
+        if (king) {
+          oval(.5,.37,.2,.13,roofDark);
+          poly([[.3,.2],[.69,.2],[.66,.46],[.34,.46]], roof, "#513e35");
+          rect(.34,.34,.32,.045,"#523c2e");
+          rect(.46,.33,.08,.065,"#edc04c");
+          oval(.5,.19,.14,.14,"#dea575", "#724d3a");
+          poly([[.37,.18],[.4,.31],[.5,.35],[.61,.29],[.64,.17],[.58,.23],[.43,.23]], "#372c2b");
+          oval(.453,.2,.023,.016,"#302b2a"); oval(.547,.2,.023,.016,"#302b2a");
+          rect(.44,.265,.12,.02,"#f6e2c6");
+          crown(.36,.045,.28,.1);
+          oval(.29,.35,.065,.055,"#e6b68a"); oval(.71,.35,.065,.055,"#e6b68a");
+          // The reference shows the cannon on the far king after activation.
+          // HP loss is the only activation cue present in this drawing contract.
+          if (e[6] < e[7]) {
+            poly([[.33,.4],[.65,.37],[.69,.51],[.34,.54]], "#303d49");
+            rect(.36,.395,.26,.105,"#87939b");
+            for (const x of [.38,.47,.59]) rect(x,.39,.025,.12,"#b6bec0");
+            oval(.34,.46,.045,.075,"#25313c", "#687782");
+          }
+        } else {
+          oval(.5,.355,.14,.105,roofDark);
+          poly([[.39,.24],[.61,.24],[.65,.43],[.35,.43]], roof, roofDark);
+          oval(.5,.19,.105,.11,near ? "#333640" : "#dba27f", "#33323a");
+          poly([[.394,.19],[.4,.095],[.5,.055],[.595,.1],[.61,.18],[.51,.135],[.43,.21]], "#333640");
+          oval(.47,.1,.033,.018,"#a4b7c6");
+          if (!near) {
+            oval(.46,.2,.014,.015,"#302a30"); oval(.54,.2,.014,.015,"#302a30");
+            rect(.455,.248,.09,.018,"#edcaab");
+          }
+          // Bow, string, and diagonal arrow remain attached to the platform.
+          poly([[.36,.28],[.66,.34],[.64,.38],[.35,.32]], "#b98150", "#644b37", .01);
+          ctx.strokeStyle = "#d6b17d"; ctx.lineWidth = .025;
+          ctx.beginPath(); ctx.moveTo(.39,.22); ctx.quadraticCurveTo(.73,.22,.65,.43); ctx.stroke();
+          ctx.strokeStyle = "#eee4c4"; ctx.lineWidth = .009;
+          ctx.beginPath(); ctx.moveTo(.39,.22); ctx.lineTo(.65,.43); ctx.stroke();
+        }
       }
+      cap(l, .46, .22, .13); cap(rr-.22, .46, .22, .13);
+      cap(l+.22, .51, w-.44, .08);
+      if (!near) {
+        rect(.315, .65, .37, .22, "#46515a");
+        crown(.35,.68,.3,.14);
+      } else if (!king) {
+        // Two rails and rungs on the rear wall are prominent in the sample.
+        for (const x of [.39,.59]) rect(x,.59,.035,.4,"#bea278");
+        for (let i=0; i<4; i++) rect(.4,.65+i*.09,.22,.025,"#dec092");
+      }
+      // Low-HP reference towers keep their silhouette: no invented fire,
+      // missing roof, or percentage-based cracks. Hit flash remains transient.
+      ctx.restore();
     }
     function drawBuilding(name, px, py, r, fill, edge, hit) {
       ctx.save();
@@ -1128,7 +1230,7 @@
           const [x0, y0, x1, y1] = e[14];
           r = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) * T / 2;
         }
-        drawTower(e, px, py, r, 0, fill, edge);
+        drawTower(e, px, py, r, 0, hp <= 0);
       } else if (kind === BUILDING) {
         drawBuilding(name, px, py, r, fill, edge, 0);
       } else {
@@ -1303,6 +1405,12 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       drawGround();
       if (overlay) overlay();
+      // Remember only observed tower sites. Ruins have no collision or tooltip
+      // entry, and reset/seek rebuilds them from the same snapshot history.
+      for (const [uid, e] of towerSites) {
+        if (b.by.has(uid)) continue;
+        drawTower(e, X(e[4]), Y(e[5]), (e[2] === KING ? 1.55 : 1.5) * T, 0, true);
+      }
       for (const sp of b.sp.filter(isFlight)) {
         // where each travelling spell will land
         const col = sp[0] === 0 ? C.blue : C.red,

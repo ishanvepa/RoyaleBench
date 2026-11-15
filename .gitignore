@@ -14,3 +14,5 @@ data/references/*.mp4
 modal.json
 runs/indicator_scenes.json
 runs/indicator_check/
+.playwright-cli/
+output/playwright/

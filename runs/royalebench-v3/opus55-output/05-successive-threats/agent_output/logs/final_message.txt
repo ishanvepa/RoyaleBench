@@ -1,0 +1,10 @@
+I completed the scenario and the game reported **SUCCESS**: both princess towers survived the 20 seconds, they took 418 damage (limit 450), and I spent exactly 8 elixir (limit 8). It came close on damage.
+
+How it went:
+1. **0s:** Ice Spirits (1) in front of the left tower took out the Goblin Gang unit already on the field.
+2. **6s:** As the Goblin Barrel was cast, I placed a Musketeer (4) behind the left tower. The Musketeer and the tower killed the barrel goblins, but the left tower took 250 damage.
+3. **10s:** A Log (2) at the right bridge cleared a full Goblin Gang (6 units) before it reached the tower.
+4. **14s:** Skeletons (1) near the bridge distracted the Princess so she reached the right tower later.
+5. **16–20s:** I waited because the budget was used up. The Knight, Princess and the opponent's Ice Spirits added the remaining 168 damage before time ran out.
+
+The verifier still has to replay the sequence independently to confirm the score.

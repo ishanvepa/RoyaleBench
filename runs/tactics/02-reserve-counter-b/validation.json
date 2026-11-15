@@ -1,0 +1,83 @@
+{
+  "task": "02-reserve-counter-b",
+  "family": 2,
+  "reference_reward": 0.0,
+  "reference_outcome": {
+    "result": "unfinished",
+    "crowns_for": 0,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.0154,
+    "own_tower_damage_frac": 0.1317,
+    "ticks": 3100,
+    "tower_damage": 1439,
+    "spent_elixir": 5,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "IceGolemite",
+        "x": 162000,
+        "y": 189000,
+        "cost": 2
+      },
+      {
+        "decision": 1,
+        "card": "IceSpirits",
+        "x": 261000,
+        "y": 189000,
+        "cost": 1
+      },
+      {
+        "decision": 4,
+        "card": "Log",
+        "x": 261000,
+        "y": 63000,
+        "cost": 2
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 2820,
+        "card": "GoblinBarrel",
+        "x": 261000,
+        "y": 117000
+      },
+      {
+        "tick": 2860,
+        "card": "GoblinGang",
+        "x": 63000,
+        "y": 405000
+      },
+      {
+        "tick": 2900,
+        "card": "Princess",
+        "x": 63000,
+        "y": 315000
+      },
+      {
+        "tick": 2980,
+        "card": "Knight",
+        "x": 63000,
+        "y": 315000
+      },
+      {
+        "tick": 3020,
+        "card": "IceSpirits",
+        "x": 63000,
+        "y": 513000
+      }
+    ],
+    "elapsed_s": 20.0
+  },
+  "wait_success": false,
+  "empty_reward": 0.0,
+  "malformed_reward": 0.0,
+  "deterministic": true,
+  "setup_hash": "15b3e7ff6c6d0cd5f30dc7eac13c6f1c26c82033cb016597d8af9f02c6255390",
+  "config_sha256": "7f9c12c2ae1a7fb04960684b343114e0b2a97b3118b25d96bd3c7aa281408a7d",
+  "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
+  "reference_log_sha256": "80882b03108866d5f6d7af03b63bddaf3687fa6cfa50a3d62a969fbe1a495be7",
+  "reference_decisions": 10,
+  "elapsed_s": 97.898,
+  "frontier_model_run": null,
+  "release_gate_passed": false
+}

@@ -37,14 +37,14 @@ beforeEach(() => {
 
 describe("New job page", () => {
   it.each([
-    ["/evals/jobs/new", "RoyaleBench v3", "royalebench-v3"],
+    ["/evals/jobs/new", "RoyaleBench v5", "royalebench-v5"],
     ["/evals/jobs/new?benchmark=alpha", "Alpha", "alpha"],
   ])("prefers the configured benchmark and respects explicit links: %s", async (path, title, dataset) => {
     useJobHandlers();
     server.use(
       http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList([
         benchmarkRow({ name: "alpha", title: "Alpha" }),
-        benchmarkRow({ name: "royalebench-v3", title: "RoyaleBench v3" }),
+        benchmarkRow({ name: "royalebench-v5", title: "RoyaleBench v5" }),
       ]))),
       http.get("*/api/evals/benchmarks/:name", ({ params }) =>
         HttpResponse.json(benchmarkDetail({ name: String(params.name) }))),
@@ -58,7 +58,7 @@ describe("New job page", () => {
     useJobHandlers();
     server.use(http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList([
       benchmarkRow({ name: "alpha", title: "Alpha" }),
-      benchmarkRow({ name: "royalebench-v3", title: "RoyaleBench v3", versions: 0, latest_revision: null, state: "draft" }),
+      benchmarkRow({ name: "royalebench-v5", title: "RoyaleBench v5", versions: 0, latest_revision: null, state: "draft" }),
     ]))));
     renderApp("/evals/jobs/new");
     expect(await screen.findByLabelText("Benchmark")).toHaveTextContent("Alpha");

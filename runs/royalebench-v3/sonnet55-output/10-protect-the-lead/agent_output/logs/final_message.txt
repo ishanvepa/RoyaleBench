@@ -1,0 +1,5 @@
+The scenario succeeded: regulation ended with crowns at 1–0 in my favour, so the crown lead held.
+
+The enemy Giant was heading for my left princess tower, which had only 549 HP. I played Tesla to draw it, then Knight, Archer, Ice Spirits and Skeletons to wear it down. The Giant died before it could destroy the tower, which finished at 296 HP.
+
+The verifier reported 253 tower damage taken and 12 elixir spent.

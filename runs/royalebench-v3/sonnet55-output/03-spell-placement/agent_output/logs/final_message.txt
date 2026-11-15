@@ -1,0 +1,1 @@
+The scenario succeeded. I cast Fireball at (3.5, 12.5), aimed at the damaged Balloon in the left lane. Both princess towers survived and total tower damage was 107, under the 150 limit. It cost 4 elixir, and the game ended on that one play with no waiting needed.

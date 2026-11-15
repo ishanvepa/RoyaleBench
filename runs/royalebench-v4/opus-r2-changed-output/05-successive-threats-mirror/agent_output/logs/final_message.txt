@@ -1,0 +1,8 @@
+I finished the run, but **the scenario failed** (score 0). Both princess towers survived and I spent exactly 8 elixir, but the towers took 1,593 damage against the 450 limit.
+
+**What happened:**
+1. **First Goblin Gang, right lane:** my Log at (14.5, 11) cleared it with no tower damage (2 elixir).
+2. **Goblin Barrel on the right tower:** I put Musketeer by the tower at 4.0s, plus Ice Spirits and Skeletons, and the right tower lost only 125 HP. That brought spending to the full 8 elixir.
+3. **Second Goblin Gang, left lane, at about 10s:** I had no elixir budget left to defend it. The left tower took the hits alone and was at 1,868/3,052 by 18s, and the damage limit was already passed at about 14s. The last board I saw shows about 1,340 total damage; the rest of the reported 1,593 came in the final interval.
+
+**Where it went wrong:** I spent heavily on the scheduled Barrel and kept nothing for a follow-up in the other lane, even though the scenario title warns about it. Musketeer (4 elixir) used half the budget. A cheaper Barrel defence, such as Ice Spirits plus Skeletons at the tower, would likely have left enough to block the left-lane gang with Ice Golemite or a Log.

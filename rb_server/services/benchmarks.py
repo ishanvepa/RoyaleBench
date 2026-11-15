@@ -24,6 +24,7 @@ from ..schemas.evals import (
     FileInfo,
     PublishIn,
     PublishOut,
+    ReplayOut,
     TaskDetailOut,
     TaskInfo,
     TaskModelSummary,
@@ -114,6 +115,20 @@ def task_detail(ctx: AppContext, name: str, task_id: str) -> TaskDetailOut:
         config_toml=task.read("task.toml") or "", files=[FileInfo(path=p, size=s) for p, s in task.files()],
         dockerfile=task.read("environment/Dockerfile"), test_script=task.read("tests/test.sh"),
         solution_script=task.read("solution/solve.sh"))
+
+
+def task_resolution(ctx: AppContext, name: str, task_id: str) -> ReplayOut:
+    from rb_evals.resolutions import resolution_replay
+
+    info, _ = _find(ctx, name)
+    task = info.local.tasks.get(task_id) if info.local else None
+    if task is None:
+        raise not_found(f"Task {task_id!r} is not in the local folder for {name!r}.")
+    evidence_root = ctx.cfg.benchmarks_dir.parent / "runs" / name
+    try:
+        return ReplayOut(**resolution_replay(task.path, evidence_root))
+    except Exception as exc:
+        raise ApiError(502, "bad_gateway", f"Could not render this resolution: {type(exc).__name__}: {exc}") from exc
 
 
 def task_results(ctx: AppContext, name: str, task_id: str) -> TaskResultsOut:

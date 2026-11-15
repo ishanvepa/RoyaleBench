@@ -1,0 +1,237 @@
+{
+ "seed": 109,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 1,
+ "outcome": {
+  "result": "win",
+  "crowns_for": 2,
+  "crowns_against": 1,
+  "enemy_tower_damage_frac": 0.5977,
+  "own_tower_damage_frac": 0.7749,
+  "ticks": 3600,
+  "tower_damage": 2225,
+  "spent_elixir": 4,
+  "plays": [
+   {
+    "decision": 0,
+    "card": "Fireball",
+    "x": 261000,
+    "y": 459000,
+    "cost": 4
+   }
+  ],
+  "opponent_plays": [],
+  "elapsed_s": 14.0
+ },
+ "rewards": {
+  "reward": 1.0,
+  "win": 1.0,
+  "crowns_for": 2.0,
+  "crowns_against": 1.0,
+  "enemy_tower_damage_frac": 0.5977,
+  "own_tower_damage_frac": 0.7749,
+  "completed": 1.0,
+  "integrity": 1.0,
+  "decisions": 1.0,
+  "fast_decision_frac": 1.0,
+  "spent_elixir": 4.0,
+  "tower_damage": 2225.0,
+  "objective_met": 1.0
+ },
+ "decisions_applied": 1,
+ "completed": true,
+ "termination_tick": 3600,
+ "timing_known": 1,
+ "task_config": {
+  "id": "04-tower-trade-a",
+  "family": 4,
+  "title": "Choose a winning tower trade: position A",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench Tactics",
+  "version": "1.0.0",
+  "seed": 109,
+  "agent_team": 0,
+  "agent_deck": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "opponent_deck": [
+   "LavaHound",
+   "Balloon",
+   "MegaMinion",
+   "Minions",
+   "Tombstone",
+   "Arrows",
+   "Fireball",
+   "Zap"
+  ],
+  "player_deck_name": "giant-beatdown",
+  "opponent_deck_name": "lavaloon",
+  "csv_win_rate": null,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win by the end of the remaining 14 seconds of regulation, spending at most 4 elixir. Entering overtime without a win does not meet the objective. You may lose a princess tower; any match win within the window succeeds.",
+  "scenario": {
+   "start_tick": 3320,
+   "horizon_s": 14,
+   "elixir": 4,
+   "opponent_elixir": 0,
+   "order": [
+    "Minions",
+    "Fireball",
+    "Knight",
+    "Cannon",
+    "Giant",
+    "Musketeer",
+    "Archer",
+    "Zap"
+   ],
+   "opponent_order": [
+    "LavaHound",
+    "Balloon",
+    "MegaMinion",
+    "Minions",
+    "Tombstone",
+    "Arrows",
+    "Fireball",
+    "Zap"
+   ],
+   "units": [
+    {
+     "card": "Giant",
+     "team": 0,
+     "x": 14.5,
+     "y": 23,
+     "hp": 150
+    },
+    {
+     "card": "Balloon",
+     "team": 1,
+     "x": 3.5,
+     "y": 10
+    }
+   ],
+   "grading": "win",
+   "tower_hp": [
+    [
+     4000,
+     305,
+     500
+    ],
+    [
+     4824,
+     366,
+     0
+    ]
+   ],
+   "spend_budget": 4
+  },
+  "release_gate": "Winning reference and task-specific contrast evidence are required.",
+  "control": false,
+  "calibration_source_sha256": "4b80ddf8857e52316b39dac96f235f20f5b3971f8456856fe3182bf4145aab3f",
+  "validation_requirements": {
+   "save_tower": 0,
+   "reference_loses_princess": 1
+  },
+  "task_id": "04-tower-trade-a",
+  "instruction_sha256": "aafccb912673a3f109b40408873e0cc4ba90e70b2fcc4a1becd3d69354ab1567",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+   "agent_timeout_s": 3600,
+   "verifier_timeout_s": 600,
+   "cpus": 1,
+   "memory_mb": 2048,
+   "storage_mb": 4096
+  }
+ },
+ "rubric": "scenario-objective-v1",
+ "tiebreak_reason": "crowns",
+ "benchmark": "RoyaleBench Tactics",
+ "task_id": "04-tower-trade-a",
+ "scenario": {
+  "start_tick": 3320,
+  "horizon_s": 14,
+  "elixir": 4,
+  "opponent_elixir": 0,
+  "order": [
+   "Minions",
+   "Fireball",
+   "Knight",
+   "Cannon",
+   "Giant",
+   "Musketeer",
+   "Archer",
+   "Zap"
+  ],
+  "opponent_order": [
+   "LavaHound",
+   "Balloon",
+   "MegaMinion",
+   "Minions",
+   "Tombstone",
+   "Arrows",
+   "Fireball",
+   "Zap"
+  ],
+  "units": [
+   {
+    "card": "Giant",
+    "team": 0,
+    "x": 14.5,
+    "y": 23,
+    "hp": 150
+   },
+   {
+    "card": "Balloon",
+    "team": 1,
+    "x": 3.5,
+    "y": 10
+   }
+  ],
+  "grading": "win",
+  "tower_hp": [
+   [
+    4000,
+    305,
+    500
+   ],
+   [
+    4824,
+    366,
+    0
+   ]
+  ],
+  "spend_budget": 4
+ },
+ "setup_hash": "740f53c90e40a1da57717ad17dd7bff8596100f94a03e60c46d1318883a2613f",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ }
+}

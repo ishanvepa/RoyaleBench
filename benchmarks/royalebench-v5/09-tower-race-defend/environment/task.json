@@ -1,0 +1,119 @@
+{
+  "id": "09-tower-race-defend",
+  "family": 9,
+  "title": "Evaluate a tower race (defend)",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 109,
+  "agent_team": 0,
+  "agent_deck": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+  ],
+  "opponent_deck": [
+    "LavaHound",
+    "Balloon",
+    "MegaMinion",
+    "Minions",
+    "Tombstone",
+    "Arrows",
+    "Fireball",
+    "Zap"
+  ],
+  "player_deck_name": "giant-beatdown",
+  "opponent_deck_name": "lavaloon",
+  "csv_win_rate": 46.8,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win the overtime continuation within 30 seconds. This is one of two independently graded positions in the tower-race family.",
+  "scenario": {
+    "start_tick": 5400,
+    "horizon_s": 30,
+    "elixir": 5,
+    "opponent_elixir": 0,
+    "order": [
+      "Minions",
+      "Fireball",
+      "Knight",
+      "Cannon",
+      "Giant",
+      "Musketeer",
+      "Archer",
+      "Zap"
+    ],
+    "opponent_order": [
+      "LavaHound",
+      "Balloon",
+      "MegaMinion",
+      "Minions",
+      "Tombstone",
+      "Arrows",
+      "Fireball",
+      "Zap"
+    ],
+    "units": [
+      {
+        "card": "Giant",
+        "team": 0,
+        "x": 3.5,
+        "y": 20
+      },
+      {
+        "card": "Musketeer",
+        "team": 0,
+        "x": 3.5,
+        "y": 18
+      },
+      {
+        "card": "Balloon",
+        "team": 1,
+        "x": 3.5,
+        "y": 10
+      }
+    ],
+    "grading": "win",
+    "tower_hp": [
+      [
+        4824,
+        305,
+        3052
+      ],
+      [
+        4824,
+        3052,
+        366
+      ]
+    ]
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1",
+  "task_id": "09-tower-race-defend",
+  "instruction_sha256": "3b59d2950a8cfbc44a5ae1679a1d88ac9136257ea5a4448e364fbfac33a97336",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
+}

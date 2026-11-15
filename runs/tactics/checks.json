@@ -1,0 +1,36 @@
+{
+  "tests": {
+    "command": "python -m pytest -q tests/test_tactics.py tests/test_royalebench_v1.py tests/test_royale_task.py",
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0,
+    "duration_s": 36.63
+  },
+  "local_references": 7,
+  "gated_candidates": [
+    "02-reserve-counter-b"
+  ],
+  "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
+  "docker_image": "sha256:37e537590b416d54c9983f24324472ded4783d4fec7b39c1a77d532204a06e2d",
+  "docker_passes": 7,
+  "race_openings_replayed": 80,
+  "hosted_pilot": {
+    "run_id": "d3b4c7ae-98f2-4268-8c86-802524a513b9",
+    "dataset": "royalebench/royalebench-tactics@1",
+    "task": "01-timed-spell-a",
+    "task_unchanged_in_revision_2": true,
+    "model": "anthropic/claude-sonnet-4-6",
+    "harness": "claude_code-v1.0.0",
+    "provider": "modal",
+    "concurrency": 1,
+    "status": "FINISHED",
+    "reward": 1,
+    "integrity": 1,
+    "tower_damage": 0,
+    "spent_elixir": 4,
+    "decisions": 2,
+    "agent_run_duration_s": 575.066071797,
+    "model_api_cost_usd": 0.8309995499999999,
+    "capture_complete": true
+  }
+}

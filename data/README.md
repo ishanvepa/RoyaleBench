@@ -1,5 +1,12 @@
 # Data snapshot
 
+## Frozen Tactics menu inputs
+
+[`royalebench-tactics-menu-source`](royalebench-tactics-menu-source) preserves the historical
+Tactics `@2` configurations, templates, references, runtime and generator sources. Coordinate
+Tactics uses these checksummed inputs for provenance; current runtime files come from the v3
+foundation. See [the Tactics guide](../docs/tactics.md).
+
 ## Frozen RoyaleBench v1 build inputs
 
 [`royalebench-v1-source`](royalebench-v1-source) is a byte-for-byte source snapshot of

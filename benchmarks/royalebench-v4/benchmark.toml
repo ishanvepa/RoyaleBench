@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench v4"
+kind = "eval"
+description = "5 replay-validated continuation challenges against Planner with coordinate actions."

@@ -1,0 +1,9 @@
+The scenario failed. Both princess towers survived and I spent exactly 8 elixir, but my towers took **1565 damage** against a 450 limit.
+
+**What happened:**
+1. **0s:** I placed the Ice Golemite (2 elixir) in front of the Goblin Gang in the right lane, and it killed the first gang without any tower damage.
+2. **4s:** The brief gave the barrel's target as "right tower (3.5, 6.5)", which is the left tower's coordinates. I trusted the coordinates and put the Musketeer (4 elixir) behind the left tower. At 6s the barrel landed on the right tower (14.5, 6.5) instead, so the Musketeer was in the wrong lane and walked off toward the enemy.
+3. **10s:** The barrel goblins reached the right tower and I Logged them (2 elixir, total 8). By then the tower had already taken 375 damage.
+4. **12–20s:** With no budget left, a second Goblin Gang, a Princess and the opponent's Ice Spirits hit the right tower. Damage passed 450 at about 16s and reached 1565 by the end.
+
+**Mistake:** I relied on the coordinates when the brief's wording conflicted with them, and committed half my budget before the barrel landed. Keeping that 4 elixir would have paid for Ice Spirits plus Skeletons against the second gang, or for a Log that hit the barrel goblins as they landed.

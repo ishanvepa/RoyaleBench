@@ -93,7 +93,9 @@ export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDet
                 onRowClick={(r) => onSelect(r.task === selected ? "" : r.task)}
                 empty="This run has no tasks yet."
               />
-              {row ? <TaskPanel runId={runId} dataset={detail.job.dataset} task={row} onClose={() => onSelect("")} /> : null}
+              {row ? <TaskPanel runId={runId} dataset={detail.job.dataset} task={row}
+                hasLocalTask={benchmark.data?.tasks.some((t) => t.id === row.task && t.local) ?? false}
+                onClose={() => onSelect("")} /> : null}
             </div>
           </div>
         );

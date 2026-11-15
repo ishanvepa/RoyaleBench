@@ -1,0 +1,1221 @@
+{
+  "task": "01-timed-spell-a",
+  "family": 1,
+  "reference_reward": 1.0,
+  "reference_outcome": {
+    "result": "unfinished",
+    "crowns_for": 0,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.0,
+    "own_tower_damage_frac": 0.0,
+    "ticks": 2440,
+    "tower_damage": 0,
+    "spent_elixir": 4,
+    "plays": [
+      {
+        "decision": 1,
+        "card": "Fireball",
+        "x": 66492,
+        "y": 201258,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 2320,
+        "card": "Goblins",
+        "x": 261000,
+        "y": 405000
+      }
+    ],
+    "elapsed_s": 12.0
+  },
+  "wait_success": false,
+  "empty_reward": 0.0,
+  "malformed_reward": 0.0,
+  "deterministic": true,
+  "setup_hash": "2e76453022500e9564199012bd0183a4541836842acca24965f41e4023372f61",
+  "config_sha256": "7e176c43c5966e0be1327cee9a5ef8aeb09a90d1116baa50861c6a495f53dffd",
+  "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
+  "reference_log_sha256": "50ae5d09c770acb493eeba210185749c662ab7e087b066242755ab2a80383280",
+  "reference_decisions": 2,
+  "elapsed_s": 14.112,
+  "frontier_model_run": null,
+  "release_gate_passed": true,
+  "contrast_trials": [
+    {
+      "name": "cast-0s-00",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.1258,
+        "ticks": 2440,
+        "tower_damage": 1375,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 234000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 63000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        1677,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-01",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 75600,
+            "y": 360000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-02",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0145,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 162000,
+            "y": 522000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-03",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0145,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-04",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0145,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-05",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0463,
+        "ticks": 2440,
+        "tower_damage": 506,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 333000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 63000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        2546,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-06",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 333000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-07",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.1258,
+        "ticks": 2440,
+        "tower_damage": 1375,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 243000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 63000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        1677,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-08",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 243000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-09",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.1258,
+        "ticks": 2440,
+        "tower_damage": 1375,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 189000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 63000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        1677,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-10",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 189000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-11",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 63000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-12",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 63000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-13",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 162000,
+            "y": 189000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-0s-14",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 162000,
+            "y": 9000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 1
+    },
+    {
+      "name": "cast-4s-00",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0232,
+        "ticks": 2440,
+        "tower_damage": 253,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 66240,
+            "y": 167634,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 63000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        2799,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-01",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.046,
+        "ticks": 2440,
+        "tower_damage": 503,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 51786,
+            "y": 196830,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 63000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        2549,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-02",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0145,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 162000,
+            "y": 522000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-03",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0145,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-04",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0145,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-05",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 333000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-06",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 333000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-07",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 243000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-08",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 243000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-09",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0232,
+        "ticks": 2440,
+        "tower_damage": 253,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 189000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 63000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        2799,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-10",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 189000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-11",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 63000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-12",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 63000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-13",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 162000,
+            "y": 189000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    },
+    {
+      "name": "cast-4s-14",
+      "reward": 0.0,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 2440,
+        "tower_damage": 3052,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 162000,
+            "y": 9000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0
+      },
+      "integrity": 1,
+      "own_hp": [
+        4824,
+        0,
+        3052
+      ],
+      "actions": 3
+    }
+  ],
+  "contrast_rewards": {
+    "immediate_best": 0.0,
+    "late_best": 0.0
+  }
+}

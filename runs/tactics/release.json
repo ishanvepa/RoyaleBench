@@ -1,0 +1,51 @@
+{
+  "dataset": "royalebench/royalebench-tactics@2",
+  "tags": [
+    "v2",
+    "tactics-v2"
+  ],
+  "runnable_tasks": [
+    "01-timed-spell-a",
+    "01-timed-spell-b",
+    "02-reserve-counter-a",
+    "03-tower-race-a",
+    "03-tower-race-b",
+    "04-tower-trade-a",
+    "04-tower-trade-b"
+  ],
+  "gated_candidates": [
+    "02-reserve-counter-b"
+  ],
+  "changed_tasks_from_revision_1": [
+    "03-tower-race-a",
+    "03-tower-race-b"
+  ],
+  "task_config_file_sha256": {
+    "01-timed-spell-a": "f4817ccf256176a8893e4fd3f6753f82c6de01ba7727aedb136d15228e73aa78",
+    "01-timed-spell-b": "b24e18c910b7e9872df68be053f64e85d53bd925543f35092738437ada511e07",
+    "02-reserve-counter-a": "5420d8caae8940dd306b3d50f80170be7819370cd7dd05f2fa08ca65d6521adf",
+    "03-tower-race-a": "059f5d9c4f8558456b36cfa08f06c7d9a533049cdbad3c345cecb3e0fc32405e",
+    "03-tower-race-b": "bf643d12d2f15620c787a41048978c16fc8d5dec38d293d19351bfbc020d7dff",
+    "04-tower-trade-a": "4c6df21c2f3e5edd6e8fcdb17ebc920653dfd57d9d004688277f55c858cc7433",
+    "04-tower-trade-b": "90ff2455b0f2201b8ade6adcefc0cc083b629455e478f06c63b29d057ae1fb10"
+  },
+  "pilot": {
+    "run_id": "d3b4c7ae-98f2-4268-8c86-802524a513b9",
+    "dataset": "royalebench/royalebench-tactics@1",
+    "task": "01-timed-spell-a",
+    "task_unchanged_in_revision_2": true,
+    "model": "anthropic/claude-sonnet-4-6",
+    "harness": "claude_code-v1.0.0",
+    "provider": "modal",
+    "concurrency": 1,
+    "status": "FINISHED",
+    "reward": 1,
+    "integrity": 1,
+    "tower_damage": 0,
+    "spent_elixir": 4,
+    "decisions": 2,
+    "agent_run_duration_s": 575.066071797,
+    "model_api_cost_usd": 0.8309995499999999,
+    "capture_complete": true
+  }
+}

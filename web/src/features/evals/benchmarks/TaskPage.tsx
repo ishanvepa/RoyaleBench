@@ -23,6 +23,7 @@ import { useBenchmarkTask, useTaskResults } from "../api/benchmarks";
 import { TraceView } from "../shared/TraceView";
 import { TaskReplay } from "../shared/TaskReplay";
 import { DifficultyBadge, SyncBadge } from "./badges";
+import { TaskResolution } from "./TaskResolution";
 
 const TABS = ["overview", "files", "results"] as const;
 const searchSchema = z.object({ tab: enumParam(TABS, "overview") });
@@ -57,6 +58,7 @@ function TaskView({ detail }: { detail: BenchmarkTaskDetail }) {
           </>
         }
         description={task.description || undefined}
+        actions={<TaskResolution benchmark={detail.benchmark} taskId={task.id} />}
       />
       <Tabs value={state.tab} onValueChange={(tab) => setState({ tab: tab as (typeof TABS)[number] })}>
         <TabsList aria-label="Task details">

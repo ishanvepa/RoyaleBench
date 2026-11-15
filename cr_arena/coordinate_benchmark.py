@@ -205,6 +205,52 @@ its hand, queue and elixir remain hidden unless inferable from history.
 {tail}'''
 
 
+def package_task(cfg, out, evidence, template, *, task_prefix="coordinates-", strip_trailing_whitespace=False):
+    """Package one already-calibrated scenario with the shared v3 runtime and protocol."""
+    import tomli_w
+
+    out, evidence, template = Path(out), Path(evidence), Path(template)
+    version = cfg["version"]
+    name = cfg["id"]
+    with tempfile.TemporaryDirectory(prefix="royale-coordinates-") as tmp:
+        d = Path(tmp) / name
+        task_instruction = instruction(cfg)
+        if strip_trailing_whitespace:
+            task_instruction = "\n".join(line.rstrip() for line in task_instruction.splitlines()) + "\n"
+        packaged_config = dict(cfg, task_id=name, instruction_sha256=digest(task_instruction),
+                               rubric="scenario-objective-coordinates-v1",
+                               capture_schema_version=CAPTURE_VERSION,
+                               resources={"agent_timeout_s": 3600, "verifier_timeout_s": 600,
+                                          "cpus": 1, "memory_mb": 2048, "storage_mb": 4096})
+        for source in RUNTIME:
+            write(d / "environment/referee" / source, (ROOT / source).read_text())
+        for relative, text in {
+            "environment/Dockerfile": (template / "environment/Dockerfile").read_text(),
+            "environment/cr": (ROOT / "cr_client.py").read_text(),
+            "environment/royale-start-server": START_SERVER,
+            "environment/sudoers": SUDOERS,
+            "environment/task.json": json.dumps(packaged_config, indent=2) + "\n",
+            "tests/task.json": json.dumps(packaged_config, indent=2) + "\n",
+            "tests/test.sh": TEST_SH,
+            "instruction.md": task_instruction,
+            "solution/solve.sh": "#!/bin/bash\nset -euo pipefail\npython3 /solution/replay_reference.py\n",
+            "solution/replay_reference.py": SOLUTION,
+            "solution/reference.jsonl": (evidence / name / "reference.jsonl").read_text(),
+        }.items():
+            write(d / relative, text)
+        task = tomllib.loads((template / "task.toml").read_text())
+        task["task"].update(name=f"royalebench/{task_prefix}{name}",
+                            description=f"{cfg['title']}. {cfg['objective']} | action_mode={MODE} | version={version}")
+        task["metadata"].update(dataset_version=version, action_mode=MODE)
+        task["agent"]["allowed_hosts"] = list(MODEL_API_HOSTS)
+        write(d / "task.toml", tomli_w.dumps(task))
+        if (out / name).is_symlink():
+            raise ValueError("refusing to replace symlink")
+        if (out / name).exists():
+            shutil.rmtree(out / name)
+        shutil.copytree(d, out / name)
+
+
 def build(out=OUT, evidence=EVIDENCE, *, names=PILOT, title=TITLE, version=VERSION,
           guide="coordinate_harness.md", task_prefix="coordinates-", command="cr_arena.coordinate_benchmark",
           reuse=False, jobs=1, include_candidates=False):
@@ -236,42 +282,7 @@ def build(out=OUT, evidence=EVIDENCE, *, names=PILOT, title=TITLE, version=VERSI
         raise ValueError("runtime sources changed between task calibrations")
     out.mkdir(parents=True, exist_ok=True)
     for cfg, row in calibrated:
-        name = cfg["id"]
-        with tempfile.TemporaryDirectory(prefix="royale-coordinates-") as tmp:
-            d = Path(tmp) / name
-            task_instruction = instruction(cfg)
-            packaged_config = dict(cfg, task_id=name, instruction_sha256=digest(task_instruction),
-                                   rubric="scenario-objective-coordinates-v1",
-                                   capture_schema_version=CAPTURE_VERSION,
-                                   resources={"agent_timeout_s": 3600, "verifier_timeout_s": 600,
-                                              "cpus": 1, "memory_mb": 2048, "storage_mb": 4096})
-            for source in RUNTIME:
-                write(d / "environment/referee" / source, (ROOT / source).read_text())
-            for relative, text in {
-                "environment/Dockerfile": (BASE / name / "environment/Dockerfile").read_text(),
-                "environment/cr": (ROOT / "cr_client.py").read_text(),
-                "environment/royale-start-server": START_SERVER,
-                "environment/sudoers": SUDOERS,
-                "environment/task.json": json.dumps(packaged_config, indent=2) + "\n",
-                "tests/task.json": json.dumps(packaged_config, indent=2) + "\n",
-                "tests/test.sh": TEST_SH,
-                "instruction.md": task_instruction,
-                "solution/solve.sh": "#!/bin/bash\nset -euo pipefail\npython3 /solution/replay_reference.py\n",
-                "solution/replay_reference.py": SOLUTION,
-                "solution/reference.jsonl": (evidence / name / "reference.jsonl").read_text(),
-            }.items():
-                write(d / relative, text)
-            task = tomllib.loads((BASE / name / "task.toml").read_text())
-            task["task"].update(name=f"royalebench/{task_prefix}{name}",
-                                description=f"{cfg['title']}. {cfg['objective']} | action_mode={MODE} | version={version}")
-            task["metadata"].update(dataset_version=version, action_mode=MODE)
-            task["agent"]["allowed_hosts"] = list(MODEL_API_HOSTS)
-            write(d / "task.toml", tomli_w.dumps(task))
-            if (out / name).is_symlink():
-                raise ValueError("refusing to replace symlink")
-            if (out / name).exists():
-                shutil.rmtree(out / name)
-            shutil.copytree(d, out / name)
+        package_task(cfg, out, evidence, BASE / cfg["id"], task_prefix=task_prefix)
     if protocol_digest() != start_protocol:
         raise ValueError("runtime sources changed during packaging; rebuild before running")
     gated = []

@@ -1,0 +1,8 @@
+I lost this run: the game ended 0–1 and the scenario is marked FAILURE. My left princess tower fell before the Fireball landed.
+
+- **What I tried:** The enemy's left princess tower was at 180 HP, so I planned to chip it with the Log and finish it with Fireball. I played the Log at (3.5, 22.0) first, which took it down to 145 HP.
+- **Defense:** I played Skeletons at (3.5, 11.0) to slow the Giant, which was walking down the left lane toward my tower (458 HP). That bought some time, but not enough.
+- **The finish:** Fireball (159 damage) was enough for the 145 HP left. I cast it at (3.5, 24.5) on the next decision. My tower fell before it resolved.
+- **Cost:** The game over message reports 458 tower damage taken and 7 elixir spent.
+
+The mistake was spending the first two decisions on the Log and Skeletons. Fireball only reached my hand after those two plays, and the Giant got to my tower before I could cast it. I can't replay the scenario from here.

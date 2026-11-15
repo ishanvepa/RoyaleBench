@@ -11,6 +11,7 @@ from ..schemas.evals import (
     BenchmarkList,
     PublishIn,
     PublishOut,
+    ReplayOut,
     TaskDetailOut,
     TaskResultsOut,
 )
@@ -32,6 +33,12 @@ def get_benchmark(name: BenchmarkName, ctx: Ctx):
 @router.get("/benchmarks/{name}/tasks/{task_id}", response_model=TaskDetailOut)
 def get_task(name: BenchmarkName, task_id: TaskId, ctx: Ctx):
     return service.task_detail(ctx, name, task_id)
+
+
+@router.get("/benchmarks/{name}/tasks/{task_id}/resolution", response_model=ReplayOut,
+            summary="Watch the locally validated reference solution for this task version")
+def get_task_resolution(name: BenchmarkName, task_id: TaskId, ctx: Ctx):
+    return service.task_resolution(ctx, name, task_id)
 
 
 @router.get("/benchmarks/{name}/tasks/{task_id}/results", response_model=TaskResultsOut,

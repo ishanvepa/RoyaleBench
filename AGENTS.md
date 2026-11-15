@@ -42,10 +42,17 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/royalebench_v3.md`](docs/royalebench_v3.md): historical coordinate-action benchmark, all 11 released scenarios, scoring, validation, and Harbor/Valkyrie workflow.
 - [`docs/royalebench_win.md`](docs/royalebench_win.md): separate win-only continuation tasks, v3 saturation audit, calibration controls, and container/hosted validation.
 - [`docs/royalebench_v6.md`](docs/royalebench_v6.md): default 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
+- [`docs/royalebench_v4.md`](docs/royalebench_v4.md): Opus and Sonnet v3 comparison, task-level failure evidence, focused challenge variants, validation, and publication workflow.
+- [`runs/royalebench-v4/checks-revision2.json`](runs/royalebench-v4/checks-revision2.json): corrected v4 `@2` digest, protocol and Docker checks, full Opus/Sonnet run settings, costs, and per-task scores.
+- [`docs/royalebench_v5.md`](docs/royalebench_v5.md): ten-case coordinate dataset, source revisions, Opus/Sonnet/Haiku selection evidence, scoring, validation, and Valkyrie workflow.
+- [`runs/royalebench-v5/selection.json`](runs/royalebench-v5/selection.json): task-by-task source revisions, package hashes, model run IDs, and selection rewards.
+- [`runs/royalebench-v5/checks.json`](runs/royalebench-v5/checks.json): v5 static, Docker, negative-control, and hosted publication checks.
 - [`runs/royalebench-v3/checks-revision2.json`](runs/royalebench-v3/checks-revision2.json): v3 `@2` publication digest, protocol hash, validation counts and hosted Qwen pilot pointer.
 - [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
+- [`docs/tactics.md`](docs/tactics.md): coordinate Tactics on the v3 foundation, four task families, bounded spatial contrasts, historical menu results and release evidence.
+- [`runs/tactics-coordinates/checks.json`](runs/tactics-coordinates/checks.json): Tactics `@3` foundation/runtime hashes, focused tests, container checks, coordinate sweeps and hosted pilot evidence.
 - [`docs/coordinate_harness.md`](docs/coordinate_harness.md): separate coordinate-action pilot, CLI, illegal-action handling, replay grading, reference validation, and comparison with frozen v1.
-- [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch recorded task gameplay, inspect per-run and per-task API costs and task difficulty, repair harness issues, and browse the arena.
+- [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch recorded task gameplay and validated reference resolutions, inspect per-run and per-task API costs and task difficulty, repair harness issues, and browse the arena.
 - [`docs/modal_billing.md`](docs/modal_billing.md): actual Modal endpoint spend, persisted task/job inference costs and verified token rates, resource breakdowns, workspace access, App mappings, completed-hour refresh, month reconciliation, and verification limits.
 - [`docs/qwen_modal.md`](docs/qwen_modal.md): use the existing mini-SWE-agent harness with the Modal Qwen endpoint, configure API-key/base-URL references, and run a one-task Valkyrie pilot.
 - [`docs/inkling_modal.md`](docs/inkling_modal.md): Inkling endpoint setup, revision `@4` network access, Qwen credential reuse, secure model discovery, and stock mini-SWE-agent pilot status.

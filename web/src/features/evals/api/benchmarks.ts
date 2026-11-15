@@ -26,6 +26,14 @@ export function useBenchmarkTask(name: string, taskId: string) {
   });
 }
 
+export function useTaskResolution(name: string, taskId: string) {
+  return useQuery({
+    queryKey: qk.evals.taskResolution(name, taskId),
+    queryFn: () =>
+      unwrap(api.GET("/api/evals/benchmarks/{name}/tasks/{task_id}/resolution", { params: { path: { name, task_id: taskId } } })),
+  });
+}
+
 export function useTaskResults(name: string, taskId: string) {
   return useQuery({
     queryKey: qk.evals.taskResults(name, taskId),

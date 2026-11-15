@@ -98,7 +98,7 @@ def play(cfg, path, chooser=None):
     return ref
 
 
-def calibrate(cfg, out, *, reuse_reference=False):
+def calibrate(cfg, out, *, reuse_reference=False, chooser=None):
     t0 = time.perf_counter()
     d = out / cfg["id"]
     log = d / "reference.jsonl"
@@ -112,7 +112,7 @@ def calibrate(cfg, out, *, reuse_reference=False):
             raise ValueError(f"{cfg['id']}: reference log differs from prior validation")
         ref = make_referee(cfg)
     else:
-        ref = play(cfg, log)
+        ref = play(cfg, log, chooser)
     first = verify(cfg, log, None)
     second = verify(cfg, log, None)
     if previous and first["outcome"] != previous["reference_outcome"]:

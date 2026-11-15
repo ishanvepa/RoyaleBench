@@ -1,0 +1,14 @@
+{
+  "artifact_count": 93,
+  "complete": true,
+  "counts": {
+    "commands": 15,
+    "events": 243,
+    "matches": 1,
+    "model_calls": 4,
+    "observations": 3,
+    "states": 14
+  },
+  "gaps": [],
+  "schema_version": "1.0"
+}

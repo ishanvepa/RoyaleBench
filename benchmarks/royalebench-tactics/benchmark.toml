@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench Tactics"
+kind = "eval"
+description = "Strategic variations on the RoyaleBench v3 coordinate foundation. Binary objectives, direct placement, post-play budgets and replay grading."

@@ -1,4 +1,4 @@
-"""V3 promotion must preserve states, gates and historical datasets while defaulting to coordinates."""
+"""V3 promotion must preserve states, gates and historical datasets while using coordinates."""
 import json
 import shutil
 
@@ -10,7 +10,6 @@ from cr_arena.coordinate_benchmark import (BASE, OUT as PILOT, build as build_co
                                            packaged_protocol_digest, protocol_digest)
 from cr_arena.telemetry import VERSION as CAPTURE_VERSION, digest
 from rb_evals.benchmarks import load_benchmark, task_problems
-from rb_evals.config import load_config
 
 
 def test_v3_promotes_the_full_released_set():

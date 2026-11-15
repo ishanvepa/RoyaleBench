@@ -1,0 +1,7 @@
+I won the scenario: the game ended with **SUCCESS**, 1 crown to 0, about 6 seconds into the 18-second overtime window. My towers took no extra damage and I spent 8 elixir.
+
+The plan was to play two cheap cards to bring Fireball into my hand, while holding off the Giant pushing my weak left tower (458 HP). Then I used Fireball on the enemy's left princess tower, which had 158 HP against Fireball's 159 tower damage.
+
+1. **Ice Spirits at (3.5, 10.5):** this froze the Giant just before it reached my left tower's range.
+2. **Cannon at (6.5, 10.5):** the Giant only targets buildings, so it turned to attack the Cannon instead of my tower. This play also brought Fireball into my hand.
+3. **Fireball at (3.5, 25.5):** this destroyed the enemy's left princess tower. In overtime the first tower destroyed wins, so the game ended there.

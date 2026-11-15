@@ -1,0 +1,10 @@
+The run succeeded. Both princess towers were still standing when the 20 seconds ran out. I spent exactly 8 elixir, 2 of it in the right lane, so I stayed within both limits.
+
+What I played:
+1. **Cannon at (6.5, 11.0), 3 elixir.** This pulled the first Battle Ram off the left tower, which only had 458 HP left.
+2. **Knight at (5.0, 11.5), 3 elixir.** This killed the two Barbarians that came out of that Ram. The left tower took no damage.
+3. **Three waits** while the opponent sent a second Battle Ram down the right lane and a swarm of 5 Bats. I held Zap, my last 2 elixir, until it was clear where the Bats would go.
+4. **Zap at (11.8, 16.0), 2 elixir.** The Bats split: 2 went for my Knight on the left and 3 headed for the right tower, arriving at the same time as the Ram. I zapped the 3 on the right because the Ram plus those Bats would probably have destroyed that tower before the 20 seconds were up.
+5. **Waits to the end.** The Barbarians from the Ram kept hitting the right tower, but it held. The 2 remaining Bats were too far away to reach the left tower in time.
+
+My towers took 1,917 damage in total, all of it on the right tower. It went from 2,289 to about 370 HP. The left tower stayed at 458.

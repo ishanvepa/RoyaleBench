@@ -1,0 +1,20 @@
+[
+  {
+    "type": "public_message",
+    "text": "I\u2019ll inspect the board and play through to the match result."
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc cr",
+    "exit_code": 0
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc 'cr play 3 7 10'",
+    "exit_code": 0
+  },
+  {
+    "type": "public_message",
+    "text": "Lost: the engine ended the match with enemy winning 1\u20130 after my Cannon placement. The objective was not completed."
+  }
+]

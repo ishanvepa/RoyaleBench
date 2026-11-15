@@ -2,6 +2,7 @@
 
 import dataclasses
 import io
+import json
 import tarfile
 from pathlib import Path
 from unittest.mock import patch
@@ -106,3 +107,60 @@ class TaskReplayTests(ApiCase):
         _, url = self.finished_game()
         self.ctx.cfg = dataclasses.replace(self.ctx.cfg, read_only=True)
         self.assertTrue(self.client.get(url).json()["available"])
+
+    def decision_download(self):
+        observation = "DECISION 1 (you are BLUE)\nA recorded board."
+        trajectory = [
+            {"type": "user", "message": {"content": [{"type": "tool_result", "content": observation}]}},
+            {"type": "assistant", "message": {"id": "m1", "content": [
+                {"type": "text", "text": "Defend the left tower."},
+                {"type": "tool_use", "id": "t1", "name": "Bash", "input": {"command": "cr wait"}}]}}]
+
+        def download(run_id, path, dest):
+            files = ({"logs/trajectory.jsonl": "\n".join(json.dumps(e) for e in trajectory).encode()}
+                     if path.endswith("agent_output.tar.gz") else {
+                         "royale/replay.msgpack": SAMPLE_REPLAY.read_bytes(),
+                         "royale/capture/observations.jsonl": json.dumps({"data": {
+                             "text": observation, "tick": 40, "team": 0}}).encode()})
+            target = Path(dest) / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with tarfile.open(target, "w:gz") as archive:
+                for name, content in files.items():
+                    info = tarfile.TarInfo(name)
+                    info.size = len(content)
+                    archive.addfile(info, io.BytesIO(content))
+            return Path(dest)
+        return download
+
+    def test_replay_loads_and_caches_exactly_aligned_agent_trace(self):
+        from royalegym.render import extract_view
+
+        _, url = self.finished_game()
+        with patch.object(self.fake, "download_artifact", side_effect=self.decision_download()) as download:
+            replay = self.client.get(url).json()
+            self.assertTrue(replay["available"])
+            decisions = extract_view(replay["html"])["agent_decisions"]
+            self.assertEqual([d["tick"] for d in decisions], [40])
+            self.assertEqual([s["text"] for s in decisions[0]["steps"]], ["Defend the left tower.", "cr wait"])
+            self.assertEqual(self.client.get(url).json(), replay)
+            self.assertEqual(len(download.call_args_list), 2, "game and agent artifacts are each downloaded once")
+
+    def test_trace_failure_keeps_game_playable_and_retries_on_reopen(self):
+        from royalegym.render import extract_view
+
+        _, url = self.finished_game()
+        download = self.decision_download()
+
+        def fail_trace(run_id, path, dest):
+            if path.endswith("agent_output.tar.gz"):
+                raise ValkyrieError("Transfer interrupted", "network")
+            return download(run_id, path, dest)
+
+        with patch.object(self.fake, "download_artifact", side_effect=fail_trace):
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, 200)
+            payload = extract_view(response.json()["html"])
+            self.assertEqual(payload["agent_decisions"], [])
+            self.assertIn("could not be loaded", payload["decisions_note"])
+        with patch.object(self.fake, "download_artifact", side_effect=download):
+            self.assertEqual(len(extract_view(self.client.get(url).json()["html"])["agent_decisions"]), 1)

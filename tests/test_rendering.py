@@ -50,10 +50,12 @@ class RenderingTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'trace.msgpack'
             save_trace(trace, path)
-            replay = patched_html(path, title=hostile, stride=100)
+            replay = patched_html(path, title=hostile, stride=100, decisions=[{
+                'tick': 0, 'team': 0, 'steps': [{'kind': 'text', 'title': 'Agent', 'text': hostile}]}])
         self.assertNotIn(hostile, replay)
         self.assertIn('&lt;/script&gt;', replay)
         self.assertEqual(extract_view(replay)['cards'][0]['name'], hostile)
+        self.assertEqual(extract_view(replay)['agent_decisions'][0]['steps'][0]['text'], hostile)
 
     def test_live_supplies_arena_and_optional_entity_state(self):
         # Build no worker processes or sockets: these messages only read the engine.
@@ -120,7 +122,11 @@ class RenderingTests(unittest.TestCase):
 
     @unittest.skipUnless(shutil.which('node'), 'Node is required to execute the replay scripts')
     def test_exported_replay_scripts_can_seek_flip_and_interpolate(self):
-        scripts = parse_page(patched_html(SAMPLE, stride=2)).scripts
+        trace = load_trace(SAMPLE)
+        decisions = [{'tick': frame.tick, 'team': 0, 'steps': [
+            {'kind': 'text', 'title': 'Agent', 'text': f'Recorded decision at tick {frame.tick}'}]}
+            for frame in (trace.frames[4], trace.frames[len(trace.frames) // 2], trace.frames[-1])]
+        scripts = parse_page(patched_html(SAMPLE, stride=2, decisions=decisions)).scripts
         subprocess.run(['node', str(ROOT / 'tests/check_replay_page.cjs')],
                        input=json.dumps(scripts), text=True, check=True, capture_output=True)
 

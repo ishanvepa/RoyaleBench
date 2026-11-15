@@ -14,17 +14,46 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 [TODO: State the specific capability gap supported by the final results.]
 
-## RoyaleBench v3
+## RoyaleBench v6
 
-[RoyaleBench v3](docs/royalebench_v3.md) is the default benchmark. Its 11 continuation scenarios
-against Planner use direct coordinate actions: `cr play SLOT X Y` and `cr wait`, with paused text
+[RoyaleBench v6](docs/royalebench_v6.md) is the default benchmark for new jobs. It
+merges all 10 tasks from `royalebench/royalebench-v5@1` and all four from
+`royalebench/royalebench-win@2`, preserving every source task package and objective.
+Its score is mean binary objective success across 14 tasks: eight require match
+wins and six retain v5's other objectives. Published as `royalebench/royalebench-v6@1`
+(`v6`); all 14 references and 42 invalid-submission controls pass validation.
+See the guide for source digests and reproduction commands.
+
+## RoyaleBench Win
+
+[RoyaleBench Win](docs/royalebench_win.md) remains available as a separate win-only cohort.
+Its four coordinate-action continuations require an actual completed match win:
+cycling under pressure, a sustained tower race, tank-defense conversion, and a
+paired critical-health cycling position. Published revision:
+`royalebench/royalebench-win@2` (`win-v2`). All four references pass isolated
+container verification, deterministic replay, and six negative controls per task.
+See the guide for frontier-model results and the saturation audit that motivated it.
+
+In the first full `@2` runs, **Opus 5.5 and GPT-6.1 Sol both won 2/4 (50%)**.
+Both lost the Balloon tower race and critical-health defense; all eight attempts
+completed with replay integrity 1 and zero rejected actions. These are development
+pilots with one attempt per task and each model's native harness, not a stable ranking.
+
+## Historical RoyaleBench v3
+
+[RoyaleBench v3](docs/royalebench_v3.md) preserves 11 continuation scenarios
+against Planner using direct coordinate actions: `cr play SLOT X Y` and `cr wait`, with paused text
 observations and independent replay grading. Starting positions and objectives match the released
 v1 set; cycle-history and comeback candidates remain gated. Build with
-`uv run python -m cr_arena.build_v3 --jobs 2`. The dashboard prefers v3 for new jobs once published.
+`uv run python -m cr_arena.build_v3 --jobs 2`. New jobs now default to RoyaleBench v6.
 See the guide and manifest for release validation and model-run evidence.
 Current release: `royalebench/royalebench-v3@2` (tag `v3-support`), with capture provenance,
 compact opponent play observations and the Modal model endpoint allowlist. All 11 references pass isolated Docker
-validation and deterministic replay. Full-cohort model calibration remains pending.
+validation and deterministic replay. The latest Opus 5.5 and GPT-6.1 Sol cohorts both
+scored 11/11, but only six objectives ended in actual match wins. The separate
+[RoyaleBench Win](docs/royalebench_win.md) cohort addresses this saturation with multi-step
+continuations that require a terminal match win on every task. See its guide for
+validation and model results; historical v3 scores retain their original meaning.
 The `@1` lethal control passed with Sonnet 4.6 on Valkyrie/Modal (reward 1, integrity 1).
 An `@2` Qwen/mini-SWE-agent lethal smoke test also passed with reward 1, integrity 1 and
 complete archived capture; neither single-task result estimates the full benchmark score.
@@ -98,7 +127,9 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 ## Quick guides
 
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
-- [RoyaleBench v3](docs/royalebench_v3.md): default full continuation benchmark using coordinate actions, release validation, and run commands.
+- [RoyaleBench v6](docs/royalebench_v6.md): default merged benchmark, source digests, retained grading, validation, and publication.
+- [RoyaleBench Win](docs/royalebench_win.md): separate win-only benchmark, saturation audit, validation, and frontier-model runs.
+- [RoyaleBench v3](docs/royalebench_v3.md): historical continuation benchmark using coordinate actions, release validation, and run commands.
 - [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch task replays and agent traces, and browse the original arena (`uv run python -m rb_server`).
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.

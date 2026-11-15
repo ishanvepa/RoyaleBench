@@ -38,11 +38,18 @@ These are starting points, not decisions. Pick the ones where the verifier is st
 
 The game engine used by the dashboard is [`royalegym`](../cr_arena/game.py). If a task depends on it, install it in the task's image at build time and pin the version so the verifier's ground truth is reproducible. Check that behavior in the image matches what the dashboard uses.
 
-Record the player action protocol as part of the benchmark version. New continuation tasks default
-to [RoyaleBench v3](royalebench_v3.md), using `cr play SLOT X Y` and `cr wait` through the stable
+Record the player action protocol as part of the benchmark version. New win-only continuations use
+[RoyaleBench Win](royalebench_win.md), using `cr play SLOT X Y` and `cr wait` through the stable
 `coordinates-v1` protocol. Frozen v1 retains its numbered placement menu, and the earlier
 [coordinate pilot](coordinate_harness.md) remains separate. Do not mix their scores or infer that menu reference validation proves an arbitrary
 coordinate protocol works. Revalidate submission, rejection, restart and replay for each protocol.
+The default [v6 release](royalebench_v6.md) merges unchanged v5 and win@2 packages;
+retain each source's objective and packaged runtime when reproducing that merge.
+
+For the harder [RoyaleBench Win](royalebench_win.md) cohort, every gameplay objective is
+an actual terminal match win. Do not award success for merely surviving a short window,
+remaining within a spending budget, or leading on HP before the match ends. Require a
+winning reference and failing cheap-policy controls before packaging each new position.
 
 ## Task levers
 

@@ -5,7 +5,7 @@
 benchmark = "royalebench"        # Valkyrie benchmark namespace: a folder benchmarks/<name> is the dataset royalebench/<name>
 provider = "modal"               # every job runs its sandboxes on Modal
 default_agent = "claude_code-v1.0.0"
-default_dataset = "royalebench-v3"
+default_dataset = "royalebench-v6"
 default_concurrency = 1
 max_concurrency = 50             # upper bound for starting jobs and changing a run's concurrency
 confirm_over_tasks = 5           # jobs with more tasks than this need an explicit confirmation checkbox

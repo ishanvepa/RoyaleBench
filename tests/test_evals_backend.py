@@ -51,7 +51,7 @@ class ConfigTests(unittest.TestCase):
         cfg = load_config(Path(tempfile.gettempdir()) / "does-not-exist-evals.toml")
         self.assertEqual((cfg.benchmark, cfg.provider, cfg.default_concurrency), ("royalebench", "modal", 1))
         self.assertEqual(cfg.models, ())
-        self.assertEqual(cfg.default_dataset, "royalebench-v3")
+        self.assertEqual(cfg.default_dataset, "royalebench-v6")
 
     def test_reads_values_and_read_only_flag(self):
         with tempfile.TemporaryDirectory() as d:
@@ -230,7 +230,8 @@ class JobTests(unittest.TestCase):
         cases = [
             (dict(provider="daytona"), "Modal"), (dict(dataset=""), "benchmark"), (dict(revision=" "), "revision"),
             (dict(agent=""), "harness"), (dict(model="gpt"), "model key"), (dict(model="a/"), "model key"),
-            (dict(secret_name=""), "secret"), (dict(concurrency=0), "Concurrency"), (dict(concurrency=11), "Concurrency"),
+            (dict(secret_name=""), "secret"), (dict(concurrency=0), "Concurrency"),
+            (dict(concurrency=CFG.max_concurrency + 1), "Concurrency"),
             (dict(label="  "), "name"), (dict(task_ids=[]), "at least one"), (dict(task_ids=["a", "a"]), "duplicates"),
             (dict(task_ids=["zzz"]), "Not in this revision"),
         ]

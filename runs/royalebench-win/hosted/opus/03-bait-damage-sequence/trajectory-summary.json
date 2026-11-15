@@ -1,0 +1,73 @@
+[
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 0 6.5 10.5"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 0 3.5 25.5"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 1 4.5 14"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 1 3.5 15"
+    }
+  },
+  {
+    "type": "public_message",
+    "text": "The Giant is down and we lead on tower HP. Next I'll Log the two stunned Musketeers, aiming it so it rolls on into the enemy tower."
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 3 3.5 16.5"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 1 3.5 25.5"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr wait"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr wait"
+    }
+  },
+  {
+    "type": "public_message",
+    "text": "We won: the engine reported **GAME OVER: scenario SUCCESS** with 1 crown to 0, about 10 seconds before overtime would have ended. Because it was overtime, the first tower destroyed won the match.\n\n1. **Inferno Tower at (6.5, 10.5)** pulled the Giant away from our weak left tower (1068 HP) and killed it before it hit any of our towers.\n2. **Rocket on the enemy's left tower** took it from 1000 to 658.\n3. **Knight at (4.5, 14)** went after the first Musketeer. The opponent then added a second Musketeer.\n4. **Ice Spirits** froze both Musketeers so the Knight could keep hitting them.\n5. **Log at (3.5, 16.5)** killed the weakened Musketeer, and it rolled far enough to hit the tower too (658 \u2192 623).\n6. **Goblin Barrel on the tower** dropped three goblins while nothing was defending it. After that I waited twice to build elixir for a second Rocket, but the goblins and the Knight's push destroyed the tower first, so the Rocket wasn't needed.\n\nNone of our towers took damage, and we spent 20 elixir in total."
+  }
+]

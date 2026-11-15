@@ -1,0 +1,73 @@
+{
+  "checked_at": "2026-11-15T10:12:39.580126+00:00",
+  "dataset": "royalebench/royalebench-v6@1",
+  "tag": "v6",
+  "published_version": {
+    "benchmark": "royalebench",
+    "dataset": "royalebench-v6",
+    "revision": 1,
+    "digest": "sha256:813f00528a075f38acf4c8af9614da226de739e6a3d67e6e95be78b290e3fdf9",
+    "task_count": 14,
+    "tags": [
+      "latest",
+      "v6"
+    ],
+    "created_by_email": "ishanvepa171@gmail.com",
+    "created_at": "2026-11-15T10:12:39.712398+00:00",
+    "metric_digest": null,
+    "manifest": null
+  },
+  "source_revisions": [
+    {
+      "dataset": "royalebench/royalebench-v5@1",
+      "digest": "sha256:456914c198d4738959064c5e409944ac320fbe70b7404d6efb1304005a4d08cd",
+      "task_count": 10
+    },
+    {
+      "dataset": "royalebench/royalebench-win@2",
+      "digest": "sha256:c1e42376f700f7cafdce9b34b359c32d81fc223eb7632cded5483937451a10a9",
+      "task_count": 4
+    }
+  ],
+  "task_count": 14,
+  "local_and_published_task_digests_match_sources": true,
+  "task_packages_unchanged": true,
+  "task_ids_unchanged": true,
+  "reference_rewards_all_one": true,
+  "reference_integrity_all_one": true,
+  "container_reference_passes": 14,
+  "empty_malformed_wrong_type_controls_all_zero": true,
+  "negative_control_count": 42,
+  "runtime_images": [
+    {
+      "environment_sha256": "1dbd722e5afc95abbb4a85429cf441487304bbedfb1c5ecde5a1ef6ebf5da191",
+      "image": "royalebench-v6:validation-1dbd722e5afc",
+      "image_digest": "sha256:717cf37420b92d52d81ca97e1d5effbab963c452427021b6f69401cf5e2eeba2"
+    },
+    {
+      "environment_sha256": "ceeb3280030c5bdf6c1778b8592e955b5a9f1cc9b131788e5ee7a7b244b83cd5",
+      "image": "royalebench-v6:validation-ceeb3280030c",
+      "image_digest": "sha256:f76e04e031f0d686267b4cd6c18a0a52b1c4962c7e6d15e4910fde147d249d5b"
+    }
+  ],
+  "dashboard_default": "royalebench-v6",
+  "tests": {
+    "passed": 27,
+    "subtests_passed": 13,
+    "command": "uv run --with pytest python -m pytest -q tests/test_royalebench_v6.py tests/test_win_benchmark.py tests/test_evals_backend.py::ConfigTests tests/test_evals_backend.py::JobTests tests/test_api_evals.py::EnvironmentTests"
+  },
+  "source_hashes": {
+    "cr_arena/build_v6.py": "559540328ff5b558e2f8352cf01f2768dc3282538fc8b6270fac3a13bc799e53",
+    "cr_arena/validate_v6_docker.py": "3c50dc3444dcd63b70d59d6e3e8559ac568a3be9446275838c66389f522c34cd",
+    "tests/test_royalebench_v6.py": "eba80dd9093e63da5c25dc6340df0fd21553bad79d9ad4396d8c75dbaaf50768",
+    "evals.toml": "ca9ce571ccb9468ef2f65b5232e5b27805c2d33716d51a770f7a371d37a07448",
+    "rb_evals/config.py": "9a87e9b01801ab48350072475c0c6108c4c8c727503c0cbd32262c813f58fc24",
+    "uv.lock": "0f088a4b9cef707494083f7bd3f49552c5036d25f677947e28622da1b825077d"
+  },
+  "model_runs_started_for_merge": 0,
+  "score_interpretation": "Mean original binary objective reward across 14 equally weighted tasks; eight require terminal wins and six retain other v5 objectives. Not an all-task match-win rate.",
+  "git_diff_check": "passed",
+  "dashboard_publication_verified": true,
+  "dashboard_evidence": "runs/royalebench-v6/dashboard.json",
+  "lf_shell_and_dockerfiles_verified": 42
+}

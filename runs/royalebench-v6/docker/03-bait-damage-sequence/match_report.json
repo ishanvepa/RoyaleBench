@@ -1,0 +1,270 @@
+{
+ "seed": 703,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 10,
+ "outcome": {
+  "result": "win",
+  "crowns_for": 1,
+  "crowns_against": 0,
+  "enemy_tower_damage_frac": 0.3127,
+  "own_tower_damage_frac": 0.2808,
+  "ticks": 5901,
+  "tower_damage": 1085,
+  "spent_elixir": 19,
+  "plays": [
+   {
+    "decision": 0,
+    "card": "InfernoTower",
+    "x": 63000,
+    "y": 189000,
+    "cost": 5
+   },
+   {
+    "decision": 1,
+    "card": "Knight",
+    "x": 63000,
+    "y": 243000,
+    "cost": 3
+   },
+   {
+    "decision": 2,
+    "card": "Rocket",
+    "x": 63000,
+    "y": 459000,
+    "cost": 6
+   },
+   {
+    "decision": 3,
+    "card": "Log",
+    "x": 63000,
+    "y": 396000,
+    "cost": 2
+   },
+   {
+    "decision": 5,
+    "card": "Princess",
+    "x": 63000,
+    "y": 261000,
+    "cost": 3
+   }
+  ],
+  "opponent_plays": [
+   {
+    "tick": 5600,
+    "card": "Musketeer",
+    "x": 261000,
+    "y": 315000
+   }
+  ],
+  "elapsed_s": 19.05,
+  "rejected_actions": 1
+ },
+ "rewards": {
+  "reward": 1.0,
+  "win": 1.0,
+  "crowns_for": 1.0,
+  "crowns_against": 0.0,
+  "enemy_tower_damage_frac": 0.3127,
+  "own_tower_damage_frac": 0.2808,
+  "completed": 1.0,
+  "integrity": 1.0,
+  "decisions": 10.0,
+  "fast_decision_frac": 1.0,
+  "spent_elixir": 19.0,
+  "tower_damage": 1085.0,
+  "objective_met": 1.0,
+  "rejected_actions": 1.0
+ },
+ "decisions_applied": 10,
+ "completed": true,
+ "termination_tick": 5901,
+ "timing_known": 10,
+ "task_config": {
+  "id": "03-bait-damage-sequence",
+  "family": 3,
+  "title": "Defend a supported tank and sequence finishing damage",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench Win",
+  "version": "1.0.0",
+  "seed": 703,
+  "agent_team": 0,
+  "agent_deck": [
+   "GoblinBarrel",
+   "Princess",
+   "GoblinGang",
+   "Knight",
+   "InfernoTower",
+   "Rocket",
+   "Log",
+   "IceSpirits"
+  ],
+  "opponent_deck": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "player_deck_name": "log-bait",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": null,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "action_mode": "coordinates-v1",
+  "release_gate": null,
+  "objective": "Win the actual match within the remaining 24 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+  "capability": "Convert tank/support defense into a multi-card lethal sequence",
+  "expected_failure": "Stabilize the board but run out of time or elixir before the finishing cycle",
+  "scenario": {
+   "start_tick": 5520,
+   "horizon_s": 24,
+   "elixir": 10,
+   "opponent_elixir": 0,
+   "order": [
+    "InfernoTower",
+    "Knight",
+    "GoblinGang",
+    "Log",
+    "Rocket",
+    "Princess",
+    "IceSpirits",
+    "GoblinBarrel"
+   ],
+   "opponent_order": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+   ],
+   "units": [
+    {
+     "card": "Giant",
+     "team": 1,
+     "x": 3.5,
+     "y": 15.5
+    },
+    {
+     "card": "Musketeer",
+     "team": 1,
+     "x": 3.5,
+     "y": 19.5
+    }
+   ],
+   "grading": "win",
+   "tower_hp": [
+    [
+     4824,
+     1068,
+     3052
+    ],
+    [
+     4824,
+     3052,
+     1000
+    ]
+   ],
+   "disclose_queue": true
+  },
+  "task_id": "03-bait-damage-sequence",
+  "instruction_sha256": "e3039b3df20d123e102a94f77c594a2894b37a18fc4ebc580ee07e0fa057a724",
+  "rubric": "binary-win-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+   "agent_timeout_s": 3600,
+   "verifier_timeout_s": 600,
+   "cpus": 1,
+   "memory_mb": 2048,
+   "storage_mb": 4096
+  }
+ },
+ "rubric": "scenario-objective-coordinates-v1",
+ "tiebreak_reason": "crowns",
+ "benchmark": "RoyaleBench Win",
+ "task_id": "03-bait-damage-sequence",
+ "scenario": {
+  "start_tick": 5520,
+  "horizon_s": 24,
+  "elixir": 10,
+  "opponent_elixir": 0,
+  "order": [
+   "InfernoTower",
+   "Knight",
+   "GoblinGang",
+   "Log",
+   "Rocket",
+   "Princess",
+   "IceSpirits",
+   "GoblinBarrel"
+  ],
+  "opponent_order": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "units": [
+   {
+    "card": "Giant",
+    "team": 1,
+    "x": 3.5,
+    "y": 15.5
+   },
+   {
+    "card": "Musketeer",
+    "team": 1,
+    "x": 3.5,
+    "y": 19.5
+   }
+  ],
+  "grading": "win",
+  "tower_hp": [
+   [
+    4824,
+    1068,
+    3052
+   ],
+   [
+    4824,
+    3052,
+    1000
+   ]
+  ],
+  "disclose_queue": true
+ },
+ "setup_hash": "2f31c8856d20fb87584d0af1bd3d8087512fc7929474ae1997f23d3ea18b5c21",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ },
+ "action_mode": "coordinates-v1"
+}

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import tomllib
 from pathlib import Path
 
@@ -157,7 +158,7 @@ REPLAY_CACHE = ROOT / "runs" / "replay-cache"
 
 
 def replay_html(ctx: AppContext, name: str, match_id: str) -> str:
-    """The saved game as a self-contained HTML viewer (royalegym's, patched). Rendered once per replay file."""
+    """The saved game as a self-contained HTML viewer, cached by trace and viewer content."""
     job = _job(ctx, name)
     rows = ctx.db().query("SELECT replay_path, status FROM matches WHERE job_id = ? AND match_id = ?", (job["id"], match_id))
     if not rows:
@@ -167,14 +168,27 @@ def replay_html(ctx: AppContext, name: str, match_id: str) -> str:
         detail = "Replays are saved when a match finishes." if rows[0]["status"] != "done" else \
             "No replay was saved for this game: only the first few games of each pairing keep one (replays_per_pair)."
         raise not_found(detail)
-    digest = hashlib.sha256(Path(path).read_bytes()).hexdigest()[:24]
+    decision_rows = ctx.db().query(
+        """SELECT step, team, player, raw, result, error FROM decisions
+           WHERE job_id = ? AND match_id = ? AND asked = 1 ORDER BY step, team""", (job["id"], match_id))
+    decisions = [{"tick": int(d["step"]) * int(job.get("decision_ticks") or 40), "team": int(d["team"]),
+                  "label": d["player"], "steps": [
+                      {"kind": "text", "title": "Agent", "text": d["raw"] or d["error"] or "No agent response recorded."},
+                      {"kind": "tool_result", "title": "Action result", "text": d["result"] or "(not recorded)"}]}
+                 for d in decision_rows]
+    viewer_hash = hashlib.sha256(Path(path).read_bytes())
+    viewer_hash.update(json.dumps(decisions, sort_keys=True).encode("utf-8"))
+    for source in ("replay.html", "battle_renderer.js"):
+        viewer_hash.update((ROOT / "cr_arena" / source).read_bytes())
+    digest = viewer_hash.hexdigest()[:24]
     cached = REPLAY_CACHE / f"{digest}.html"
     if cached.exists():
         return cached.read_text(encoding="utf-8")
     from cr_arena.replay import patched_html
 
     try:
-        html = patched_html(path, title=match_id, stride=2)
+        html = patched_html(path, title=match_id, stride=2, decisions=decisions,
+                            decisions_note="Recorded agent responses at each decision tick.")
     except Exception as exc:  # noqa: BLE001 - royalegym changed, or the trace is damaged
         raise ApiError(502, "bad_gateway", f"Could not render this replay: {type(exc).__name__}: {exc}") from exc
     REPLAY_CACHE.mkdir(parents=True, exist_ok=True)

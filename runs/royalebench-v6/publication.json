@@ -1,0 +1,127 @@
+{
+  "push": {
+    "version": {
+      "benchmark": "royalebench",
+      "dataset": "royalebench-v6",
+      "revision": 1,
+      "digest": "sha256:813f00528a075f38acf4c8af9614da226de739e6a3d67e6e95be78b290e3fdf9",
+      "task_count": 14,
+      "tags": [
+        "latest",
+        "v6"
+      ],
+      "created_by_email": "ishanvepa171@gmail.com",
+      "created_at": "2026-11-15T10:12:39.712398+00:00",
+      "metric_digest": null,
+      "manifest": null
+    },
+    "stored": [
+      "10-protect-the-lead",
+      "08-cycle-to-lethal-plus",
+      "07-counterpush",
+      "09-tower-race-defend",
+      "06-unequal-threats",
+      "04-critical-cycle-and-connect",
+      "05-successive-threats-mirror",
+      "03-tower-race-b",
+      "03-spell-placement",
+      "02-reserve-counter-a",
+      "03-bait-damage-sequence",
+      "02-sustained-tower-race",
+      "01-timed-spell-a",
+      "01-cycle-and-connect"
+    ],
+    "created": [
+      "dataset royalebench/royalebench-v6"
+    ],
+    "warnings": [],
+    "left_out": {}
+  },
+  "tasks": [
+    {
+      "task_id": "01-cycle-and-connect",
+      "digest": "sha256:baee4010275c5466c4f3c177c7d9d7efc316c2a4e70bd89f842ad9d900f79ff3",
+      "size": 98462,
+      "source_name": null
+    },
+    {
+      "task_id": "01-timed-spell-a",
+      "digest": "sha256:0e2579caba181db0a46561f1bf26d2783715cd77e92a4b36534ab5ac1d56aa79",
+      "size": 97318,
+      "source_name": null
+    },
+    {
+      "task_id": "02-reserve-counter-a",
+      "digest": "sha256:de2e93bb3a6483ae81950340b87e7228fdff1f3a081cd5e617220c41c991e9b9",
+      "size": 97872,
+      "source_name": null
+    },
+    {
+      "task_id": "02-sustained-tower-race",
+      "digest": "sha256:8d66ff72cff1f4e5e2ef7163093ff520fb6bb48a77e799107059c92d804e6c8c",
+      "size": 98698,
+      "source_name": null
+    },
+    {
+      "task_id": "03-bait-damage-sequence",
+      "digest": "sha256:b3e324c37446b86187517121ab4115341d44813c5a81ceabc8f259f573cfe5af",
+      "size": 98836,
+      "source_name": null
+    },
+    {
+      "task_id": "03-spell-placement",
+      "digest": "sha256:6894d18c22e56e5aca24d44e9a3b7b8980b2ac2ab9775e5c292391172cd0fa29",
+      "size": 96561,
+      "source_name": null
+    },
+    {
+      "task_id": "03-tower-race-b",
+      "digest": "sha256:3e63725e4c80ca0cbbafa4f1c1fff40733cd4b375ad047c94516334828d2e277",
+      "size": 96902,
+      "source_name": null
+    },
+    {
+      "task_id": "04-critical-cycle-and-connect",
+      "digest": "sha256:d3db754e52ac464d41811b6877afe65a34f62bb20617d0b32d8b021fccfbafb8",
+      "size": 98575,
+      "source_name": null
+    },
+    {
+      "task_id": "05-successive-threats-mirror",
+      "digest": "sha256:e4047240484add3556b8fc8199deec71678b2decb8640a16164d2a8790bd65ac",
+      "size": 97621,
+      "source_name": null
+    },
+    {
+      "task_id": "06-unequal-threats",
+      "digest": "sha256:24c512b011fd4b5bbf7a5fa2479a3c303ddced52170ef2515983df12dd78e4b8",
+      "size": 97124,
+      "source_name": null
+    },
+    {
+      "task_id": "07-counterpush",
+      "digest": "sha256:b729b826ec8941ca65c377a9c55e1b14eeba248d5cf9806788725b27c79c77ec",
+      "size": 97440,
+      "source_name": null
+    },
+    {
+      "task_id": "08-cycle-to-lethal-plus",
+      "digest": "sha256:decf044a8c83e795738578e03c65f991011c33289eb9a098c45fd5d3eaf17e3b",
+      "size": 97110,
+      "source_name": null
+    },
+    {
+      "task_id": "09-tower-race-defend",
+      "digest": "sha256:1b43b9da19814c99660c63db3b2d0b0f24418b650033e93733acdcdf90eaa62c",
+      "size": 96493,
+      "source_name": null
+    },
+    {
+      "task_id": "10-protect-the-lead",
+      "digest": "sha256:c4d6bff4df00ec964ad5ffe9ac15873f4e80a315854df9fbdb013f07413ed906",
+      "size": 96561,
+      "source_name": null
+    }
+  ],
+  "dataset": "royalebench/royalebench-v6@1"
+}

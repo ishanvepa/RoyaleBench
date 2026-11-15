@@ -1,0 +1,56 @@
+{
+  "rewards": {
+    "reward": 0.0,
+    "win": 0.0,
+    "crowns_for": 0.0,
+    "crowns_against": 1.0,
+    "enemy_tower_damage_frac": 0.1059,
+    "own_tower_damage_frac": 0.3127,
+    "completed": 1.0,
+    "integrity": 1.0,
+    "decisions": 3.0,
+    "fast_decision_frac": 0.0,
+    "spent_elixir": 10.0,
+    "tower_damage": 305.0,
+    "objective_met": 0.0,
+    "rejected_actions": 0.0
+  },
+  "outcome": {
+    "result": "loss",
+    "crowns_for": 0,
+    "crowns_against": 1,
+    "enemy_tower_damage_frac": 0.1059,
+    "own_tower_damage_frac": 0.3127,
+    "ticks": 5506,
+    "tower_damage": 305,
+    "spent_elixir": 10,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 207000,
+        "cost": 3
+      },
+      {
+        "decision": 1,
+        "card": "Fireball",
+        "x": 61200,
+        "y": 180000,
+        "cost": 4
+      },
+      {
+        "decision": 2,
+        "card": "Minions",
+        "x": 57600,
+        "y": 153000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 5.3,
+    "rejected_actions": 0
+  },
+  "decisions_applied": 3,
+  "completed": true
+}

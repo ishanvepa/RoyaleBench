@@ -1,0 +1,179 @@
+{
+  "benchmark": "RoyaleBench v6",
+  "version": "6.0.0",
+  "sources": [
+    {
+      "dataset": "royalebench/royalebench-v5@1",
+      "digest": "sha256:456914c198d4738959064c5e409944ac320fbe70b7404d6efb1304005a4d08cd",
+      "task_count": 10
+    },
+    {
+      "dataset": "royalebench/royalebench-win@2",
+      "digest": "sha256:c1e42376f700f7cafdce9b34b359c32d81fc223eb7632cded5483937451a10a9",
+      "task_count": 4
+    }
+  ],
+  "runnable_tasks": [
+    "01-timed-spell-a",
+    "02-reserve-counter-a",
+    "03-spell-placement",
+    "03-tower-race-b",
+    "05-successive-threats-mirror",
+    "06-unequal-threats",
+    "07-counterpush",
+    "08-cycle-to-lethal-plus",
+    "09-tower-race-defend",
+    "10-protect-the-lead",
+    "01-cycle-and-connect",
+    "02-sustained-tower-race",
+    "03-bait-damage-sequence",
+    "04-critical-cycle-and-connect"
+  ],
+  "tasks": [
+    {
+      "task": "01-timed-spell-a",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:0e2579caba181db0a46561f1bf26d2783715cd77e92a4b36534ab5ac1d56aa79",
+      "archive_sha256": "09388a0cd56ac21096f5084b5c84e1e046d31a306b744ed8c0f33b46eede014a",
+      "archive": "runs/recent/v6-sources/royalebench-v5/01-timed-spell-a.zip",
+      "grading": "one_spell",
+      "objective": "Cast exactly one Fireball, keep both princess towers alive for 12 seconds, and take at most 100 additional total crown-tower damage. Only Fireball and waiting are available.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "02-reserve-counter-a",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:de2e93bb3a6483ae81950340b87e7228fdff1f3a081cd5e617220c41c991e9b9",
+      "archive_sha256": "c2cacd8df8f652ef4cfe19002387d3a5081d7a24553b0e90da944c8c73012ee1",
+      "archive": "runs/recent/v6-sources/royalebench-v5/02-reserve-counter-a.zip",
+      "grading": "defend",
+      "objective": "Keep both princess towers alive for 20 seconds, take at most 450 additional total crown-tower damage, and spend at most 6 elixir. At elapsed 6.0 seconds the opponent casts its reserved GoblinBarrel on your left princess tower (3.5, 6.5).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "03-spell-placement",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:6894d18c22e56e5aca24d44e9a3b7b8980b2ac2ab9775e5c292391172cd0fa29",
+      "archive_sha256": "1ad15c12bc269269559af288b2e5618d9ac82d03c187679ef21ba36b8d824763",
+      "archive": "runs/recent/v6-sources/royalebench-v5/03-spell-placement.zip",
+      "grading": "one_spell",
+      "objective": "Cast exactly one Fireball, keep both princess towers alive for 12 seconds, and take at most 150 total tower damage. Only Fireball and waiting are available.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "03-tower-race-b",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:3e63725e4c80ca0cbbafa4f1c1fff40733cd4b375ad047c94516334828d2e277",
+      "archive_sha256": "0e28583f20942b08ea5d3e36214f9419019e004554e95fdc8165eec881dcfb76",
+      "archive": "runs/recent/v6-sources/royalebench-v5/03-tower-race-b.zip",
+      "grading": "win",
+      "objective": "Win before the remaining 8 seconds of overtime end, spending at most 4 elixir. At the actual overtime deadline, tied crowns use total remaining tower HP, then seed parity.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "05-successive-threats-mirror",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:e4047240484add3556b8fc8199deec71678b2decb8640a16164d2a8790bd65ac",
+      "archive_sha256": "d3dee196a59aa455dbc9166e6e4e88db68f74bebdce0e953b1146e66a8a2278a",
+      "archive": "runs/recent/v6-sources/royalebench-v5/05-successive-threats-mirror.zip",
+      "grading": "defend",
+      "objective": "Keep both princess towers alive for 20 seconds, take at most 450 total tower damage, and spend at most 8 elixir. At elapsed 6.0s the opponent casts its reserved GoblinBarrel on your right tower (14.5, 6.5).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "06-unequal-threats",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:24c512b011fd4b5bbf7a5fa2479a3c303ddced52170ef2515983df12dd78e4b8",
+      "archive_sha256": "782380d9fece2a0be7b54840d25f907082679cbdf16c826a9e378406afd76308",
+      "archive": "runs/recent/v6-sources/royalebench-v5/06-unequal-threats.zip",
+      "grading": "defend",
+      "objective": "Keep both princess towers alive for 20 seconds. Spend at most 8 elixir in total, including at most 4 on placements in the right lane (x > 10.5).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "07-counterpush",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:b729b826ec8941ca65c377a9c55e1b14eeba248d5cf9806788725b27c79c77ec",
+      "archive_sha256": "de854e317f3197c73cc6d72627323fe3e35d05f8f8ebcfc443333c87c20c5ea0",
+      "archive": "runs/recent/v6-sources/royalebench-v5/07-counterpush.zip",
+      "grading": "win",
+      "objective": "Win the continuation before the match ends (35 seconds of regulation plus up to 120 seconds of overtime).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "08-cycle-to-lethal-plus",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:decf044a8c83e795738578e03c65f991011c33289eb9a098c45fd5d3eaf17e3b",
+      "archive_sha256": "653538a923bdd0c3f6d94ba39aef969f039f7f1813e229eaebd3eb95eab1407c",
+      "archive": "runs/recent/v6-sources/royalebench-v5/08-cycle-to-lethal-plus.zip",
+      "grading": "win",
+      "objective": "Win before your tower falls and before overtime ends in 18 seconds. The full draw order is disclosed below; Fireball enters your hand after two card plays.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "09-tower-race-defend",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:1b43b9da19814c99660c63db3b2d0b0f24418b650033e93733acdcdf90eaa62c",
+      "archive_sha256": "c47378daf239ff6ba353319134554902706d5cc18d25e74f412988a55fbb67df",
+      "archive": "runs/recent/v6-sources/royalebench-v5/09-tower-race-defend.zip",
+      "grading": "win",
+      "objective": "Win the overtime continuation within 30 seconds. This is one of two independently graded positions in the tower-race family.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "10-protect-the-lead",
+      "source": "royalebench/royalebench-v5@1",
+      "digest": "sha256:c4d6bff4df00ec964ad5ffe9ac15873f4e80a315854df9fbdb013f07413ed906",
+      "archive_sha256": "e2525c337de17943a44e57949f6f53005518c6ba1ad8f9ce0e46b749554d678f",
+      "archive": "runs/recent/v6-sources/royalebench-v5/10-protect-the-lead.zip",
+      "grading": "protect_lead",
+      "objective": "Retain a strict crown lead when regulation ends in 12 seconds.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "01-cycle-and-connect",
+      "source": "royalebench/royalebench-win@2",
+      "digest": "sha256:baee4010275c5466c4f3c177c7d9d7efc316c2a4e70bd89f842ad9d900f79ff3",
+      "archive_sha256": "bdf13a730fef3ed1f89bc832a3817231ec5002018d29fbf8e97808c1317f0aad",
+      "archive": "runs/recent/v6-sources/royalebench-win/01-cycle-and-connect.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "02-sustained-tower-race",
+      "source": "royalebench/royalebench-win@2",
+      "digest": "sha256:8d66ff72cff1f4e5e2ef7163093ff520fb6bb48a77e799107059c92d804e6c8c",
+      "archive_sha256": "d0e1332c428e5b3333fcc49baca0153873a45be8a5d171c9406d57e626ed1214",
+      "archive": "runs/recent/v6-sources/royalebench-win/02-sustained-tower-race.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 30 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "03-bait-damage-sequence",
+      "source": "royalebench/royalebench-win@2",
+      "digest": "sha256:b3e324c37446b86187517121ab4115341d44813c5a81ceabc8f259f573cfe5af",
+      "archive_sha256": "003db881b3cfc9578cd202c0f399cb0b0d47978ba43ab501eb26f285f7247e70",
+      "archive": "runs/recent/v6-sources/royalebench-win/03-bait-damage-sequence.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 24 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "source": "royalebench/royalebench-win@2",
+      "digest": "sha256:d3db754e52ac464d41811b6877afe65a34f62bb20617d0b32d8b021fccfbafb8",
+      "archive_sha256": "a379ae2252ce48ff832c77bc07a3220db8968ef52c80a1f29488067c9a5aaf3f",
+      "archive": "runs/recent/v6-sources/royalebench-win/04-critical-cycle-and-connect.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    }
+  ],
+  "task_count": 14,
+  "task_packages_unchanged": true,
+  "aggregation": "Mean source-task binary reward across all 14 tasks; no source reweighting.",
+  "grading": "Preserve source objectives. The four win@2 tasks require terminal match wins; v5 includes defense and placement tasks.",
+  "validation": "See runs/royalebench-v6/checks.json; source scores are not v6 run results."
+}

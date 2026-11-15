@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench v6"
+kind = "eval"
+description = "14 unchanged tasks merged from v5@1 (10) and win@2 (4). Source objectives retained."

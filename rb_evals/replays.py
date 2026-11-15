@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import tarfile
@@ -9,30 +10,48 @@ import tempfile
 from pathlib import Path
 
 from .protocol import ValkyrieAPI
-from .results import ResultsCache
+from .replay_decisions import read_decisions
+from .results import ResultsCache, fetch_task_files
 from .valkyrie import ValkyrieError
 
 MAX_REPLAY_BYTES = 64 * 1024 * 1024
 
 
-def _render(path: Path, task_id: str) -> dict:
+def _render(path: Path, task_id: str, decisions: list[dict], note: str) -> dict:
     from royalegym.replay import load_trace
     from cr_arena.replay import patched_html
 
     partial = load_trace(path).result is None
-    return {"available": True, "html": patched_html(path, title=f"Task replay: {task_id}", stride=2),
+    return {"available": True, "html": patched_html(path, title=f"Task replay: {task_id}", stride=2,
+                                                  decisions=decisions, decisions_note=note),
             "partial": partial}
 
 
 def task_replay(remote: ValkyrieAPI, cache: ResultsCache, run_id: str, task_id: str, *, final: bool) -> dict:
-    """Read only royale/replay.msgpack from the carried royale archive; never execute remote HTML.
+    """Read the replay and observation text/ticks; never execute remote HTML.
 
     Only a FINISHED run is immutable. Stopped/errored runs can be resumed/retried, so their snapshots
     are fetched again. Missing artifacts and transfer/render failures are never cached.
     """
     path = cache.replay_dir(run_id, task_id) / "replay.msgpack"
-    if final and path.is_file():
-        return _render(path, task_id)
+    observations_path = path.with_suffix(".observations.json")
+
+    def render(replay, observations):
+        decisions, note = [], "No synchronized agent decisions were recorded for this replay."
+        if observations:
+            try:
+                folder = fetch_task_files(remote, cache, run_id, task_id, final=final)
+                if folder:
+                    decisions = read_decisions(folder, observations)
+                if decisions:
+                    note = "Messages and tool calls are aligned to the board observation the agent received."
+            except (ValkyrieError, OSError, ValueError, tarfile.TarError):
+                note = "Agent decisions could not be loaded. Close and reopen the replay to try again."
+        return _render(replay, task_id, decisions, note)
+
+    # Older caches only saved the game. Refresh those once to collect the observations.
+    if final and path.is_file() and observations_path.is_file():
+        return render(path, json.loads(observations_path.read_text(encoding="utf-8")))
 
     with tempfile.TemporaryDirectory(prefix="rb-replay-") as tmp:
         stage = Path(tmp)
@@ -56,7 +75,20 @@ def task_replay(remote: ValkyrieAPI, cache: ResultsCache, run_id: str, task_id: 
             incoming = stage / "replay.msgpack"
             with archive.extractfile(members[0]) as source, incoming.open("wb") as target:
                 shutil.copyfileobj(source, target)
-        rendered = _render(incoming, task_id)
+            observations = []
+            captures = [m for m in archive if m.name.removeprefix("./") == "royale/capture/observations.jsonl"]
+            if len(captures) == 1 and captures[0].isfile() and captures[0].size <= MAX_REPLAY_BYTES:
+                with archive.extractfile(captures[0]) as source:
+                    for line in source:
+                        if line.strip():
+                            try:
+                                record = json.loads(line)
+                            except ValueError:
+                                continue
+                            data = record.get("data") if isinstance(record, dict) else None
+                            if isinstance(data, dict):
+                                observations.append({k: data.get(k) for k in ("text", "tick", "team")})
+        rendered = render(incoming, observations)
         if final:
             path.parent.mkdir(parents=True, exist_ok=True)
             # Each request gets a unique staging file, and readers only see complete snapshots.
@@ -67,6 +99,14 @@ def task_replay(remote: ValkyrieAPI, cache: ResultsCache, run_id: str, task_id: 
                         shutil.copyfileobj(source, staged)
                     staged.close()
                     os.replace(staged_path, path)
+                finally:
+                    staged_path.unlink(missing_ok=True)
+            with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, delete=False) as staged:
+                staged_path = Path(staged.name)
+                try:
+                    json.dump(observations, staged)
+                    staged.close()
+                    os.replace(staged_path, observations_path)
                 finally:
                     staged_path.unlink(missing_ok=True)
         return rendered

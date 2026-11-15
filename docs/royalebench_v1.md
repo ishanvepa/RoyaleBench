@@ -1,7 +1,8 @@
 # RoyaleBench v1
 
-This is the historical menu interface. [RoyaleBench v3](royalebench_v3.md) is the default release
-and uses coordinates across the same 11 released positions. These v1 task snapshots remain frozen.
+This is the historical menu interface. [RoyaleBench v3](royalebench_v3.md) uses coordinates across
+the same 11 released positions. The current default is [RoyaleBench v6](royalebench_v6.md).
+These v1 task snapshots remain frozen.
 
 RoyaleBench v1 is a versioned set of strategic continuations based on the twelve proposed tasks. Every opponent is **Planner**. Each task starts from an exact mid-match engine setup and uses the existing `cr` interface, an isolated referee, and replay grading in a fresh container. The dataset lives at [`benchmarks/royalebench-v1`](../benchmarks/royalebench-v1); its exact title in the evals dashboard is **RoyaleBench v1**.
 

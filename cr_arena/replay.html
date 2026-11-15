@@ -27,30 +27,32 @@ SOFTWARE.
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0e1420">
 <title>__TITLE__</title>
 <style>
-:root { --blue:#2f6fe4; --red:#e0483c; --ink:#1d232b; --muted:#66707c; --panel:#f4f5f7;
-  --line:#d9dde3; }
+:root { color-scheme:dark; --blue:#78b5ff; --red:#f58d79; --ink:#e8edf7; --muted:#a5b2c9;
+  --bg:#0e1420; --surface:#172033; --panel:#1f2b44; --line:#354563; --elixir:#e18deb; }
 * { box-sizing: border-box; }
 body { margin:0; font:13px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
-  color:var(--ink); background:#e9ebee; }
-header { display:flex; align-items:baseline; gap:12px; padding:8px 14px; background:#fff;
+  color:var(--ink); background:var(--bg); }
+header { display:flex; align-items:baseline; gap:12px; padding:8px 14px; background:var(--surface);
   border-bottom:1px solid var(--line); flex-wrap:wrap; }
 header h1 { font-size:15px; margin:0; }
 header .meta { color:var(--muted); font-size:12px; }
-#warn { display:none; background:#fff3cd; color:#6b4e00; border-bottom:1px solid #e6cf7a;
+#warn { display:none; background:#342b19; color:#f3d28a; border-bottom:1px solid #725b2d;
   padding:6px 14px; }
-main { display:flex; gap:12px; padding:10px 14px; align-items:flex-start; flex-wrap:wrap; }
-.side { width:190px; background:#fff; border:1px solid var(--line); border-radius:8px;
+main { display:flex; gap:12px; padding:10px 14px; align-items:flex-start; }
+.team-panels { width:190px; flex-shrink:0; display:flex; flex-direction:column; gap:12px; }
+.side { width:190px; background:var(--surface); border:1px solid var(--line); border-radius:8px;
   padding:10px; }
 .side h2 { margin:0 0 6px; font-size:14px; display:flex; justify-content:space-between; }
 .side.blue h2 { color:var(--blue); } .side.red h2 { color:var(--red); }
-.bar { height:10px; background:#e3e6ea; border-radius:5px; overflow:hidden; margin:3px 0 8px; }
+.bar { height:10px; background:var(--panel); border-radius:5px; overflow:hidden; margin:3px 0 8px; }
 .bar > div { height:100%; background:#c44fd6; }
 .hand { display:grid; grid-template-columns:1fr 1fr; gap:4px; }
 .card { background:var(--panel); border:1px solid var(--line); border-radius:5px; padding:3px 5px;
   font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.card b { float:right; color:#8a3fa0; }
+.card b { float:right; color:var(--elixir); }
 .kv { display:flex; justify-content:space-between; color:var(--muted); font-size:12px; }
 .kv span:last-child { color:var(--ink); font-variant-numeric:tabular-nums; }
 #boardwrap { flex:1 1 360px; min-width:260px; display:flex; flex-direction:column;
@@ -59,24 +61,58 @@ canvas { background:#7fb35b; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,
   touch-action:none; }
 #controls { display:flex; gap:8px; align-items:center; width:100%; max-width:760px;
   margin-top:8px; flex-wrap:wrap; }
-#controls button { font:inherit; padding:4px 10px; border:1px solid var(--line);
-  background:#fff; border-radius:5px; cursor:pointer; min-width:34px; }
-#controls button:hover { background:var(--panel); }
-#scrub { flex:1 1 240px; }
+#controls button, #speed { font:inherit; color:var(--ink); padding:4px 10px;
+  border:1px solid var(--line); background:var(--surface); border-radius:5px; cursor:pointer; }
+#controls button { min-width:34px; }
+#controls button:hover, #speed:hover { background:var(--panel); }
+#controls :focus-visible { outline:2px solid var(--blue); outline-offset:3px; }
+#controls input { accent-color:var(--blue); }
+#scrub { flex:1 1 240px; cursor:pointer; }
 #clock { font-variant-numeric:tabular-nums; min-width:150px; text-align:right; }
 #result { margin-top:6px; font-weight:600; min-height:18px; }
-#tip { position:fixed; pointer-events:none; background:rgba(20,24,30,.92); color:#fff;
-  padding:5px 7px; border-radius:5px; font-size:12px; display:none; white-space:pre;
+#tip { position:fixed; pointer-events:none; background:rgba(14,20,32,.96); color:var(--ink);
+  padding:5px 7px; border:1px solid var(--line); border-radius:5px; font-size:12px; display:none; white-space:pre;
   z-index:5; }
 footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
 .legend { display:flex; gap:10px; flex-wrap:wrap; font-size:11px; color:var(--muted);
   margin-top:6px; }
 .sw { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:3px;
   vertical-align:-1px; }
+.decision-panel { width:300px; flex-shrink:0; min-width:0; padding:12px; border:1px solid var(--line);
+  border-radius:8px; background:var(--surface); }
+.decision-panel h2 { margin:0 0 6px; font-size:14px; }
+.decision-panel .note { color:var(--muted); font-size:11px; margin:0 0 12px; }
+#decision-body { max-height:calc(100vh - 150px); overflow:auto; overflow-wrap:anywhere; }
+.decision-panel h3 { font-size:12px; margin:0 0 10px; color:var(--blue); }
+.decision-panel h3.red { color:var(--red); }
+.decision-step + .decision-step { margin-top:10px; }
+.decision-step .kind { display:block; color:var(--muted); font-size:11px; margin-bottom:4px; }
+.decision-panel pre { font:12px/1.5 ui-monospace,"SF Mono",Consolas,monospace; white-space:pre-wrap;
+  overflow-wrap:anywhere; margin:0; }
+.decision-step pre { padding:8px; background:var(--bg); border-radius:5px; }
+.decision-panel summary { cursor:pointer; color:var(--muted); font-size:12px; padding:4px 0; }
+.decision-panel :focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
+.decision-history { margin-top:14px; border-top:1px solid var(--line); padding-top:8px; }
+.decision-history article { margin-top:12px; padding-top:10px; border-top:1px solid var(--line); }
+.decision-count { color:var(--muted); font-size:11px; margin:0 0 10px; }
+@media (max-width:1100px) {
+  .team-panels, .side { width:150px; }
+  .decision-panel { width:260px; }
+}
+@media (max-width:850px) {
+  main { flex-wrap:wrap; }
+  .team-panels { order:1; width:100%; flex-direction:row; }
+  .side { flex:1; }
+  #boardwrap { flex:1 1 260px; }
+  .decision-panel { flex:1 1 240px; }
+}
 @media (max-width:700px) {
   main { flex-direction:column; align-items:center; padding:8px; }
   #boardwrap { order:-1; flex:0 0 auto; min-width:0; width:100%; }
+  .team-panels { flex-direction:column; }
   .side { width:100%; }
+  .decision-panel { width:100%; flex:0 0 auto; }
+  #decision-body { max-height:420px; }
 }
 </style>
 </head>
@@ -87,7 +123,10 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
 </header>
 <div id="warn"></div>
 <main>
-  <section class="side blue" id="side0"></section>
+  <div class="team-panels">
+    <section class="side blue" id="side0"></section>
+    <section class="side red" id="side1"></section>
+  </div>
   <div id="boardwrap">
     <canvas id="board" width="360" height="640"></canvas>
     <div id="controls">
@@ -115,7 +154,11 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
         area; marker size is NOT the hit radius; yellow ring = stunned</span>
     </div>
   </div>
-  <section class="side red" id="side1"></section>
+  <aside class="decision-panel" aria-labelledby="decisions-title">
+    <h2 id="decisions-title">Agent decisions</h2>
+    <p class="note" id="decisions-note"></p>
+    <div id="decision-body" aria-live="polite" aria-atomic="true"></div>
+  </aside>
 </main>
 <footer id="foot"></footer>
 <div id="tip"></div>
@@ -244,6 +287,44 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
     });
   }
 
+  var decisions = D.agent_decisions || [], decisionIndex = -2;
+  var decisionBody = document.getElementById("decision-body");
+  document.getElementById("decisions-note").textContent = D.decisions_note ||
+    "No synchronized agent decisions were recorded for this replay.";
+  function decisionHTML(d) {
+    var team = d.team === 0 ? "Blue" : "Red";
+    return '<h3 class="' + team.toLowerCase() + '">' + esc(d.label || team) + ' &middot; ' +
+      fmtTime(d.tick) + ' &middot; tick ' + d.tick + '</h3>' + d.steps.map(function (s) {
+        var body = '<pre>' + esc(s.text) + '</pre>';
+        return '<div class="decision-step">' + (s.kind === "thinking" ?
+          '<details><summary>Recorded reasoning</summary>' + body + '</details>' :
+          '<span class="kind">' + esc(s.title) + '</span>' + body) + '</div>';
+      }).join("");
+  }
+  function showDecisions(atTick) {
+    var lo = 0, hi = decisions.length;
+    while (lo < hi) {
+      var mid = (lo + hi) >>> 1;
+      if (decisions[mid].tick <= atTick) lo = mid + 1; else hi = mid;
+    }
+    var index = lo - 1;
+    if (index === decisionIndex) return;
+    decisionIndex = index;
+    if (index < 0) {
+      decisionBody.innerHTML = '<p class="note">' + (decisions.length ?
+        "The first recorded decision appears when playback reaches it." : "No decision text is available.") + '</p>';
+      return;
+    }
+    var start = index;
+    while (start > 0 && decisions[start - 1].tick === decisions[index].tick) start--;
+    decisionBody.innerHTML = '<p class="decision-count">Decision ' + (index + 1) + ' of ' + decisions.length + '</p>' +
+      decisions.slice(start, index + 1).map(decisionHTML).join('<hr>') + (start ?
+        '<details class="decision-history"><summary>Earlier decisions (' + start + ')</summary>' +
+        decisions.slice(0, start).reverse().map(function (d) { return '<article>' + decisionHTML(d) + '</article>'; }).join("") +
+        '</details>' : "");
+    decisionBody.scrollTop = 0;
+  }
+
   function draw() {
     var next = interpBox.checked ? Math.min(cur + 1, N - 1) : cur;
     // Feed recorded transitions through the same animation state as the live stream.
@@ -265,6 +346,7 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
     var f = FR[cur];
     drawDeploys();
     side(0, f); side(1, f);
+    showDecisions(now / TICK_MS);
     scrub.value = String(cur);
     document.getElementById("clock").textContent = "tick " + tick(cur) + "  " +
       fmtTime(tick(cur)) + "  (" + (cur + 1) + "/" + N + ")";
@@ -329,7 +411,7 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
     // A focused control already handles these keys natively (Space clicks a button,
     // arrows move the slider); handling them here too would act twice.
     var tag = e.target && e.target.tagName;
-    if (tag === "BUTTON" || tag === "INPUT" || tag === "SELECT") return;
+    if (tag === "BUTTON" || tag === "INPUT" || tag === "SELECT" || tag === "SUMMARY") return;
     // e.key first: synthetic and some platform events leave e.code empty.
     var k = e.key || e.code;
     if (k === " " || k === "Spacebar" || k === "Space") { e.preventDefault(); toggle(); }

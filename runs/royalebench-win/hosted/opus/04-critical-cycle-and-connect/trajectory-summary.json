@@ -1,0 +1,52 @@
+[
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 0 3.5 11.5"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 0 6.5 10.5"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 0 3.5 25.5"
+    }
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 0 3.5 15"
+    }
+  },
+  {
+    "type": "public_message",
+    "text": "Cannon is down and the Giant is nearly at my 250-HP tower. My Hog is crossing the bridge, so I'm using Log to chip the enemy tower down so the Hog can finish it."
+  },
+  {
+    "type": "tool",
+    "name": "Bash",
+    "input": {
+      "command": "cr play 3 3.5 24"
+    }
+  },
+  {
+    "type": "public_message",
+    "text": "We lost: the Giant destroyed my left princess tower (250 HP) before my Hog could take the enemy tower. Final score was 0 crowns to their 1, so the reward is 0.\n\nWhat happened:\n- **Ice Spirits** froze the Giant briefly, and that play also brought Cannon into my hand.\n- **Cannon** pulled the Giant for about 4 seconds, then it was destroyed.\n- **Fireball** on the enemy left princess tower took it from 450 to 291 HP.\n- **Hog Rider** went in at the left bridge with about 10 seconds left.\n- **Log** went toward the enemy tower to bring it into one-hit range for the Hog. The Giant reached my tower in that same interval, and one hit finished it.\n\nMy mistake was on defense. Cannon alone held the Giant only about 4 seconds, which wasn't long enough for the Hog to connect. Placing Ice Golemite or Skeletons in the Giant's path, or putting Cannon down sooner or further from the Giant, might have bought the extra second or two. The alternative was to Fireball sooner and send the Hog earlier."
+  }
+]

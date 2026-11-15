@@ -1,0 +1,115 @@
+{
+  "id": "05-successive-threats-mirror",
+  "family": 5,
+  "title": "Budget across successive threats (opposite lane)",
+  "difficulty": "medium",
+  "benchmark": "RoyaleBench v4",
+  "version": "4.0.0",
+  "seed": 105,
+  "agent_team": 0,
+  "agent_deck": [
+    "HogRider",
+    "Musketeer",
+    "Cannon",
+    "IceGolemite",
+    "IceSpirits",
+    "Skeletons",
+    "Fireball",
+    "Log"
+  ],
+  "opponent_deck": [
+    "GoblinBarrel",
+    "Princess",
+    "GoblinGang",
+    "Knight",
+    "InfernoTower",
+    "Rocket",
+    "Log",
+    "IceSpirits"
+  ],
+  "player_deck_name": "hog-2.6-cycle",
+  "opponent_deck_name": "log-bait",
+  "csv_win_rate": 52.0,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Keep both princess towers alive for 20 seconds, take at most 450 total tower damage, and spend at most 8 elixir. At elapsed 6.0s the opponent casts its reserved GoblinBarrel on your right tower (14.5, 6.5).",
+  "scenario": {
+    "start_tick": 2700,
+    "horizon_s": 20,
+    "elixir": 5,
+    "opponent_elixir": 3,
+    "order": [
+      "Log",
+      "IceGolemite",
+      "IceSpirits",
+      "Musketeer",
+      "HogRider",
+      "Cannon",
+      "Skeletons",
+      "Fireball"
+    ],
+    "opponent_order": [
+      "GoblinBarrel",
+      "Princess",
+      "GoblinGang",
+      "Knight",
+      "InfernoTower",
+      "Rocket",
+      "Log",
+      "IceSpirits"
+    ],
+    "units": [
+      {
+        "card": "GoblinGang",
+        "team": 1,
+        "x": 14.5,
+        "y": 13
+      }
+    ],
+    "grading": "defend",
+    "tower_hp": [
+      [
+        4824,
+        3052,
+        3052
+      ],
+      [
+        4824,
+        3052,
+        3052
+      ]
+    ],
+    "spend_budget": 8,
+    "damage_limit": 450,
+    "scheduled_attack": {
+      "after_s": 6,
+      "card": "GoblinBarrel",
+      "x": 14.5,
+      "y": 6.5
+    }
+  },
+  "release_gate": "Mirrored reference wins; original-lane placement fails; replay and negative controls pass.",
+  "action_mode": "coordinates-v1",
+  "task_id": "05-successive-threats-mirror",
+  "instruction_sha256": "f0f63ae276178b85bfd65d773028ed31920d9ce5d9a4bca4a87a67b8f9d9b3d3",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
+}

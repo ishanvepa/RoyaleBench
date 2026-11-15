@@ -13,8 +13,8 @@ from rb_evals.benchmarks import load_benchmark, task_problems
 from rb_evals.config import load_config
 
 
-def test_v3_is_default_and_promotes_the_full_released_set():
-    assert load_config().default_dataset == OUT.name == "royalebench-v3"
+def test_v3_promotes_the_full_released_set():
+    assert OUT.name == "royalebench-v3"
     assert len(task_names()) == 11
     assert set(task_names()) == set(json.loads((BASE / "manifest.json").read_text())["runnable_tasks"])
 

@@ -9,7 +9,7 @@ new runs must select `@2` or its current tag to receive the capture. Scenario co
 instructions, reference actions, opponent and scoring are unchanged. Rebuilding future snapshots
 requires the validation gates in the [v1 guide](royalebench_v1.md).
 
-The default [v3 benchmark](royalebench_v3.md) and historical [coordinate pilot](coordinate_harness.md) record raw coordinate attempts,
+The default [v6 benchmark](royalebench_v6.md), separate [win-only benchmark](royalebench_win.md), historical [v3 benchmark](royalebench_v3.md), and [coordinate pilot](coordinate_harness.md) record raw coordinate attempts,
 acceptance/rejection metadata and application ticks. Rejected deployments consume an interval
 as `rejected_action`; exports count them as error waits rather than voluntary waits.
 V3 revision `@2` additionally packages the explicit task identity, instruction hash, rubric,

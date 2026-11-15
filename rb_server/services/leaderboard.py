@@ -12,6 +12,10 @@ from ..schemas.evals import CostsStatus, LeaderboardFilters, LeaderboardOut, Lea
 from .common import family_of, logo_url
 
 
+# Historical custom-harness pilot removed from the leaderboard; keep its job evidence.
+EXCLUDED_ENTRIES = {("openai/Qwen/Qwen3.8-2.4T-A95B", "mini_swe_agent_modal_qwen")}
+
+
 @dataclass
 class Selection:
     runs: list[dict]  # finished Valkyrie run rows that pass the dataset/smoke filter
@@ -31,6 +35,7 @@ def select(ctx: AppContext, dataset: str | None, revision: str | None, harness: 
     datasets = sorted({r["dataset"] for r in visible if r.get("dataset")})
     in_scope = [r for r in visible if not dataset or r.get("dataset") == dataset]
     loaded = R.load_records(ctx.valkyrie, ctx.cache, in_scope, fetch_costs=False)  # results JSON only; costs come later
+    loaded = [r for r in loaded if (r["model"], r["agent"]) not in EXCLUDED_ENTRIES]
     records = [r for r in loaded if (not revision or r["revision"] == revision) and (not harness or r["agent"] == harness)]
     ids = {r["run_id"] for r in records}
     return Selection(

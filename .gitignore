@@ -22,3 +22,8 @@ web/node_modules/
 web/dist/
 web/test-results/
 web/playwright-report/
+data/references/*.mp4
+runs/indicator_scenes.json
+runs/indicator_check/
+.playwright-cli/
+output/playwright/

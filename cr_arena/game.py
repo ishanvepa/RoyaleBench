@@ -15,16 +15,34 @@ from dataclasses import dataclass, field
 
 from royalegym import MatchSetup, RustEngine, deck_ids
 from royalegym.protocol import (
+    STATUS_ABILITY_ACTIVE,
+    STATUS_CHARGED,
+    STATUS_GROUNDED,
+    STATUS_HIDDEN,
+    STATUS_INVISIBLE,
+    STATUS_UNDERGROUND,
     DeployCommand,
     DeployStatus,
     EntityKind,
     Placement,
     card_is_spell,
+    status_of,
     to_own,
 )
 from royalegym.replay import ReplayRecorder
 
 TOWER_NAMES = {0: "king tower", 1: "left princess tower", 2: "right princess tower"}
+# Tower slots are named from their OWNER's side. Seen from across the board the enemy's slot 1
+# ("its left") stands on the observer's right, so enemy towers are named through this map.
+ENEMY_SLOT_FOR_VIEW = {0: 0, 1: 2, 2: 1}  # observer's view slot -> enemy's own slot
+STATUS_WORDS = (
+    (STATUS_UNDERGROUND, "underground"),
+    (STATUS_INVISIBLE, "invisible"),
+    (STATUS_HIDDEN, "hidden"),
+    (STATUS_ABILITY_ACTIVE, "ability active"),
+    (STATUS_CHARGED, "charged"),
+    (STATUS_GROUNDED, "grounded"),
+)
 
 # Placement zones in the player's own frame, in tiles (x, y). Points that are illegal for a
 # given card are snapped to the nearest legal point within SNAP_TILES.
@@ -45,6 +63,7 @@ ENEMY_ZONES: dict[str, tuple[float, float]] = {
 }
 SNAP_TILES = 2.0
 MAX_UNIT_TARGETS = 6  # spell targets placed on enemy units
+MAX_OWN_UNIT_TARGETS = 4  # spell targets placed on own units (Rage, Heal, Freeze around them, ...)
 
 
 @dataclass
@@ -70,9 +89,9 @@ class SeatMemory:
     """What one player has learned so far (only things visible on their screen)."""
 
     seen_uids: set[int] = field(default_factory=set)
-    seen_spell_keys: set[tuple] = field(default_factory=set)
     enemy_cards_seen: list[str] = field(default_factory=list)
     events: list[str] = field(default_factory=list)  # since last decision
+    announced_cards: set[int] = field(default_factory=set)  # enemy plays reported this interval
     history: list[str] = field(default_factory=list)  # own recent moves with results
 
 
@@ -89,6 +108,7 @@ class Game:
         self.card_by_id = {c.card_id: c for c in self.cards}
         self.arena = self.engine.arena()
         self.sub = self.arena.subtile
+        self.rules = self.engine.rules()
         self.decision_ticks = decision_ticks
         self.seed = seed
         decks = [deck_ids(deck_blue, self.cards), deck_ids(deck_red, self.cards)]
@@ -98,6 +118,7 @@ class Game:
         if self.recorder:
             self.recorder.begin(self.engine, seed, self.setup)
         self.mem = [SeatMemory(), SeatMemory()]
+        self._aimed: dict[tuple[int, int], tuple[int, int]] = {}  # (team, card) -> tap, while delayed
         self.decks = [list(deck_blue), list(deck_red)]
         self._update_memory()  # towers are seen from the start
         for m in self.mem:
@@ -130,10 +151,16 @@ class Game:
         return self.state.game_over
 
     def time_left_s(self) -> tuple[float, bool]:
+        """Seconds left in regulation or overtime, never below 0 (a level overtime that has run
+        out is decided by the tower-HP tiebreak, see ``in_tiebreak``)."""
         s = self.state
         if s.tick < s.regular_ticks:
             return (s.regular_ticks - s.tick) * s.tick_ms / 1000, False
-        return (s.regular_ticks + s.overtime_ticks - s.tick) * s.tick_ms / 1000, True
+        return max(0, s.regular_ticks + s.overtime_ticks - s.tick) * s.tick_ms / 1000, True
+
+    def in_tiebreak(self) -> bool:
+        """A level overtime has run out and the tower drain decides the match: no play lands."""
+        return self.rules.plays_stopped(self.state)
 
     def card_name(self, card_id: int) -> str:
         c = self.card_by_id.get(card_id)
@@ -145,6 +172,19 @@ class Game:
         return "SPELL" if card_is_spell(card) else ("BUILDING" if card.placement == Placement.BUILDING else "TROOP")
 
     # ------------------------------------------------------------------ memory / events
+    def _note_play(self, team: int, card_id: int, x: int, y: int) -> None:
+        """An accepted enemy play, as the other player sees it land: every card, including a
+        spell that resolves at once and leaves nothing on the board."""
+        viewer = 1 - team
+        m = self.mem[viewer]
+        card = self.card_by_id.get(card_id)
+        name = self.card_name(card_id)
+        tx, ty = self.own_tiles(viewer, x, y)
+        verb = "cast" if card is not None and self.kind_of(card) == "SPELL" else "deployed"
+        m.events.append(f"enemy {verb} {name} at ({tx:.1f}, {ty:.1f}), {self.lane_of(tx)} lane")
+        self._saw_card(m, name)
+        m.announced_cards.add(card_id)
+
     def _update_memory(self) -> None:
         s = self.state
         for team in (0, 1):
@@ -155,19 +195,11 @@ class Game:
                 m.seen_uids.add(e.uid)
                 if e.team != team and e.kind in (EntityKind.TROOP, EntityKind.BUILDING):
                     name = self.card_name(e.card_id)
+                    self._saw_card(m, name)
+                    if e.card_id in m.announced_cards:
+                        continue  # the play that made it was already reported
                     tx, ty = self.own_tiles(team, e.x, e.y)
-                    m.events.append(f"enemy deployed {name} at ({tx:.1f}, {ty:.1f}), {self.lane_of(tx)} lane")
-                    self._saw_card(m, name)
-            for sp in s.spells:
-                key = (sp.team, sp.card_id, sp.aim_x, sp.aim_y)
-                if key in m.seen_spell_keys:
-                    continue
-                m.seen_spell_keys.add(key)
-                if sp.team != team:
-                    name = self.card_name(sp.card_id)
-                    tx, ty = self.own_tiles(team, sp.aim_x, sp.aim_y)
-                    m.events.append(f"enemy cast {name} aimed at ({tx:.1f}, {ty:.1f})")
-                    self._saw_card(m, name)
+                    m.events.append(f"enemy {name} appeared at ({tx:.1f}, {ty:.1f}), {self.lane_of(tx)} lane")
 
     @staticmethod
     def _saw_card(m: SeatMemory, name: str) -> None:
@@ -180,7 +212,7 @@ class Game:
     def legal_moves(self, team: int) -> list[Move]:
         s = self.state
         moves = [Move(0, -1, "wait", "WAIT", 0, "-", "-")]
-        if s.game_over:
+        if s.game_over or self.in_tiebreak():
             return moves
         p = s.players[team]
         enemy = s.players[1 - team]
@@ -194,18 +226,27 @@ class Game:
         for e in s.entities:
             if e.team != team and e.kind in (EntityKind.KING_TOWER, EntityKind.PRINCESS_TOWER) and e.hp > 0:
                 tx, ty = self.own_tiles(team, e.x, e.y)
-                tower_targets.append((f"enemy {TOWER_NAMES[e.tower_slot]}", tx, ty))
-        unit_targets = []
-        for e in sorted(
-            (e for e in s.entities if e.team != team and e.kind in (EntityKind.TROOP, EntityKind.BUILDING) and e.hp > 0),
-            key=lambda e: self.own_tiles(team, e.x, e.y)[1],  # closest to our side first
-        ):
-            tx, ty = self.own_tiles(team, e.x, e.y)
-            if any(abs(tx - ux) < 1.5 and abs(ty - uy) < 1.5 for _, ux, uy in unit_targets):
-                continue
-            unit_targets.append((f"on enemy {self.card_name(e.card_id)} at ({tx:.1f}, {ty:.1f})", tx, ty))
-            if len(unit_targets) >= MAX_UNIT_TARGETS:
-                break
+                tower_targets.append((f"enemy {self.tower_name(team, e)}", tx, ty))
+
+        def units_of(owner: int, label: str, limit: int, nearest_first: bool) -> list[tuple[str, float, float]]:
+            out: list[tuple[str, float, float]] = []
+            for e in sorted(
+                (e for e in s.entities if e.team == owner and e.kind in (EntityKind.TROOP, EntityKind.BUILDING) and e.hp > 0),
+                key=lambda e: self.own_tiles(team, e.x, e.y)[1] * (1 if nearest_first else -1),
+            ):
+                tx, ty = self.own_tiles(team, e.x, e.y)
+                if any(abs(tx - ux) < 1.5 and abs(ty - uy) < 1.5 for _, ux, uy in out):
+                    continue
+                out.append((f"on {label} {self.card_name(e.card_id)} at ({tx:.1f}, {ty:.1f})", tx, ty))
+                if len(out) >= limit:
+                    break
+            return out
+
+        unit_targets = units_of(1 - team, "enemy", MAX_UNIT_TARGETS, nearest_first=True)  # closest to our side first
+        own_unit_targets = units_of(team, "your", MAX_OWN_UNIT_TARGETS, nearest_first=False)  # most advanced first
+        # A spell may go anywhere: on units (either side), on towers, or at fixed points for
+        # predictive casts (a bridge before a push arrives, a lane on the enemy side).
+        spell_targets = unit_targets + tower_targets + own_unit_targets + enemy_side + base_targets
 
         idx = 1
         for slot, cid in enumerate(p.hand):
@@ -218,7 +259,7 @@ class Game:
                 continue
             kind = self.kind_of(card)
             if kind == "SPELL":
-                targets = unit_targets + tower_targets
+                targets = spell_targets
             else:
                 targets = list(base_targets)
                 if enemy_left_down or enemy_right_down:
@@ -264,12 +305,20 @@ class Game:
         left, ot = self.time_left_s()
         mins, secs = divmod(int(left), 60)
         mult = f", elixir x{s.elixir_rate}" if s.elixir_rate > 1 else ""
+        if self.in_tiebreak():
+            phase = " (TIEBREAK - no more plays; towers drain, the side whose weakest tower has less HP loses)"
+        elif ot:
+            phase = " (OVERTIME - next tower destroyed wins)"
+        else:
+            phase = ""
+        enemy_slots = [ENEMY_SLOT_FOR_VIEW[i] for i in range(3)]
         lines = [
-            f"TIME LEFT: {mins}:{secs:02d}{' (OVERTIME - next tower destroyed wins)' if ot else ''}{mult}",
+            f"TIME LEFT: {mins}:{secs:02d}{phase}{mult}",
             f"CROWNS: you {me.crowns} - enemy {en.crowns}",
             f"YOUR ELIXIR: {me.elixir_milli / 1000:.1f} / 10",
             "YOUR TOWERS: " + ", ".join(f"{TOWER_NAMES[i]} {me.tower_hp[i]}/{me.tower_max_hp[i]}" for i in range(3)),
-            "ENEMY TOWERS: " + ", ".join(f"{TOWER_NAMES[i]} {en.tower_hp[i]}/{en.tower_max_hp[i]}" for i in range(3)),
+            "ENEMY TOWERS (left/right as you see them): "
+            + ", ".join(f"{TOWER_NAMES[i]} {en.tower_hp[j]}/{en.tower_max_hp[j]}" for i, j in enumerate(enemy_slots)),
         ]
         hand = []
         for slot, cid in enumerate(me.hand):
@@ -287,9 +336,10 @@ class Game:
                 if e.team != owner or e.kind not in (EntityKind.TROOP, EntityKind.BUILDING) or e.hp <= 0:
                     continue
                 tx, ty = self.own_tiles(team, e.x, e.y)
-                tag = " (flying)" if e.flying else ""
-                dep = " (deploying)" if e.deploy_ticks > 0 else ""
-                out.append(f"  - {self.card_name(e.card_id)}{tag}{dep} hp {e.hp}/{e.max_hp} at ({tx:.1f}, {ty:.1f}) {self.lane_of(tx)} lane")
+                tags = self.unit_tags(e)
+                tag = f" ({', '.join(tags)})" if tags else ""
+                shield = f" + shield {e.shield}" if e.shield > 0 else ""
+                out.append(f"  - {self.card_name(e.card_id)}{tag} hp {e.hp}/{e.max_hp}{shield} at ({tx:.1f}, {ty:.1f}) {self.lane_of(tx)} lane")
             return out
 
         mine, theirs = unit_lines(team), unit_lines(1 - team)
@@ -301,6 +351,29 @@ class Game:
             lines.append("YOUR LAST MOVES:\n" + "\n".join(f"  - {h}" for h in mem.history[-5:]))
         lines.append("LEGAL MOVES:\n" + "\n".join(m.label() for m in moves))
         return "\n".join(lines)
+
+    def tower_name(self, team: int, e) -> str:
+        """A crown tower named from ``team``'s side of the board."""
+        if e.tower_slot == 0:
+            return TOWER_NAMES[0]
+        tx, _ = self.own_tiles(team, e.x, e.y)
+        return TOWER_NAMES[1] if tx < 9 else TOWER_NAMES[2]
+
+    def unit_tags(self, e) -> list[str]:
+        """What a player sees on a unit besides its health: flying, deploying, status effects."""
+        tags = []
+        if e.flying:
+            tags.append("flying")
+        if e.deploy_ticks > 0:
+            tags.append("deploying")
+        if e.stun_ticks > 0:
+            tags.append("stunned")
+        flags = status_of(e)
+        if flags:
+            tags += [word for bit, word in STATUS_WORDS if flags & bit]
+        if e.charge > 0 and not (flags and flags & STATUS_CHARGED):
+            tags.append(f"charging {e.charge // 10}%")
+        return tags
 
     def deck_summary(self, team: int) -> str:
         out = []
@@ -342,7 +415,19 @@ class Game:
                         f"played {mv.card} @ {mv.target}" if ok
                         else f"tried {mv.card} @ {mv.target} -> refused ({DeployStatus(r.status).name})"
                     )
+                    if ok and not self.command_delay_ticks:
+                        self._note_play(r.team, r.card_id, r.x, r.y)
+                    elif ok:
+                        self._aimed[(r.team, r.card_id)] = (r.x, r.y)
                 first = False
+            if self.command_delay_ticks:  # a delayed play is seen when it lands
+                for _t, team, kind, card, reason in (self.engine.step_commands_run() or []):
+                    aim = self._aimed.pop((team, card), None)
+                    if kind == "deploy" and reason == 0 and aim is not None:
+                        self._note_play(team, card, *aim)
+            self._update_memory()  # every tick, so short-lived units are seen too
+        for m in self.mem:
+            m.announced_cards.clear()
         left, _ = self.time_left_s()
         for team in (0, 1):
             if results_text[team] != "wait":  # history = actual plays/refusals, not the many waits

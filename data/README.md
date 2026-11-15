@@ -49,3 +49,25 @@ Schema is in `cr_arena/db.py` (`SCHEMA`). Notes for a Postgres port:
   (-> `ON CONFLICT DO NOTHING`), `PRAGMA` calls, `cursor.lastrowid` (-> `RETURNING id`), and one
   `ALTER TABLE decisions ADD COLUMN cost_usd` migration.
 - Size: ~75 MB uncompressed; `decisions.state` + `decisions.raw` are ~46 MB of it. Supabase free tier is 500 MB.
+
+## Visual reference
+
+The local graphics reference is `data/references/arena-1-PD6QCK7GzA8.mp4`,
+downloaded from [JustAction, “terrorizing arena 1 players”](https://www.youtube.com/watch?v=PD6QCK7GzA8)
+(published 2025-11-22). It is a 14:20, 1920×1080, 60 fps H.264/AAC video.
+SHA-256: `b8eb9da25d3dcbcc94d9dfed278d70329d1c1ee0f0759d6ae7c36ac9541a0a55`.
+The 145 MB video is git-ignored; the source link and checksum remain in the repository.
+
+The tower artwork pass sampled it with ffmpeg at 00:30.000, 01:30.000,
+05:10.000, 05:12.000 and 05:15.000. Timestamped crops, code-inspection provenance,
+before/after comparisons and remaining differences are recorded in
+[Battle graphics](../docs/rendering.md#tower-reference-and-scope). The video was
+inspected visually; REA inspected the renderer JavaScript, not the video.
+
+To restore the same local reference:
+
+```bash
+uvx --from yt-dlp yt-dlp --js-runtimes node --no-playlist -f '299+140-12' \
+  --merge-output-format mp4 -o 'data/references/arena-1-PD6QCK7GzA8.%(ext)s' \
+  'https://www.youtube.com/watch?v=PD6QCK7GzA8'
+```

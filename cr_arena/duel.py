@@ -38,7 +38,7 @@ class _Agent:
         self.kind, opts = _parse(spec)
         self.team = team
         if self.kind == "planner":
-            from .planner_bot import Planner
+            from .bots.planner import Planner
 
             opts = {k: (bool(v) if k == "two_ply" else v) for k, v in opts.items()}
             self.bot = Planner(decks, seed, team, delay=delay, **opts)

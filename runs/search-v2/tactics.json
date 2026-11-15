@@ -1,0 +1,2324 @@
+{
+  "urgent-defense": {
+    "setup": [
+      [
+        "HogRider",
+        1,
+        3.5,
+        10.5
+      ]
+    ],
+    "outcomes": {
+      "v2": {
+        "move": "4. Musketeer (4 elixir, troop) @ in front of right tower",
+        "tower_damage_taken": 2219,
+        "tower_damage_dealt": 868,
+        "tower_hp": [
+          [
+            4824,
+            833,
+            3052
+          ],
+          [
+            4824,
+            2184,
+            3052
+          ]
+        ]
+      },
+      "v1": {
+        "move": "19. Minions (3 elixir, troop) @ in front of left tower",
+        "tower_damage_taken": 951,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            2101,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      },
+      "wait": {
+        "move": "0. wait (save elixir)",
+        "tower_damage_taken": 2219,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            833,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      }
+    },
+    "v2_search": {
+      "source_tick": 400,
+      "information_mode": "omniscient",
+      "action_mode": "numbered",
+      "evaluator": "search-v1",
+      "continuation_policy": "defensive",
+      "selected": 4,
+      "legal_candidates": 29,
+      "unique_candidates": 29,
+      "searched_candidates": 29,
+      "reservations": {
+        "0": "wait",
+        "19": "tower-threat",
+        "25": "unit-spell",
+        "12": "card-diversity",
+        "2": "card-diversity"
+      },
+      "scenarios": [
+        {
+          "phase": "screen",
+          "horizon_ticks": 120,
+          "scenarios": [
+            [
+              "aggressive",
+              8031526047735046323
+            ],
+            [
+              "defensive",
+              3408633937529229738
+            ],
+            [
+              "patient",
+              1046898187654288365
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            3,
+            1,
+            8,
+            7,
+            6,
+            4,
+            2,
+            13,
+            11,
+            9,
+            16,
+            15,
+            14,
+            12,
+            10,
+            21,
+            19,
+            17,
+            24,
+            23,
+            22,
+            20,
+            18,
+            25,
+            28,
+            26,
+            27
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              8208299624213697219
+            ],
+            [
+              "defensive",
+              28856486596503921
+            ],
+            [
+              "patient",
+              5683769674923538829
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            3,
+            1,
+            7,
+            4,
+            2,
+            12,
+            19,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              7553228737048762911
+            ],
+            [
+              "defensive",
+              6628290999711883190
+            ],
+            [
+              "patient",
+              1134263823023635744
+            ]
+          ],
+          "candidates": [
+            0,
+            4,
+            2,
+            12,
+            19,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              2049458575895002308
+            ],
+            [
+              "defensive",
+              944188509629658648
+            ],
+            [
+              "patient",
+              414025396576446099
+            ]
+          ],
+          "candidates": [
+            0,
+            4,
+            2,
+            12,
+            19,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              2954476861398334222
+            ],
+            [
+              "defensive",
+              2992951086254711367
+            ],
+            [
+              "patient",
+              5542150105820675967
+            ]
+          ],
+          "candidates": [
+            0,
+            4,
+            2,
+            12,
+            19,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              1956023809403012432
+            ],
+            [
+              "defensive",
+              3947166640380626113
+            ],
+            [
+              "patient",
+              3474243890500576693
+            ]
+          ],
+          "candidates": [
+            0,
+            4,
+            2,
+            12,
+            19,
+            25
+          ]
+        }
+      ],
+      "rollouts": 189,
+      "simulated_ticks": 59400,
+      "budget_ticks": 60000,
+      "max_rollouts": 240,
+      "budget_exhausted": true,
+      "latency_s": 3.938203749999957,
+      "wait_score": 430.0399388575636,
+      "candidates": [
+        {
+          "index": 0,
+          "label": "0. wait (save elixir)",
+          "screen_mean": 70.77001803950535,
+          "samples": 15,
+          "mean": 430.0399388575636,
+          "worst": 384.48523277679635,
+          "per_policy": {
+            "aggressive": 439.1508800737171,
+            "defensive": 425.4844682494869,
+            "patient": 425.4844682494869
+          }
+        },
+        {
+          "index": 5,
+          "label": "5. Musketeer (4 elixir, troop) @ behind left tower",
+          "screen_mean": 169.56094364351242,
+          "samples": 3,
+          "mean": 247.64429074043437,
+          "worst": 247.64429074043437,
+          "per_policy": {
+            "aggressive": 247.64429074043437,
+            "defensive": 247.64429074043437,
+            "patient": 247.64429074043437
+          }
+        },
+        {
+          "index": 3,
+          "label": "3. Musketeer (4 elixir, troop) @ in front of left tower",
+          "screen_mean": 169.56094364351242,
+          "samples": 3,
+          "mean": 766.5405280017616,
+          "worst": 753.0233061712919,
+          "per_policy": {
+            "aggressive": 753.0233061712919,
+            "defensive": 753.0233061712919,
+            "patient": 793.5749716627009
+          }
+        },
+        {
+          "index": 1,
+          "label": "1. Musketeer (4 elixir, troop) @ left bridge",
+          "screen_mean": 169.56094364351242,
+          "samples": 3,
+          "mean": 484.5894560655329,
+          "worst": 424.6056453555045,
+          "per_policy": {
+            "aggressive": 514.5813614205471,
+            "defensive": 514.5813614205471,
+            "patient": 424.6056453555045
+          }
+        },
+        {
+          "index": 8,
+          "label": "8. Musketeer (4 elixir, troop) @ behind king tower",
+          "screen_mean": 155.58147752683595,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 7,
+          "label": "7. Musketeer (4 elixir, troop) @ center (between towers)",
+          "screen_mean": 169.56094364351242,
+          "samples": 3,
+          "mean": 250.61359621630865,
+          "worst": 155.57011795543906,
+          "per_policy": {
+            "aggressive": 298.13533534674343,
+            "defensive": 298.13533534674343,
+            "patient": 155.57011795543906
+          }
+        },
+        {
+          "index": 6,
+          "label": "6. Musketeer (4 elixir, troop) @ behind right tower",
+          "screen_mean": 155.58147752683595,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 4,
+          "label": "4. Musketeer (4 elixir, troop) @ in front of right tower",
+          "screen_mean": 158.64597752683596,
+          "samples": 15,
+          "mean": 816.3189902530888,
+          "worst": 816.3189902530888,
+          "per_policy": {
+            "aggressive": 816.3189902530888,
+            "defensive": 816.3189902530888,
+            "patient": 816.3189902530888
+          }
+        },
+        {
+          "index": 2,
+          "label": "2. Musketeer (4 elixir, troop) @ right bridge",
+          "screen_mean": 174.63198906789125,
+          "samples": 15,
+          "mean": 112.94843010997783,
+          "worst": 72.94843010997783,
+          "per_policy": {
+            "aggressive": 112.94843010997783,
+            "defensive": 112.94843010997783,
+            "patient": 112.94843010997783
+          }
+        },
+        {
+          "index": 13,
+          "label": "13. Knight (3 elixir, troop) @ behind left tower",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 11,
+          "label": "11. Knight (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 9,
+          "label": "9. Knight (3 elixir, troop) @ left bridge",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 16,
+          "label": "16. Knight (3 elixir, troop) @ behind king tower",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 15,
+          "label": "15. Knight (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 14,
+          "label": "14. Knight (3 elixir, troop) @ behind right tower",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 12,
+          "label": "12. Knight (3 elixir, troop) @ in front of right tower",
+          "screen_mean": 151.85931864351244,
+          "samples": 15,
+          "mean": 465.1472642098478,
+          "worst": 431.9897003000675,
+          "per_policy": {
+            "aggressive": 463.85061515420904,
+            "defensive": 465.78726800578727,
+            "patient": 465.80390946954714
+          }
+        },
+        {
+          "index": 10,
+          "label": "10. Knight (3 elixir, troop) @ right bridge",
+          "screen_mean": 148.22353396061322,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 21,
+          "label": "21. Minions (3 elixir, troop) @ behind left tower",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 19,
+          "label": "19. Minions (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 243.04062909567497,
+          "samples": 15,
+          "mean": 750.297078585084,
+          "worst": 729.8470028766727,
+          "per_policy": {
+            "aggressive": 750.297078585084,
+            "defensive": 750.297078585084,
+            "patient": 750.297078585084
+          }
+        },
+        {
+          "index": 17,
+          "label": "17. Minions (3 elixir, troop) @ left bridge",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 24,
+          "label": "24. Minions (3 elixir, troop) @ behind king tower",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 23,
+          "label": "23. Minions (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 149.56094364351242,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 22,
+          "label": "22. Minions (3 elixir, troop) @ behind right tower",
+          "screen_mean": 135.58147752683595,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 20,
+          "label": "20. Minions (3 elixir, troop) @ in front of right tower",
+          "screen_mean": 127.39148486379247,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 18,
+          "label": "18. Minions (3 elixir, troop) @ right bridge",
+          "screen_mean": 83.58410714640115,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 25,
+          "label": "25. Fireball (4 elixir, spell) @ on enemy HogRider at (3.5, 10.5)",
+          "screen_mean": 83.04062909567497,
+          "samples": 15,
+          "mean": -79.42917090432502,
+          "worst": -127.54662090432501,
+          "per_policy": {
+            "aggressive": -79.42917090432502,
+            "defensive": -71.31172090432501,
+            "patient": -87.54662090432501
+          }
+        },
+        {
+          "index": 28,
+          "label": "28. Fireball (4 elixir, spell) @ enemy right princess tower",
+          "screen_mean": 22.468764551737593,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 26,
+          "label": "26. Fireball (4 elixir, spell) @ enemy king tower",
+          "screen_mean": 25.021776034298654,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 27,
+          "label": "27. Fireball (4 elixir, spell) @ enemy left princess tower",
+          "screen_mean": 22.468764551737593,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        }
+      ]
+    }
+  },
+  "anti-air": {
+    "setup": [
+      [
+        "Balloon",
+        1,
+        3.5,
+        11.5
+      ]
+    ],
+    "outcomes": {
+      "v2": {
+        "move": "19. Minions (3 elixir, troop) @ in front of left tower",
+        "tower_damage_taken": 880,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            2172,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      },
+      "v1": {
+        "move": "19. Minions (3 elixir, troop) @ in front of left tower",
+        "tower_damage_taken": 880,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            2172,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      },
+      "wait": {
+        "move": "0. wait (save elixir)",
+        "tower_damage_taken": 3052,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            0,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      }
+    },
+    "v2_search": {
+      "source_tick": 400,
+      "information_mode": "omniscient",
+      "action_mode": "numbered",
+      "evaluator": "search-v1",
+      "continuation_policy": "defensive",
+      "selected": 19,
+      "legal_candidates": 29,
+      "unique_candidates": 29,
+      "searched_candidates": 29,
+      "reservations": {
+        "0": "wait",
+        "19": "tower-threat",
+        "5": "air-response",
+        "25": "unit-spell",
+        "11": "card-diversity"
+      },
+      "scenarios": [
+        {
+          "phase": "screen",
+          "horizon_ticks": 120,
+          "scenarios": [
+            [
+              "aggressive",
+              5024691583718644860
+            ],
+            [
+              "defensive",
+              1314000793632467067
+            ],
+            [
+              "patient",
+              3945308215879461827
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            3,
+            1,
+            8,
+            7,
+            6,
+            4,
+            2,
+            13,
+            11,
+            9,
+            16,
+            15,
+            14,
+            12,
+            10,
+            21,
+            19,
+            17,
+            24,
+            23,
+            22,
+            20,
+            18,
+            25,
+            28,
+            26,
+            27
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              7978843654646765632
+            ],
+            [
+              "defensive",
+              5516947278257402382
+            ],
+            [
+              "patient",
+              4933582998133077699
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            3,
+            1,
+            7,
+            11,
+            21,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              1355620381707262194
+            ],
+            [
+              "defensive",
+              4838682769776040360
+            ],
+            [
+              "patient",
+              120228593357701967
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            11,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              4441719104983302211
+            ],
+            [
+              "defensive",
+              7824111799365119873
+            ],
+            [
+              "patient",
+              5496670968230457876
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            11,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              561421637386711239
+            ],
+            [
+              "defensive",
+              7941079835705547488
+            ],
+            [
+              "patient",
+              3450909262891976065
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            11,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              8206572345186650299
+            ],
+            [
+              "defensive",
+              6781336813420831728
+            ],
+            [
+              "patient",
+              2482943389197866999
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            11,
+            19,
+            17,
+            25
+          ]
+        }
+      ],
+      "rollouts": 189,
+      "simulated_ticks": 59400,
+      "budget_ticks": 60000,
+      "max_rollouts": 240,
+      "budget_exhausted": true,
+      "latency_s": 2.9587759579990234,
+      "wait_score": 266.2846940890787,
+      "candidates": [
+        {
+          "index": 0,
+          "label": "0. wait (save elixir)",
+          "screen_mean": -128.39236321423095,
+          "samples": 15,
+          "mean": 266.2846940890787,
+          "worst": 147.02700304508033,
+          "per_policy": {
+            "aggressive": 325.9135396110779,
+            "defensive": 266.2846940890787,
+            "patient": 206.65584856707952
+          }
+        },
+        {
+          "index": 5,
+          "label": "5. Musketeer (4 elixir, troop) @ behind left tower",
+          "screen_mean": 72.54259501965925,
+          "samples": 15,
+          "mean": -184.45391000436865,
+          "worst": -211.12057667103534,
+          "per_policy": {
+            "aggressive": -211.12057667103537,
+            "defensive": -151.12057667103534,
+            "patient": -191.12057667103534
+          }
+        },
+        {
+          "index": 3,
+          "label": "3. Musketeer (4 elixir, troop) @ in front of left tower",
+          "screen_mean": 72.54259501965925,
+          "samples": 3,
+          "mean": 2608.251383596941,
+          "worst": 2608.251383596941,
+          "per_policy": {
+            "aggressive": 2608.251383596941,
+            "defensive": 2608.251383596941,
+            "patient": 2608.251383596941
+          }
+        },
+        {
+          "index": 1,
+          "label": "1. Musketeer (4 elixir, troop) @ left bridge",
+          "screen_mean": 72.54259501965925,
+          "samples": 3,
+          "mean": 113.45037703952751,
+          "worst": 80.11704370619417,
+          "per_policy": {
+            "aggressive": 80.11704370619417,
+            "defensive": 180.11704370619418,
+            "patient": 80.11704370619417
+          }
+        },
+        {
+          "index": 8,
+          "label": "8. Musketeer (4 elixir, troop) @ behind king tower",
+          "screen_mean": -47.43297292485147,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 7,
+          "label": "7. Musketeer (4 elixir, troop) @ center (between towers)",
+          "screen_mean": 72.54259501965925,
+          "samples": 3,
+          "mean": 53.833551769331734,
+          "worst": 53.833551769331734,
+          "per_policy": {
+            "aggressive": 53.833551769331734,
+            "defensive": 53.833551769331734,
+            "patient": 53.833551769331734
+          }
+        },
+        {
+          "index": 6,
+          "label": "6. Musketeer (4 elixir, troop) @ behind right tower",
+          "screen_mean": -47.43297292485147,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 4,
+          "label": "4. Musketeer (4 elixir, troop) @ in front of right tower",
+          "screen_mean": -44.36847292485146,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 2,
+          "label": "2. Musketeer (4 elixir, troop) @ right bridge",
+          "screen_mean": -28.382461383796226,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 13,
+          "label": "13. Knight (3 elixir, troop) @ behind left tower",
+          "screen_mean": 44.35848515987402,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 11,
+          "label": "11. Knight (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 46.65686015987404,
+          "samples": 15,
+          "mean": 2624.989773971153,
+          "worst": 2624.989773971153,
+          "per_policy": {
+            "aggressive": 2624.989773971153,
+            "defensive": 2624.989773971153,
+            "patient": 2624.989773971153
+          }
+        },
+        {
+          "index": 9,
+          "label": "9. Knight (3 elixir, troop) @ left bridge",
+          "screen_mean": 43.02107547697483,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 16,
+          "label": "16. Knight (3 elixir, troop) @ behind king tower",
+          "screen_mean": 44.35848515987402,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 15,
+          "label": "15. Knight (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 44.35848515987402,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 14,
+          "label": "14. Knight (3 elixir, troop) @ behind right tower",
+          "screen_mean": 44.35848515987402,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 12,
+          "label": "12. Knight (3 elixir, troop) @ in front of right tower",
+          "screen_mean": 46.65686015987404,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 10,
+          "label": "10. Knight (3 elixir, troop) @ right bridge",
+          "screen_mean": 43.02107547697483,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 21,
+          "label": "21. Minions (3 elixir, troop) @ behind left tower",
+          "screen_mean": 52.542595019659245,
+          "samples": 3,
+          "mean": -90.4953998212148,
+          "worst": -175.06553079947568,
+          "per_policy": {
+            "aggressive": -48.212425364693054,
+            "defensive": -48.208243299475676,
+            "patient": -175.06553079947568
+          }
+        },
+        {
+          "index": 19,
+          "label": "19. Minions (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 241.27129750982962,
+          "samples": 15,
+          "mean": 2922.678465078233,
+          "worst": 2849.6295100217394,
+          "per_policy": {
+            "aggressive": 2959.202942606479,
+            "defensive": 2922.678465078233,
+            "patient": 2886.153987549986
+          }
+        },
+        {
+          "index": 17,
+          "label": "17. Minions (3 elixir, troop) @ left bridge",
+          "screen_mean": 52.542595019659245,
+          "samples": 15,
+          "mean": 2762.6879900641065,
+          "worst": 2688.8334565858454,
+          "per_policy": {
+            "aggressive": 2799.6152568032367,
+            "defensive": 2762.687990064106,
+            "patient": 2725.7607233249755
+          }
+        },
+        {
+          "index": 24,
+          "label": "24. Minions (3 elixir, troop) @ behind king tower",
+          "screen_mean": -48.801063244063926,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 23,
+          "label": "23. Minions (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 29.459325479086488,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 22,
+          "label": "22. Minions (3 elixir, troop) @ behind right tower",
+          "screen_mean": -67.43297292485147,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 20,
+          "label": "20. Minions (3 elixir, troop) @ in front of right tower",
+          "screen_mean": -75.62296558789495,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 18,
+          "label": "18. Minions (3 elixir, troop) @ right bridge",
+          "screen_mean": -119.43034330528627,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 25,
+          "label": "25. Fireball (4 elixir, spell) @ on enemy Balloon at (3.5, 11.5)",
+          "screen_mean": -107.63147456566293,
+          "samples": 15,
+          "mean": -367.090564247488,
+          "worst": -393.7572309141546,
+          "per_policy": {
+            "aggressive": -393.7572309141546,
+            "defensive": -333.7572309141546,
+            "patient": -373.7572309141546
+          }
+        },
+        {
+          "index": 28,
+          "label": "28. Fireball (4 elixir, spell) @ enemy right princess tower",
+          "screen_mean": -180.54568589994983,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 26,
+          "label": "26. Fireball (4 elixir, spell) @ enemy king tower",
+          "screen_mean": -177.9926744173888,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 27,
+          "label": "27. Fireball (4 elixir, spell) @ enemy left princess tower",
+          "screen_mean": -180.54568589994983,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        }
+      ]
+    }
+  },
+  "spell-cluster": {
+    "setup": [
+      [
+        "Minions",
+        1,
+        3.5,
+        10
+      ],
+      [
+        "Minions",
+        1,
+        4,
+        10
+      ],
+      [
+        "Minions",
+        1,
+        3,
+        10
+      ]
+    ],
+    "outcomes": {
+      "v2": {
+        "move": "19. Minions (3 elixir, troop) @ in front of left tower",
+        "tower_damage_taken": 0,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            3052,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      },
+      "v1": {
+        "move": "19. Minions (3 elixir, troop) @ in front of left tower",
+        "tower_damage_taken": 0,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            3052,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      },
+      "wait": {
+        "move": "0. wait (save elixir)",
+        "tower_damage_taken": 1284,
+        "tower_damage_dealt": 0,
+        "tower_hp": [
+          [
+            4824,
+            1768,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            3052
+          ]
+        ]
+      }
+    },
+    "v2_search": {
+      "source_tick": 400,
+      "information_mode": "omniscient",
+      "action_mode": "numbered",
+      "evaluator": "search-v1",
+      "continuation_policy": "defensive",
+      "selected": 19,
+      "legal_candidates": 29,
+      "unique_candidates": 29,
+      "searched_candidates": 29,
+      "reservations": {
+        "0": "wait",
+        "19": "tower-threat",
+        "3": "air-response",
+        "25": "unit-spell",
+        "11": "card-diversity"
+      },
+      "scenarios": [
+        {
+          "phase": "screen",
+          "horizon_ticks": 120,
+          "scenarios": [
+            [
+              "aggressive",
+              3815809178417752288
+            ],
+            [
+              "defensive",
+              8604873245610633734
+            ],
+            [
+              "patient",
+              5556899500283278262
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            3,
+            1,
+            8,
+            7,
+            6,
+            4,
+            2,
+            13,
+            11,
+            9,
+            16,
+            15,
+            14,
+            12,
+            10,
+            21,
+            19,
+            17,
+            24,
+            23,
+            22,
+            20,
+            18,
+            28,
+            25,
+            26,
+            27
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              7390491035790797779
+            ],
+            [
+              "defensive",
+              1507347270432118580
+            ],
+            [
+              "patient",
+              6173482606391685310
+            ]
+          ],
+          "candidates": [
+            0,
+            3,
+            1,
+            4,
+            2,
+            11,
+            9,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              1059743924192958938
+            ],
+            [
+              "defensive",
+              3207353943804777987
+            ],
+            [
+              "patient",
+              6947894927360780560
+            ]
+          ],
+          "candidates": [
+            0,
+            3,
+            4,
+            11,
+            19,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              639097455684214676
+            ],
+            [
+              "defensive",
+              7599588191277957
+            ],
+            [
+              "patient",
+              6673184158249295604
+            ]
+          ],
+          "candidates": [
+            0,
+            3,
+            4,
+            11,
+            19,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              4132045224464276335
+            ],
+            [
+              "defensive",
+              6934060946233752693
+            ],
+            [
+              "patient",
+              5730254107674711520
+            ]
+          ],
+          "candidates": [
+            0,
+            3,
+            4,
+            11,
+            19,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              8794380166309705859
+            ],
+            [
+              "defensive",
+              3199148488404782126
+            ],
+            [
+              "patient",
+              9135265706532346773
+            ]
+          ],
+          "candidates": [
+            0,
+            3,
+            4,
+            11,
+            19,
+            25
+          ]
+        }
+      ],
+      "rollouts": 189,
+      "simulated_ticks": 59400,
+      "budget_ticks": 60000,
+      "max_rollouts": 240,
+      "budget_exhausted": true,
+      "latency_s": 3.343422958001611,
+      "wait_score": 65.2643479775182,
+      "candidates": [
+        {
+          "index": 0,
+          "label": "0. wait (save elixir)",
+          "screen_mean": -57.16847968545221,
+          "samples": 15,
+          "mean": 65.2643479775182,
+          "worst": -40.869209587165955,
+          "per_policy": {
+            "aggressive": 30.43602130686127,
+            "defensive": 94.43602130686126,
+            "patient": 70.92100131883205
+          }
+        },
+        {
+          "index": 5,
+          "label": "5. Musketeer (4 elixir, troop) @ behind left tower",
+          "screen_mean": 40.68152031454778,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 3,
+          "label": "3. Musketeer (4 elixir, troop) @ in front of left tower",
+          "screen_mean": 261.8204983012457,
+          "samples": 15,
+          "mean": 257.32468043976866,
+          "worst": 215.1376146788991,
+          "per_policy": {
+            "aggressive": 265.7620935919426,
+            "defensive": 240.44985413542082,
+            "patient": 265.7620935919426
+          }
+        },
+        {
+          "index": 1,
+          "label": "1. Musketeer (4 elixir, troop) @ left bridge",
+          "screen_mean": 56.78868783799262,
+          "samples": 3,
+          "mean": 182.42682394058542,
+          "worst": 115.76015727391875,
+          "per_policy": {
+            "aggressive": 115.76015727391875,
+            "defensive": 215.76015727391876,
+            "patient": 215.76015727391876
+          }
+        },
+        {
+          "index": 8,
+          "label": "8. Musketeer (4 elixir, troop) @ behind king tower",
+          "screen_mean": 40.68152031454778,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 7,
+          "label": "7. Musketeer (4 elixir, troop) @ center (between towers)",
+          "screen_mean": 40.68152031454778,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 6,
+          "label": "6. Musketeer (4 elixir, troop) @ behind right tower",
+          "screen_mean": 40.68152031454778,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 4,
+          "label": "4. Musketeer (4 elixir, troop) @ in front of right tower",
+          "screen_mean": 43.74602031454779,
+          "samples": 15,
+          "mean": 333.23611180783456,
+          "worst": 255.01772463260446,
+          "per_policy": {
+            "aggressive": 316.1423897174323,
+            "defensive": 332.1423897174323,
+            "patient": 351.42355598863924
+          }
+        },
+        {
+          "index": 2,
+          "label": "2. Musketeer (4 elixir, troop) @ right bridge",
+          "screen_mean": 59.73203185560311,
+          "samples": 3,
+          "mean": 247.30231542158143,
+          "worst": 180.6356487549148,
+          "per_policy": {
+            "aggressive": 180.6356487549148,
+            "defensive": 280.63564875491477,
+            "patient": 280.63564875491477
+          }
+        },
+        {
+          "index": 13,
+          "label": "13. Knight (3 elixir, troop) @ behind left tower",
+          "screen_mean": 20.681520314547782,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 11,
+          "label": "11. Knight (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 162.38582870894678,
+          "samples": 15,
+          "mean": 187.26540316055954,
+          "worst": 108.27063106796116,
+          "per_policy": {
+            "aggressive": 172.27063106796118,
+            "defensive": 188.27063106796118,
+            "patient": 201.25494734575636
+          }
+        },
+        {
+          "index": 9,
+          "label": "9. Knight (3 elixir, troop) @ left bridge",
+          "screen_mean": 41.65823892293864,
+          "samples": 3,
+          "mean": 260.0378764204138,
+          "worst": 260.0378764204138,
+          "per_policy": {
+            "aggressive": 260.0378764204138,
+            "defensive": 260.0378764204138,
+            "patient": 260.0378764204138
+          }
+        },
+        {
+          "index": 16,
+          "label": "16. Knight (3 elixir, troop) @ behind king tower",
+          "screen_mean": 20.681520314547782,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 15,
+          "label": "15. Knight (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 20.681520314547782,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 14,
+          "label": "14. Knight (3 elixir, troop) @ behind right tower",
+          "screen_mean": 20.681520314547782,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 12,
+          "label": "12. Knight (3 elixir, troop) @ in front of right tower",
+          "screen_mean": 22.979895314547804,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 10,
+          "label": "10. Knight (3 elixir, troop) @ right bridge",
+          "screen_mean": 19.34411063164859,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 21,
+          "label": "21. Minions (3 elixir, troop) @ behind left tower",
+          "screen_mean": 20.681520314547782,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 19,
+          "label": "19. Minions (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 298.1304347826087,
+          "samples": 15,
+          "mean": 365.5324462026327,
+          "worst": 306.19266055045875,
+          "per_policy": {
+            "aggressive": 382.48675033306745,
+            "defensive": 357.0555729417631,
+            "patient": 357.05501533306744
+          }
+        },
+        {
+          "index": 17,
+          "label": "17. Minions (3 elixir, troop) @ left bridge",
+          "screen_mean": 155.58312786697246,
+          "samples": 3,
+          "mean": 166.96963236652226,
+          "worst": 166.6966408706158,
+          "per_policy": {
+            "aggressive": 167.1061281144755,
+            "defensive": 167.1061281144755,
+            "patient": 166.6966408706158
+          }
+        },
+        {
+          "index": 24,
+          "label": "24. Minions (3 elixir, troop) @ behind king tower",
+          "screen_mean": 20.681520314547782,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 23,
+          "label": "23. Minions (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 22.29814531454778,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 22,
+          "label": "22. Minions (3 elixir, troop) @ behind right tower",
+          "screen_mean": 20.681520314547782,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 20,
+          "label": "20. Minions (3 elixir, troop) @ in front of right tower",
+          "screen_mean": 12.491527651504313,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 18,
+          "label": "18. Minions (3 elixir, troop) @ right bridge",
+          "screen_mean": -31.315850065887005,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 28,
+          "label": "28. Fireball (4 elixir, spell) @ enemy right princess tower",
+          "screen_mean": -30.196592398427356,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 25,
+          "label": "25. Fireball (4 elixir, spell) @ on enemy Minions at (4.0, 10.0)",
+          "screen_mean": 55.340760157273884,
+          "samples": 15,
+          "mean": 146.5209098338532,
+          "worst": 16.756504077384818,
+          "per_policy": {
+            "aggressive": 133.19219844482433,
+            "defensive": 177.43201511884146,
+            "patient": 128.93851593789387
+          }
+        },
+        {
+          "index": 26,
+          "label": "26. Fireball (4 elixir, spell) @ enemy king tower",
+          "screen_mean": -27.643580915866266,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 27,
+          "label": "27. Fireball (4 elixir, spell) @ enemy left princess tower",
+          "screen_mean": -30.196592398427356,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        }
+      ]
+    }
+  },
+  "counterpush": {
+    "setup": [
+      [
+        "Knight",
+        1,
+        3.5,
+        11
+      ],
+      [
+        "Giant",
+        0,
+        3.5,
+        13
+      ]
+    ],
+    "outcomes": {
+      "v2": {
+        "move": "17. Minions (3 elixir, troop) @ left bridge",
+        "tower_damage_taken": 0,
+        "tower_damage_dealt": 681,
+        "tower_hp": [
+          [
+            4824,
+            3052,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            2371
+          ]
+        ]
+      },
+      "v1": {
+        "move": "1. Musketeer (4 elixir, troop) @ left bridge",
+        "tower_damage_taken": 0,
+        "tower_damage_dealt": 904,
+        "tower_hp": [
+          [
+            4824,
+            3052,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            2148
+          ]
+        ]
+      },
+      "wait": {
+        "move": "0. wait (save elixir)",
+        "tower_damage_taken": 0,
+        "tower_damage_dealt": 253,
+        "tower_hp": [
+          [
+            4824,
+            3052,
+            3052
+          ],
+          [
+            4824,
+            3052,
+            2799
+          ]
+        ]
+      }
+    },
+    "v2_search": {
+      "source_tick": 400,
+      "information_mode": "omniscient",
+      "action_mode": "numbered",
+      "evaluator": "search-v1",
+      "continuation_policy": "defensive",
+      "selected": 17,
+      "legal_candidates": 29,
+      "unique_candidates": 29,
+      "searched_candidates": 29,
+      "reservations": {
+        "0": "wait",
+        "7": "tower-threat",
+        "25": "unit-spell",
+        "15": "card-diversity",
+        "19": "card-diversity"
+      },
+      "scenarios": [
+        {
+          "phase": "screen",
+          "horizon_ticks": 120,
+          "scenarios": [
+            [
+              "aggressive",
+              2031137489477142519
+            ],
+            [
+              "defensive",
+              8723538287469701598
+            ],
+            [
+              "patient",
+              2522537739256305472
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            3,
+            1,
+            8,
+            7,
+            6,
+            4,
+            2,
+            13,
+            11,
+            9,
+            16,
+            15,
+            14,
+            12,
+            10,
+            21,
+            19,
+            17,
+            24,
+            23,
+            22,
+            20,
+            18,
+            25,
+            28,
+            26,
+            27
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              1465649936530011739
+            ],
+            [
+              "defensive",
+              4725293844596156910
+            ],
+            [
+              "patient",
+              1854951936356057554
+            ]
+          ],
+          "candidates": [
+            0,
+            5,
+            1,
+            7,
+            2,
+            9,
+            15,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              7774213862384830674
+            ],
+            [
+              "defensive",
+              9042666043558898619
+            ],
+            [
+              "patient",
+              7035937150905285753
+            ]
+          ],
+          "candidates": [
+            0,
+            7,
+            15,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              5585495466405489192
+            ],
+            [
+              "defensive",
+              7227845983544672878
+            ],
+            [
+              "patient",
+              6207196225351694163
+            ]
+          ],
+          "candidates": [
+            0,
+            7,
+            15,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              4599779152468821141
+            ],
+            [
+              "defensive",
+              6328902373167393420
+            ],
+            [
+              "patient",
+              6656518408515264706
+            ]
+          ],
+          "candidates": [
+            0,
+            7,
+            15,
+            19,
+            17,
+            25
+          ]
+        },
+        {
+          "phase": "full",
+          "horizon_ticks": 480,
+          "scenarios": [
+            [
+              "aggressive",
+              8111376240403786203
+            ],
+            [
+              "defensive",
+              1220689620244222549
+            ],
+            [
+              "patient",
+              4046366498668671669
+            ]
+          ],
+          "candidates": [
+            0,
+            7,
+            15,
+            19,
+            17,
+            25
+          ]
+        }
+      ],
+      "rollouts": 189,
+      "simulated_ticks": 59400,
+      "budget_ticks": 60000,
+      "max_rollouts": 240,
+      "budget_exhausted": true,
+      "latency_s": 3.5905882500010193,
+      "wait_score": 3442.8397360360896,
+      "candidates": [
+        {
+          "index": 0,
+          "label": "0. wait (save elixir)",
+          "screen_mean": 505.950834967716,
+          "samples": 15,
+          "mean": 3442.8397360360896,
+          "worst": 3375.2432133477005,
+          "per_policy": {
+            "aggressive": 3456.3590405737677,
+            "defensive": 3456.3590405737677,
+            "patient": 3415.801126960734
+          }
+        },
+        {
+          "index": 5,
+          "label": "5. Musketeer (4 elixir, troop) @ behind left tower",
+          "screen_mean": 610.5735388182256,
+          "samples": 3,
+          "mean": 3533.0935936674214,
+          "worst": 3499.7602603340883,
+          "per_policy": {
+            "aggressive": 3499.7602603340883,
+            "defensive": 3599.7602603340883,
+            "patient": 3499.7602603340883
+          }
+        },
+        {
+          "index": 3,
+          "label": "3. Musketeer (4 elixir, troop) @ in front of left tower",
+          "screen_mean": 486.4380688869892,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 1,
+          "label": "1. Musketeer (4 elixir, troop) @ left bridge",
+          "screen_mean": 639.1895837007677,
+          "samples": 3,
+          "mean": 3771.5819349854105,
+          "worst": 3738.2486016520775,
+          "per_policy": {
+            "aggressive": 3738.2486016520775,
+            "defensive": 3838.2486016520775,
+            "patient": 3738.2486016520775
+          }
+        },
+        {
+          "index": 8,
+          "label": "8. Musketeer (4 elixir, troop) @ behind king tower",
+          "screen_mean": 595.1567261058813,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 7,
+          "label": "7. Musketeer (4 elixir, troop) @ center (between towers)",
+          "screen_mean": 626.0152149224159,
+          "samples": 15,
+          "mean": 3588.1003788627727,
+          "worst": 3535.4821417155954,
+          "per_policy": {
+            "aggressive": 3598.6240262922083,
+            "defensive": 3598.6240262922083,
+            "patient": 3567.053084003902
+          }
+        },
+        {
+          "index": 6,
+          "label": "6. Musketeer (4 elixir, troop) @ behind right tower",
+          "screen_mean": 595.1567261058813,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 4,
+          "label": "4. Musketeer (4 elixir, troop) @ in front of right tower",
+          "screen_mean": 598.2212261058813,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 2,
+          "label": "2. Musketeer (4 elixir, troop) @ right bridge",
+          "screen_mean": 614.2072376469366,
+          "samples": 3,
+          "mean": 1434.8384365151671,
+          "worst": 1401.5051031818339,
+          "per_policy": {
+            "aggressive": 1401.5051031818339,
+            "defensive": 1501.5051031818339,
+            "patient": 1401.5051031818339
+          }
+        },
+        {
+          "index": 13,
+          "label": "13. Knight (3 elixir, troop) @ behind left tower",
+          "screen_mean": 596.7937186451122,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 11,
+          "label": "11. Knight (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 600.1130405744184,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 9,
+          "label": "9. Knight (3 elixir, troop) @ left bridge",
+          "screen_mean": 608.1782145443917,
+          "samples": 3,
+          "mean": 3722.3139917251706,
+          "worst": 3722.3139917251706,
+          "per_policy": {
+            "aggressive": 3722.3139917251706,
+            "defensive": 3722.3139917251706,
+            "patient": 3722.3139917251706
+          }
+        },
+        {
+          "index": 16,
+          "label": "16. Knight (3 elixir, troop) @ behind king tower",
+          "screen_mean": 596.7937186451122,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 15,
+          "label": "15. Knight (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 613.2746271955086,
+          "samples": 15,
+          "mean": 3566.9584013425692,
+          "worst": 3566.9584013425692,
+          "per_policy": {
+            "aggressive": 3566.9584013425692,
+            "defensive": 3566.9584013425692,
+            "patient": 3566.9584013425692
+          }
+        },
+        {
+          "index": 14,
+          "label": "14. Knight (3 elixir, troop) @ behind right tower",
+          "screen_mean": 596.7937186451122,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 12,
+          "label": "12. Knight (3 elixir, troop) @ in front of right tower",
+          "screen_mean": 599.0920936451123,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 10,
+          "label": "10. Knight (3 elixir, troop) @ right bridge",
+          "screen_mean": 595.456308962213,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 21,
+          "label": "21. Minions (3 elixir, troop) @ behind left tower",
+          "screen_mean": 590.5735388182256,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 19,
+          "label": "19. Minions (3 elixir, troop) @ in front of left tower",
+          "screen_mean": 606.0152149224159,
+          "samples": 15,
+          "mean": 3714.033289521203,
+          "worst": 3714.033289521203,
+          "per_policy": {
+            "aggressive": 3714.0332895212036,
+            "defensive": 3714.0332895212036,
+            "patient": 3714.0332895212036
+          }
+        },
+        {
+          "index": 17,
+          "label": "17. Minions (3 elixir, troop) @ left bridge",
+          "screen_mean": 606.0152149224159,
+          "samples": 15,
+          "mean": 3819.638795218876,
+          "worst": 3819.638795218876,
+          "per_policy": {
+            "aggressive": 3819.6387952188757,
+            "defensive": 3819.6387952188757,
+            "patient": 3819.6387952188757
+          }
+        },
+        {
+          "index": 24,
+          "label": "24. Minions (3 elixir, troop) @ behind king tower",
+          "screen_mean": 575.1567261058813,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 23,
+          "label": "23. Minions (3 elixir, troop) @ center (between towers)",
+          "screen_mean": 595.0285388182256,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 22,
+          "label": "22. Minions (3 elixir, troop) @ behind right tower",
+          "screen_mean": 575.1567261058813,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 20,
+          "label": "20. Minions (3 elixir, troop) @ in front of right tower",
+          "screen_mean": 566.9667334428378,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 18,
+          "label": "18. Minions (3 elixir, troop) @ right bridge",
+          "screen_mean": 523.1593557254465,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 25,
+          "label": "25. Fireball (4 elixir, spell) @ on enemy Knight at (3.5, 11.0)",
+          "screen_mean": 443.06412774841715,
+          "samples": 15,
+          "mean": 1265.5528169282052,
+          "worst": 1225.5528169282052,
+          "per_policy": {
+            "aggressive": 1265.5528169282052,
+            "defensive": 1285.5528169282052,
+            "patient": 1245.5528169282052
+          }
+        },
+        {
+          "index": 28,
+          "label": "28. Fireball (4 elixir, spell) @ enemy right princess tower",
+          "screen_mean": 462.04401313078296,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 26,
+          "label": "26. Fireball (4 elixir, spell) @ enemy king tower",
+          "screen_mean": 464.59702461334405,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        },
+        {
+          "index": 27,
+          "label": "27. Fireball (4 elixir, spell) @ enemy left princess tower",
+          "screen_mean": 462.04401313078296,
+          "samples": 0,
+          "mean": null,
+          "worst": null,
+          "per_policy": {}
+        }
+      ]
+    }
+  }
+}

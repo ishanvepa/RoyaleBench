@@ -1,0 +1,33 @@
+# CPU-only development comparison; existing search v1 remains unchanged.
+[tournament]
+out_dir = "runs/round_robin"
+seeds = [1, 2, 3]
+decision_ticks = 40
+parallel = 2
+replays_per_pair = 6
+anchor = "search-bot"
+
+[decks]
+classic = ["giant-beatdown", "hog-2.6-cycle", "lavaloon"]
+
+[[players]]
+name = "search-bot"
+type = "search"
+rollouts = 4
+horizon_s = 12.0
+seed = 0
+
+[[players]]
+name = "search-v2"
+type = "search-v2"
+information_mode = "omniscient"
+budget_ticks = 60000
+max_rollouts = 240
+screen_horizon_s = 4.0
+horizon_s = 12.0
+shortlist_size = 10
+max_candidates = 64
+opponent_mix = ["legacy", "aggressive", "patient"]
+continuation_policy = "legacy"
+seed = 0
+workers = 1

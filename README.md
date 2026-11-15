@@ -4,7 +4,11 @@ benchmark for clash royale
 ## Quick guides
 
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from a web app, and browse the original arena (`uv run python -m rb_server`).
+- [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.
+- [Bot setup](docs/bots.md): bot presets, human-play choices, and implementation registry.
+- [Search v2](docs/search_v2.md): CPU search implementation and head-to-head evaluation against the original bot.
 - [Phone play](docs/phone_play.md): launch the game and a temporary public link with one command.
+- [Battle graphics](docs/rendering.md): the shared renderer for live play and saved replays.
 - [Valkyrie guide](docs/valkyrie_guide.md): publish tasks, run evaluations, and collect hackathon results.
 - [Modal guide](docs/modal_guide.md): connect sandbox compute and manage evaluation usage.
 

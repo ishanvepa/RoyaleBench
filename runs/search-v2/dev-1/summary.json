@@ -1,0 +1,29 @@
+{
+  "wins": 3,
+  "draws": 0,
+  "losses": 3,
+  "score": 0.5,
+  "completed_pairs": 3,
+  "paired_bootstrap_95": [
+    0.5,
+    0.5
+  ],
+  "score_by_matchup": {
+    "giant-beatdown__giant-beatdown": 0.5,
+    "hog-2.6-cycle__hog-2.6-cycle": 0.5,
+    "lavaloon__lavaloon": 0.5
+  },
+  "latency_s": {
+    "search-bot": {
+      "mean": 0.7778320617577562,
+      "p95": 1.6749901249968389,
+      "decisions": 392
+    },
+    "search-v2": {
+      "mean": 2.4521046463923994,
+      "p95": 4.043651750002027,
+      "decisions": 395
+    }
+  },
+  "illegal_actions": 0
+}

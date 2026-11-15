@@ -19,6 +19,7 @@ from pathlib import Path
 from royalegym.protocol import EntityKind
 from royalegym.replay import save_trace
 
+from .bots import human_bot_specs
 from .game import OWN_ZONES, Game
 from .players import Decision, build_player
 
@@ -31,8 +32,8 @@ KIND_NAME = {EntityKind.TROOP: "troop", EntityKind.BUILDING: "building", EntityK
 
 
 def opponents(root: Path) -> dict[str, dict]:
-    """The reference search bot plus every LLM player found in the config files (the first definition of a name wins)."""
-    out = {"search-bot": {"name": "search-bot", "type": "search", "rollouts": 4, "horizon_s": 12.0}}
+    """The search bots plus every LLM player found in the config files (the first definition of a name wins)."""
+    out = {spec["name"]: spec for spec in human_bot_specs("turn-based").values()}
     for f in [root / "configs" / "claude.toml", root / "config.toml", *sorted((root / "configs").glob("*.toml"))]:
         try:
             cfg = tomllib.loads(f.read_text(encoding="utf-8"))

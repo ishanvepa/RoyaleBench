@@ -35,6 +35,24 @@ native server with ten Planner matches at once and a fixed Hog Cycle opponent de
 Modal account, run `uv run --frozen --extra hosting modal deploy modal_play.py`.
 This creates a shareable web game; it is independent of Valkyrie evaluation runs.
 
+## Host the writeup
+
+`modal_writeup.py` serves the existing [`writeup.html`](writeup.html) at `/` and
+`/writeup.html`. The deployed page is available at
+[RoyaleBench writeup](https://ishanvepa171--royalebench-writeup.us-east.modal.run/).
+Deploy it from a locally authenticated Modal account:
+
+```bash
+uv run --frozen --extra hosting python -X utf8 -m modal deploy modal_writeup.py
+```
+
+The command prints a stable public HTTPS link. The app runs independently of the
+game and evaluation sandboxes, scales to zero when idle, and needs no terminal
+left open. Only the HTML file is uploaded; its relative Markdown guide links
+redirect to the rendered documents in the public GitHub repository. After editing
+`docs/writeup.html`, run the same deploy command to update the site.
+The UTF-8 flag also avoids Windows console encoding errors in Modal's CLI output.
+
 ## During the hackathon
 
 - Use `--provider modal --concurrency 1 --slice 0:1` for the initial run. Follow the complete command in the [Valkyrie guide](valkyrie_guide.md).

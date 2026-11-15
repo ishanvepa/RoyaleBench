@@ -87,7 +87,8 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/telemetry.schema.json`](docs/telemetry.schema.json): machine-readable schema for versioned match evidence records.
 - [`docs/data_collection_validation.json`](docs/data_collection_validation.json): local, container, archival and hosted-pilot validation evidence, including RoyaleBench v1 revision `@2`.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
-- [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
+- [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, public writeup deployment and update command, and links.
+- [`docs/writeup.html`](docs/writeup.html): standalone benchmark writeup and development leaderboard, published by `modal_writeup.py`.
 - [`docs/match_tasks.md`](docs/match_tasks.md): full-match Harbor tasks played through the `cr` CLI, referee isolation, replay grading, rewards, and how to build and publish them.
 - [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.

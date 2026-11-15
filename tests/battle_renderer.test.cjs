@@ -159,14 +159,15 @@ test('low health preserves tower masonry, while an immediate hit still flashes',
   const art = (s, now) => {
     operations.length = 0;
     renderer.draw(s, s, 0, now, {scale: 20, cards});
-    // Exclude the unchanged HUD path (health bar and number) after tower restore.
+    // Compare masonry separately from the damage overlay and bars drawn after tower restore.
     return operations.slice(0, operations.findIndex(op => op[0] === 'restore') + 1);
   };
   renderer.observe(a, 0);
   const healthy = art(a, 0);
   renderer.observe(damaged, 100);
-  const hit = art(damaged, 110);
-  assert.ok(hit.some(op => op[0] === 'fillStyle' && op[1] === '#fff'));
+  art(damaged, 110);
+  assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff'),
+    'the shared hit overlay still flashes the tower');
   assert.equal(JSON.stringify(art(damaged, 1000)), JSON.stringify(healthy));
 });
 

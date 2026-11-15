@@ -18,6 +18,7 @@ This pass covers Arena 1 only and is shared by the seven classic decks in
 original canvas miniatures with team-colored roofs or bases, so replay files
 remain self-contained and work offline. These are illustrative graphics, not
 imported Clash Royale assets.
+
 The King and Princess Tower artwork was refined against timestamped frames from
 the local gameplay reference. [REA](https://github.com/morluto/rea) inspected the
 JavaScript drawing path; ffmpeg extracted the video frames and those images were
@@ -122,6 +123,7 @@ pending-play loops in `draw`, and hit timing from `observe` into `drawFx`. On
 macOS with Command Line Tools for Swift 6.3, REA's process helper fails to build
 against the macOS 27 SDK. Set
 `SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk` for the run.
+
 ## Flying units
 
 The flyers in `CLASSIC_DECKS` (Baby Dragon, Balloon, Bats, Lava Hound, Mega Minion
@@ -485,3 +487,18 @@ The exported page was also checked in Chromium with no JavaScript console errors
 - Ruins require that a tower was previously observed. A stream starting after
   destruction without tower history cannot reconstruct the missing site. Live
   play and full saved replays normally begin with all six towers.
+
+## Combined rendering validation
+
+The eight rendering PRs are integrated together. Flying-unit labels use each
+unit's elevation while keeping the crowded-label placement rules; weapon facing,
+upright ground-troop poses, tower ruins, spell volleys, and placement cues remain
+active together. Damage feedback uses the shared translucent overlay after each
+miniature, preserving the new artwork's team colors.
+
+The combined checkout passes `node --test tests/battle_renderer.test.cjs` (32 tests)
+and `uv run --frozen python -m unittest discover -s tests` (79 tests, 9 Postgres
+integration tests skipped). Chromium smoke checks render all seven generated
+classic-deck scenes in both orientations and the live HUD at 390×844 using recorded
+snapshots. These browser checks report no JavaScript errors; the HUD check also
+exercises keyboard card selection and the placement-mask message path.

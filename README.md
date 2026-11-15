@@ -5,6 +5,7 @@ benchmark for clash royale
 
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.
 - [Phone play](docs/phone_play.md): launch the game and a temporary public link with one command.
+- [Battle graphics](docs/rendering.md): the shared renderer for live play and saved replays.
 - [Valkyrie guide](docs/valkyrie_guide.md): publish tasks, run evaluations, and collect hackathon results.
 - [Modal guide](docs/modal_guide.md): connect sandbox compute and manage evaluation usage.
 

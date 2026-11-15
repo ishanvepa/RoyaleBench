@@ -31,6 +31,7 @@ from multiprocessing import get_context
 from royalegym.protocol import DeployCommand, DeployStatus, EntityKind
 
 from ..game import Game
+from ..player_types import Decision, Player
 
 WIN = 1_000_000.0
 ELIXIR_HP = 150.0  # what one elixir is worth, in tower hit points
@@ -210,11 +211,13 @@ class Planner:
         return out
 
     # ------------------------------------------------------------------ the decision
-    def act(self, root: bytes) -> tuple[Play | None, str]:
-        """The play to make now in `root` (None = wait), and a short note for the log."""
+    def act(self, root: bytes, cands: list[Play] | None = None) -> tuple[Play | None, str]:
+        """The play to make now in `root` (None = wait), and a short note for the log.
+        `cands` restricts the choice to given plays (the numbered menu); by default the planner's own."""
         g = self.g
         self.e.load_state(root)
-        cands = self.candidates(self.team)
+        if cands is None:
+            cands = self.candidates(self.team)
         if not cands:
             return None, ""
         t0 = time.perf_counter()
@@ -241,6 +244,45 @@ class Planner:
         note += f"; [{len(cands)} plays tried in {(time.perf_counter() - t0) * 1000:.0f} ms]"
         gain, best = final[0]
         return (best if gain > self.margin else None), note
+
+
+class PlannerPlayer(Player):
+    """The planner on the benchmark's numbered move list, for turn-based play.
+
+    The game waits for every decision, so thinking time is free. The planner scores each numbered
+    move with its usual look-ahead and opponent reply, and waits unless a move beats waiting by its
+    margin. Only its choice of plays changes: the menu's named spots replace its own placements.
+    """
+
+    def __init__(self, name: str = "planner-bot", horizon_s: float = 10.0, top_k: int = 4, margin: float = 40.0,
+                 two_ply: bool = True, workers: int = 0, elixir_hp: float = ELIXIR_HP):
+        self.name = name
+        self.opts = dict(horizon_s=horizon_s, top_k=top_k, margin=margin, two_ply=two_ply, workers=workers,
+                         elixir_hp=elixir_hp)
+        self.planner: Planner | None = None
+
+    def start(self, game: Game, team: int) -> None:
+        self.close()
+        self.planner = Planner(game.decks, game.seed, team, delay=game.command_delay_ticks, **self.opts)
+
+    def decide(self, game: Game, team: int, text: str, moves: list) -> Decision:
+        if len(moves) == 1:
+            return Decision(0)
+        if self.planner is None:
+            self.start(game, team)
+        plays = {(team, m.slot, m.x, m.y): m.index for m in moves if m.slot >= 0}
+        play, note = self.planner.act(game.engine.save_state(), list(plays))
+        if play is None:
+            return Decision(0, raw="planner: " + (note or "wait"))
+        return Decision(plays[play], raw="planner: " + note)
+
+    def close(self) -> None:
+        if self.planner:
+            self.planner.close()
+            self.planner = None
+
+    def __del__(self):
+        self.close()
 
 
 # ---------------------------------------------------------------- worker processes (one engine each)

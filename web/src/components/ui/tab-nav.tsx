@@ -14,7 +14,7 @@ export interface TabNavItem {
 export function TabNav({ items, label, className }: { items: TabNavItem[]; label: string; className?: string }) {
   const { pathname } = useLocation();
   return (
-    <nav aria-label={label} className={cn("flex gap-7 overflow-x-auto border-b border-line", className)}>
+    <nav aria-label={label} className={cn("flex gap-7 border-b border-line", className)}>
       {items.map((item) => (
         <NavLink
           key={item.to}

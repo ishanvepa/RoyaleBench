@@ -18,13 +18,22 @@ export function defaultLabel(dataset: string, model: string, now: Date = new Dat
   return `${dataset || "job"}-${short}-${stamp}`;
 }
 
+/** Stored secrets that can hold a model API key: everything except the Modal credentials. */
+const usableSecrets = (secrets: readonly string[]) => secrets.filter((s) => !/modal/i.test(s));
+
+/** The stored secrets whose name mentions the provider (``anthropic-api-key-ishan`` for ``anthropic``). */
+export function secretsForProvider(secrets: readonly string[], provider: string): string[] {
+  const usable = usableSecrets(secrets);
+  return provider ? usable.filter((s) => s.toLowerCase().includes(provider)) : usable;
+}
+
 /**
  * Pick the stored Valkyrie secret most likely to be the user's own key for a provider. Secrets are shared across
  * the organization and named like ``anthropic-api-key-ishan``, so prefer the one carrying the user's name.
  */
 export function defaultSecret(secrets: readonly string[], provider: string, identity: Environment["identity"]): string {
-  const usable = secrets.filter((s) => !/modal/i.test(s));
-  const forProvider = provider ? usable.filter((s) => s.toLowerCase().includes(provider)) : usable;
+  const usable = usableSecrets(secrets);
+  const forProvider = secretsForProvider(secrets, provider);
   const pool = forProvider.length > 0 ? forProvider : usable;
   const tokens = [identity?.name?.split(/\s+/)[0], identity?.email?.split("@")[0]]
     .filter((t): t is string => Boolean(t))

@@ -118,6 +118,7 @@ def main(default_benchmark=Path("benchmarks/royalebench-v1")):
     ap.add_argument("--jobs", type=int, choices=range(1, 5), default=1,
                     help="independent validation containers (default: sequential)")
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--image", help="override the dataset-specific validation image tag")
     args = ap.parse_args()
     manifest = json.loads((args.benchmark / "manifest.json").read_text())
     first_cfg = json.loads((args.benchmark / manifest["runnable_tasks"][0] / "tests/task.json").read_text())
@@ -135,7 +136,7 @@ def main(default_benchmark=Path("benchmarks/royalebench-v1")):
     tasks = [p for p in tasks if not args.tasks or int(p.name[:2]) in args.tasks]
     if not tasks:
         raise SystemExit("no matching runnable tasks")
-    image = f"{args.benchmark.name}:validation"
+    image = args.image or f"{args.benchmark.name}:validation"
     print(f"Building common {args.benchmark.name} image...", flush=True)
     # Always build the same base task, including when validating a subset.
     docker("build", "--platform", "linux/amd64", "-t", image,

@@ -1,0 +1,10 @@
+{"decision": 0, "tick": 2700, "move": 20, "label": "20. IceGolemite (2 elixir, troop) @ center (between towers)", "think_s": 5.0}
+{"decision": 1, "tick": 2740, "move": 26, "label": "26. IceSpirits (1 elixir, troop) @ in front of right tower", "think_s": 5.0}
+{"decision": 2, "tick": 2780, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 3, "tick": 2820, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 4, "tick": 2860, "move": 11, "label": "11. Log (2 elixir, spell) @ behind right tower", "think_s": 5.0}
+{"decision": 5, "tick": 2900, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 6, "tick": 2940, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 7, "tick": 2980, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 8, "tick": 3020, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 9, "tick": 3060, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}

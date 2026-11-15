@@ -41,6 +41,10 @@ passed **3/3** and the matching frozen menu tasks passed **2/3**, all with integ
 pilot verifies operation and does not establish that coordinate actions increase difficulty.
 See the guide for exact revisions, costs, action traces, and the menu cycling failure.
 
+The separate [Tactics extension](docs/tactics.md), published as `royalebench/royalebench-tactics@2`, develops timed spell placement, counter reservation,
+crossed tower-race decisions and deliberate tower trades. Reference wins and explicit strategy
+contrasts gate packaging; its validation and model results are reported separately from v1.
+
 ## Preliminary full-match results
 
 The initial full evaluation used Claude Sonnet 4.6 against a fixed rule-based opponent on `royalebench/clash-royale@2`.
@@ -99,6 +103,7 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
 - [RoyaleBench v3](docs/royalebench_v3.md): default full continuation benchmark using coordinate actions, release validation, and run commands.
+- [RoyaleBench Tactics](docs/tactics.md): four task families with spatial variations, timing and resource constraints, contrast evidence, and build/validation commands.
 - [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch task replays and agent traces, and browse the original arena (`uv run python -m rb_server`).
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.

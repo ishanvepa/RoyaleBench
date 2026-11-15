@@ -42,7 +42,7 @@ from .game import Game
 from .leaderboard import Leaderboard, guest_name, player_name as validate_player_name
 from .rendering import embed_renderer
 from .bots import human_bot_specs
-from .royale_task import make_referee
+from .scenario_task import setup_for
 
 HUMAN, BOT = 0, 1
 BOT_SPECS = human_bot_specs("live")
@@ -70,7 +70,8 @@ BOT_EVERY_TICKS = 5  # the bot is shown a fresh snapshot at most every 0.25 s of
 OUT_DIR = Path(os.getenv("CR_ARENA_REPLAY_DIR", "runs/round_robin/human-play"))
 PAGE = Path(__file__).with_name("live.html")
 BENCHMARK_TASK = Path(__file__).resolve().parent.parent / "benchmarks/royalebench-tactics/05-hog-body-block/environment/task.json"
-BENCHMARK_REFERENCE = BENCHMARK_TASK.parent.parent / "solution/reference.jsonl"
+HOG_PRELUDE_TICKS = 10  # show the empty board for 0.5 s before the scripted red placement
+HOG_REFERENCE = {10: (0, 1.5, 12.5), 20: (1, 3.5, 12.5)}  # ticks after the Hog command
 PLAYER_COOKIE = "cr_player"
 _NOT_YET = {DeployStatus.NOT_ENOUGH_ELIXIR, DeployStatus.TOO_EARLY}
 
@@ -514,19 +515,79 @@ class Session:
         self.conn.close()
 
 
+class LiveHogChallenge:
+    """Real-time Share Play variant of the packaged one-HP Tactics position."""
+
+    def __init__(self, cfg: dict, record: bool = True):
+        scenario = cfg["scenario"]
+        enemy = ["HogRider", *cfg["opponent_deck"][:7]]
+        live_cfg = dict(cfg, opponent_deck=enemy, scenario=dict(
+            scenario, opponent_order=enemy, opponent_elixir=4, units=[],
+            start_tick=scenario["start_tick"] - HOG_PRELUDE_TICKS))
+        self.game = Game(cfg["agent_deck"], enemy, cfg["seed"], record=record,
+                         command_delay_ticks=0, setup=setup_for(live_cfg))
+        self.start_tick = self.game.state.tick
+        self.hog_tick = scenario["start_tick"]
+        self.hog_id = next(c.card_id for c in self.game.cards if c.name == "HogRider")
+        self.initial_hp = list(self.game.state.players[HUMAN].tower_hp)
+        self.budget = scenario["spend_budget"]
+        self.spent = 0
+        self.hog_seen = False
+        self.outcome: str | None = None
+
+    @property
+    def damage(self) -> int:
+        return sum(max(0, before - after) for before, after in
+                   zip(self.initial_hp, self.game.state.players[HUMAN].tower_hp))
+
+    @property
+    def success(self) -> bool:
+        return (self.outcome == "hog" and self.damage == 0 and self.spent <= self.budget and
+                all(hp > 0 for hp in self.game.state.players[HUMAN].tower_hp))
+
+    def step(self, player_commands: list[DeployCommand] | None = None):
+        if self.outcome is not None:
+            raise ValueError("The challenge is finished")
+        g = self.game
+        tick = g.state.tick
+        commands = list(player_commands or [])
+        if tick == self.hog_tick:
+            commands.append(DeployCommand(BOT, 0, round(2.5 * g.sub), round(18.5 * g.sub)))
+        results = g.engine.step(commands, 1)
+        if g.recorder:
+            g.recorder.record_step(tick, 1, commands, results)
+            g.recorder.record_frame(g.engine)
+        for result in results:
+            if result.team == BOT and result.card_id == self.hog_id:
+                if result.status != DeployStatus.OK:
+                    raise RuntimeError(f"Scripted Hog placement rejected: {result.status}")
+            if result.team == HUMAN and result.status == DeployStatus.OK:
+                self.spent += g.card_by_id[result.card_id].elixir
+        state = g.state
+        hog_alive = any(e.team == BOT and e.card_id == self.hog_id and e.hp > 0 for e in state.entities)
+        self.hog_seen |= hog_alive
+        if state.players[HUMAN].tower_hp[1] <= 0:
+            self.outcome = "tower"
+        elif self.hog_seen and not hog_alive:
+            self.outcome = "hog"
+        elif state.game_over:
+            self.outcome = "match"
+        return results
+
+
 class BenchmarkSession(Session):
-    """Human controls the exact published coordinate scenario, one decision at a time."""
+    """A live, event-ended Hog challenge using the same hand, tower HP and three-elixir budget."""
 
     def __init__(self, ws: WebSocket, cfg: dict, player_id: str, player_name: str | None):
         self.ws = ws
-        self.ref = make_referee(cfg, record=True)
-        self.game = self.ref.game
+        self.challenge = LiveHogChallenge(cfg)
+        self.game = self.challenge.game
         self.match_id = uuid.uuid4().hex
         self.player_id = player_id
         self.player_name = guest_name(player_id) if player_name is None else player_name
-        self.bot_spec = {"name": "Planner bot"}
+        self.bot_spec = {"name": "Hog Rider"}
         self.deck_names = ("Benchmark defense", "Scenario Hog")
-        self.decks = [cfg["agent_deck"], cfg["opponent_deck"]]
+        self.decks = self.game.decks
         self.seed = cfg["seed"]
         self.delay = 0
         self.sub = self.game.sub
@@ -536,8 +597,7 @@ class BenchmarkSession(Session):
         self.started_at = time.monotonic()
         self.closed = False
         self.starting = False
-        self.actions: asyncio.Queue[dict] = asyncio.Queue(maxsize=1)
-        self.resolving = False
+        self.cmds: deque[DeployCommand] = deque()
         ACTIVE.add(self)
 
     def init_msg(self) -> dict:
@@ -545,61 +605,61 @@ class BenchmarkSession(Session):
 
     def snapshot(self) -> dict:
         result = super().snapshot()
-        ref = self.ref
-        result["left"] = round(max(0, (ref.end_tick - ref.tick) * self.game.state.tick_ms / 1000), 2)
+        challenge = self.challenge
+        state = self.game.state
+        # Regeneration still powers the engine, but the player has a fixed three-elixir
+        # allowance. Show only what can actually be spent in this challenge.
+        result["me"]["e"] = min(result["me"]["e"],
+                                max(0, challenge.budget - challenge.spent) * 1000)
+        incoming = state.tick < challenge.hog_tick
+        result["left"] = round((challenge.hog_tick - state.tick if incoming else state.tick - challenge.hog_tick)
+                               * state.tick_ms / 1000, 2)
         result["ot"] = False
-        result["benchmark"] = {"decision": ref.decision, "max_decisions": ref.scenario["max_decisions"],
-                               "spent": ref.spent, "budget": ref.scenario["spend_budget"]}
+        hog = next((e for e in state.entities if e.team == BOT and e.card_id == challenge.hog_id and e.hp > 0), None)
+        result["benchmark"] = {"phase": "incoming" if incoming else "defending", "hog_hp": hog.hp if hog else None,
+                               "spent": challenge.spent, "budget": challenge.budget}
         return result
 
     def on_message(self, m: dict) -> dict | None:
-        from .coordinate_task import action_schema
-
-        if m.get("t") not in ("play", "wait"):
-            return None
-        if self.ref.over:
-            raise ValueError("The challenge is finished.")
-        action = ({"cmd": "wait"} if m["t"] == "wait" else
-                  {"cmd": "play", "slot": m.get("slot"), "x": m.get("x"), "y": m.get("y")})
-        action_schema(action)
-        if self.resolving or self.actions.full():
-            raise ValueError("Wait for the current decision to resolve.")
-        self.actions.put_nowait(action)
-        return None
-
-    def _take_turn(self, action: dict) -> tuple[dict, str]:
-        _, metadata = self.ref.prepare_action(action)
-        return metadata, self.ref.act_action(action)
+        if m.get("t") == "play":
+            slot = m.get("slot")
+            if type(slot) is int and 0 <= slot < 4:
+                hand = self.game.state.players[HUMAN].hand
+                reserved = sum(self.game.card_by_id[hand[c.hand_slot]].elixir for c in self.cmds)
+                cost = self.game.card_by_id[hand[slot]].elixir
+                if self.challenge.spent + reserved + cost > self.challenge.budget:
+                    raise ValueError("Only 3 elixir may be spent in this challenge.")
+        return super().on_message(m)
 
     async def _run(self) -> None:
         await self.send(self.init_msg())
-        await self.send(await asyncio.to_thread(self.snapshot))
-        while not self.ref.over:
-            remaining = MAX_SESSION_SECONDS - (time.monotonic() - self.started_at)
-            if remaining <= 0:
+        await self.send(self.snapshot())
+        loop = asyncio.get_running_loop()
+        due = loop.time()
+        tick_s = self.game.state.tick_ms / 1000
+        while self.challenge.outcome is None:
+            if time.monotonic() - self.started_at >= MAX_SESSION_SECONDS:
                 await self.send({"t": "error", "message": "Challenge expired. Please start again."})
                 return
-            try:
-                action = await asyncio.wait_for(self.actions.get(), timeout=remaining)
-            except asyncio.TimeoutError:
-                await self.send({"t": "error", "message": "Challenge expired. Please start again."})
-                return
-            self.resolving = True
-            metadata, result = await asyncio.to_thread(self._take_turn, action)
-            await self.send({"t": "benchmark_turn", "action": action, "accepted": metadata["accepted"],
-                             "rejection": metadata["rejection"], "result": result})
-            snapshot = await asyncio.to_thread(self.snapshot)
-            self.resolving = False
-            await self.send(snapshot)
+            tick = self.game.state.tick
+            commands = [self.cmds.popleft()] if self.cmds else []
+            for result in self.challenge.step(commands):
+                ok = result.status == DeployStatus.OK
+                await self.send(self.event(result.team, result.card_id, ok, result.status,
+                                           (round(result.x / self.sub, 2), round(result.y / self.sub, 2)), tick))
+            await self.send(self.snapshot())
+            due += tick_s
+            if due - loop.time() < -0.25:
+                due = loop.time()
+            await asyncio.sleep(max(0, due - loop.time()))
         await self.send({"t": "over", "mode": "benchmark", **await asyncio.to_thread(self.save)})
 
     def save(self) -> dict:
-        ref = self.ref
-        outcome = ref.outcome()
-        success = ref.success()
+        challenge = self.challenge
         _, crowns, _, _, trace = self.game.finish()
-        result = {"success": success, "crowns": crowns, "tower_damage": outcome["tower_damage"],
-                  "spent": ref.spent, "budget": ref.scenario["spend_budget"], "saved": None}
+        result = {"success": challenge.success, "outcome": challenge.outcome, "crowns": crowns,
+                  "tower_damage": challenge.damage, "spent": challenge.spent, "budget": challenge.budget,
+                  "saved": None}
         try:
             if trace is not None:
                 folder = OUT_DIR / "replays"
@@ -616,7 +676,6 @@ class BenchmarkSession(Session):
             return
         self.closed = True
         ACTIVE.discard(self)
-        self.ref.opponent.close()
 
 
 def player_identity(request) -> str:
@@ -649,40 +708,43 @@ async def leaderboard(request) -> JSONResponse:
 
 @lru_cache(maxsize=1)
 def benchmark_resolution_html() -> str:
-    """Replay the packaged, authenticated reference with the current viewer."""
-    from .coordinate_task import replay_coordinates
+    """Replay a successful three-elixir policy in the live Share Play variant."""
     from .replay import patched_html
 
     cfg = json.loads(BENCHMARK_TASK.read_text())
-    entries = [json.loads(line) for line in BENCHMARK_REFERENCE.read_text().splitlines()]
-    ref = make_referee(cfg, record=True)
+    challenge = LiveHogChallenge(cfg)
+    game = challenge.game
     decisions = []
-    try:
-        for entry in entries:
-            action = entry["action"]
-            if action["cmd"] == "wait":
-                label, move = "Wait", "Wait 0.5 seconds"
-            else:
-                card = ref.game.card_name(ref.game.state.players[0].hand[action["slot"]])
-                label = "Play " + card
-                move = f"{card} at ({action['x']}, {action['y']})"
-            elapsed = (ref.tick - ref.start_tick) / 20
-            decisions.append({"team": 0, "tick": ref.tick, "label": f"Decision {ref.decision + 1}: {label}",
-                              "steps": [{"kind": "action", "title": f"At {elapsed:.1f} seconds", "text": move}]})
-            replay_coordinates(ref, [entry])
-        if not ref.over or not ref.success():
-            raise RuntimeError("Packaged benchmark reference did not clear the challenge")
-        _, _, _, _, trace = ref.game.finish()
-        with tempfile.TemporaryDirectory(prefix="royalebench-resolution-") as folder:
-            path = Path(folder) / "reference.msgpack"
-            save_trace(trace, path)
-            return patched_html(path, title="RoyaleBench · Hog defense resolution", decisions=decisions,
-                                decisions_note="Validated Tactics @5 reference. The clock advances 0.5 seconds "
-                                               "per decision; remaining time resolves as waits.",
-                                scenario_result="Challenge cleared: zero tower damage, three elixir spent, "
-                                                "left tower survives at 1 HP.")
-    finally:
-        ref.opponent.close()
+    while challenge.outcome is None:
+        tick = game.state.tick
+        commands = []
+        if tick == challenge.hog_tick:
+            decisions.append({"team": BOT, "tick": tick, "label": "Hog Rider enters",
+                              "steps": [{"kind": "action", "title": "Scripted attack",
+                                         "text": "Hog Rider at (2.5, 18.5)"}]})
+        if tick - challenge.hog_tick in HOG_REFERENCE:
+            slot, x, y = HOG_REFERENCE[tick - challenge.hog_tick]
+            card = game.card_name(game.state.players[HUMAN].hand[slot])
+            commands.append(DeployCommand(HUMAN, slot, round(x * game.sub), round(y * game.sub)))
+            decisions.append({"team": HUMAN, "tick": tick, "label": f"Play {card}",
+                              "steps": [{"kind": "action", "title": f"{(tick - challenge.hog_tick) / 20:.1f} s after Hog placement",
+                                         "text": f"{card} at ({x}, {y})"}]})
+        results = challenge.step(commands)
+        if any(r.team == HUMAN and r.status != DeployStatus.OK for r in results):
+            raise RuntimeError("Live Hog reference placement was rejected")
+        if tick - challenge.start_tick > 1200:
+            raise RuntimeError("Live Hog reference did not finish")
+    if not challenge.success or challenge.spent != challenge.budget:
+        raise RuntimeError("Live Hog reference did not clear the challenge")
+    _, _, _, _, trace = game.finish()
+    with tempfile.TemporaryDirectory(prefix="royalebench-resolution-") as folder:
+        path = Path(folder) / "reference.msgpack"
+        save_trace(trace, path)
+        return patched_html(path, title="RoyaleBench · Live Hog defense resolution", decisions=decisions,
+                            decisions_note="Live Share Play challenge based on Tactics @5. The Hog enters after "
+                                           "a half-second prelude; play continues until the Hog or tower falls.",
+                            scenario_result="Challenge cleared: Hog defeated, zero tower damage, "
+                                            "three elixir spent, left tower survives at 1 HP.")
 
 
 async def benchmark_resolution(_request) -> HTMLResponse:
@@ -712,12 +774,11 @@ async def socket(ws: WebSocket) -> None:
         await ws.send_json({"t": "hello", "decks": CLASSIC_DECKS, "bots": specs, "max_games": MAX_GAMES,
                             "fixed_opponent": fixed,
                             "benchmark": {"title": challenge["title"], "objective": challenge["objective"],
-                                          "prompt": "An enemy Hog Rider is closing on your one-HP left tower. "
-                                                    "Keep every crown tower untouched for 16 seconds. "
-                                                    "You start with 3 elixir and may spend at most 3 total.",
-                                          "deck": challenge["agent_deck"], "horizon": challenge["scenario"]["horizon_s"],
-                                          "budget": challenge["scenario"]["spend_budget"],
-                                          "decisions": challenge["scenario"]["max_decisions"]}})
+                                          "prompt": "A Hog Rider enters shortly after the clock starts. "
+                                                    "Your left tower has 1 HP. Stop the Hog before it lands a hit, "
+                                                    "using at most 3 elixir. The game ends when the Hog or tower falls.",
+                                          "deck": challenge["agent_deck"],
+                                          "budget": challenge["scenario"]["spend_budget"]}})
         while True:
             try:
                 raw = await ws.receive_text()

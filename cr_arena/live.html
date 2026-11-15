@@ -109,9 +109,7 @@
   #benchmark-strip strong { color: var(--fg); font: 700 11px var(--num); }
   #benchmark-controls { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   #benchmark-progress { color: #fff; font-size: 11px; font-weight: 700; }
-  #benchmark-wait { min-height: 38px; padding: 6px 13px; border: 1px solid #ffdc80; border-radius: 8px;
-    background: #e9b342; color: #3a2c1b; font-weight: 800; white-space: nowrap; }
-  #benchmark-wait:disabled { opacity: .5; cursor: wait; }
+  #benchmark-live { color: #e9cf95; font-size: 10px; font-weight: 800; letter-spacing: .06em; white-space: nowrap; }
   .lobby-features { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; max-width: 768px; margin: 33px auto 0; border: 1px solid #8094b52b;
     border-radius: 12px; background: #172033a6; text-align: left; box-shadow: 0 4px 16px #050a1510; }
   .lobby-feature { display: flex; align-items: center; gap: 13px; padding: 19px 23px; min-width: 0; }
@@ -520,15 +518,15 @@
       <section class="benchmark-panel">
         <div class="eyebrow">RoyaleBench Tactics · Challenge 05</div>
         <h1 id="benchmark-title" tabindex="-1">One hit. One chance.</h1>
-        <p id="benchmark-objective">Your left princess tower has 1 HP. Defend the incoming Hog Rider for 16 seconds without taking tower damage. You have three elixir to spend.</p>
+        <p id="benchmark-objective">A Hog Rider enters shortly after play starts. Your left tower has 1 HP. Stop the Hog before it lands a hit, using at most 3 elixir.</p>
         <div class="benchmark-facts">
           <div><strong>1 HP</strong><span>Left tower</span></div>
           <div><strong>3</strong><span>Elixir to spend</span></div>
-          <div><strong>8</strong><span>Half-second decisions</span></div>
+          <div><strong>LIVE</strong><span>No pause</span></div>
         </div>
         <div class="label">Your fixed deck</div>
         <div class="deck-cards" id="benchmark-deck-cards" role="list" aria-label="Benchmark deck cards"></div>
-        <p class="benchmark-note">Choose a card and tap the arena, or wait 0.5 seconds. The clock advances only when you decide. After eight decisions, the rest of the 16-second defense plays out. This practice run does not affect the leaderboard.</p>
+        <p class="benchmark-note">The Hog enters half a second after the challenge starts. Choose a card and tap the arena while the clock runs. The attempt ends when the Hog dies or your tower falls. Practice runs do not affect the leaderboard.</p>
         <div class="benchmark-start-area"><button type="button" class="battle-button" id="benchmark-start" disabled><svg class="ui-icon" aria-hidden="true"><use href="#i-shield"/></svg>Start challenge</button></div>
       </section>
     </main>
@@ -603,7 +601,7 @@
 
 <div id="game" hidden>
   <div id="col">
-    <div id="benchmark-strip" hidden><span>TACTICS · ONE-HIT DEFENSE</span><strong id="benchmark-turns">Move 1 of 8</strong></div>
+    <div id="benchmark-strip" hidden><span>TACTICS · ONE-HIT DEFENSE</span><strong id="benchmark-status">Hog incoming</strong></div>
     <div id="hud">
       <div class="sides">
         <div class="side-tag op"><span class="dot" style="background:var(--red)"></span><span class="who" id="opp-name">search-bot</span>
@@ -629,7 +627,7 @@
         <div id="elx" role="meter" aria-label="Elixir" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
           <div id="elx-fill"></div><div id="elx-ticks"></div><div id="elx-num" aria-hidden="true"></div></div>
       </div>
-      <div id="benchmark-controls" hidden><span id="benchmark-progress">0 / 3 elixir spent</span><button type="button" id="benchmark-wait">Wait 0.5s</button></div>
+      <div id="benchmark-controls" hidden><span id="benchmark-progress">0 / 3 elixir spent</span><span id="benchmark-live">● LIVE · NO PAUSE</span></div>
     </div>
   </div>
   <div id="rail">
@@ -698,7 +696,7 @@
   let renderer;
 
   let ws, cards = {}, decks = {}, myDeck = null, lastStart = null, starting = false, fixedOpponent = null;
-  let benchmarkInfo = null, mode = "battle", benchmarkPending = false;
+  let benchmarkInfo = null, mode = "battle";
   let handMasks = new Map();
   let snaps = [], clock0 = null, sel = -1, mask = null, maskSlot = -1, hover = null, dragging = false, dragMoved = false;
   let over = false, handKey = "", T = 16;
@@ -851,17 +849,15 @@
     if (m.t === "s") return onSnap(m);
     if (m.t === "hello") return showSetup(m);
     if (m.t === "init") return onInit(m);
-    if (m.t === "benchmark_turn") return onBenchmarkTurn(m);
     if (m.t === "bot") { $("think").textContent = m.raw.replace(/^search:\s*/, "").split("; ").join("\n"); return; }
     if (m.t === "ev") return onEvent(m);
     if (m.t === "over") return onOver(m);
     if (m.t === "invalid") {
-      benchmarkPending = false; $("benchmark-wait").disabled = false;
       if (starting) { starting = false; $("start").disabled = false; $("benchmark-start").disabled = false; $("again").disabled = false; $("start-label").textContent = "Enter battle"; }
       $("conn").textContent = m.message; toast(m.message); return;
     }
     if (m.t === "busy" || m.t === "error") {
-      starting = false; benchmarkPending = false; $("start").disabled = false; $("benchmark-start").disabled = false; $("again").disabled = false;
+      starting = false; $("start").disabled = false; $("benchmark-start").disabled = false; $("again").disabled = false;
       $("banner").close();
       $("start-label").textContent = "Enter battle";
       $("game").hidden = true; $("setup").hidden = false;
@@ -888,7 +884,7 @@
     benchmarkInfo = m.benchmark;
     $("benchmark-objective").textContent = benchmarkInfo.prompt;
     const facts = $("benchmark-select").querySelectorAll(".benchmark-facts strong");
-    facts[0].textContent = "1 HP"; facts[1].textContent = benchmarkInfo.budget; facts[2].textContent = benchmarkInfo.decisions;
+    facts[0].textContent = "1 HP"; facts[1].textContent = benchmarkInfo.budget; facts[2].textContent = "LIVE";
     const challengeDeck = $("benchmark-deck-cards"); challengeDeck.textContent = "";
     for (const name of benchmarkInfo.deck) {
       const card = document.createElement("div"); card.className = "preview-card";
@@ -987,7 +983,7 @@
   function onInit(m) {
     starting = false; $("start").disabled = false; $("benchmark-start").disabled = false; $("again").disabled = false; $("conn").textContent = "";
     $("start-label").textContent = "Enter battle";
-    mode = m.mode || "battle"; benchmarkPending = false;
+    mode = m.mode || "battle";
     cards = m.cards; snaps = []; clock0 = null; sel = -1; mask = null; handMasks = new Map(); over = false; handKey = "";
     renderer = BattleRenderer.create(cv, m.arena); delayTicks = m.delay || 0;
     TX = m.arena.tiles_x; TY = m.arena.tiles_y; HALF = m.arena.half;
@@ -1003,7 +999,7 @@
     $("think").textContent = m.opp === "heuristic-bot" ? "Defends threatened lanes, spells clusters, and attacks at high elixir." : "waiting for its first decision";
     $("benchmark-strip").hidden = $("benchmark-controls").hidden = mode !== "benchmark";
     $("think-label").textContent = mode === "benchmark" ? "Challenge rules" : "Bot's thinking (gain over waiting, in tower HP)";
-    if (mode === "benchmark") $("think").textContent = "Choose a card and tap the arena, or wait. Each decision advances 0.5 seconds.";
+    if (mode === "benchmark") $("think").textContent = "Hog enters in half a second. Tap a card and a highlighted arena spot. The clock never pauses.";
     $("change").textContent = mode === "benchmark" ? "Back to challenge" : "Change deck";
     $("again").lastChild.textContent = mode === "benchmark" ? "Try again" : "Battle again";
     $("view-leaderboard").hidden = mode === "benchmark";
@@ -1033,16 +1029,16 @@
     if (clock0 === null || Math.abs(base - clock0) > 250) clock0 = base; else clock0 += (base - clock0) * 0.05;
     updateHud(s);
     if (s.benchmark) {
-      benchmarkPending = false;
-      $("benchmark-turns").textContent = "Move " + Math.min(s.benchmark.decision + 1, s.benchmark.max_decisions) + " of " + s.benchmark.max_decisions;
+      $("benchmark-status").textContent = s.benchmark.phase === "incoming" ? "Hog incoming" :
+        s.benchmark.hog_hp === null ? "Hog deploying" : "Hog " + s.benchmark.hog_hp + " HP";
       $("benchmark-progress").textContent = s.benchmark.spent + " / " + s.benchmark.budget + " elixir spent";
-      $("benchmark-wait").disabled = benchmarkPending || s.benchmark.decision >= s.benchmark.max_decisions;
     }
     usePreloadedMask();
   }
   function fmtClock(sec) { sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0"); }
   function updateHud(s) {
-    const label = s.benchmark ? "Defense left:" : s.starting ? "Starting" : s.ot ? "Overtime" : "Time left:";
+    const label = s.benchmark ? (s.benchmark.phase === "incoming" ? "Hog in:" : "Live time:") :
+      s.starting ? "Starting" : s.ot ? "Overtime" : "Time left:";
     $("clock").textContent = fmtClock(s.left); $("clock-label").textContent = label;
     $("timebox").classList.toggle("ot", !!s.ot);
     $("timebox").setAttribute("aria-label", label.replace(":", "") + " " + fmtClock(s.left));
@@ -1132,11 +1128,11 @@
   function onOver(m) {
     over = true; select(-1);
     if (m.mode === "benchmark") {
-      benchmarkPending = false; $("benchmark-wait").disabled = true;
       $("banner").dataset.outcome = m.success ? "win" : "loss";
-      $("banner-title").textContent = m.success ? "Defense held!" : "Challenge failed";
+      $("banner-title").textContent = m.success ? "Hog stopped!" : m.outcome === "tower" ? "Tower lost" : "Challenge failed";
       $("banner-sub").textContent = m.success ? "The one-HP tower survived without taking damage." :
-        m.tower_damage ? "The Hog broke through. Your tower took damage." : "You spent beyond the three-elixir limit.";
+        m.outcome === "tower" ? "The Hog broke through and the tower fell." :
+        m.outcome === "hog" ? "The Hog fell, but one of your towers took damage." : "The challenge ended without a clean defense.";
       $("benchmark-result").textContent = "Tower damage " + m.tower_damage + " · Elixir spent " + m.spent + " / " + m.budget;
       $("banner-record").textContent = "Practice attempt · Leaderboard unchanged";
       $("banner-replay").textContent = m.saved ? "Practice replay saved on the game server." : "Practice replay unavailable.";
@@ -1160,13 +1156,6 @@
     if (!m.leaderboard_error) loadLeaderboard();
   }
   let toastTimer = 0;
-  function onBenchmarkTurn(m) {
-    const row = document.createElement("div"); row.className = "h";
-    row.textContent = m.action.cmd === "wait" ? "you  waited 0.5s" :
-      m.accepted ? "you  " + m.result : "you  rejected (" + m.rejection + "); waited 0.5s";
-    $("log").prepend(row);
-    if (!m.accepted) toast("Move rejected: " + m.rejection);
-  }
   function toast(text, ms) { const t = $("toast"); t.textContent = text; t.classList.add("on"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("on"), ms || 1400); }
 
   // ---------------------------------------------------------------- input
@@ -1183,18 +1172,13 @@
   function tileAt(ev) {
     const r = cv.getBoundingClientRect();
     const x = (ev.clientX - r.left) / r.width * TX, y = TY - (ev.clientY - r.top) / r.height * TY;
-    const point = placement.at(x, y, {half: HALF, width: TX * HALF, height: TY * HALF});
-    return point && mode === "benchmark" ? {...point, x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100} : point;
+    return placement.at(x, y, {half: HALF, width: TX * HALF, height: TY * HALF});
   }
   function tryPlay(t) {
     const s = snaps[snaps.length - 1];
-    if (!t || sel < 0 || !s || over || benchmarkPending) return;
+    if (!t || sel < 0 || !s || over) return;
     const [cid, cost] = s.me.hand[sel] || [-1, 0];
     if (cid < 0) return;
-    if (mode === "benchmark") {
-      benchmarkPending = true; $("benchmark-wait").disabled = true;
-      send({t: "play", slot: sel, x: t.x, y: t.y}); select(-1); return;
-    }
     if (s.me.e < cost * 1000) return toast("Need " + cost + " elixir");
     if (!mask || maskSlot !== sel || mask.card !== cid) return toast("Placement is updating…");
     if (!placement.allowed(mask, t)) {
@@ -1207,10 +1191,6 @@
     renderer.addEffect({ kind: "drop", x: t.x, y: t.y, at: performance.now() });
     select(-1);
   }
-  $("benchmark-wait").onclick = () => {
-    if (mode !== "benchmark" || benchmarkPending || over) return;
-    benchmarkPending = true; $("benchmark-wait").disabled = true; select(-1); send({t: "wait"});
-  };
   window.addEventListener("pointermove", (ev) => { hover = tileAt(ev); if (dragging) dragMoved = true; });
   window.addEventListener("pointerup", (ev) => {
     if (dragging) { dragging = false; const t = tileAt(ev); if (dragMoved && t) tryPlay(t); }

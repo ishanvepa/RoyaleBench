@@ -46,7 +46,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
 - [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
-- [`data/README.md`](data/README.md): documentation for project data, including the tracked deck-strength snapshots (CrownScribe archetype win rates in `data/deck_strength.csv`, ranked by `cr_arena/deck_strength.py`).
+- [`data/README.md`](data/README.md): documentation for project data, including the tracked deck-strength data (CrownScribe archetype win rates in `data/deck_strength.csv` and head-to-head matchups in `data/deck_matchups.csv`, ranked by `cr_arena/deck_strength.py`).
 
 ## Project references
 

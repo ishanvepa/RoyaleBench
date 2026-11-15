@@ -121,7 +121,7 @@ every decision yourself through the `cr` command. Your goal is to **win the matc
 - When you have no move except waiting (for example, not enough elixir), the game waits for you
   automatically, so every state you are shown needs a decision.
 - Keep playing until `cr` prints `GAME OVER`. A match lasts 3 minutes of game time, plus up to
-  1 minute of overtime if the crowns are tied: at most {decisions} decisions, usually fewer. If you stop
+  2 minutes of overtime if the crowns are tied: at most {decisions} decisions, usually fewer. If you stop
   early, every decision you did not make counts as waiting for the rest of the match.
 
 Make each decision yourself from the state `cr` shows you. Do not write programs, scripts or loops
@@ -130,8 +130,9 @@ each move is recorded. You cannot inspect or change the game itself; only `cr` i
 
 ## Scoring
 
-Win = 1, loss = 0. The rare exact draw (see the tiebreak rule below) counts as a loss. The match
-is graded by replaying your moves, so only the moves you submit with `cr act` count.
+Win = 1, loss = 0. There are no draws: if the crowns are still level when overtime ends, the side
+with more tower HP left wins (see the rules below). The match is graded by replaying your moves,
+so only the moves you submit with `cr act` count.
 
 ## Rules in brief
 
@@ -219,7 +220,7 @@ def build(out: Path) -> list[str]:
     probe = Game(CLASSIC_DECKS[DECK_NAME], CLASSIC_DECKS[DECK_NAME], seed=0, record=False)
     avg = sum(c.elixir for c in probe.cards if c.name in CLASSIC_DECKS[DECK_NAME]) / len(CLASSIC_DECKS[DECK_NAME])
     interval = DECISION_TICKS * probe.state.tick_ms / 1000
-    instruction = INSTRUCTION.format(interval=interval, decisions=int(240 / interval),
+    instruction = INSTRUCTION.format(interval=interval, decisions=int(300 / interval),
                                      rules=RULES, deck=probe.deck_summary(0))
     names = []
     for seed in SEEDS:

@@ -108,6 +108,46 @@ Read this table with care:
   set spans 5.8 points (45.0% to 50.8%).
 - **Not the engine.** The engine uses ~2018 card balance, so live-game numbers may not match strength inside it.
 
+### Head-to-head within the set
+
+`deck_matchups.csv`: how each classic deck's archetype does against each of the other six, one row per deck and
+opponent (42 rows per capture; CrownScribe lists every pair on both decks' pages, from the same battles). Columns:
+`captured`, `deck`, `opponent` (a `CLASSIC_DECKS` key), `win_rate_pct` (the deck's win rate against the opponent),
+`battles`, `url` (the deck's archetype page, where the table is) and `filters`. It is append-only, like the file
+above. The first capture was read from the live pages later on 2026-11-14, so its battle counts are a little higher
+than in `deck_strength.csv`. The two directions of a pair agree within 0.3 points and
+`cr_arena/deck_strength.py` averages them (a test checks the agreement). Every pair has at least 545 battles.
+
+Strength within the set is a deck's mean win rate against the other six, each opponent counting equally, which is the
+position of a task designer choosing opponents from this set. Ranked by the lower bound of its 95% interval, with
+tiers as above:
+
+| Rank | Tier | Deck | Mean win rate vs the other six | 95% interval | Overall rank |
+|---|---|---|---|---|---|
+| 1 | 1 | giant-beatdown | 53.7% | 53.2-54.2% | 3 |
+| 2 | 1 | log-bait | 52.2% | 51.3-53.2% | 2 |
+| 3 | 2 | pekka-bridge-spam | 52.1% | 51.1-53.1% | 1 |
+| 4 | 2 | golem-beatdown | 50.5% | 49.6-51.3% | 4 |
+| 5 | 3 | hog-2.6-cycle | 47.5% | 46.6-48.4% | 5 |
+| 6 | 3 | xbow-cycle | 47.4% | 46.4-48.5% | 6 |
+| 7 | 3 | lavaloon | 46.5% | 45.2-47.9% | 7 |
+
+Head-to-head win % of the row deck against the column deck, strongest first:
+
+| row beats column | giant | log | pekka | golem | hog | xbow | lavaloon |
+|---|---|---|---|---|---|---|---|
+| giant | - | 47.2 | 51.4 | 58.0 | 56.0 | 62.6 | 46.9 |
+| log | 52.8 | - | 47.7 | 49.3 | 48.0 | 49.5 | 66.1 |
+| pekka | 48.6 | 52.3 | - | 59.0 | 46.8 | 49.0 | 57.0 |
+| golem | 42.0 | 50.6 | 41.0 | - | 53.2 | 67.3 | 48.5 |
+| hog | 44.0 | 52.0 | 53.2 | 46.8 | - | 45.6 | 43.5 |
+| xbow | 37.4 | 50.5 | 51.0 | 32.7 | 54.4 | - | 58.7 |
+| lavaloon | 53.1 | 33.9 | 43.0 | 51.4 | 56.5 | 41.3 | - |
+
+The order agrees with the overall ranking for the bottom four decks; the top three trade places because giant-beatdown
+beats the weaker decks by the most. Rank is only a rough guide, because the decks beat each other in cycles:
+lavaloon, the weakest, beats hog-2.6-cycle 56.5% of the time. For a task, read the matrix cell for the exact pair.
+
 ## Visual reference
 
 The local graphics reference is `data/references/arena-1-PD6QCK7GzA8.mp4`,

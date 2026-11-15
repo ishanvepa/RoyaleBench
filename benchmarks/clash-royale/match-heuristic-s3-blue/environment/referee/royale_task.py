@@ -257,7 +257,7 @@ def verify(cfg: dict, log_path: Path, out_dir: Path | None) -> dict:
     outcome = ref.outcome()
     think = [float(e.get("think_s", 0)) for e in entries[:applied]]
     rewards = {
-        "reward": float(outcome["result"] == "win" and integrity),  # 1 or 0: a draw is not a win
+        "reward": float(outcome["result"] == "win" and integrity),  # 1 or 0, never a fraction
         "win": float(outcome["result"] == "win" and integrity),
         "crowns_for": float(outcome["crowns_for"]),
         "crowns_against": float(outcome["crowns_against"]),

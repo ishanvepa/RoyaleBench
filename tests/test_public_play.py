@@ -144,7 +144,7 @@ class PublicPlayTests(unittest.TestCase):
                         for seed in range(5)]
             for index, session in enumerate(sessions):
                 hp = [list(player.tower_hp) for player in session.game.state.players]
-                if index:  # Two wins, two losses, and one draw through the engine's tiebreak.
+                if index:  # Two wins and two losses on tower HP; seed 0 stays level and goes to blue by seed parity.
                     hp[index % 2][1] = 1000
                 setup = msgspec.structs.replace(session.game.setup, tower_hp=hp)
                 session.game.engine.reset(session.seed, setup)
@@ -176,7 +176,7 @@ class PublicPlayTests(unittest.TestCase):
                 you = Leaderboard(board.path).standings('test-player')['you']
                 self.assertEqual(you['wins'], winners.count(0))
                 self.assertEqual(you['losses'], winners.count(1))
-                self.assertEqual((you['wins'], you['losses']), (2, 2))
+                self.assertEqual((you['wins'], you['losses']), (3, 2))  # no draws: all five games have a winner
                 self.assertEqual(you['name'], 'Alice, the Great')
             self.assertEqual(len(set(ids)), 5)
             self.assertEqual(len(list((Path(tmp) / 'replays').glob('*.msgpack'))), 5)

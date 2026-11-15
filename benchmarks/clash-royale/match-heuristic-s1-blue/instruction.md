@@ -12,7 +12,7 @@ every decision yourself through the `cr` command. Your goal is to **win the matc
 - When you have no move except waiting (for example, not enough elixir), the game waits for you
   automatically, so every state you are shown needs a decision.
 - Keep playing until `cr` prints `GAME OVER`. A match lasts 3 minutes of game time, plus up to
-  1 minute of overtime if the crowns are tied: at most 120 decisions, usually fewer. If you stop
+  2 minutes of overtime if the crowns are tied: at most 150 decisions, usually fewer. If you stop
   early, every decision you did not make counts as waiting for the rest of the match.
 
 Make each decision yourself from the state `cr` shows you. Do not write programs, scripts or loops
@@ -21,15 +21,16 @@ each move is recorded. You cannot inspect or change the game itself; only `cr` i
 
 ## Scoring
 
-Win = 1, loss = 0. The rare exact draw (see the tiebreak rule below) counts as a loss. The match
-is graded by replaying your moves, so only the moves you submit with `cr act` count.
+Win = 1, loss = 0. There are no draws: if the crowns are still level when overtime ends, the side
+with more tower HP left wins (see the rules below). The match is graded by replaying your moves,
+so only the moves you submit with `cr act` count.
 
 ## Rules in brief
 
 - Each side has a king tower and two princess towers (left and right). Destroying a princess tower = 1 crown, the king tower = 3 crowns (instant win).
 - Most crowns when time runs out wins. If tied, overtime starts and the next crown wins. If crowns are still tied when
-  overtime ends, no more cards can be played and every tower drains: the side whose weakest standing tower has LESS hp
-  loses (exactly equal = draw). So tower damage matters even when it takes no crown.
+  overtime ends, the match ends there and the side with more tower HP left, all its towers added up, wins (if even that
+  is exactly equal, a fixed coin flip decides). There are no draws. So tower damage matters even when it takes no crown.
 - You spend elixir (max 10, regenerates over time; faster in the last minute and overtime) to play cards from a 4-card hand. A played card goes to the back of your 8-card deck queue.
 - Troops walk down their lane toward enemy buildings and fight what they meet. Buildings stay put and defend. Spells hit an area once.
 - Good play: defend efficiently (spend less elixir than the enemy push costs), counter-attack with surviving troops, don't sit at full elixir (wasted regeneration), punish the lane where the enemy just spent elixir.

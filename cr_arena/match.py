@@ -41,7 +41,7 @@ def play_match(blue: Player, red: Player, deck_blue: list[str], deck_red: list[s
             for t in (0, 1):
                 if futs[t] is not None:
                     game.consume_events(t)
-            chosen = [moves[t][decisions[t].index] for t in (0, 1)]
+            chosen = [decisions[t].move or moves[t][decisions[t].index] for t in (0, 1)]
             left, _ = game.time_left_s()
             snap = [(p.elixir_milli / 1000, sum(p.tower_hp)) for p in game.state.players]
             results = game.step(chosen)

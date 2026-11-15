@@ -8,3 +8,4 @@ runs/site/
 runs/*.out
 data/arena.db
 data/*.db-*
+runs/samples/*.html

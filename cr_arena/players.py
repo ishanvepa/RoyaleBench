@@ -80,6 +80,7 @@ class Decision:
     error: str = ""
     latency_s: float = 0.0
     usage: dict = field(default_factory=dict)
+    move: "Move | None" = None  # exact move that overrides moves[index] (free placement, e.g. the planner bot)
 
 
 class Player:
@@ -347,6 +348,35 @@ class MockLLM(Player):
         return Decision(idx, raw=f"(mock reasoning)\nMOVE: {idx}", latency_s=lat, usage=usage)
 
 
+class PlannerPlayer(Player):
+    """The planner bot (look-ahead on a private copy of the engine). Unlike the numbered-move players it places
+    cards at exact spots, and it reads the true engine state (it knows the opponent's hand and elixir)."""
+
+    def __init__(self, name: str = "planner-bot", workers: int = 0, horizon_s: float = 10.0):
+        self.name, self.workers, self.horizon_s = name, workers, horizon_s
+        self.planner = None
+
+    def start(self, game, team):
+        from .planner_bot import Planner
+
+        self.planner = Planner(game.decks, game.seed, team, delay=game.command_delay_ticks,
+                               horizon_s=self.horizon_s, workers=self.workers)
+
+    def decide(self, game, team, text, moves):
+        t0 = time.time()
+        play, note = self.planner.act(game.engine.save_state())
+        lat = time.time() - t0
+        if play is None:
+            return Decision(0, raw=f"wait. {note}", latency_s=lat)
+        _t, slot, x, y = play
+        p = game.state.players[team]
+        card = game.card_by_id[p.hand[slot]]
+        tx, ty = game.own_tiles(team, x, y)
+        cost = p.hand_costs[slot] if len(p.hand_costs) == len(p.hand) else card.elixir
+        mv = Move(0, slot, card.name, game.kind_of(card), cost, f"({tx:.1f}, {ty:.1f})", game.lane_of(tx), x, y)
+        return Decision(0, move=mv, raw=f"{note}", latency_s=lat)
+
+
 def build_player(spec: dict) -> Player:
     kind = spec.get("type", "llm")
     if kind == "mock":
@@ -356,6 +386,12 @@ def build_player(spec: dict) -> Player:
         return RandomBot(spec["name"], seed=spec.get("seed", 0))
     if kind == "heuristic":
         return HeuristicBot(spec["name"], attack_elixir=spec.get("attack_elixir", 8.0))
+    if kind == "lavaloon":
+        from .lavaloon_bot import LavaloonBot
+
+        return LavaloonBot(spec["name"])
+    if kind == "planner":
+        return PlannerPlayer(spec["name"], workers=spec.get("workers", 0), horizon_s=spec.get("horizon_s", 10.0))
     if kind == "search":
         from .search_bot import SearchBot
 

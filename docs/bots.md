@@ -10,7 +10,7 @@ high-elixir attack rules with `attack_elixir = 8.0`. It is available in both hum
 play modes. `python -m cr_arena.live --public` (or `cr_arena.share --public`)
 pins the opponent to `planner-bot` with `hog-2.6-cycle`, allows only the human
 to choose a deck, and caps active games at seven. Public Planner matches each use
-eight search workers, the same as a lone local game, so shared play matches local strength; the other bots remain available in ordinary local mode. See [public hosting](public_play.md).
+eight search workers, the same as a lone local game, so shared play matches local strength. In live play a Planner starts all its search workers before reporting ready, and the match clock waits for that; the other bots remain available in ordinary local mode. See [public hosting](public_play.md).
 
 ```toml
 [bots.practice]

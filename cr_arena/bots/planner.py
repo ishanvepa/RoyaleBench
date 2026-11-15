@@ -65,6 +65,21 @@ class Planner:
                                             initargs=(self.args, os.getpid()))
             self.workers = workers
 
+    def warm(self, timeout_s: float = 60.0) -> None:
+        """Start every search worker now rather than on the first decision.
+
+        The pool otherwise starts lazily, so the first decision of a match pays for spawning and
+        initialising every worker (about a second locally, several seconds when many matches start at
+        once on a shared host). Each submitted job starts one process; short sleeps spread the jobs so
+        every worker reports its pid once its initialiser has finished.
+        """
+        if not self.pool:
+            return
+        seen: set[int] = set()
+        deadline = time.monotonic() + timeout_s
+        while len(seen) < self.workers and time.monotonic() < deadline:
+            seen.update(self.pool.map(_pool_pid, [0.05] * self.workers))
+
     def close(self) -> None:
         if self.pool:
             self.pool.shutdown(wait=False, cancel_futures=True)
@@ -110,7 +125,10 @@ class Planner:
             return []
         p = s.players[team]
         avail = p.elixir_milli - p.pending_cost * 1000
-        waiting = {q[0] for q in p.pending}
+        # Pending rows are [kind, card, x, y, ticks left, cost], kind 0 for a play: they name the card,
+        # not its hand slot. A card stays in its slot until it lands, and a deck holds each card once.
+        on_the_way = {q[1] for q in p.pending if q[0] == 0}
+        waiting = {slot for slot, cid in enumerate(p.hand) if cid in on_the_way}
         foes, towers = [], []
         for u in s.entities:
             if u.team == team or u.hp <= 0:
@@ -299,6 +317,11 @@ def _pool_init(args: dict, parent: int) -> None:
         os._exit(0)
 
     threading.Thread(target=watch, daemon=True).start()
+
+
+def _pool_pid(pause_s: float) -> int:
+    time.sleep(pause_s)  # long enough that each idle worker takes one job
+    return os.getpid()
 
 
 def _pool_run(job: tuple) -> list:

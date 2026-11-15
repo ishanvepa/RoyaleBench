@@ -217,6 +217,48 @@ class PublicPlayTests(unittest.TestCase):
             self.assertFalse(session.proc.is_alive())
         asyncio.run(scenario())
 
+    def test_clock_holds_at_tick_zero_until_the_bot_is_ready(self):
+        class Gated:  # hides the worker's "ready" until the test opens the gate
+            def __init__(self, conn):
+                self.conn, self.open = conn, False
+
+            def poll(self):
+                return self.open and self.conn.poll()
+
+            def __getattr__(self, name):
+                return getattr(self.conn, name)
+
+        async def scenario(timeout_s):
+            ws = MemorySocket()
+            session = live.Session(ws, 'giant-beatdown', 'giant-beatdown', 11)
+            session.conn = gate = Gated(session.conn)
+            with patch.object(live, 'BOT_READY_TIMEOUT_SECONDS', timeout_s), \
+                    self.assertLogs(live.log, level='WARNING') if timeout_s < 1 else ExitStack():
+                task = asyncio.create_task(session.run())
+                try:
+                    await asyncio.sleep(.5)
+                    snaps = [m for m in ws.messages if m['t'] == 's']
+                    if timeout_s >= 1:
+                        # Held: one tick-0 snapshot marked as starting, and nothing more.
+                        self.assertEqual([(m['k'], m['starting']) for m in snaps], [(0, True)])
+                        gate.open = True
+                    async with asyncio.timeout(15):
+                        while not any(m['t'] == 's' and m['k'] > 0 for m in ws.messages):
+                            if task.done():
+                                self.fail(f'Game stopped: {ws.messages}')
+                            await asyncio.sleep(.01)
+                    started = next(m for m in ws.messages if m['t'] == 's' and m['k'] > 0)
+                    self.assertFalse(started['starting'])
+                finally:
+                    task.cancel()
+                    with suppress(asyncio.CancelledError):
+                        await task
+            self.assertNotIn(session, live.ACTIVE)
+
+        for timeout_s in (30.0, 0.1):  # released by the bot's ready; started anyway after the limit
+            with self.subTest(timeout_s=timeout_s):
+                asyncio.run(scenario(timeout_s))
+
     def test_ten_natural_completions_save_unique_replays_and_release_open_sockets(self):
         async def finish_games(board):
             sessions = [live.Session(MemorySocket(), 'giant-beatdown', 'giant-beatdown', seed,

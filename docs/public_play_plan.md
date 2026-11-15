@@ -119,6 +119,10 @@ fewer workers mean slower decisions on staler positions (see
   single-game budget, and test that the two stay equal.
 - [x] Lower admission to seven matches and reserve 64 physical CPU cores
   (about nine per match plus the game loop); keep 16 GiB (about 1.4 GB per match).
+- [x] Start every Planner search worker before the bot reports ready, and hold the
+  match clock at tick 0 until then (20-second limit), so the first decision is no
+  longer a cold start. Fix Planner treating slot 0 as pending whenever any card was
+  on its way (pending rows name the card, not the slot).
 - [ ] Deploy and run `check_live --full-games` against the hosted server; compare
   bot decision p95/max with a lone local game.
 - [ ] Record the results under a new section in the validation JSON.

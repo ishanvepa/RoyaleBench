@@ -55,6 +55,12 @@ PUBLIC_PLANNER_WORKERS = PLANNER_WORKERS  # a fixed budget per match, independen
 ACTIVE: set = set()
 MAX_SESSION_SECONDS = 15 * 60  # includes pauses, so abandoned tabs cannot hold a slot forever
 SEND_TIMEOUT_SECONDS = 1.0
+# The clock holds at tick 0 until the bot and its search pool are ready, so a cold start cannot
+# cost the bot the opening; a worker that never reports ready cannot hold the match past this.
+BOT_READY_TIMEOUT_SECONDS = 20.0
+# A quit during warm-up must let the bot finish starting its pool and close it, or the killed
+# process leaks the pool's semaphores. The slot is already free; this wait runs off the event loop.
+BOT_EXIT_SECONDS = 15.0
 log = logging.getLogger(__name__)
 SEARCH_V2_MAX_AGE_TICKS = 80  # discard answers older than four seconds
 BOT_EVERY_TICKS = 5  # the bot is shown a fresh snapshot at most every 0.25 s of game time
@@ -162,6 +168,7 @@ class Session:
             child.close()
         ACTIVE.add(self)
         self.bot_busy = True  # until the worker reports it is ready
+        self.starting = True  # the clock has not started: waiting for the bot to be ready
         self.bot_asked_tick = -10_000
         self.bot_send: asyncio.Future | None = None
         self.bot_sent_at = 0.0
@@ -198,6 +205,7 @@ class Session:
                          units[e.unit_type] if 0 <= e.unit_type < len(units) else None])
         return {
             "t": "s", "k": s.tick, "left": round(left, 2), "ot": ot, "rate": s.elixir_rate, "paused": self.paused,
+            "starting": self.starting,
             # elixir shown net of plays that are on their way; "pend" = [slot, card, x, y, ticks left]
             "me": {"e": me.elixir_milli - me.pending_cost * 1000,
                    "pend": self.pending_plays(me),
@@ -349,14 +357,33 @@ class Session:
             ACTIVE.discard(self)
             await asyncio.to_thread(self.close)
 
+    async def _wait_for_bot(self) -> None:
+        """Hold the clock at tick 0 until the bot worker reports ready (it warms its search pool first)."""
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + BOT_READY_TIMEOUT_SECONDS
+        while self.bot_busy and loop.time() < deadline:
+            if time.monotonic() - self.started_at >= MAX_SESSION_SECONDS:
+                return  # the clock loop reports the expiry
+            if self.conn.poll():
+                self.conn.recv()  # the worker's "ready"
+                self.bot_busy = False
+            elif not self.proc.is_alive():
+                raise RuntimeError("bot worker exited")
+            else:
+                await asyncio.sleep(0.02)
+        if self.bot_busy:
+            log.warning("bot not ready after %.0f s; starting the clock anyway", BOT_READY_TIMEOUT_SECONDS)
+
     async def _run(self) -> None:
         g = self.game
         e = g.engine
         loop = asyncio.get_running_loop()
         tick_s = g.state.tick_ms / 1000
-        due = loop.time()
         await self.send(self.init_msg())
         await self.send(self.snapshot())
+        await self._wait_for_bot()
+        self.starting = False
+        due = loop.time()
         while not g.over:
             if time.monotonic() - self.started_at >= MAX_SESSION_SECONDS:
                 await self.send({"t": "error", "message": "Game expired. Please start a new game."})
@@ -477,7 +504,7 @@ class Session:
         # Give Planner a chance to close its process pool instead of leaking its semaphores.
         # This runs off the event loop and does not block the other matches' clocks.
         self.shutdown.set()
-        self.proc.join(timeout=2.0)
+        self.proc.join(timeout=BOT_EXIT_SECONDS)
         if self.proc.is_alive():
             self.proc.terminate()
             self.proc.join(timeout=0.5)

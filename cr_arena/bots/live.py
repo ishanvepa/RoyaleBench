@@ -11,6 +11,7 @@ class LiveBot:
             from .planner import Planner
 
             self.planner = Planner(decks, seed, team, delay=delay, workers=spec.get("workers", 0))
+            self.planner.warm()  # before the worker reports ready, so the match clock waits for the pool
         elif spec["type"] == "search-v2":
             from .live_search_v2 import LiveSearchGame, LiveSearchV2
 

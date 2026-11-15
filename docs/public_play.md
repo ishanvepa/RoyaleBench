@@ -232,8 +232,8 @@ match to finish and save. The check prints per-match tick rates, snapshot gaps,
 preloaded mask availability/update counts, successful bot plays, and time from
 input to the server reporting a pending deployment. It also reports bot response
 time and source-snapshot age, measured on the server from snapshot submission to
-answer consumption (including IPC, scheduling, and lazy search-pool startup;
-excluding the initial bot-worker ready handshake).
+answer consumption (including IPC and scheduling; excluding the bot worker's
+start-up, which happens before the clock starts — see below).
 It sends no placement-mask
 requests. It fails if a hand arrives without matching masks, a bot makes no play,
 a match advances below 19 ticks/second, or p95 input latency reaches 150 ms. It excludes the first two seconds of stream startup from
@@ -241,6 +241,15 @@ tick-rate measurements. `--sessions` defaults to the capacity advertised by the 
 smaller runs skip the capacity-refusal check. The JSON separates `gameplay_passed`
 from `latency_target_met`, and `passed` requires both. Bot timings are diagnostic;
 they have no absolute pass threshold and must be compared across equivalent runs.
+
+Each match's clock holds at tick 0, with the HUD showing **Starting**, until the bot
+worker reports ready. A Planner worker first starts and initialises all eight search
+processes, which took about 1.3 s locally; previously this happened lazily on the first
+decision, and on November 14, 2026 seven hosted matches starting together each lost
+their first 6–7 s of decisions to it. The hold lasts at most 20 seconds
+(`BOT_READY_TIMEOUT_SECONDS`), after which the clock starts anyway. A quit during
+warm-up frees the slot immediately; the worker is then given up to 15 seconds to close
+its pool cleanly before it is killed.
 
 The engine runs at 20 ticks/second and the page interpolates at the display's
 refresh rate. Both sides retain the intentional **21-tick / 1.05-second card
@@ -252,6 +261,6 @@ second instead of retaining a match indefinitely.
 Regression checks:
 
 ```bash
-uv run --frozen python -m unittest tests.test_live_leaderboard tests.test_public_play tests.test_bot_registry tests.test_human_search_v2 tests.test_placement tests.test_rendering -v
+uv run --frozen python -m unittest tests.test_live_leaderboard tests.test_public_play tests.test_bot_registry tests.test_human_search_v2 tests.test_placement tests.test_rendering tests.test_planner -v
 node --test tests/battle_renderer.test.cjs
 ```

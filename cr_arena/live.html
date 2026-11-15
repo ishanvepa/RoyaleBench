@@ -931,7 +931,7 @@
   }
   function fmtClock(sec) { sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0"); }
   function updateHud(s) {
-    const label = paused ? "Paused" : s.ot ? "Overtime" : "Time left:";
+    const label = s.starting ? "Starting" : paused ? "Paused" : s.ot ? "Overtime" : "Time left:";
     $("clock").textContent = fmtClock(s.left); $("clock-label").textContent = label;
     $("timebox").classList.toggle("ot", !!s.ot); $("timebox").classList.toggle("paused", paused);
     $("timebox").setAttribute("aria-label", label.replace(":", "") + " " + fmtClock(s.left));

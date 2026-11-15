@@ -66,8 +66,8 @@
   /* article column */
   .col { max-width: 760px; margin: 0 auto; padding: 0 16px; }
   .quote { border-left: 2px solid rgba(81,72,37,.5); padding: 4px 0 4px 32px; margin: 56px 0 8px; font: 400 20px/1.7 var(--serif); color: var(--ink); }
-  h2 { font: 400 32px/1.2 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 64px 0 14px; }
-  h3 { font: 400 24px/1.3 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 36px 0 8px; }
+  h2 { font: 700 32px/1.2 var(--sans); letter-spacing: -.02em; color: var(--ink); margin: 64px 0 18px; }
+  h3 { font: italic 400 26px/1.3 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 40px 0 10px; }
   p, li { font: 400 17px/1.75 var(--serif); color: var(--muted); }
   p { margin: 0 0 16px; } ul { padding-left: 22px; margin: 0 0 16px; } li { margin: 5px 0; }
   b { color: var(--ink); font-weight: 600; }
@@ -119,6 +119,57 @@
   pre { background: var(--panel); border: 1px solid var(--line); padding: 14px 16px; overflow-x: auto; font: 13px/1.55 var(--mono); color: var(--text); margin: 0 0 18px; }
   .bib { position: relative; } .bib button { position: absolute; top: 8px; right: 8px; font: 12px var(--mono); text-transform: uppercase; background: var(--bg); color: var(--green-text); border: 1px solid var(--line); padding: 3px 10px; cursor: pointer; }
 
+
+  /* Methodology loop diagram (numbered step cards, dotted flow) */
+  .loop { --gx: 34px; --gy: 30px; margin: 8px 0 0; }
+  .inputs { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin: 0 0 var(--gy) 0; padding-left: 18px; position: relative; border-left: 1.5px dotted var(--muted); }
+  .inputs::after { content: ""; position: absolute; left: -1.5px; bottom: calc(-1 * var(--gy)); width: 18px; height: var(--gy); border-left: 1.5px dotted var(--muted); border-bottom: 1.5px dotted var(--muted); }
+  .pill-in { font: 12px var(--mono); border: 1px solid var(--ink); border-radius: 999px; padding: 4px 12px; background: var(--bg); color: var(--ink); }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gy) var(--gx); }
+  .st { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 14px 14px 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .st .hd { display: flex; align-items: center; gap: 10px; font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: .04em; color: var(--ink); }
+  .st .n { width: 18px; height: 18px; border-radius: 50%; background: var(--ink); color: var(--bg); display: inline-flex; align-items: center; justify-content: center; font: 600 10px var(--sans); flex: none; }
+  .st .n.act { background: #b3182b; } .st .n.ver { background: var(--green); }
+  .st .bx { background: var(--bg); border: 1.5px solid var(--ink); border-radius: 12px; padding: 10px 12px; }
+  .st .bx ul { margin: 0; padding-left: 14px; display: flex; flex-direction: column; gap: 7px; }
+  .st .bx li { font: 400 13px/1.4 var(--sans); color: var(--text); margin: 0; }
+  .st:nth-child(4) { grid-column: 2; grid-row: 2; } .st:nth-child(5) { grid-column: 1; grid-row: 2; }
+  @media (min-width: 761px) {
+    .st::after, .st::before { content: ""; position: absolute; pointer-events: none; }
+    .st:nth-child(1)::after, .st:nth-child(2)::after { left: 100%; top: 26px; width: var(--gx); border-top: 1.5px dotted var(--muted); }
+    .st:nth-child(1)::before, .st:nth-child(2)::before { left: calc(100% + var(--gx) - 6px); top: 22px; border: 4px solid transparent; border-left: 6px solid var(--ink); }
+    .st:nth-child(3)::after { right: 50%; top: 100%; width: calc(50% + var(--gx)); height: calc(var(--gy) + 26px); border-right: 1.5px dotted var(--muted); border-bottom: 1.5px dotted var(--muted); }
+    .st:nth-child(3)::before { left: calc(-1 * var(--gx)); top: calc(100% + var(--gy) + 22px); border: 4px solid transparent; border-right: 6px solid var(--ink); }
+    .st:nth-child(4)::after { right: 100%; top: 26px; width: var(--gx); border-top: 1.5px dotted var(--muted); }
+    .st:nth-child(5)::after { left: 50%; bottom: 100%; height: var(--gy); border-left: 1.5px dotted var(--muted); }
+    .st:nth-child(5)::before { left: calc(50% - 4px); bottom: calc(100% + var(--gy) - 6px); border: 4px solid transparent; border-bottom: 6px solid var(--ink); }
+    .st:nth-child(4)::before { right: calc(100% + var(--gx) - 6px); top: 22px; border: 4px solid transparent; border-right: 6px solid var(--ink); }
+  }
+  .elbow-end { display: none; }
+  @media (max-width: 760px) {
+    .steps-grid { grid-template-columns: 1fr; }
+    .st:nth-child(4), .st:nth-child(5) { grid-column: auto; grid-row: auto; }
+    .st:not(:last-child)::after { content: "↓"; position: absolute; left: 50%; top: calc(100% + 4px); transform: translateX(-50%); font: 14px/1 var(--mono); color: var(--muted); }
+    .st:last-child::after { content: "↺ back to step 1 until the game or window ends"; position: static; margin-top: 4px; font: 12px var(--mono); color: var(--muted); }
+  }
+  .flow-note { font: 12px var(--mono); text-transform: uppercase; color: var(--muted); margin: 10px 0 0; }
+
+  /* Pareto chart panel (Vals poker-page format) */
+  .chartpanel { border: 1px solid var(--line); margin: 8px 0 0; background: var(--bg); }
+  .cp-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+  .cp-head b { font: 600 18px var(--serif); color: var(--ink); letter-spacing: -.01em; }
+  .cp-ctrls { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; font: 12px var(--mono); text-transform: uppercase; color: var(--ink); }
+  .cp-axis { display: inline-flex; gap: 8px; align-items: center; }
+  .cp-sel { display: inline-flex; align-items: center; gap: 8px; }
+  .cp-sel select { font: 12px var(--mono); text-transform: uppercase; color: var(--ink); background: var(--tint); border: 0; border-radius: 4px; padding: 7px 10px; cursor: pointer; }
+  .cp-legend { display: flex; gap: 28px; flex-wrap: wrap; padding: 14px 20px; background: var(--panel); border-bottom: 1px solid var(--line); font: 12px var(--mono); text-transform: uppercase; color: var(--ink); }
+  .cp-legend span { display: inline-flex; align-items: center; gap: 8px; } .cp-legend i { width: 12px; height: 12px; display: inline-block; }
+  .cp-legend .off { color: var(--muted); opacity: .55; }
+  .cp-legend i.dots { width: 26px; height: 0; border-top: 2px dotted var(--ink); background: none; }
+  .cp-body { padding: 16px 8px 4px; overflow-x: auto; } .cp-body svg { min-width: 520px; display: block; }
+  .cp-body svg text { font: 12px var(--mono); fill: var(--muted); } .cp-body svg text.ml { fill: var(--ink); font-size: 11px; text-transform: uppercase; }
+  .cp-foot { padding: 10px 20px 14px; font: 11px var(--mono); text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--line-soft); }
+  .cp-cap { font: 13px/1.5 var(--sans); color: var(--muted); margin: 10px 0 24px; }
   figure { margin: 22px 0; } figcaption { font: 13px/1.5 var(--sans); color: var(--muted); margin-top: 10px; }
   svg { max-width: 100%; height: auto; }
   svg text { font: 12px var(--mono); fill: var(--text); } svg .m { fill: var(--muted); } svg .box { fill: var(--panel); stroke: var(--line); } svg .arr { stroke: var(--muted); fill: none; }
@@ -367,6 +418,23 @@
   </div>
 
   <h2 id="results">Results</h2>
+  <div class="chartpanel" id="pareto">
+    <div class="cp-head"><b>RoyaleBench - Pareto Curve</b>
+      <div class="cp-ctrls">
+        <span class="cp-axis"><span aria-hidden="true">↔</span> Cost / Task</span>
+        <span class="cp-axis"><span aria-hidden="true">↕</span> Pass Rate</span>
+        <label class="cp-sel">Task set <select id="pareto-set" aria-label="Task set"></select></label>
+      </div>
+    </div>
+    <div class="cp-legend" aria-label="Legend">
+      <span><i style="background:#d97757"></i>Anthropic</span>
+      <span class="off" title="Cost not reported by the Codex harness, so not plotted"><i style="background:#000"></i>OpenAI</span>
+      <span><i class="dots"></i>Pareto frontier</span>
+    </div>
+    <div class="cp-body"><svg id="pareto-svg" viewBox="0 0 760 430" width="100%" role="img" aria-label="Cost per task against pass rate with the Pareto frontier as a dotted line"></svg></div>
+    <div class="cp-foot" id="pareto-foot"></div>
+  </div>
+  <p class="cp-cap">Each view is one task set on the same harness (<code>claude_code-v1.0.0</code>), one attempt per task, no intervals. A model sits on the frontier when no other model is both cheaper and at least as good; the dotted staircase joins those points. Cost is model API cost only, with sandbox compute excluded. GPT-6.1 Sol also scored 2/4 on Win, but the Codex harness reports no cost, so it cannot be placed (greyed in the legend). Exact numbers and sources are in the table below.</p>
   <span class="label">Pass rate by task set</span>
   <figure>
     <svg viewBox="0 0 700 330" width="100%" role="img" aria-label="Pass rate by task set and model, single attempts">
@@ -392,11 +460,6 @@
       </g>
     </svg>
     <figcaption>One attempt per task; task sets differ in size and difficulty, so compare within a set only. Dark green: Opus 5.5. Light green: other models. v3 was saturated: only 6 of its 11 objectives ended in an actual match win. Sources are linked under the leaderboard and in the <a href="royalebench_win.md">Win</a>, <a href="royalebench_v4.md">v4</a> and <a href="match_tasks.md">full-match</a> docs.</figcaption>
-  </figure>
-  <span class="label">Cost against score, with the Pareto frontier</span>
-  <figure>
-    <svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Cost per task against pass rate for each task set, with the Pareto frontier drawn as a staircase"><g transform="translate(40,30)"><text x="0" y="-12" font-weight="600">v3 · 11 tasks</text><line x1="0" y1="0" x2="170" y2="0" stroke="var(--line-soft)"/><text class="m" x="-6" y="4" text-anchor="end">100%</text><line x1="0" y1="75" x2="170" y2="75" stroke="var(--line-soft)"/><text class="m" x="-6" y="79" text-anchor="end">50%</text><line x1="0" y1="150" x2="170" y2="150" stroke="var(--line-soft)"/><text class="m" x="-6" y="154" text-anchor="end">0%</text><line x1="0" y1="0" x2="0" y2="150" stroke="var(--line-soft)"/><text class="m" x="0" y="168" text-anchor="middle">0</text><line x1="42.5" y1="0" x2="42.5" y2="150" stroke="var(--line-soft)"/><text class="m" x="42.5" y="168" text-anchor="middle">.04</text><line x1="85" y1="0" x2="85" y2="150" stroke="var(--line-soft)"/><text class="m" x="85" y="168" text-anchor="middle">.08</text><line x1="127.5" y1="0" x2="127.5" y2="150" stroke="var(--line-soft)"/><text class="m" x="127.5" y="168" text-anchor="middle">.12</text><line x1="170" y1="0" x2="170" y2="150" stroke="var(--line-soft)"/><text class="m" x="170" y="168" text-anchor="middle">.16</text><line x1="0" y1="0" x2="0" y2="150" stroke="var(--text)"/><line x1="0" y1="150" x2="170" y2="150" stroke="var(--text)"/><path d="M60.9 54.6 H151.6 V0 H170" fill="none" stroke="var(--green)" stroke-width="2"/><circle cx="60.9" cy="54.6" r="5.5" fill="var(--bar2)" stroke="var(--text)" stroke-width="1.2"/><text x="52" y="76" text-anchor="start">Sonnet 5.5 · 7/11</text><circle cx="151.6" cy="0" r="5.5" fill="var(--bar)" stroke="var(--text)" stroke-width="1.2"/><text x="142.6" y="4" text-anchor="end">Opus 5.5 · 11/11</text></g><g transform="translate(255,30)"><text x="0" y="-12" font-weight="600">v4 · 5 tasks</text><line x1="0" y1="0" x2="170" y2="0" stroke="var(--line-soft)"/><text class="m" x="-6" y="4" text-anchor="end">100%</text><line x1="0" y1="75" x2="170" y2="75" stroke="var(--line-soft)"/><text class="m" x="-6" y="79" text-anchor="end">50%</text><line x1="0" y1="150" x2="170" y2="150" stroke="var(--line-soft)"/><text class="m" x="-6" y="154" text-anchor="end">0%</text><line x1="0" y1="0" x2="0" y2="150" stroke="var(--line-soft)"/><text class="m" x="0" y="168" text-anchor="middle">0</text><line x1="42.5" y1="0" x2="42.5" y2="150" stroke="var(--line-soft)"/><text class="m" x="42.5" y="168" text-anchor="middle">.04</text><line x1="85" y1="0" x2="85" y2="150" stroke="var(--line-soft)"/><text class="m" x="85" y="168" text-anchor="middle">.08</text><line x1="127.5" y1="0" x2="127.5" y2="150" stroke="var(--line-soft)"/><text class="m" x="127.5" y="168" text-anchor="middle">.12</text><line x1="170" y1="0" x2="170" y2="150" stroke="var(--line-soft)"/><text class="m" x="170" y="168" text-anchor="middle">.16</text><line x1="0" y1="0" x2="0" y2="150" stroke="var(--text)"/><line x1="0" y1="150" x2="170" y2="150" stroke="var(--text)"/><path d="M54.6 120 H145 V60 H170" fill="none" stroke="var(--green)" stroke-width="2"/><circle cx="54.6" cy="120" r="5.5" fill="var(--bar2)" stroke="var(--text)" stroke-width="1.2"/><text x="46" y="141" text-anchor="start">Sonnet 5.5 · 1/5</text><circle cx="145.0" cy="60" r="5.5" fill="var(--bar)" stroke="var(--text)" stroke-width="1.2"/><text x="136.0" y="64" text-anchor="end">Opus 5.5 · 3/5</text></g><g transform="translate(470,30)"><text x="0" y="-12" font-weight="600">Win · 4 tasks</text><line x1="0" y1="0" x2="170" y2="0" stroke="var(--line-soft)"/><text class="m" x="-6" y="4" text-anchor="end">100%</text><line x1="0" y1="75" x2="170" y2="75" stroke="var(--line-soft)"/><text class="m" x="-6" y="79" text-anchor="end">50%</text><line x1="0" y1="150" x2="170" y2="150" stroke="var(--line-soft)"/><text class="m" x="-6" y="154" text-anchor="end">0%</text><line x1="0" y1="0" x2="0" y2="150" stroke="var(--line-soft)"/><text class="m" x="0" y="168" text-anchor="middle">0</text><line x1="42.5" y1="0" x2="42.5" y2="150" stroke="var(--line-soft)"/><text class="m" x="42.5" y="168" text-anchor="middle">.04</text><line x1="85" y1="0" x2="85" y2="150" stroke="var(--line-soft)"/><text class="m" x="85" y="168" text-anchor="middle">.08</text><line x1="127.5" y1="0" x2="127.5" y2="150" stroke="var(--line-soft)"/><text class="m" x="127.5" y="168" text-anchor="middle">.12</text><line x1="170" y1="0" x2="170" y2="150" stroke="var(--line-soft)"/><text class="m" x="170" y="168" text-anchor="middle">.16</text><line x1="0" y1="0" x2="0" y2="150" stroke="var(--text)"/><line x1="0" y1="150" x2="170" y2="150" stroke="var(--text)"/><path d="M128 75 H170" fill="none" stroke="var(--green)" stroke-width="2"/><circle cx="128.0" cy="75" r="5.5" fill="var(--bar)" stroke="var(--text)" stroke-width="1.2"/><text x="119.0" y="79" text-anchor="end">Opus 5.5 · 2/4</text></g><text x="350" y="242" text-anchor="middle">Model API cost per task, USD (compute excluded)</text></svg>
-    <figcaption>Each panel is one task set on the same harness (<code>claude_code-v1.0.0</code>) and a shared cost axis. A model sits on the frontier when no other model is both cheaper and at least as good; the green staircase joins those points. With only two models per set, both are on the frontier in v3 and v4, so the chart shows the cost of the extra passes (Opus costs about 2.5 to 2.7 times as much per task in both sets) and nothing more. GPT-6.1 Sol also scored 2/4 on Win, but the Codex harness reports no cost, so it cannot be placed. One attempt per task; no intervals.</figcaption>
   </figure>
   <div class="tw"><table class="t">
     <thead><tr><th>Task set</th><th>Model</th><th>Passed</th><th>API cost, total</th><th>Per task</th><th>Source</th></tr></thead>
@@ -451,18 +514,25 @@
 
   <hr>
   <h2 id="methodology">Methodology</h2>
-  <figure>
-    <svg viewBox="0 0 700 160" width="100%" role="img" aria-label="Evaluation loop: model, cr command, referee, Planner, verifier replay">
-      <rect class="box" x="10" y="50" width="110" height="52" rx="2"/><text x="65" y="73" text-anchor="middle">MODEL</text><text class="m" x="65" y="90" text-anchor="middle">agent harness</text>
-      <rect class="box" x="160" y="50" width="110" height="52" rx="2"/><text x="215" y="73" text-anchor="middle">CR PLAY / WAIT</text><text class="m" x="215" y="90" text-anchor="middle">coordinates</text>
-      <rect class="box" x="310" y="50" width="120" height="52" rx="2"/><text x="370" y="73" text-anchor="middle">REFEREE</text><text class="m" x="370" y="90" text-anchor="middle">engine + action log</text>
-      <rect class="box" x="480" y="10" width="110" height="52" rx="2"/><text x="535" y="33" text-anchor="middle">PLANNER</text><text class="m" x="535" y="50" text-anchor="middle">opponent</text>
-      <rect class="box" x="480" y="92" width="110" height="52" rx="2"/><text x="535" y="115" text-anchor="middle">VERIFIER</text><text class="m" x="535" y="132" text-anchor="middle">clean replay</text>
-      <path class="arr" d="M120 76 H160 M270 76 H310 M430 66 L480 40 M430 86 L480 114"/>
-      <path class="arr" d="M215 102 V140 H65 V102" stroke-dasharray="3 3"/>
-      <text class="m" x="140" y="154" text-anchor="middle">board and result return to the model</text>
-    </svg>
-    <figcaption>Each decision advances up to 2 seconds of game time; the game pauses while the model thinks. A separate verifier replays the action log in a clean container and checks decision numbers, ticks and move labels. An integrity failure scores zero.</figcaption>
+  <figure class="loop">
+    <div class="inputs" aria-label="Inputs to every task">
+      <span class="pill-in">Fixed starting position: decks, elixir, tower HP, units</span>
+      <span class="pill-in">Objective and time window</span>
+      <span class="pill-in">Pinned seed and Planner settings</span>
+    </div>
+    <div class="steps-grid">
+      <div class="st"><div class="hd"><span class="n">1</span>State observation</div>
+        <div class="bx"><ul><li>Referee builds the model's view: own hand and elixir, the board, visible events, the next card</li><li>The opponent's hand and elixir stay hidden</li><li>The objective and time left are restated</li></ul></div></div>
+      <div class="st"><div class="hd"><span class="n">2</span>Model decision</div>
+        <div class="bx"><ul><li>The model reasons about the position, then runs <code>cr play SLOT X Y</code> or <code>cr wait</code></li><li>No scripts or loops to choose moves</li><li>Thinking pauses the game</li></ul></div></div>
+      <div class="st"><div class="hd"><span class="n act">3</span>Action execution</div>
+        <div class="bx"><ul><li>Referee checks the move against the hand and elixir</li><li>An illegal play counts as a wait and reports why</li><li>Coordinates are never snapped to a legal tile; every attempt is logged</li></ul></div></div>
+      <div class="st"><div class="hd"><span class="n act">4</span>Opponent and engine</div>
+        <div class="bx"><ul><li>Planner picks its move from the same frozen state, with full knowledge of both hands</li><li>The deterministic engine advances up to 2 seconds</li><li>Both plays are applied together</li></ul></div></div>
+      <div class="st"><div class="hd"><span class="n ver">5</span>Resolution and replay</div>
+        <div class="bx"><ul><li>Game or window over? If not, return to step 1</li><li>If so, a verifier replays the action log in a clean container</li><li>Reward is 1 only if the objective is met and integrity passes</li></ul></div></div>
+    </div>
+    <figcaption>Each decision advances up to 2 seconds of game time. The verifier checks decision numbers, ticks and move labels against the log, and an integrity failure scores zero. The same loop runs for every task; only the starting position, objective and window change.</figcaption>
   </figure>
 
   <h3>Opponent: the Planner</h3>
@@ -558,6 +628,43 @@ valkyrie run start --agent claude_code-v1.0.0 \
     function fallback() { var r = document.createRange(); r.selectNodeContents(src); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); try { document.execCommand("copy"); done(); } catch (e) {} }
     try { navigator.clipboard.writeText(src.textContent).then(done, fallback); } catch (e) { fallback(); }
   });
+
+  // Pareto panel: one task set at a time, squares coloured by provider, dotted staircase frontier.
+  (function () {
+    var COLOR = { Anthropic: "#d97757", OpenAI: "#000000" };
+    var SETS = {
+      "v3 · 11 tasks": [["Opus 5.5", "Anthropic", 1.57 / 11, 11 / 11, "11/11"], ["Sonnet 5.5", "Anthropic", 0.63 / 11, 7 / 11, "7/11"]],
+      "v4 · 5 tasks": [["Opus 5.5", "Anthropic", 0.6822 / 5, 3 / 5, "3/5"], ["Sonnet 5.5", "Anthropic", 0.2572 / 5, 1 / 5, "1/5"]],
+      "Win · 4 tasks": [["Opus 5.5", "Anthropic", 0.482 / 4, 2 / 4, "2/4"]]
+    };
+    var sel = document.getElementById("pareto-set"), svg = document.getElementById("pareto-svg"), foot = document.getElementById("pareto-foot");
+    if (!sel || !svg) return;
+    Object.keys(SETS).forEach(function (k) { var o = document.createElement("option"); o.textContent = k; sel.appendChild(o); });
+    var W = 760, H = 430, L = 70, R = 28, T = 14, B = 64, PW = W - L - R, PH = H - T - B, XMAX = 0.16;
+    function X(c) { return L + (c / XMAX) * PW; } function Y(r) { return T + (1 - r) * PH; }
+    function draw() {
+      var pts = SETS[sel.value], o = [];
+      for (var i = 0; i <= 8; i++) { var c = i * 0.02, x = X(c); o.push('<line x1="' + x + '" y1="' + T + '" x2="' + x + '" y2="' + (T + PH) + '" stroke="var(--line-soft)"/><text x="' + x + '" y="' + (T + PH + 20) + '" text-anchor="middle">' + c.toFixed(2) + '</text>'); }
+      for (var j = 0; j <= 5; j++) { var r = j / 5, y = Y(r); o.push('<line x1="' + L + '" y1="' + y + '" x2="' + (L + PW) + '" y2="' + y + '" stroke="var(--line-soft)"/><text x="' + (L - 8) + '" y="' + (y + 4) + '" text-anchor="end">' + Math.round(r * 100) + '%</text>'); }
+      o.push('<line x1="' + L + '" y1="' + T + '" x2="' + L + '" y2="' + (T + PH) + '" stroke="var(--ink)"/><line x1="' + L + '" y1="' + (T + PH) + '" x2="' + (L + PW) + '" y2="' + (T + PH) + '" stroke="var(--ink)"/>');
+      o.push('<text x="' + (L + PW / 2) + '" y="' + (H - 12) + '" text-anchor="middle">Cost / Task (USD)</text>');
+      o.push('<text transform="translate(18 ' + (T + PH / 2) + ') rotate(-90)" text-anchor="middle">Pass Rate</text>');
+      var sorted = pts.slice().sort(function (a, b) { return a[2] - b[2] || b[3] - a[3]; }), front = [], best = -1;
+      sorted.forEach(function (p) { if (p[3] > best) { front.push(p); best = p[3]; } });
+      var d = "";
+      front.forEach(function (p, k) { var x = X(p[2]), y = Y(p[3]); d += (k === 0 ? "M" + x + " " + y : " H" + x + " V" + y); });
+      if (front.length) d += " H" + (L + PW);
+      o.push('<path d="' + d + '" fill="none" stroke="var(--ink)" stroke-width="1.8" stroke-dasharray="1.5 5" stroke-linecap="round"/>');
+      pts.forEach(function (p) {
+        var x = X(p[2]), y = Y(p[3]), left = p[2] > 0.11;
+        o.push('<rect x="' + (x - 6) + '" y="' + (y - 6) + '" width="12" height="12" fill="' + COLOR[p[1]] + '"><title>' + p[0] + ': ' + p[4] + ' passed, $' + p[2].toFixed(3) + ' per task</title></rect>');
+        o.push('<text class="ml" x="' + (left ? x + 6 : x - 6) + '" y="' + (y < T + 24 ? y + 24 : y - 14) + '" text-anchor="' + (left ? "end" : "start") + '">' + p[0] + " · " + p[4] + '</text>');
+      });
+      svg.innerHTML = o.join("");
+      foot.textContent = pts.length + " model" + (pts.length === 1 ? "" : "s") + " plotted · " + front.length + " on the frontier · sandbox compute excluded";
+    }
+    sel.addEventListener("change", draw); draw();
+  })();
 
   // Case-study tab groups: each [data-tabs] panel switches its own panes.
   document.querySelectorAll("[data-tabs]").forEach(function (panel) {

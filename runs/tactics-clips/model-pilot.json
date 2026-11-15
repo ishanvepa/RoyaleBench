@@ -1,0 +1,216 @@
+{
+  "run_id": "e9173855-84c0-457d-ab2e-d2e336afccbb",
+  "dataset": "royalebench/royalebench-tactics@6",
+  "dataset_digest": "sha256:5d9869332560e7ee325d975c6fca3340f75c69bb43f43a2f83f49775de424c37",
+  "model": "anthropic/claude-opus-5-5",
+  "harness": "claude_code-v1.0.0",
+  "provider": "modal",
+  "concurrency": 1,
+  "status": "FINISHED",
+  "task_count": 2,
+  "passes": 0,
+  "api_cost_usd": 0.3342354,
+  "api_cost_excludes_sandbox": true,
+  "tasks": {
+    "06-mini-pekka-kite": {
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 1.0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3786,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 4.0,
+        "fast_decision_frac": 0.25,
+        "spent_elixir": 1.0,
+        "tower_damage": 756.0,
+        "objective_met": 0.0,
+        "rejected_actions": 0.0
+      },
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3786,
+        "ticks": 520,
+        "tower_damage": 756,
+        "spent_elixir": 1,
+        "plays": [
+          {
+            "decision": 3,
+            "card": "Skeletons",
+            "x": 135000,
+            "y": 207000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "actions": [
+        {
+          "tick": 200,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 210,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 220,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 230,
+          "action": {
+            "cmd": "play",
+            "slot": 0,
+            "x": 7.5,
+            "y": 11.5
+          }
+        }
+      ],
+      "api_cost_usd": 0.1219072,
+      "api_cost_excludes_sandbox": true,
+      "agent_wall_clock_s": 36.287,
+      "replay_frames": 321,
+      "independent_replay_verified": true,
+      "actions_sha256": "ca7f2f7f8094e42ebed5ed3a083bf0d39d3bde4e02b2a212c21e6c3eadbe6e24",
+      "failure_classification": "Model timing/placement error: Skeletons at elapsed 1.5s, (7.5,11.5), before the attack reached the bridge. The tower was lost. The reference waits until 3s and places at (7.5,13.5). No rejected actions or infrastructure errors."
+    },
+    "07-balloon-fireball": {
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 1.0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 9.0,
+        "fast_decision_frac": 0.1111,
+        "spent_elixir": 4.0,
+        "tower_damage": 241.0,
+        "objective_met": 0.0,
+        "rejected_actions": 0.0
+      },
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 520,
+        "tower_damage": 241,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 8,
+            "card": "Fireball",
+            "x": 61200,
+            "y": 167400,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "actions": [
+        {
+          "tick": 200,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 220,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 240,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 260,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 280,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 300,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 320,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 340,
+          "action": {
+            "cmd": "wait"
+          }
+        },
+        {
+          "tick": 360,
+          "action": {
+            "cmd": "play",
+            "slot": 1,
+            "x": 3.4,
+            "y": 9.3
+          }
+        }
+      ],
+      "api_cost_usd": 0.2123282,
+      "api_cost_excludes_sandbox": true,
+      "agent_wall_clock_s": 68.409,
+      "replay_frames": 321,
+      "independent_replay_verified": true,
+      "actions_sha256": "30f6d21833aa3dbce41c2bea4c2bb62db1681e8845b959dc584c6073bba83e9c",
+      "failure_classification": "Model timing/placement error: Fireball at elapsed 8s, (3.4,9.3). It did not prevent a direct Balloon attack, and the threatened tower was lost. The reference casts at 10s, (3.5,7.5), preserving the tower through the death bomb. No rejected actions or infrastructure errors."
+    }
+  },
+  "raw_artifacts": "runs/analysis/e9173855-84c0-457d-ab2e-d2e336afccbb",
+  "capture": {
+    "artifact_count": 137,
+    "complete": true,
+    "counts": {
+      "commands": 111,
+      "events": 657,
+      "matches": 2,
+      "model_calls": 15,
+      "observations": 15,
+      "states": 100
+    },
+    "gaps": [],
+    "schema_version": "1.0"
+  },
+  "limitations": "One attempt per task validates setup and demonstrates failures; it is not a reliable success-rate estimate.",
+  "archive_checksum_errors": [],
+  "durable_archive": "local durable archive; host-specific path omitted"
+}

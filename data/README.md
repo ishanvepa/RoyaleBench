@@ -1,5 +1,14 @@
 # Data snapshot
 
+## TikTok interaction references
+
+`references/tiktok/` holds the two downloaded source MP4s and downloader metadata
+for the [clip recreations](../docs/tiktok_recreations.md). They are local,
+Git-ignored reference media. Source URLs and SHA-256 hashes are retained in
+[`runs/clip-recreations/checks.json`](../runs/clip-recreations/checks.json).
+The guide explains re-extraction, simulator inputs, controls, and the difference
+between preventing a Balloon attack and preventing its death-bomb damage.
+
 ## Frozen Tactics menu inputs
 
 [`royalebench-tactics-menu-source`](royalebench-tactics-menu-source) preserves the historical

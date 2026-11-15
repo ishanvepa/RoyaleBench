@@ -1,0 +1,18 @@
+{
+  "dataset": "royalebench/royalebench-v9@1",
+  "version": {
+    "benchmark": "royalebench",
+    "dataset": "royalebench-v9",
+    "revision": 1,
+    "digest": "sha256:e9e4396c2792964e4246eeb1002a6f4d8b2f72ba0b697be6c807f967be87ecc2",
+    "task_count": 21,
+    "tags": [
+      "latest",
+      "v9"
+    ],
+    "created_by_email": "b.charest04@gmail.com",
+    "created_at": "2026-11-15T19:01:06.342965+00:00"
+  },
+  "all_21_task_digests_match": true,
+  "task_count": 21
+}

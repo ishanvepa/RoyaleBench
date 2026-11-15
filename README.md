@@ -14,6 +14,15 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 [TODO: State the specific capability gap supported by the final results.]
 
+## RoyaleBench v9 extension
+
+[RoyaleBench v9](docs/royalebench_v9.md), published as `royalebench/royalebench-v9@1`,
+extends all 18 v8 tasks with the one-hit Hog body-block, Mini P.E.K.K.A. kite,
+and Balloon Fireball defenses. All **21 source packages are unchanged**.
+All 21 reference resolutions are playable in the dashboard; playback, seeking,
+and board flipping were checked for every task. The score is mean binary
+objective success across the 21 tasks.
+
 ## RoyaleBench v8
 
 [RoyaleBench v8](docs/royalebench_v8.md) is the default benchmark: **all 14 v6@1
@@ -118,10 +127,12 @@ passed **3/3** and the matching frozen menu tasks passed **2/3**, all with integ
 pilot verifies operation and does not establish that coordinate actions increase difficulty.
 See the guide for exact revisions, costs, action traces, and the menu cycling failure.
 
-The [Tactics extension](docs/tactics.md), published as `royalebench/royalebench-tactics@3`, uses
-the same coordinate foundation as v3 for timed spells, counter reservation, tower races and tower
-trades. Reference wins and coordinate-placement contrasts gate packaging. Its historical menu
-releases and model results remain attributed to their original revisions.
+The [Tactics extension](docs/tactics.md), published as `royalebench/royalebench-tactics@6`, has
+ten tasks on the same coordinate foundation as v3: timed spells, counter reservation, tower
+races, tower trades, Hog body-blocking, Mini P.E.K.K.A. kiting, and Fireball knockback against a
+Balloon. The [two clip-inspired defenses](docs/tactics_clips.md) preserve all eight `@5` packages.
+References, negative controls, and independent replay checks gate packaging. Historical menu
+and coordinate results remain attributed to their original revisions.
 
 ## Preliminary full-match results
 
@@ -181,13 +192,14 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 
 - [Demo video](demo/README.md): editable 72-second Remotion cut, captured gameplay, storyboard, and evidence.
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
+- [RoyaleBench v9](docs/royalebench_v9.md): v8 plus three Tactics defenses, 21 unchanged packages, publication and validated resolution playback for every task.
 - [RoyaleBench v8](docs/royalebench_v8.md): default 18-task merge of v6@1 and v7@1, exact source provenance, grading and validation.
 - [RoyaleBench v7](docs/royalebench_v7.md): separate harder tower-winning continuations, latest v6 audit, validation and frontier calibration.
 - [RoyaleBench v6](docs/royalebench_v6.md): historical merged benchmark, source digests, retained grading, validation, and publication.
 - [RoyaleBench Win](docs/royalebench_win.md): separate win-only benchmark, saturation audit, validation, and frontier-model runs.
 - [RoyaleBench v3](docs/royalebench_v3.md): historical continuation benchmark using coordinate actions, release validation, and run commands.
 - [RoyaleBench v5](docs/royalebench_v5.md): selected ten-case coordinate benchmark, source-run evidence, validation, and run commands.
-- [RoyaleBench Tactics](docs/tactics.md): four task families with spatial variations, timing and resource constraints, contrast evidence, and build/validation commands.
+- [RoyaleBench Tactics](docs/tactics.md): ten tasks in seven families, including [clip-inspired defenses](docs/tactics_clips.md), with timing and resource constraints, contrast evidence, and validation commands.
 - [RoyaleBench v4](docs/royalebench_v4.md): focused challenge set based on the Opus and Sonnet v3 traces, with validation and run instructions.
 - [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch task replays and agent traces, and browse the original arena (`uv run python -m rb_server`).

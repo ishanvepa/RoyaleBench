@@ -1,0 +1,269 @@
+{
+  "benchmark": "RoyaleBench v9",
+  "version": "9.0.0",
+  "sources": [
+    {
+      "dataset": "royalebench/royalebench-v8@1",
+      "digest": "sha256:e5807bda20b03468993ef75b0eeb4f881f7e70fe0a674be977888d5502f979b2",
+      "task_count": 18
+    },
+    {
+      "dataset": "royalebench/royalebench-tactics@6",
+      "digest": "sha256:5d9869332560e7ee325d975c6fca3340f75c69bb43f43a2f83f49775de424c37",
+      "task_count": 10,
+      "selected_tasks": [
+        "05-hog-body-block",
+        "06-mini-pekka-kite",
+        "07-balloon-fireball"
+      ],
+      "selected_count": 3
+    }
+  ],
+  "runnable_tasks": [
+    "01-critical-cycle-conversion",
+    "01-cycle-and-connect",
+    "01-timed-spell-a",
+    "02-reserve-counter-a",
+    "02-second-wave-air-race",
+    "02-sustained-tower-race",
+    "03-bait-damage-sequence",
+    "03-spell-placement",
+    "03-supported-tank-conversion",
+    "03-tower-race-b",
+    "04-critical-cycle-and-connect",
+    "04-split-lane-conversion",
+    "05-successive-threats-mirror",
+    "06-unequal-threats",
+    "07-counterpush",
+    "08-cycle-to-lethal-plus",
+    "09-tower-race-defend",
+    "10-protect-the-lead",
+    "05-hog-body-block",
+    "06-mini-pekka-kite",
+    "07-balloon-fireball"
+  ],
+  "tasks": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:cf2b7f8b3229fb3516cf9d66ab8bcde92a319a7ecd1fb77c1e21d924bd967bba",
+      "archive_sha256": "74ebd70cfa1dcbb66e2d71fed9f7641bcde7e678c02de776f2a7ddd92d58fd90",
+      "archive": "runs/recent/v9-sources/royalebench-v8/01-critical-cycle-conversion.zip",
+      "grading": "win",
+      "objective": "Win the actual match by destroying an enemy crown tower within the next 28 seconds. The position starts with 60 seconds of overtime remaining. The scoring window ends before the overtime HP tiebreak: survival, an HP lead, and an unfinished match receive zero credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "01-cycle-and-connect",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:baee4010275c5466c4f3c177c7d9d7efc316c2a4e70bd89f842ad9d900f79ff3",
+      "archive_sha256": "0094a356f74bff93a1509d9118238153890777107ebd64d376b6065f722e78ae",
+      "archive": "runs/recent/v9-sources/royalebench-v8/01-cycle-and-connect.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "01-timed-spell-a",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:0e2579caba181db0a46561f1bf26d2783715cd77e92a4b36534ab5ac1d56aa79",
+      "archive_sha256": "4cb6ee2da518421069aa2a25787829a1749756436a9794678609040ad5b149a0",
+      "archive": "runs/recent/v9-sources/royalebench-v8/01-timed-spell-a.zip",
+      "grading": "one_spell",
+      "objective": "Cast exactly one Fireball, keep both princess towers alive for 12 seconds, and take at most 100 additional total crown-tower damage. Only Fireball and waiting are available.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "02-reserve-counter-a",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:de2e93bb3a6483ae81950340b87e7228fdff1f3a081cd5e617220c41c991e9b9",
+      "archive_sha256": "f3a79410c01bfcf1da41b93a93bf109ead2c9539a9baf8e0f3939d89a976483b",
+      "archive": "runs/recent/v9-sources/royalebench-v8/02-reserve-counter-a.zip",
+      "grading": "defend",
+      "objective": "Keep both princess towers alive for 20 seconds, take at most 450 additional total crown-tower damage, and spend at most 6 elixir. At elapsed 6.0 seconds the opponent casts its reserved GoblinBarrel on your left princess tower (3.5, 6.5).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:a976ec53cb90fe875106d701dd775f09dd1eb95928828a31486eb7f8cd3883fd",
+      "archive_sha256": "891954d9092e7562f6a453df3f8f1ea1f1266f1107e8c07053e6a39ffb341264",
+      "archive": "runs/recent/v9-sources/royalebench-v8/02-second-wave-air-race.zip",
+      "grading": "win",
+      "objective": "Win the actual match by destroying an enemy crown tower within the next 30 seconds. The position starts with 60 seconds of overtime remaining. The scoring window ends before the overtime HP tiebreak: survival, an HP lead, and an unfinished match receive zero credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "02-sustained-tower-race",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:8d66ff72cff1f4e5e2ef7163093ff520fb6bb48a77e799107059c92d804e6c8c",
+      "archive_sha256": "7132e6f90edf45e6fbfae6fa5887f8bc507be20c343d7ae50f7987cf24752ddb",
+      "archive": "runs/recent/v9-sources/royalebench-v8/02-sustained-tower-race.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 30 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "03-bait-damage-sequence",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:b3e324c37446b86187517121ab4115341d44813c5a81ceabc8f259f573cfe5af",
+      "archive_sha256": "ae64cbd8cf0eb1997010724da20d3bcc48e4dbb372798811d61ab7a2c79ddfff",
+      "archive": "runs/recent/v9-sources/royalebench-v8/03-bait-damage-sequence.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 24 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "03-spell-placement",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:6894d18c22e56e5aca24d44e9a3b7b8980b2ac2ab9775e5c292391172cd0fa29",
+      "archive_sha256": "2381be76a5e3d5338c415902a621b61b9c976f0281fd681db3dcca54226db175",
+      "archive": "runs/recent/v9-sources/royalebench-v8/03-spell-placement.zip",
+      "grading": "one_spell",
+      "objective": "Cast exactly one Fireball, keep both princess towers alive for 12 seconds, and take at most 150 total tower damage. Only Fireball and waiting are available.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:ac4e4fef363e529e285a2f3b166962465e9bdf03f52b93404332ed5bd50c4457",
+      "archive_sha256": "713a0c85e8e1cb44826a01619531e164d3e379250a5543082bc2bcbc2d7e4c2b",
+      "archive": "runs/recent/v9-sources/royalebench-v8/03-supported-tank-conversion.zip",
+      "grading": "win",
+      "objective": "Win the actual match by destroying an enemy crown tower within the next 36 seconds. The position starts with 60 seconds of overtime remaining. The scoring window ends before the overtime HP tiebreak: survival, an HP lead, and an unfinished match receive zero credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "03-tower-race-b",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:3e63725e4c80ca0cbbafa4f1c1fff40733cd4b375ad047c94516334828d2e277",
+      "archive_sha256": "d9a917c847abcb2f6807a9ac0465163adf18e11a73cb51070899b8ab3d5d310b",
+      "archive": "runs/recent/v9-sources/royalebench-v8/03-tower-race-b.zip",
+      "grading": "win",
+      "objective": "Win before the remaining 8 seconds of overtime end, spending at most 4 elixir. At the actual overtime deadline, tied crowns use total remaining tower HP, then seed parity.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:d3db754e52ac464d41811b6877afe65a34f62bb20617d0b32d8b021fccfbafb8",
+      "archive_sha256": "6dde71dddce867e3bae7b03544a72c0afc0c219d030741170a31d62153bf199e",
+      "archive": "runs/recent/v9-sources/royalebench-v8/04-critical-cycle-and-connect.zip",
+      "grading": "win",
+      "objective": "Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:52bf1880f56583b4eeb20654e0c7e13dadd9a5cd9018b5d5863c316583946dfd",
+      "archive_sha256": "a0848bb2e798cdbb1fb79b85aa81cb9244c973fcd34a5486ee61921535ff6db0",
+      "archive": "runs/recent/v9-sources/royalebench-v8/04-split-lane-conversion.zip",
+      "grading": "win",
+      "objective": "Win the actual match by destroying an enemy crown tower within the next 32 seconds. The position starts with 60 seconds of overtime remaining. The scoring window ends before the overtime HP tiebreak: survival, an HP lead, and an unfinished match receive zero credit.",
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308"
+    },
+    {
+      "task": "05-successive-threats-mirror",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:e4047240484add3556b8fc8199deec71678b2decb8640a16164d2a8790bd65ac",
+      "archive_sha256": "d62eb80cb7d69468f1dfeb7582b8d383fc10f1465b40c62eb612bd7a14c88058",
+      "archive": "runs/recent/v9-sources/royalebench-v8/05-successive-threats-mirror.zip",
+      "grading": "defend",
+      "objective": "Keep both princess towers alive for 20 seconds, take at most 450 total tower damage, and spend at most 8 elixir. At elapsed 6.0s the opponent casts its reserved GoblinBarrel on your right tower (14.5, 6.5).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "06-unequal-threats",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:24c512b011fd4b5bbf7a5fa2479a3c303ddced52170ef2515983df12dd78e4b8",
+      "archive_sha256": "2d5317459bcf58ba1dcf16fca0c24e870748725456aafc00d00e577664e7b35e",
+      "archive": "runs/recent/v9-sources/royalebench-v8/06-unequal-threats.zip",
+      "grading": "defend",
+      "objective": "Keep both princess towers alive for 20 seconds. Spend at most 8 elixir in total, including at most 4 on placements in the right lane (x > 10.5).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "07-counterpush",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:b729b826ec8941ca65c377a9c55e1b14eeba248d5cf9806788725b27c79c77ec",
+      "archive_sha256": "ef835b52ae0bc2578a1a04d5dd0acb51c1e58598e4864db9bca7df6756608ccf",
+      "archive": "runs/recent/v9-sources/royalebench-v8/07-counterpush.zip",
+      "grading": "win",
+      "objective": "Win the continuation before the match ends (35 seconds of regulation plus up to 120 seconds of overtime).",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "08-cycle-to-lethal-plus",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:decf044a8c83e795738578e03c65f991011c33289eb9a098c45fd5d3eaf17e3b",
+      "archive_sha256": "34db07ab50b7c263bf1fcd85b7efd96bb6559d34e88ae905793e04f2921d8d66",
+      "archive": "runs/recent/v9-sources/royalebench-v8/08-cycle-to-lethal-plus.zip",
+      "grading": "win",
+      "objective": "Win before your tower falls and before overtime ends in 18 seconds. The full draw order is disclosed below; Fireball enters your hand after two card plays.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "09-tower-race-defend",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:1b43b9da19814c99660c63db3b2d0b0f24418b650033e93733acdcdf90eaa62c",
+      "archive_sha256": "293e709162191620f17d07d42af199a06d80dbead27ff7928e66c4306f50d907",
+      "archive": "runs/recent/v9-sources/royalebench-v8/09-tower-race-defend.zip",
+      "grading": "win",
+      "objective": "Win the overtime continuation within 30 seconds. This is one of two independently graded positions in the tower-race family.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "10-protect-the-lead",
+      "source": "royalebench/royalebench-v8@1",
+      "digest": "sha256:c4d6bff4df00ec964ad5ffe9ac15873f4e80a315854df9fbdb013f07413ed906",
+      "archive_sha256": "91b19dedc4f5e04b16c6aa2ba5d22a70f5fbf404790594da4c99731da7dace3e",
+      "archive": "runs/recent/v9-sources/royalebench-v8/10-protect-the-lead.zip",
+      "grading": "protect_lead",
+      "objective": "Retain a strict crown lead when regulation ends in 12 seconds.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "05-hog-body-block",
+      "source": "royalebench/royalebench-tactics@6",
+      "digest": "sha256:d349207ed4074ba42409a7a4ca3a6e8d367dea3bd6d9ec470755f13224a559ed",
+      "archive_sha256": "0ddeb408ba81d7278df6c2228eb8f3b5969ec762f7a408a81e0d06541a19d814",
+      "archive": "runs/recent/v9-sources/royalebench-tactics/05-hog-body-block.zip",
+      "grading": "defend",
+      "objective": "Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "06-mini-pekka-kite",
+      "source": "royalebench/royalebench-tactics@6",
+      "digest": "sha256:9531bc33a497ef30fbe8f577d494db0d8471031eca300270e26f190a706169ee",
+      "archive_sha256": "30d64cfa5ee8194316fc3dc0db919562cf4038e9923a7bae0486aaa4dc4bae8b",
+      "archive": "runs/recent/v9-sources/royalebench-tactics/06-mini-pekka-kite.zip",
+      "grading": "one_spell",
+      "objective": "Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    },
+    {
+      "task": "07-balloon-fireball",
+      "source": "royalebench/royalebench-tactics@6",
+      "digest": "sha256:9826da994607ef95f00a9f0c6f51a0af1bd0589cf3a221c78650591713659be6",
+      "archive_sha256": "fd705cb8e7a2bba5db059108622c145ec86cfc19fd0081b3524a77b4a72adbf0",
+      "archive": "runs/recent/v9-sources/royalebench-tactics/07-balloon-fireball.zip",
+      "grading": "one_spell",
+      "objective": "Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c"
+    }
+  ],
+  "task_count": 21,
+  "task_packages_unchanged": true,
+  "base_dataset": "royalebench/royalebench-v8@1",
+  "requested_hog_run": {
+    "run_id": "f186e6ff-11df-4612-be6a-205298ba1b8a",
+    "dataset": "royalebench/royalebench-tactics@5",
+    "task": "05-hog-body-block",
+    "digest": "sha256:d349207ed4074ba42409a7a4ca3a6e8d367dea3bd6d9ec470755f13224a559ed"
+  },
+  "aggregation": "Mean binary source-task reward across all 21 tasks; no source reweighting.",
+  "grading": "Preserve all v8 objectives and add three Tactics defense objectives. This is objective success, not an all-task match-win rate.",
+  "validation": "See runs/royalebench-v9/checks.json and resolution-check.json. Source model scores are not v9 run results."
+}

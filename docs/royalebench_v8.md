@@ -1,5 +1,9 @@
 # RoyaleBench v8
 
+[RoyaleBench v9](royalebench_v9.md) extends this complete 18-task release with
+the Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball defenses, preserving
+all v8 packages and adding validated resolution playback for all 21 tasks.
+
 RoyaleBench v8 combines **all 14 tasks from `royalebench/royalebench-v6@1`**
 with **all four harder tasks from `royalebench/royalebench-v7@1`**. It is the
 default benchmark for new dashboard jobs. Source task IDs, instructions, starting

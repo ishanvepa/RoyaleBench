@@ -151,8 +151,8 @@ def test_packaged_tactics_match_foundation():
     if manifest.get('action_mode')!=MODE:pytest.skip('build the coordinate Tactics release first')
     from rb_evals.benchmarks import load_benchmark,task_problems
     benchmark=load_benchmark(OUT)
-    from cr_arena.build_tactics_hog import SOURCE_DIGESTS, TASK
-    assert set(benchmark.tasks)==set(manifest['runnable_tasks'])==set(SOURCE_DIGESTS)|{TASK}
+    from cr_arena.build_tactics_clips import SOURCE_DIGESTS, TASKS
+    assert set(benchmark.tasks)==set(manifest['runnable_tasks'])==set(SOURCE_DIGESTS)|set(TASKS)
     for name,task in benchmark.tasks.items():
         assert not task_problems(task)
         assert packaged_protocol_digest(task.path)==manifest['protocol_sha256']==FOUNDATION_PROTOCOL

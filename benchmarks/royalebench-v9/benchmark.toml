@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench v9"
+kind = "eval"
+description = "21 unchanged tasks: all 18 v8@1 tasks plus Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball defenses."

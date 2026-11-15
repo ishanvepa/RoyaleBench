@@ -49,7 +49,7 @@ def test_hog_starts_with_only_full_health_enemy_and_explains_interval():
 def test_source_tasks_are_byte_identical_to_published_revision():
     for task,expected in SOURCE_DIGESTS.items():
         assert task_digest(OUT/task)==expected
-    assert json.loads((OUT/'manifest.json').read_text())['task_count']==8
+    assert json.loads((OUT/'manifest.json').read_text())['task_count']==10
 
 
 def test_historical_builder_cannot_remove_new_task(tmp_path):

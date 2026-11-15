@@ -1,0 +1,175 @@
+{
+  "base_url": "http://localhost:8000",
+  "task_count": 21,
+  "available": 21,
+  "tasks": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "available": true,
+      "http_status": 200,
+      "frames": 145,
+      "final_hash": "0ed70cb2c976d3c5",
+      "html_sha256": "7e9ac361ec51f067543a3d5160deef0bba1503af4c32396afdcf947bb102b92b"
+    },
+    {
+      "task": "01-cycle-and-connect",
+      "available": true,
+      "http_status": 200,
+      "frames": 113,
+      "final_hash": "7fdd15f576365723",
+      "html_sha256": "595a48e167883f6c2232290b5b74b0c48676c5578727777bc238a8fb85f78123"
+    },
+    {
+      "task": "01-timed-spell-a",
+      "available": true,
+      "http_status": 200,
+      "frames": 121,
+      "final_hash": "bcc1941f6ee9b422",
+      "html_sha256": "bdd48cbad29c999f00c6d4ac159f9588525d2d24965fd905a914b16a3350f66e"
+    },
+    {
+      "task": "02-reserve-counter-a",
+      "available": true,
+      "http_status": 200,
+      "frames": 201,
+      "final_hash": "0df4a6d120c9fff1",
+      "html_sha256": "bd777420555a0066da6b5ebfd890d9e632010a216aa3e45c6cc7a3048546c6bb"
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "available": true,
+      "http_status": 200,
+      "frames": 125,
+      "final_hash": "ca203e0f641a43b8",
+      "html_sha256": "1f1c3c457ccab0eba5ca8a130330eaefda96b3bc176bb2245dc84564407c9ff5"
+    },
+    {
+      "task": "02-sustained-tower-race",
+      "available": true,
+      "http_status": 200,
+      "frames": 172,
+      "final_hash": "eb22b4cc44453100",
+      "html_sha256": "719af35023d4d9173d55fac4bd140dae82ea6bebd044811313db8c5add884573"
+    },
+    {
+      "task": "03-bait-damage-sequence",
+      "available": true,
+      "http_status": 200,
+      "frames": 192,
+      "final_hash": "a533f2ef21183bea",
+      "html_sha256": "a9d7c2ef84b4774f32d72290da4a916ce386eaea84555177b3771dd323560273"
+    },
+    {
+      "task": "03-spell-placement",
+      "available": true,
+      "http_status": 200,
+      "frames": 121,
+      "final_hash": "e1caac1f7b151cd5",
+      "html_sha256": "3b12288107be11f068edf4b4e0566ac605c246161cca0d3f94730c5b6b444f41"
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "available": true,
+      "http_status": 200,
+      "frames": 333,
+      "final_hash": "710a592475f7e79f",
+      "html_sha256": "f1633c07dcf9195928b8c900a942c8afc428d2e290a835daea1ea5827dbe4727"
+    },
+    {
+      "task": "03-tower-race-b",
+      "available": true,
+      "http_status": 200,
+      "frames": 21,
+      "final_hash": "276fb09cd940dcdf",
+      "html_sha256": "940f5e9235faf6db6c80866be359d4dedfb02dc26522578c82d595e8aa1542aa"
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "available": true,
+      "http_status": 200,
+      "frames": 113,
+      "final_hash": "a7691b83ebc7a24f",
+      "html_sha256": "c87a6e4be19f097fa77d688fa0433a750eae0f42fe057f438a3f57b089ef1163"
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "available": true,
+      "http_status": 200,
+      "frames": 165,
+      "final_hash": "f27c7ae5baca17a2",
+      "html_sha256": "bc0574783288f76ddecfc0bf0c02f9a3a1c4f82fd21d4bd7bc0a10816e0f4a2a"
+    },
+    {
+      "task": "05-successive-threats-mirror",
+      "available": true,
+      "http_status": 200,
+      "frames": 201,
+      "final_hash": "3107cdf5c0b2b588",
+      "html_sha256": "6e2444a336c7ee4cf5ff2bd2eab3ed45cab176eaa8f20bb0a91754abb3e97d4a"
+    },
+    {
+      "task": "06-unequal-threats",
+      "available": true,
+      "http_status": 200,
+      "frames": 201,
+      "final_hash": "564273cd453d8ea5",
+      "html_sha256": "cf56f1ac4b038b9bc44b243e5221fbead526e0afb321e17022c2819868b3041f"
+    },
+    {
+      "task": "07-counterpush",
+      "available": true,
+      "http_status": 200,
+      "frames": 351,
+      "final_hash": "6d266b398dee4ebe",
+      "html_sha256": "6e05673f41c1d610f035d94a96ee7c4d0cdb0eef77a79e0c06c258efd4ded865"
+    },
+    {
+      "task": "08-cycle-to-lethal-plus",
+      "available": true,
+      "http_status": 200,
+      "frames": 90,
+      "final_hash": "ea62cba6a437444e",
+      "html_sha256": "aca1c8bedbccb24bb551d0de509b7c0521ae70326cc2fb97d79b9b6da00ae915"
+    },
+    {
+      "task": "09-tower-race-defend",
+      "available": true,
+      "http_status": 200,
+      "frames": 22,
+      "final_hash": "5efee04d470154e7",
+      "html_sha256": "3e15fafc3e3481d8b78aeb4845cc8aba7421eba22298ee7372f77d16dbc6d009"
+    },
+    {
+      "task": "10-protect-the-lead",
+      "available": true,
+      "http_status": 200,
+      "frames": 121,
+      "final_hash": "5e5e13156c22e4aa",
+      "html_sha256": "e62b3dcd45cce1cb27cba4039daadac980706fe684169a76c80d1bb31f379159"
+    },
+    {
+      "task": "05-hog-body-block",
+      "available": true,
+      "http_status": 200,
+      "frames": 161,
+      "final_hash": "d50e80b463cc1410",
+      "html_sha256": "8c7958559681217e7763b657f88c1282bdd06427b88bccc2b786561d3c20c050"
+    },
+    {
+      "task": "06-mini-pekka-kite",
+      "available": true,
+      "http_status": 200,
+      "frames": 161,
+      "final_hash": "786cbed4cd333120",
+      "html_sha256": "7ad7dca7225a8ccbed82e372a1f6a1663667fc1009b91dc12d21c07c0bb215b7"
+    },
+    {
+      "task": "07-balloon-fireball",
+      "available": true,
+      "http_status": 200,
+      "frames": 161,
+      "final_hash": "a7366363c54ad499",
+      "html_sha256": "c64eb193878393a724a4692c9d487a697ba740e92951026904235e0b9a22088a"
+    }
+  ]
+}

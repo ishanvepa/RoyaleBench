@@ -167,6 +167,10 @@ current local task version, which may differ from an older run revision. Referen
 is a local dashboard view; the solution remains outside the agent sandbox.
 Merged benchmarks can contain multiple packaged runtimes: playback matches each
 task's configuration and protocol against its passing validation row.
+The [v9 extension](royalebench_v9.md) provides validated resolutions for all 21
+tasks. Its `cr_arena.validate_v9` command prepares both a combined manifest and
+runtime-specific manifests for existing dashboard processes. The live browser
+check opens every resolution dialog and tests playback, seeking and flipping.
 
 **RoyaleBench v8** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It combines
 all 14 v6@1 tasks with the four harder v7@1 continuations, preserving their source objectives. Explicit benchmark links override the

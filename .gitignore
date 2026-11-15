@@ -30,6 +30,8 @@ web/dist/
 web/test-results/
 web/playwright-report/
 data/references/*.mp4
+data/references/tiktok/*.mp4
+data/references/tiktok/*.info.json
 runs/indicator_scenes.json
 runs/indicator_check/
 runs/tactics-hog/docker/

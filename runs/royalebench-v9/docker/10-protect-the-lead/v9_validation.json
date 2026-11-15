@@ -1,0 +1,34 @@
+{
+  "task": "10-protect-the-lead",
+  "family": 10,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "e479b6f125b2f172b573f9b3fb3945ba34bcf9bd53ff9c8645fae5439e91b001",
+  "image": "sha256:717cf37420b92d52d81ca97e1d5effbab963c452427021b6f69401cf5e2eeba2",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 241,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 16.74,
+  "source": "royalebench/royalebench-v8@1",
+  "task_digest": "sha256:c4d6bff4df00ec964ad5ffe9ac15873f4e80a315854df9fbdb013f07413ed906",
+  "negative_rewards": {
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0
+  },
+  "inherited_validation": "runs/royalebench-v8/docker/10-protect-the-lead/v8_validation.json",
+  "inheritance_checks": {
+    "package_digest": true,
+    "configuration": true,
+    "protocol": true,
+    "initial_setup": true,
+    "reference_commands": true,
+    "all_frame_hashes": true
+  },
+  "replay_sha256": "e6ef2c972efb2897de875fb65ac40ac0c26537161ed46411b54359e21cdd908f"
+}

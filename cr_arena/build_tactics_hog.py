@@ -186,7 +186,7 @@ def build(out=OUT, evidence=EVIDENCE):
         raise ValueError("Refusing to replace a symlink")
     unknown = {p.parent.name for p in out.glob("*/task.toml")} - {*SOURCE_DIGESTS, TASK}
     if unknown:
-        raise ValueError(f"Output contains unrelated tasks: {sorted(unknown)}")
+        raise ValueError(f"Use cr_arena.build_tactics_clips to preserve the expanded dataset; output contains additional tasks: {sorted(unknown)}")
     for name, expected in SOURCE_DIGESTS.items():
         if task_digest(OUT / name) != expected:
             raise ValueError(f"Published Tactics @3 source changed: {name}")

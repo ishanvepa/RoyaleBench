@@ -1,0 +1,16 @@
+{
+ "reward": 0.0,
+ "win": 0.0,
+ "crowns_for": 0.0,
+ "crowns_against": 1.0,
+ "enemy_tower_damage_frac": 0.0,
+ "own_tower_damage_frac": 0.4234,
+ "completed": 0.0,
+ "integrity": 0.0,
+ "decisions": 0.0,
+ "fast_decision_frac": 0.0,
+ "spent_elixir": 0.0,
+ "tower_damage": 1269.0,
+ "objective_met": 0.0,
+ "rejected_actions": 0.0
+}

@@ -1,6 +1,16 @@
 # RoyaleBench Tactics on the v3 foundation
 
-The current release is **`royalebench/royalebench-tactics@5`**, tagged `tactics-v5` and
+The current release is **`royalebench/royalebench-tactics@6`**, tagged `tactics-v6` and
+`clip-defenses`, with **ten tasks**. It adds `06-mini-pekka-kite` (one-elixir Skeletons
+defense of a 1-HP tower) and `07-balloon-fireball` (one Fireball, no direct Balloon hit,
+240 death-bomb damage allowed). All eight `@5` packages remain byte-identical.
+See [the new tasks and validation](tactics_clips.md). Rebuild with
+`uv run python -m cr_arena.build_tactics_clips`.
+Both new references pass protected-container and independent replay checks. One
+Opus 5.5 attempt per new task failed through timing/placement, with integrity 1;
+see the linked guide for the $0.3342354 API-cost pilot and its limits.
+
+The preceding release **`royalebench/royalebench-tactics@5`**, tagged `tactics-v5` and
 `one-hit-hog`, with **eight tasks**. Version 2.2.0 gives the Hog defense's threatened tower
 **1 HP**, with exactly **three starting elixir and a three-elixir total spending limit**.
 All seven `@3` task packages remain byte-identical, including their 2.0.0 metadata.
@@ -132,13 +142,13 @@ mean separately. Mirrors are consistency checks rather than independent strategi
 
 ## Build and verify
 
-The expanded eight-task dataset adds `05-hog-body-block` while preserving every byte of the
-seven published `@3` packages. Rebuild it with:
+The expanded ten-task dataset preserves all eight `@5` packages and appends the two
+[clip-inspired defenses](tactics_clips.md). Rebuild and verify it with:
 
 ```bash
-uv run python -m cr_arena.build_tactics_hog
-uv run --with pytest python -m pytest -q tests/test_tactics_hog.py tests/test_tactics.py
-uv run python -m cr_arena.validate_v1_docker --benchmark benchmarks/royalebench-tactics --out runs/tactics-hog/docker --tasks 5
+uv run python -m cr_arena.build_tactics_clips
+uv run --with pytest python -m pytest -q tests/test_tactics_clips.py tests/test_tactics_hog.py tests/test_tactics.py
+uv run python -m cr_arena.validate_v1_docker --benchmark benchmarks/royalebench-tactics --out runs/tactics-clips/docker --tasks 6 7 --jobs 2
 ```
 
 The historical seven-task builder below requires a checkout with the original foundation
@@ -148,7 +158,7 @@ uses the exact frozen `@3` referee/client/viewer, and rejects local gameplay dri
 rebuilds the seven source tasks using the newer workspace replay viewer.
 
 The following commands document the original seven-task release workflow. Use the expanded
-builder above for the current eight-task release; the workspace's newer replay viewer is not
+builder above for the current ten-task release; the workspace's newer replay viewer is not
 part of the original frozen runtime.
 
 ```bash

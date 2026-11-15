@@ -1,0 +1,34 @@
+{
+  "task": "09-tower-race-defend",
+  "family": 9,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "f8d815f2217f3971252fd0809038be25a665a33b6b9cbeaabe4b27e2569ddea5",
+  "image": "sha256:717cf37420b92d52d81ca97e1d5effbab963c452427021b6f69401cf5e2eeba2",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 43,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 12.274,
+  "source": "royalebench/royalebench-v8@1",
+  "task_digest": "sha256:1b43b9da19814c99660c63db3b2d0b0f24418b650033e93733acdcdf90eaa62c",
+  "negative_rewards": {
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0
+  },
+  "inherited_validation": "runs/royalebench-v8/docker/09-tower-race-defend/v8_validation.json",
+  "inheritance_checks": {
+    "package_digest": true,
+    "configuration": true,
+    "protocol": true,
+    "initial_setup": true,
+    "reference_commands": true,
+    "all_frame_hashes": true
+  },
+  "replay_sha256": "ad228f2bb74eceef2bd7c63c531f1b88a7ce490de013f523167169547a97bfda"
+}

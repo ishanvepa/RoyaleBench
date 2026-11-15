@@ -1,0 +1,62 @@
+{
+  "dataset": "royalebench/royalebench-v9@1",
+  "digest": "sha256:e9e4396c2792964e4246eeb1002a6f4d8b2f72ba0b697be6c807f967be87ecc2",
+  "task_count": 21,
+  "sources": [
+    {
+      "dataset": "royalebench/royalebench-v8@1",
+      "digest": "sha256:e5807bda20b03468993ef75b0eeb4f881f7e70fe0a674be977888d5502f979b2",
+      "task_count": 18
+    },
+    {
+      "dataset": "royalebench/royalebench-tactics@6",
+      "digest": "sha256:5d9869332560e7ee325d975c6fca3340f75c69bb43f43a2f83f49775de424c37",
+      "task_count": 10,
+      "selected_tasks": [
+        "05-hog-body-block",
+        "06-mini-pekka-kite",
+        "07-balloon-fireball"
+      ],
+      "selected_count": 3
+    }
+  ],
+  "requested_hog_run": {
+    "run_id": "f186e6ff-11df-4612-be6a-205298ba1b8a",
+    "dataset": "royalebench/royalebench-tactics@5",
+    "task": "05-hog-body-block",
+    "digest": "sha256:d349207ed4074ba42409a7a4ca3a6e8d367dea3bd6d9ec470755f13224a559ed"
+  },
+  "source_packages_unchanged": true,
+  "all_hosted_task_digests_match": true,
+  "grading_counts": {
+    "win": 12,
+    "one_spell": 4,
+    "defend": 4,
+    "protect_lead": 1
+  },
+  "references": {
+    "passed": 21,
+    "integrity": 1,
+    "source_v8_references_reverified": 18,
+    "fresh_docker_tasks": [
+      "05-hog-body-block",
+      "06-mini-pekka-kite",
+      "07-balloon-fireball"
+    ],
+    "invalid_input_controls_zero": 63
+  },
+  "regression_tests": {
+    "passed": 41,
+    "api_subtests_passed": 21
+  },
+  "resolutions": {
+    "local_available": 21,
+    "live_api_available": 21,
+    "live_api_final_hashes_match": true,
+    "browser_dialogs_passed": 21,
+    "playback_seek_flip_passed": true,
+    "javascript_page_errors": []
+  },
+  "live_dashboard": "http://localhost:8000/evals/benchmarks/royalebench-v9",
+  "model_run_note": "Exact package extension; existing source pilots are retained as source evidence. No new full v9 model result is claimed."
+}

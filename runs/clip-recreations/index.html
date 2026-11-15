@@ -1,0 +1,138 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TikTok plays, recreated in RoyaleBench</title><style>
+    :root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#0c1320;color:#e8edf7;font:15px/1.6 system-ui,sans-serif}
+    main{max-width:1340px;margin:auto;padding:40px 30px 70px}h1{font-size:38px;line-height:1.15;margin:12px 0 20px;letter-spacing:-1px}
+    h2{font-size:23px;margin:0}h3{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#acb9ce}
+    .eyebrow{color:#8bbaff;font-size:12px;font-weight:700;letter-spacing:2px}.lede{max-width:950px;color:#acb9ce}
+    section{margin-top:32px;border:1px solid #2d3b53;border-radius:16px;background:#141e30;padding:24px}
+    .heading{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.number{color:#80b4ff;font-size:21px;font-weight:700}
+    strong{margin-left:auto;background:#183e36;border:1px solid #286452;border-radius:20px;color:#8ce5ba;padding:4px 14px;font-size:12px}
+    p{color:#bac6d8}a{color:#94bfff} .comparison{display:grid;grid-template-columns:320px 1fr;gap:24px}
+    video{width:100%;height:640px;object-fit:contain;background:#080d16;border-radius:10px}
+    iframe{width:100%;height:640px;border:1px solid #2d3b53;border-radius:10px;background:#0e1420}
+    details{border-top:1px solid #2d3b53;padding-top:15px;margin-top:12px;color:#acb9ce}summary{cursor:pointer}pre{white-space:pre-wrap;font-size:12px}
+    @media(max-width:800px){main{padding:24px 12px}h1{font-size:30px}section{padding:16px}.comparison{grid-template-columns:1fr}video{height:480px}strong{margin-left:0}}
+    </style></head><body><main><div class="eyebrow">ROYALEBENCH / CLIP RECONSTRUCTIONS</div>
+    <h1>Two plays. Real engine replays.</h1><p class="lede">Both tactical outcomes can occur in our unmodified simulator.
+    Watch the extracted references alongside deterministic recreations, then inspect the controls.
+    These reproduce the interactions, not the original match saves: taps, hidden state and Fireball level are not recoverable exactly from the videos.
+    Arena artwork, movement timing and camera framing differ. The Balloon recreation continues through the death-bomb explosion.</p>
+    <section>
+          <div class="heading"><span class="number">01</span><h2>Skeletons vs Mini P.E.K.K.A.</h2>
+          <strong>0 tower damage</strong></div>
+          <p>One elixir of Skeletons pulls the Mini P.E.K.K.A. inward and buys enough Princess Tower shots. The defending tower finishes at 3052 / 3052 HP.</p>
+          <div class="comparison">
+            <div><h3>Extracted TikTok reference</h3><video controls playsinline preload="metadata"
+              src="../../data/references/tiktok/7575314632915701009.mp4"></video>
+              <p><a href="https://www.tiktok.com/t/ZTPDWutTM/">Original clip</a> · Source timing includes edits and zooms.</p></div>
+            <div><h3>Engine recreation</h3><iframe title="Skeletons vs Mini P.E.K.K.A. replay"
+              src="skeletons-mini-pekka.html"></iframe>
+              <p><a href="skeletons-mini-pekka.html">Open full replay</a> · <a href="skeletons-mini-pekka.mp4">Watch recreation video</a>
+              · <a href="skeletons-mini-pekka-no-defense.html">No-defense control</a>
+              · <a href="skeletons-mini-pekka-mistimed.html">Mistimed control</a></p></div>
+          </div>
+          <details><summary>Exact simulation inputs and verification</summary><pre>{
+  &quot;attacker_at_cast&quot;: {
+    &quot;x&quot;: 3.739,
+    &quot;y&quot;: 13.801,
+    &quot;hp&quot;: 1390,
+    &quot;level&quot;: 11
+  },
+  &quot;commands&quot;: [
+    {
+      &quot;elapsed_tick&quot;: 75,
+      &quot;elapsed_s&quot;: 3.75,
+      &quot;card&quot;: &quot;Skeletons&quot;,
+      &quot;command&quot;: {
+        &quot;team&quot;: 0,
+        &quot;hand_slot&quot;: 0,
+        &quot;x&quot;: 135000,
+        &quot;y&quot;: 243000
+      },
+      &quot;result&quot;: {
+        &quot;team&quot;: 0,
+        &quot;hand_slot&quot;: 0,
+        &quot;card_id&quot;: 10,
+        &quot;status&quot;: 0,
+        &quot;tick&quot;: 175,
+        &quot;x&quot;: 135000,
+        &quot;y&quot;: 243000
+      }
+    }
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;elapsed_tick&quot;: 237,
+      &quot;elapsed_s&quot;: 11.85,
+      &quot;event&quot;: &quot;attacker_died&quot;,
+      &quot;tower_hp&quot;: 3052
+    }
+  ],
+  &quot;verified_frame_count&quot;: 461,
+  &quot;final_hash&quot;: &quot;be41eba584d4b879&quot;
+}</pre></details>
+        </section>
+<section>
+          <div class="heading"><span class="number">02</span><h2>Fireball vs Balloon</h2>
+          <strong>0 direct hits · death bomb: 384 damage</strong></div>
+          <p>A Fireball placed behind the approaching Balloon knocks it away and prevents its direct attack. The tower stays at 4424 HP until the death bomb, then falls to 4040 HP. The TikTok ends with the bomb timer still running.</p>
+          <div class="comparison">
+            <div><h3>Extracted TikTok reference</h3><video controls playsinline preload="metadata"
+              src="../../data/references/tiktok/7646672093966355726.mp4"></video>
+              <p><a href="https://www.tiktok.com/t/ZTPD72qTU/">Original clip</a> · Source timing includes edits and zooms.</p></div>
+            <div><h3>Engine recreation</h3><iframe title="Fireball vs Balloon replay"
+              src="fireball-balloon.html"></iframe>
+              <p><a href="fireball-balloon.html">Open full replay</a> · <a href="fireball-balloon.mp4">Watch recreation video</a>
+              · <a href="fireball-balloon-no-defense.html">No-defense control</a>
+              · <a href="fireball-balloon-mistimed.html">Mistimed control</a></p></div>
+          </div>
+          <details><summary>Exact simulation inputs and verification</summary><pre>{
+  &quot;attacker_at_cast&quot;: {
+    &quot;x&quot;: 3.317,
+    &quot;y&quot;: 8.7,
+    &quot;hp&quot;: 1730,
+    &quot;level&quot;: 16
+  },
+  &quot;commands&quot;: [
+    {
+      &quot;elapsed_tick&quot;: 200,
+      &quot;elapsed_s&quot;: 10.0,
+      &quot;card&quot;: &quot;Fireball&quot;,
+      &quot;command&quot;: {
+        &quot;team&quot;: 0,
+        &quot;hand_slot&quot;: 1,
+        &quot;x&quot;: 63000,
+        &quot;y&quot;: 135000
+      },
+      &quot;result&quot;: {
+        &quot;team&quot;: 0,
+        &quot;hand_slot&quot;: 1,
+        &quot;card_id&quot;: 108,
+        &quot;status&quot;: 0,
+        &quot;tick&quot;: 300,
+        &quot;x&quot;: 63000,
+        &quot;y&quot;: 135000
+      }
+    }
+  ],
+  &quot;events&quot;: [
+    {
+      &quot;elapsed_tick&quot;: 248,
+      &quot;elapsed_s&quot;: 12.4,
+      &quot;event&quot;: &quot;attacker_died&quot;,
+      &quot;tower_hp&quot;: 4424
+    },
+    {
+      &quot;elapsed_tick&quot;: 309,
+      &quot;elapsed_s&quot;: 15.45,
+      &quot;event&quot;: &quot;tower_damage&quot;,
+      &quot;damage&quot;: 384,
+      &quot;tower_hp&quot;: 4040,
+      &quot;after_attacker_death&quot;: true
+    }
+  ],
+  &quot;verified_frame_count&quot;: 461,
+  &quot;final_hash&quot;: &quot;a314dd486372b6aa&quot;
+}</pre></details>
+        </section><p>Each replay contains 461 engine frames, checked by independently replaying every command and comparing every state hash.
+    <a href="checks.json">Validation and provenance</a></p></main></body></html>

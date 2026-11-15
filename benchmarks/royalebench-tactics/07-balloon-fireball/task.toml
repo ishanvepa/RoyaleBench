@@ -1,0 +1,55 @@
+schema_version = "1.4"
+artifacts = [
+    { source = "/var/lib/royale", destination = "royale" },
+]
+
+[task]
+name = "royalebench/tactics-07-balloon-fireball"
+description = "Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits."
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "hard"
+opponent = "planner"
+deck = "clip-defense"
+seed = 42
+seat = "blue"
+decision_ticks = 20
+dataset_version = "2.3.0"
+family = 7
+opponent_deck = "expensive-reserve"
+control = false
+action_mode = "coordinates-v1"
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = [
+    "api.anthropic.com",
+    "api.openai.com",
+    "openrouter.ai",
+    "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct",
+    "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct",
+    "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct",
+    "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct",
+]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

@@ -1,0 +1,153 @@
+{
+  "task_count": 21,
+  "available": 21,
+  "tasks": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "efd0495fcc2a9014bbb851b71acea09f84b1ebfdeb6540b481578e9a3656e1ee",
+      "html_bytes": 330603
+    },
+    {
+      "task": "01-cycle-and-connect",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "e09f7225700cd3f441a99eb182ed817e6dcb874bbcc104fa9ec3653cd044356c",
+      "html_bytes": 293537
+    },
+    {
+      "task": "01-timed-spell-a",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "cb0138f2561b87e57df9a657a540392ab3c36e424e5c05b58691f422ec74dfb2",
+      "html_bytes": 314603
+    },
+    {
+      "task": "02-reserve-counter-a",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "ea74106b06aa60eb78db46fa24640d192e0cc10097346f444af5cf2f3b5c8f02",
+      "html_bytes": 414352
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "84f64789dd9adadc47ac909624f71929bf93f186e4475b9a681be2bf34982196",
+      "html_bytes": 390342
+    },
+    {
+      "task": "02-sustained-tower-race",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "74741f0f5bde47c29e610ec98bf381466d47c1eeae95f8ef75ecebcf50923875",
+      "html_bytes": 454446
+    },
+    {
+      "task": "03-bait-damage-sequence",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "78bf7707749d3971eb8dfb8d605032b30dd96d2da0dd1be37d338c91174086f5",
+      "html_bytes": 402211
+    },
+    {
+      "task": "03-spell-placement",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "892d1d6152e21aca9fca0e3b782fdce8a2d314df0878f4b57a254f7d43b8622e",
+      "html_bytes": 278946
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "2b969f4c08cbf8f2df37e2405582eb04371efd2e9d2e2a0e1e70e103ca72a1db",
+      "html_bytes": 660830
+    },
+    {
+      "task": "03-tower-race-b",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "7eb34164f408d602b841b33c611bdd7c2be48a6eb2d369aecb4970072e9099b5",
+      "html_bytes": 194465
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "70a1e4a106e45f76305ef6c564cb4a45235bf857aee6655b8c8cbceada69845b",
+      "html_bytes": 297413
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "available": true,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "replay_sha256": "78aaa60432aef20404ba035e4854747b59a82797cf5371976240901e69565431",
+      "html_bytes": 396095
+    },
+    {
+      "task": "05-successive-threats-mirror",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "e29e1a78d709058ffe1d0c9b598aa11146d52264eff38fcce3e835100a8784e7",
+      "html_bytes": 406394
+    },
+    {
+      "task": "06-unequal-threats",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "be2424aed619b4ea83da81b5eecf722fd590b8646a8b879e29bef9d4a4ff9534",
+      "html_bytes": 452650
+    },
+    {
+      "task": "07-counterpush",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "4552aba515fc65f8d35519b77096370fbba065a1e944cae38b4be3c97d406371",
+      "html_bytes": 654879
+    },
+    {
+      "task": "08-cycle-to-lethal-plus",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "f0ce5dba0f6027a2943cd6d8111893d95fcca2f8aae13be60e833046245504a4",
+      "html_bytes": 266669
+    },
+    {
+      "task": "09-tower-race-defend",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "ad228f2bb74eceef2bd7c63c531f1b88a7ce490de013f523167169547a97bfda",
+      "html_bytes": 198406
+    },
+    {
+      "task": "10-protect-the-lead",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "e6ef2c972efb2897de875fb65ac40ac0c26537161ed46411b54359e21cdd908f",
+      "html_bytes": 294696
+    },
+    {
+      "task": "05-hog-body-block",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "17cf573bdd0a58011821664ea0e7b0c31989b7c4dd9f075a01527288af2e8da6",
+      "html_bytes": 360552
+    },
+    {
+      "task": "06-mini-pekka-kite",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "a2d1a0e93e35fd9a59e15f32611cc1390acc0ddd786c2173d89db4742275ab52",
+      "html_bytes": 327107
+    },
+    {
+      "task": "07-balloon-fireball",
+      "available": true,
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "replay_sha256": "91057a477837499b2a13ced8cd79304634b2b5e658312a31d37886ddf27cb62a",
+      "html_bytes": 320529
+    }
+  ]
+}

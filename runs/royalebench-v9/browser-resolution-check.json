@@ -1,0 +1,197 @@
+{
+  "base_url": "http://localhost:8000",
+  "checked": 21,
+  "all_passed": true,
+  "page_errors": [],
+  "tasks": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "dialog_opened": true,
+      "frame_count": 145,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash 0ed70cb2c976d3c5"
+    },
+    {
+      "task": "01-cycle-and-connect",
+      "dialog_opened": true,
+      "frame_count": 113,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash 7fdd15f576365723"
+    },
+    {
+      "task": "01-timed-spell-a",
+      "dialog_opened": true,
+      "frame_count": 121,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash bcc1941f6ee9b422"
+    },
+    {
+      "task": "02-reserve-counter-a",
+      "dialog_opened": true,
+      "frame_count": 201,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash 0df4a6d120c9fff1"
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "dialog_opened": true,
+      "frame_count": 125,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash ca203e0f641a43b8"
+    },
+    {
+      "task": "02-sustained-tower-race",
+      "dialog_opened": true,
+      "frame_count": 172,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash eb22b4cc44453100"
+    },
+    {
+      "task": "03-bait-damage-sequence",
+      "dialog_opened": true,
+      "frame_count": 192,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash a533f2ef21183bea"
+    },
+    {
+      "task": "03-spell-placement",
+      "dialog_opened": true,
+      "frame_count": 121,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash e1caac1f7b151cd5"
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "dialog_opened": true,
+      "frame_count": 333,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash 710a592475f7e79f"
+    },
+    {
+      "task": "03-tower-race-b",
+      "dialog_opened": true,
+      "frame_count": 21,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash 276fb09cd940dcdf"
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "dialog_opened": true,
+      "frame_count": 113,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash a7691b83ebc7a24f"
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "dialog_opened": true,
+      "frame_count": 165,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash f27c7ae5baca17a2"
+    },
+    {
+      "task": "05-hog-body-block",
+      "dialog_opened": true,
+      "frame_count": 161,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash d50e80b463cc1410"
+    },
+    {
+      "task": "05-successive-threats-mirror",
+      "dialog_opened": true,
+      "frame_count": 201,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash 3107cdf5c0b2b588"
+    },
+    {
+      "task": "06-mini-pekka-kite",
+      "dialog_opened": true,
+      "frame_count": 161,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash 786cbed4cd333120"
+    },
+    {
+      "task": "06-unequal-threats",
+      "dialog_opened": true,
+      "frame_count": 201,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash 564273cd453d8ea5"
+    },
+    {
+      "task": "07-balloon-fireball",
+      "dialog_opened": true,
+      "frame_count": 161,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Episode cut before the game ended  (crowns 0 - 0)   final hash a7366363c54ad499"
+    },
+    {
+      "task": "07-counterpush",
+      "dialog_opened": true,
+      "frame_count": 351,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash 6d266b398dee4ebe"
+    },
+    {
+      "task": "08-cycle-to-lethal-plus",
+      "dialog_opened": true,
+      "frame_count": 90,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash ea62cba6a437444e"
+    },
+    {
+      "task": "09-tower-race-defend",
+      "dialog_opened": true,
+      "frame_count": 22,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash 5efee04d470154e7"
+    },
+    {
+      "task": "10-protect-the-lead",
+      "dialog_opened": true,
+      "frame_count": 121,
+      "playback_advanced": true,
+      "seek_to_end": true,
+      "flip_worked": true,
+      "final_result": "Blue wins  (crowns 1 - 0)   final hash 5e5e13156c22e4aa"
+    }
+  ]
+}

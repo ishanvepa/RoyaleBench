@@ -1,0 +1,688 @@
+{
+  "pulled_main_commit": "037ef3c",
+  "dataset": "royalebench/royalebench-tactics@6",
+  "dataset_digest": "sha256:5d9869332560e7ee325d975c6fca3340f75c69bb43f43a2f83f49775de424c37",
+  "published_tags": [
+    "tactics-v6",
+    "clip-defenses"
+  ],
+  "task_count": 10,
+  "new_task_digests": {
+    "06-mini-pekka-kite": "sha256:9531bc33a497ef30fbe8f577d494db0d8471031eca300270e26f190a706169ee",
+    "07-balloon-fireball": "sha256:9826da994607ef95f00a9f0c6f51a0af1bd0589cf3a221c78650591713659be6"
+  },
+  "prior_task_digests": {
+    "01-timed-spell-a": "sha256:0e2579caba181db0a46561f1bf26d2783715cd77e92a4b36534ab5ac1d56aa79",
+    "01-timed-spell-b": "sha256:88ed284092d6c1e3b203dc0a587c07dc4d3c2cb62288d893799eb8b83a5e73b8",
+    "02-reserve-counter-a": "sha256:de2e93bb3a6483ae81950340b87e7228fdff1f3a081cd5e617220c41c991e9b9",
+    "03-tower-race-a": "sha256:5f06f83b6c8d7b3535586c06ac806aa7f0cd4f305273f1c81e05f45824d6b028",
+    "03-tower-race-b": "sha256:3e63725e4c80ca0cbbafa4f1c1fff40733cd4b375ad047c94516334828d2e277",
+    "04-tower-trade-a": "sha256:e707547ce030dbdaa350936aede97bca180c4eb98f6f95d0261ebde27be4a3fc",
+    "04-tower-trade-b": "sha256:154132631b6934320601057e344b48f97cdfe06120224c721ef572203eb6d81b",
+    "05-hog-body-block": "sha256:d349207ed4074ba42409a7a4ca3a6e8d367dea3bd6d9ec470755f13224a559ed"
+  },
+  "prior_tasks_byte_unchanged": true,
+  "static_checks": {
+    "task_toml_and_layout": true,
+    "LF_scripts": true,
+    "solutions_not_copied_into_environment": true
+  },
+  "calibration": {
+    "06-mini-pekka-kite": {
+      "cases": {
+        "empty": {
+          "completed": false,
+          "integrity": 1.0,
+          "reward": 0
+        },
+        "immediate": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3786,
+            "plays": [
+              {
+                "card": "Skeletons",
+                "cost": 1,
+                "decision": 0,
+                "x": 135000,
+                "y": 243000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 1,
+            "ticks": 520,
+            "tower_damage": 756
+          },
+          "reward": 0
+        },
+        "malformed": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        },
+        "misplaced": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3786,
+            "plays": [
+              {
+                "card": "Skeletons",
+                "cost": 1,
+                "decision": 6,
+                "x": 117000,
+                "y": 243000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 1,
+            "ticks": 520,
+            "tower_damage": 756
+          },
+          "reward": 0
+        },
+        "mistimed": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3127,
+            "plays": [
+              {
+                "card": "Skeletons",
+                "cost": 1,
+                "decision": 7,
+                "x": 135000,
+                "y": 243000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 1,
+            "ticks": 520,
+            "tower_damage": 1
+          },
+          "reward": 0
+        },
+        "partial": {
+          "completed": false,
+          "integrity": 1.0,
+          "reward": 0
+        },
+        "reference": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 0,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.2792,
+            "plays": [
+              {
+                "card": "Skeletons",
+                "cost": 1,
+                "decision": 6,
+                "x": 135000,
+                "y": 243000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 1,
+            "ticks": 520,
+            "tower_damage": 0
+          },
+          "reward": 1
+        },
+        "rejected-placement": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.4445,
+            "plays": [],
+            "rejected_actions": 1,
+            "result": "unfinished",
+            "spent_elixir": 0,
+            "ticks": 520,
+            "tower_damage": 1511
+          },
+          "reward": 0
+        },
+        "tampered": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        },
+        "wait": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.4445,
+            "plays": [],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 0,
+            "ticks": 520,
+            "tower_damage": 1511
+          },
+          "reward": 0
+        },
+        "wrong-card": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.4445,
+            "plays": [],
+            "rejected_actions": 1,
+            "result": "unfinished",
+            "spent_elixir": 0,
+            "ticks": 520,
+            "tower_damage": 1511
+          },
+          "reward": 0
+        },
+        "wrong-schema": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        },
+        "wrong-type": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        }
+      },
+      "config_sha256": "e7f00b8e7ea1b8fa73e08ec77af238e0ec7080d5b129f863059bff5630debbf7",
+      "reference_deterministic": true,
+      "reference_log_sha256": "e1a0b22784fab8fd4b8ed03924ee413f04449facbd276bf7824739a090e3eef8",
+      "task": "06-mini-pekka-kite"
+    },
+    "07-balloon-fireball": {
+      "cases": {
+        "empty": {
+          "completed": false,
+          "integrity": 1.0,
+          "reward": 0
+        },
+        "immediate": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3686,
+            "plays": [
+              {
+                "card": "Fireball",
+                "cost": 4,
+                "decision": 0,
+                "x": 63000,
+                "y": 135000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 4,
+            "ticks": 520,
+            "tower_damage": 881
+          },
+          "reward": 0
+        },
+        "malformed": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        },
+        "misplaced": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3686,
+            "plays": [
+              {
+                "card": "Fireball",
+                "cost": 4,
+                "decision": 10,
+                "x": 153000,
+                "y": 135000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 4,
+            "ticks": 520,
+            "tower_damage": 881
+          },
+          "reward": 0
+        },
+        "mistimed": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3127,
+            "plays": [
+              {
+                "card": "Fireball",
+                "cost": 4,
+                "decision": 9,
+                "x": 63000,
+                "y": 135000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 4,
+            "ticks": 520,
+            "tower_damage": 241
+          },
+          "reward": 0
+        },
+        "partial": {
+          "completed": false,
+          "integrity": 1.0,
+          "reward": 0
+        },
+        "reference": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 0,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.2792,
+            "plays": [
+              {
+                "card": "Fireball",
+                "cost": 4,
+                "decision": 10,
+                "x": 63000,
+                "y": 135000
+              }
+            ],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 4,
+            "ticks": 520,
+            "tower_damage": 240
+          },
+          "reward": 1
+        },
+        "rejected-placement": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3686,
+            "plays": [],
+            "rejected_actions": 1,
+            "result": "unfinished",
+            "spent_elixir": 0,
+            "ticks": 520,
+            "tower_damage": 881
+          },
+          "reward": 0
+        },
+        "tampered": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        },
+        "wait": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3686,
+            "plays": [],
+            "rejected_actions": 0,
+            "result": "unfinished",
+            "spent_elixir": 0,
+            "ticks": 520,
+            "tower_damage": 881
+          },
+          "reward": 0
+        },
+        "wrong-card": {
+          "integrity": 1,
+          "outcome": {
+            "crowns_against": 1,
+            "crowns_for": 0,
+            "elapsed_s": 16.0,
+            "enemy_tower_damage_frac": 0.0,
+            "opponent_plays": [],
+            "own_tower_damage_frac": 0.3686,
+            "plays": [],
+            "rejected_actions": 1,
+            "result": "unfinished",
+            "spent_elixir": 0,
+            "ticks": 520,
+            "tower_damage": 881
+          },
+          "reward": 0
+        },
+        "wrong-schema": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        },
+        "wrong-type": {
+          "completed": false,
+          "integrity": 0.0,
+          "reward": 0
+        }
+      },
+      "config_sha256": "00d44e6c0b325700408fe778338f65117279b1c3ef7487e71c9dced75858398b",
+      "reference_deterministic": true,
+      "reference_log_sha256": "7f9754fbe3c649b1e23a8c28159ffa07bacd16a2c6840568053314b7168b703f",
+      "task": "07-balloon-fireball"
+    }
+  },
+  "docker": {
+    "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+    "image": "sha256:f4c234db18c28359589120f36e383dee4537de43f60d1370fcb669011fb5c418",
+    "tasks": [
+      {
+        "task": "06-mini-pekka-kite",
+        "family": 6,
+        "reward": 1,
+        "integrity": 1,
+        "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+        "config_sha256": "edb7121ff94ce1e78eb91fab3f0498251dbb3117b879316392fcfd06951d6fb3",
+        "image": "sha256:f4c234db18c28359589120f36e383dee4537de43f60d1370fcb669011fb5c418",
+        "isolated": true,
+        "restart_verified": true,
+        "capture_complete": true,
+        "trace_frames": 321,
+        "replay_hashes_verified": true,
+        "capture_schema_version": "1.0",
+        "network": "none",
+        "elapsed_s": 14.439
+      },
+      {
+        "task": "07-balloon-fireball",
+        "family": 7,
+        "reward": 1,
+        "integrity": 1,
+        "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+        "config_sha256": "e92c2b8b6cb8a86ffaa9a35e608ae6fb175c13a9c18cad85a66663773bad7103",
+        "image": "sha256:f4c234db18c28359589120f36e383dee4537de43f60d1370fcb669011fb5c418",
+        "isolated": true,
+        "restart_verified": true,
+        "capture_complete": true,
+        "trace_frames": 321,
+        "replay_hashes_verified": true,
+        "capture_schema_version": "1.0",
+        "network": "none",
+        "elapsed_s": 14.444
+      }
+    ]
+  },
+  "focused_tests": {
+    "cases": 96,
+    "passed": 96,
+    "initial_run": "88 passed; one new assertion used an incorrect TraceFrame field, corrected; seven local socket tests required unsandboxed execution",
+    "reruns": "corrected death-bomb assertion: 1 passed; seven socket tests outside sandbox: 7 passed"
+  },
+  "pilot": {
+    "run_id": "e9173855-84c0-457d-ab2e-d2e336afccbb",
+    "dataset": "royalebench/royalebench-tactics@6",
+    "dataset_digest": "sha256:5d9869332560e7ee325d975c6fca3340f75c69bb43f43a2f83f49775de424c37",
+    "model": "anthropic/claude-opus-5-5",
+    "harness": "claude_code-v1.0.0",
+    "provider": "modal",
+    "concurrency": 1,
+    "status": "FINISHED",
+    "task_count": 2,
+    "passes": 0,
+    "api_cost_usd": 0.3342354,
+    "api_cost_excludes_sandbox": true,
+    "tasks": {
+      "06-mini-pekka-kite": {
+        "rewards": {
+          "reward": 0.0,
+          "win": 0.0,
+          "crowns_for": 0.0,
+          "crowns_against": 1.0,
+          "enemy_tower_damage_frac": 0.0,
+          "own_tower_damage_frac": 0.3786,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "decisions": 4.0,
+          "fast_decision_frac": 0.25,
+          "spent_elixir": 1.0,
+          "tower_damage": 756.0,
+          "objective_met": 0.0,
+          "rejected_actions": 0.0
+        },
+        "outcome": {
+          "result": "unfinished",
+          "crowns_for": 0,
+          "crowns_against": 1,
+          "enemy_tower_damage_frac": 0.0,
+          "own_tower_damage_frac": 0.3786,
+          "ticks": 520,
+          "tower_damage": 756,
+          "spent_elixir": 1,
+          "plays": [
+            {
+              "decision": 3,
+              "card": "Skeletons",
+              "x": 135000,
+              "y": 207000,
+              "cost": 1
+            }
+          ],
+          "opponent_plays": [],
+          "elapsed_s": 16.0,
+          "rejected_actions": 0
+        },
+        "actions": [
+          {
+            "tick": 200,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 210,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 220,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 230,
+            "action": {
+              "cmd": "play",
+              "slot": 0,
+              "x": 7.5,
+              "y": 11.5
+            }
+          }
+        ],
+        "api_cost_usd": 0.1219072,
+        "api_cost_excludes_sandbox": true,
+        "agent_wall_clock_s": 36.287,
+        "replay_frames": 321,
+        "independent_replay_verified": true,
+        "actions_sha256": "ca7f2f7f8094e42ebed5ed3a083bf0d39d3bde4e02b2a212c21e6c3eadbe6e24",
+        "failure_classification": "Model timing/placement error: Skeletons at elapsed 1.5s, (7.5,11.5), before the attack reached the bridge. The tower was lost. The reference waits until 3s and places at (7.5,13.5). No rejected actions or infrastructure errors."
+      },
+      "07-balloon-fireball": {
+        "rewards": {
+          "reward": 0.0,
+          "win": 0.0,
+          "crowns_for": 0.0,
+          "crowns_against": 1.0,
+          "enemy_tower_damage_frac": 0.0,
+          "own_tower_damage_frac": 0.3127,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "decisions": 9.0,
+          "fast_decision_frac": 0.1111,
+          "spent_elixir": 4.0,
+          "tower_damage": 241.0,
+          "objective_met": 0.0,
+          "rejected_actions": 0.0
+        },
+        "outcome": {
+          "result": "unfinished",
+          "crowns_for": 0,
+          "crowns_against": 1,
+          "enemy_tower_damage_frac": 0.0,
+          "own_tower_damage_frac": 0.3127,
+          "ticks": 520,
+          "tower_damage": 241,
+          "spent_elixir": 4,
+          "plays": [
+            {
+              "decision": 8,
+              "card": "Fireball",
+              "x": 61200,
+              "y": 167400,
+              "cost": 4
+            }
+          ],
+          "opponent_plays": [],
+          "elapsed_s": 16.0,
+          "rejected_actions": 0
+        },
+        "actions": [
+          {
+            "tick": 200,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 220,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 240,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 260,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 280,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 300,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 320,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 340,
+            "action": {
+              "cmd": "wait"
+            }
+          },
+          {
+            "tick": 360,
+            "action": {
+              "cmd": "play",
+              "slot": 1,
+              "x": 3.4,
+              "y": 9.3
+            }
+          }
+        ],
+        "api_cost_usd": 0.2123282,
+        "api_cost_excludes_sandbox": true,
+        "agent_wall_clock_s": 68.409,
+        "replay_frames": 321,
+        "independent_replay_verified": true,
+        "actions_sha256": "30f6d21833aa3dbce41c2bea4c2bb62db1681e8845b959dc584c6073bba83e9c",
+        "failure_classification": "Model timing/placement error: Fireball at elapsed 8s, (3.4,9.3). It did not prevent a direct Balloon attack, and the threatened tower was lost. The reference casts at 10s, (3.5,7.5), preserving the tower through the death bomb. No rejected actions or infrastructure errors."
+      }
+    },
+    "raw_artifacts": "runs/analysis/e9173855-84c0-457d-ab2e-d2e336afccbb",
+    "capture": {
+      "artifact_count": 137,
+      "complete": true,
+      "counts": {
+        "commands": 111,
+        "events": 657,
+        "matches": 2,
+        "model_calls": 15,
+        "observations": 15,
+        "states": 100
+      },
+      "gaps": [],
+      "schema_version": "1.0"
+    },
+    "limitations": "One attempt per task validates setup and demonstrates failures; it is not a reliable success-rate estimate.",
+    "archive_checksum_errors": [],
+    "durable_archive": "local durable archive; host-specific path omitted"
+  },
+  "hosted_task_digests_match_local": true,
+  "all_hosted_rewards_equal_independent_replay": true
+}

@@ -123,3 +123,59 @@ test('a shield is drawn above the health bar and its loss flashes the unit', () 
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#cfe3ff'), 'shield bar drawn');
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff'), 'hit flash after shield damage');
 });
+
+const troop = (uid, card, x, y, hp, extra = {}) => {
+  const e = [uid, extra.team ?? 0, 0, card, x, y, hp, 100, .5, extra.flags ?? 0, -1, 0, 1, extra.stun ?? 0, null, 0, 0, -1];
+  return e;
+};
+
+test('drawing leaves snapshots unchanged and health bars draw above every miniature', () => {
+  const {renderer, operations} = fixture();
+  const a = {en: [troop(1, 0, 4, 8, 100), troop(2, 0, 4, 7.6, 100)], sp: [], pr: []};
+  const b = {en: [troop(1, 0, 4, 8, 60), troop(2, 0, 4, 7.6, 100)], sp: [], pr: []};
+  const frozen = JSON.stringify([a.en, b.en]);
+  renderer.observe(a, 0); renderer.observe(b, 100);
+  operations.length = 0;
+  renderer.draw(a, b, 1, 120, {scale: 20, cards});
+  assert.equal(JSON.stringify([a.en, b.en]), frozen);
+  const lastArt = operations.findLastIndex(op => op[0] === 'ellipse');
+  const firstBar = operations.findIndex(op => op[0] === 'fillStyle' && op[1] === '#17345e');
+  assert.ok(firstBar > lastArt, 'bars follow all unit art');
+  assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff4c2'), 'recent damage shows on the bar');
+  operations.length = 0;
+  renderer.draw(a, b, 1, 1000, {scale: 20, cards});
+  assert.ok(!operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff4c2'), 'the damage segment expires');
+});
+
+test('a stun ring drains with the stun time left in both orientations', () => {
+  for (const flip of [false, true]) {
+    const {renderer, operations} = fixture();
+    const a = {en: [troop(1, 0, 4, 8, 100, {stun: 20})], sp: [], pr: []};
+    const b = {en: [troop(1, 0, 4, 8, 100, {stun: 10})], sp: [], pr: []};
+    renderer.observe(a, 0); renderer.observe(b, 100);
+    operations.length = 0;
+    renderer.draw(a, b, 1, 120, {scale: 20, cards, flip});
+    const arc = operations.find(op => op[0] === 'arc' && Math.abs(op[4] + Math.PI / 2) < 1e-9);
+    assert.ok(arc, 'stun arc drawn');
+    assert.ok(Math.abs(arc[5] - Math.PI / 2) < 1e-9, 'half the stun remains');
+  }
+});
+
+test('crowded troop labels never draw on top of each other', () => {
+  for (const flip of [false, true]) {
+    const {renderer, operations} = fixture();
+    const crowd = {0: ['Knight'], 4: ['MiniPekka'], 5: ['BattleRam'], 6: ['ElectroWizard'], 7: ['Giant']};
+    const s = {en: [0, 4, 5, 6, 7].map((c, i) => troop(i + 1, c, 9 + (i % 2) * .4, 16 + i * .3, 50)), sp: [], pr: []};
+    renderer.observe(s, 0);
+    operations.length = 0;
+    renderer.draw(s, s, 0, 500, {scale: 20, cards: crowd, flip});
+    const labels = operations.filter(op => op[0] === 'fillText' && /[A-Z]/.test(op[1]));
+    for (let i = 0; i < labels.length; i++)
+      for (let j = i + 1; j < labels.length; j++) {
+        const [, p, px, py] = labels[i], [, q, qx, qy] = labels[j];
+        const overlap = Math.abs(px - qx) * 2 < (p.length + q.length) * 9 * .6 + 8 && Math.abs(py - qy) < 10;
+        assert.ok(!overlap, `${p} and ${q} overlap`);
+      }
+    assert.ok(labels.length >= 4, `most of the crowd is named (${labels.length})`);
+  }
+});

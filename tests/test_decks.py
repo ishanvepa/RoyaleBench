@@ -1,17 +1,15 @@
-"""Custom deck persistence, validation, and dashboard integration without model calls."""
+"""Custom deck persistence, validation, and battle config snapshots without model calls.
+The deck endpoints and the web app's deck builder are tested in test_api_legacy and the web app's own tests."""
 
 import tempfile
-import textwrap
 import tomllib
 import unittest
 from pathlib import Path
 
-from streamlit.testing.v1 import AppTest
-
+from cr_arena.battles import battle_plan, with_custom_deck
 from cr_arena.db import DB
 from cr_arena.decks import CLASSIC_DECKS, DEFAULT_DECK, deck_options
 from cr_arena.game import Game
-from dashboard.battle import battle_plan, with_custom_deck
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -65,38 +63,6 @@ class CustomDeckTests(unittest.TestCase):
         replaced = tomllib.loads(with_custom_deck(preset_config, DEFAULT_DECK))
         self.assertEqual(replaced["decks"], {"list": [DEFAULT_DECK]})
         self.assertEqual(replaced["players"], tomllib.loads(preset_config)["players"])
-
-    def app(self, body):
-        return AppTest.from_string(
-            "from cr_arena.db import DB\n"
-            f"db = DB({str(self.path)!r})\ntry:\n" + textwrap.indent(body, "    ") +
-            "\nfinally:\n    db.close()", default_timeout=30).run()
-
-    def test_builder_create_edit_validation_and_delete(self):
-        app = self.app("from dashboard.decks import page_decks\npage_decks(lambda: db)")
-        self.assertFalse(app.exception)
-        self.assertTrue(app.button(key="save_deck").disabled)
-        app.text_input(key="deck_name").set_value("My cycle")
-        app.multiselect(key="deck_cards").set_value(DEFAULT_DECK).run()
-        app.button(key="save_deck").click().run()
-        self.assertFalse(app.exception)
-        self.assertEqual(self.db.custom_decks()[0]["cards"], DEFAULT_DECK)
-        self.assertEqual(app.selectbox(key="deck_editor").value, self.db.custom_decks()[0]["id"])
-        app.text_input(key="deck_name").set_value("Renamed").run()
-        app.button(key="save_deck").click().run()
-        self.assertEqual(self.db.custom_decks()[0]["name"], "Renamed")
-        app.multiselect(key="deck_cards").set_value(DEFAULT_DECK[:7]).run()
-        self.assertTrue(app.button(key="save_deck").disabled)
-        app.button(key="delete_deck").click().run()
-        self.assertFalse(app.exception)
-        self.assertEqual(self.db.custom_decks(), [])
-
-    def test_custom_deck_is_available_on_both_sides_of_human_game(self):
-        self.db.save_custom_deck("Test", DEFAULT_DECK)
-        app = self.app(f"from dashboard.play import page_play\nfrom pathlib import Path\npage_play(Path({str(ROOT)!r}), lambda: db)")
-        self.assertFalse(app.exception)
-        self.assertIn("Custom: Test", app.selectbox[1].options)
-        self.assertIn("Custom: Test", app.selectbox[2].options)
 
 
 if __name__ == "__main__":

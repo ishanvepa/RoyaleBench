@@ -5,7 +5,7 @@ reads. Snapshot taken 2026-11-07 (45 benchmark games plus earlier test jobs; ~37
 
 ```bash
 gunzip -k data/arena.db.gz && cp data/arena.db runs/arena.db    # restore locally, then:
-uv run streamlit run dashboard/app.py
+uv run python -m rb_server        # open http://127.0.0.1:8000/legacy/overview
 ```
 
 To refresh the snapshot after new runs:

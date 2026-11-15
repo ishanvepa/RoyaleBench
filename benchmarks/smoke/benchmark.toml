@@ -1,0 +1,6 @@
+# Display metadata for the dashboard. Valkyrie ignores this file: `dataset push` only reads task folders.
+# Do not add a dataset.toml here; Valkyrie treats it as a digest lock that freezes the task list.
+[benchmark]
+title = "Connection smoke test"
+description = "One no-knowledge task that checks the hosted path end to end: sandbox start, agent harness, model auth, answer file, grading and trace retrieval. Infrastructure check only; excluded from benchmark difficulty results."
+kind = "smoke"

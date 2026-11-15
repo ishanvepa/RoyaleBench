@@ -1,0 +1,17 @@
+# Settings for the Evals area of the dashboard: Harbor benchmarks run on Valkyrie, sandboxes on Modal.
+# Read by rb_evals/config.py. Everything here has a default, so deleting a key is safe.
+
+[valkyrie]
+benchmark = "royalebench"        # Valkyrie benchmark namespace: a folder benchmarks/<name> is the dataset royalebench/<name>
+provider = "modal"               # every job runs its sandboxes on Modal
+default_agent = "claude_code-v1.0.0"
+default_concurrency = 1
+max_concurrency = 10             # upper bound offered in the New job form
+confirm_over_tasks = 5           # jobs with more tasks than this need an explicit confirmation checkbox
+
+# Model keys exactly as Valkyrie expects them. Any other key can be typed into the New job form.
+# Only anthropic/claude-sonnet-4-6 has been verified end to end (docs/valkyrie_smoke.md); start any
+# new model with a one-task job. secret_env is the variable the harness reads the API key from.
+[[models]]
+id = "anthropic/claude-sonnet-4-6"
+secret_env = "ANTHROPIC_API_KEY"

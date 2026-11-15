@@ -5,7 +5,7 @@ shared DATABASE_URL or local SQLite DB; rerunning the same job name resumes it.
     uv run python -m cr_arena.tournament --job bots-smoke --bots-only  # free smoke test
     uv run python -m cr_arena.tournament --job main-v1 --dry-run       # schedule + call estimate
     uv run python -m cr_arena.tournament --leaderboard [--job main-v1] # print standings
-Watch it live: uv run streamlit run dashboard/app.py
+Watch it live: uv run python -m rb_server, then open http://127.0.0.1:8000/legacy/overview
 """
 
 from __future__ import annotations

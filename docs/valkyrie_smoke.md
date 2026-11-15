@@ -11,7 +11,7 @@ be excluded from reported benchmark difficulty results.
 - CLI used to prepare the test: `valkyrie-cli v2026.11.14`
 - Installed harness: `claude_code-v1.0.0` from the public agent registry
 - Published dataset: `royalebench/smoke@1`, also tagged `v1`
-- Source: `smoke_tasks/elixir-check/`
+- Source: `benchmarks/smoke/elixir-check/`
 - Grading: 1 for the exact requested JSON object with integer answer 1; 0 otherwise
 - Agent limit: 120 seconds; verifier limit: 30 seconds
 
@@ -81,7 +81,7 @@ credentials work.
 ## Republish source changes
 
 ```bash
-valkyrie dataset push royalebench/smoke ./smoke_tasks
+valkyrie dataset push royalebench/smoke ./benchmarks/smoke
 ```
 
 Use the new immutable revision printed by the CLI for subsequent runs.

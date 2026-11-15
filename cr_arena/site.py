@@ -153,7 +153,7 @@ def track_data(db: DB, jobs: list[dict]) -> dict:
 
 
 def build(db: DB, classic: str = "classic-v2", build_job: str = "build-v2", out: Path = OUT,
-          dashboard_url: str = "http://localhost:8501", *, embedded: bool = False, theme: str = "light",
+          dashboard_url: str = "http://localhost:8000", *, embedded: bool = False, theme: str = "light",
           job_name: str | None = None) -> Path:
     jobs = {j["name"]: j for j in db.query("SELECT * FROM jobs")}
     tracks = {}
@@ -420,7 +420,7 @@ function games(T){
   const recent = gs.slice(0,25).map(g=>{
     const w = g.winner===0?g.blue:g.winner===1?g.red:"draw";
     const len = g.ticks? (()=>{const s=Math.round(g.ticks*0.05);return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")})() : "";
-    const link = g.replay ? `${DATA.dashboard}/?page=Match&job=${encodeURIComponent(g.job)}` : "";
+    const link = g.replay ? `${DATA.dashboard}/legacy/matches/${encodeURIComponent(g.job)}/${encodeURIComponent(g.id)}` : "";
     return `<tr><td>${modelLabel(g.blue)}</td><td>${modelLabel(g.red)}</td><td class="num">${g.crowns[0]}–${g.crowns[1]}</td><td>${w==="draw" ? "draw" : modelLabel(w)}</td><td>${esc(g.deck_name || (g.deck && !Array.isArray(g.deck) ? "Model-built" : "Preset deck"))}</td><td class="num">${len}</td><td>${link ? `<a href="${link}" target="_top">replay ↗</a>` : ""}</td></tr>`;}).join("");
   return trackTabs()+`<div class="select"><details class="model-picker"><summary aria-label="Filter games by model">${S.player==="__all" ? "All models" : modelLabel(S.player)}</summary><div class="model-options">${opts}</div></details></div>`+
     `<div class="stats"><div><b>${gs.length.toLocaleString()}</b><span>Games</span></div><div><b>${dec.toLocaleString()}</b><span>Decisions</span></div><div><b>${gs.length? (dec/(S.player==="__all"?gs.length:gs.length)/(S.player==="__all"?1:1)).toFixed(1):"0"}</b><span>Decisions / game</span></div></div>`+

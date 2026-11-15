@@ -55,6 +55,41 @@ def deck_options(db) -> dict[str, list[str]]:
     return {**CLASSIC_DECKS, **{f"Custom: {deck['name']}": deck["cards"] for deck in db.custom_decks()}}
 
 
+CUSTOM_PREFIX = "custom:"
+
+
+def card_catalog() -> list[dict]:
+    """Every pool card with its elixir cost and kind (Troop / Building / Spell), from the engine."""
+    from royalegym import RustEngine
+    from royalegym.protocol import Placement, card_is_spell
+
+    out = []
+    for card in RustEngine().cards():
+        if card.name in POOL:
+            kind = "Spell" if card_is_spell(card) else "Building" if card.placement == Placement.BUILDING else "Troop"
+            out.append({"name": card.name, "elixir": int(card.elixir), "kind": kind})
+    return sorted(out, key=lambda c: c["name"])
+
+
+def deck_catalog(db) -> list[dict]:
+    """Presets and saved decks as one list. Keys are stable: a preset is its own name, a saved deck is ``custom:<id>``."""
+    presets = [{"key": name, "name": name, "cards": list(cards), "preset": True, "id": None} for name, cards in CLASSIC_DECKS.items()]
+    saved = [{"key": f"{CUSTOM_PREFIX}{d['id']}", "name": d["name"], "cards": list(d["cards"]), "preset": False, "id": d["id"]}
+             for d in db.custom_decks()]
+    return presets + saved
+
+
+def resolve_deck(db, key: str) -> list[str]:
+    """The 8 cards behind a deck key (see ``deck_catalog``). Raises ValueError for an unknown key."""
+    if key in CLASSIC_DECKS:
+        return list(CLASSIC_DECKS[key])
+    if key.startswith(CUSTOM_PREFIX):
+        for deck in db.custom_decks():
+            if deck["id"] == key[len(CUSTOM_PREFIX):]:
+                return list(deck["cards"])
+    raise ValueError(f"Unknown deck {key!r}.")
+
+
 def _norm(s: str) -> str:
     return re.sub(r"[^a-z0-9]", "", s.lower())
 

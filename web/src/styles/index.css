@@ -1,0 +1,207 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens. Light and dark values are ported from the original dashboard so the product keeps its look. */
+:root {
+  --rb-bg: #f4f3f0;
+  --rb-surface: #faf9f7;
+  --rb-ink: #383b42;
+  --rb-secondary: #6f7279;
+  --rb-muted: #8a8d93;
+  --rb-border: #e2e0db;
+  --rb-selected: #eae8e2;
+  --rb-focus: #8a8d93;
+  --rb-success: #1f7a5a;
+  --rb-danger: #b8402a;
+  --rb-warning: #9a6a12;
+  --rb-info: #2f5fb3;
+  --rb-f-claude: #b5613e;
+  --rb-f-gpt: #2b8a6a;
+  --rb-f-gemini: #3b6dc2;
+  --rb-f-grok: #55555e;
+  --rb-f-deepseek: #6b4fbf;
+  --rb-f-mistral: #df7834;
+  --rb-f-llama: #3676b7;
+  --rb-f-qwen: #6151bc;
+  --rb-f-bot: #9a9ca1;
+  --rb-f-other: #55555e;
+  --rb-side-blue: #2a78d6;
+  --rb-side-red: #eb6834;
+  color-scheme: light;
+}
+
+.dark {
+  --rb-bg: #171716;
+  --rb-surface: #222220;
+  --rb-ink: #e9e8e3;
+  --rb-secondary: #b1b2ab;
+  --rb-muted: #969891;
+  --rb-border: #393a35;
+  --rb-selected: #34352f;
+  --rb-focus: #8d9082;
+  --rb-success: #6ec9a8;
+  --rb-danger: #f08a74;
+  --rb-warning: #e0b24a;
+  --rb-info: #88acf1;
+  --rb-f-claude: #dc9b7d;
+  --rb-f-gpt: #6ec9a8;
+  --rb-f-gemini: #88acf1;
+  --rb-f-grok: #c5c5ce;
+  --rb-f-deepseek: #ab95ed;
+  --rb-f-mistral: #f0a070;
+  --rb-f-llama: #7fb0e0;
+  --rb-f-qwen: #a99cf0;
+  --rb-f-bot: #969891;
+  --rb-f-other: #b5b5be;
+  --rb-side-blue: #3987e5;
+  --rb-side-red: #d95926;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-background: var(--rb-bg);
+  --color-surface: var(--rb-surface);
+  --color-ink: var(--rb-ink);
+  --color-subtle: var(--rb-secondary);
+  --color-muted: var(--rb-muted);
+  --color-line: var(--rb-border);
+  --color-selected: var(--rb-selected);
+  --color-focus: var(--rb-focus);
+  --color-success: var(--rb-success);
+  --color-danger: var(--rb-danger);
+  --color-warning: var(--rb-warning);
+  --color-info: var(--rb-info);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: var(--rb-bg);
+    color: var(--rb-ink);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+  a {
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--rb-focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--rb-info) 30%, transparent);
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  /* Respect people who ask for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Rendered markdown (task instructions): small, readable typography without a plugin. */
+.prose-rb {
+  color: var(--rb-ink);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.prose-rb > * + * {
+  margin-top: 0.85em;
+}
+.prose-rb h1,
+.prose-rb h2,
+.prose-rb h3,
+.prose-rb h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-top: 1.4em;
+}
+.prose-rb h1 {
+  font-size: 1.5rem;
+}
+.prose-rb h2 {
+  font-size: 1.25rem;
+}
+.prose-rb h3,
+.prose-rb h4 {
+  font-size: 1.05rem;
+}
+.prose-rb ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.prose-rb ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.prose-rb li + li {
+  margin-top: 0.25em;
+}
+.prose-rb a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--rb-info);
+}
+.prose-rb code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--rb-selected);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+.prose-rb pre {
+  background: var(--rb-surface);
+  border: 1px solid var(--rb-border);
+  border-radius: 8px;
+  padding: 0.85em 1em;
+  overflow-x: auto;
+}
+.prose-rb pre code {
+  background: none;
+  padding: 0;
+}
+.prose-rb blockquote {
+  border-left: 3px solid var(--rb-border);
+  padding-left: 1em;
+  color: var(--rb-secondary);
+}
+.prose-rb table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.prose-rb th,
+.prose-rb td {
+  border: 1px solid var(--rb-border);
+  padding: 0.4em 0.7em;
+  text-align: left;
+}
+.prose-rb hr {
+  border-color: var(--rb-border);
+}

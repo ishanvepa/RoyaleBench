@@ -7,7 +7,6 @@ from pathlib import Path
 
 from cr_arena.db import DB
 from cr_arena.site import build, result_runs
-from dashboard.leaderboard import run_label
 
 
 class ResultsTests(unittest.TestCase):
@@ -56,13 +55,13 @@ class ResultsTests(unittest.TestCase):
         self.assertEqual(len(tracks), 1)
         self.assertEqual(len(next(iter(tracks.values()))["games"]), 1)
 
-    def test_empty_battle_label_does_not_claim_results_or_failure(self):
-        run = {"name": "battle-empty", "scored_games": 0, "status": "running", "deck_rules": "Preset decks"}
-        self.assertEqual(run_label(run), "battle-empty · No results · Running")
-        run.update(status="stopped")
-        self.assertEqual(run_label(run), "battle-empty · No results · Stopped")
-        run.update(scored_games=1)
-        self.assertEqual(run_label(run), "battle-empty · 1 finished game · Preset decks")
+    def test_replay_links_point_at_the_web_app_match_page(self):
+        out = Path(self.directory.name) / "site.html"
+        build(self.db, out=out, dashboard_url="http://example.test")
+        html = out.read_text(encoding="utf-8")
+        self.assertIn("${DATA.dashboard}/legacy/matches/${encodeURIComponent(g.job)}/${encodeURIComponent(g.id)}", html)
+        self.assertNotIn("?page=Match", html)  # the Streamlit address scheme is gone
+        self.assertIn("http://example.test", html)
 
 
 if __name__ == "__main__":

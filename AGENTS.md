@@ -21,8 +21,13 @@ The exact task design, agent interface, and scoring method are still to be decid
 - Start with small runs to control cost, then expand only after the tasks and scoring work reliably.
 - Record the harness, model, dataset version, run configuration, and results so another person can reproduce the comparison.
 
+## Designing tasks
+
+Before creating or changing any task under `benchmarks/`, read [`docs/task_design.md`](docs/task_design.md). It covers task selection, the Harbor layout used here, writing instructions and verifiers, preventing shortcuts, and the validation checklist every task must pass before it is run at scale.
+
 ## Project references
 
+- [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
 - [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
 - [Valkyrie repository](https://github.com/vals-ai/Valkyrie): source code for the evaluation framework.

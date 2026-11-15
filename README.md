@@ -1,4 +1,10 @@
+# RoyaleBench
+
+## Writeup
+
 [Deployed RoyaleBench writeup](https://ishanvepa171--royalebench-writeup.us-east.modal.run/)
+
+## Other links
 
 - [Benchmark tasks](benchmarks/royalebench-v9/)
 - [Task manifest](benchmarks/royalebench-v9/manifest.json)

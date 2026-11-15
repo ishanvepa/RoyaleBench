@@ -30,6 +30,15 @@ For real runs you need what [the smoke test](valkyrie_smoke.md) sets up: `valkyr
 as the sandbox provider, and a Valkyrie secret holding the model's API key (such as `anthropic-api-key-<you>`).
 The page tells you which of these is missing.
 
+For the Modal-hosted Qwen endpoint, follow [Qwen on Modal](qwen_modal.md).
+For the Inkling endpoint, see [Inkling on Modal](inkling_modal.md): revision `@4`
+includes its network allowlist, and authentication/model discovery requires the
+matching proxy secret before its model preset can be activated.
+Select the existing `mini_swe_agent`, the Qwen model preset and secret
+`modal-qwen-api-key`; use dataset revision `@3`, which allows the endpoint hostname.
+The preset adds the endpoint URL's `OPENAI_API_BASE` secret mapping and the
+standard harness options to both dashboard launches and their preview commands.
+
 ## Evals
 
 | Page | What it does |

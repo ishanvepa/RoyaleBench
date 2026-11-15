@@ -1,0 +1,98 @@
+{
+  "run_id": "b31fb94a-e51c-44c8-9868-5fb1ecc2f372",
+  "dataset": "royalebench/royalebench-v1@3",
+  "task_id": "01-immediate-lethal",
+  "harness": "mini_swe_agent",
+  "model": "openai/Qwen/Qwen3.8-2.4T-A95B",
+  "served_model": "Qwen/Qwen3.8-2.4T-A95B",
+  "provider": "modal",
+  "concurrency": 1,
+  "secret_mapping": {
+    "OPENAI_API_KEY": "modal-qwen-api-key",
+    "OPENAI_API_BASE": "modal-qwen-base-url"
+  },
+  "endpoint": "https://ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct/v1",
+  "agent_kwargs": {
+    "step_limit": "12",
+    "cost_tracking": "ignore_errors"
+  },
+  "status": "FINISHED",
+  "evaluation_result": {
+    "task_id": "01-immediate-lethal",
+    "rewards": {
+      "reward": 1.0,
+      "win": 1.0,
+      "crowns_for": 1.0,
+      "crowns_against": 0.0,
+      "enemy_tower_damage_frac": 0.3127,
+      "own_tower_damage_frac": 0.2095,
+      "completed": 1.0,
+      "integrity": 1.0,
+      "decisions": 1.0,
+      "fast_decision_frac": 0.0,
+      "spent_elixir": 4.0,
+      "tower_damage": 0.0,
+      "objective_met": 1.0
+    },
+    "verifier_result": {
+      "rewards": {
+        "reward": 1.0,
+        "win": 1.0,
+        "crowns_for": 1.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 1.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 0.0,
+        "objective_met": 1.0
+      }
+    },
+    "metadata": {
+      "reward_source": "/logs/verifier/reward.json",
+      "verifier_exit_code": 0,
+      "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2095,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 1.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 4.0,\n  \"tower_damage\": 0.0,\n  \"objective_met\": 1.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2095,\n  \"ticks\": 5139,\n  \"tower_damage\": 0,\n  \"spent_elixir\": 4,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Fireball\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 4\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 1.95\n },\n \"decisions_applied\": 1,\n \"completed\": true\n}\n",
+      "verifier_environment_mode": "separate"
+    }
+  },
+  "agent_run_duration_s": 15.49709158600001,
+  "model_api_calls": 6,
+  "usage": {
+    "prompt_tokens": 27893,
+    "completion_tokens": 1352,
+    "total_tokens": 29245,
+    "cached_prompt_tokens": 21760,
+    "reasoning_tokens": 689
+  },
+  "actual_cost_usd": null,
+  "cost_note": "Unknown-price fallback reports zero; no billing retrieved.",
+  "action": "cr act 5: Fireball at enemy left princess tower",
+  "upstream": {
+    "repo": "SWE-agent/mini-swe-agent",
+    "tag": "v2.4.6",
+    "commit": "a83fcae82d2a08f0ee0c688f9d137b3566c097f8",
+    "submodule": "mini-swe-agent"
+  },
+  "harness_packaging": "Stock mini_swe_agent; text normalized from CRLF to LF for Linux. All 226 files compared equal to the original after line-ending normalization. No model-specific code changes.",
+  "superseded_setup_attempts": [
+    "efa01b44-0c7d-4419-9a73-1178701a8f6c",
+    "ce229e6c-cf0d-4979-9d3d-022a9cfa838c"
+  ],
+  "superseded_attempt_note": "Force-stopped after setup.sh rejected CRLF line endings. No model score attributed to these attempts.",
+  "artifact_sha256": {
+    "mini_swe_agent.zip": "9447aee4bc4fec0898fd5d6ae115df02034d240b6a39b28a6964859fea7605e5",
+    "run_metadata.json": "06056a66114ce796db71fb20c8272cfd87d2679c4a7ccd916cebd6828390ea74",
+    "task_result.json": "792eac28d59dec9476a7175b3d3da3445cf1ce247337fead7426013e0aa31292",
+    "01-immediate-lethal/agent_output.tar.gz": "c54ff1447f302424d86950d7252aa6fadeb76dc2de752f8fa4d23b60eb7651ed",
+    "01-immediate-lethal/artifacts/royale.tar.gz": "a8f4192b7a4f3f4760177bf6cbbb3c41f164d7d4278f49db97282aceb132bebf",
+    "01-immediate-lethal/mini_swe_agent/summary.json": "2b8cc7b99d1377e518d2c128f022187e4000ffc2e937f1de84d15ae4c4071ae9",
+    "01-immediate-lethal/mini_swe_agent/trajectory.json": "2587910192ea476f5fe6fe3b0daf3f9b18893308bc7c186071ecc7bc78479e6f"
+  },
+  "artifacts_local": "runs/evals/modal-qwen/stock-pilot-output",
+  "artifacts_durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\b31fb94a-e51c-44c8-9868-5fb1ecc2f372\\manual-download",
+  "artifact_copy_verified": true,
+  "collection_limitation": "The existing normalized archive collector imports fcntl and cannot run on Windows. Raw outputs, trajectory, launch metadata and verifier result are mirrored with SHA-256 verification."
+}

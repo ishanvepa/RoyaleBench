@@ -85,7 +85,10 @@ The instrumented release is **`royalebench/royalebench-v1@2`**, tagged `v2` and 
 It preserves all eleven scenario configurations, instructions, reference actions, Planner settings and
 objectives from `@1`. It adds private observations, action/state/event telemetry, instruction/resource
 provenance, corrected decision timing, and full carried replay checkpoints, including partial play.
-Revision `@1` remains available with its original capture limitations. Use `@2` for new runs.
+Revision `@1` remains available with its original capture limitations. Revision **`@3`**
+(tag `modal-qwen`) preserves `@2` task content and adds the exact Modal Qwen endpoint
+hostname to the agent network allowlist. Use `@3` for new runs, including comparisons
+with Qwen; see [Qwen on Modal](qwen_modal.md) for its harness and credentials.
 
 For this release, all eleven winning references reproduce their prior outcomes; repeated grading and
 fresh negative controls pass. All eleven pass player isolation, server restart and fresh-container
@@ -120,3 +123,9 @@ valkyrie run start --agent claude_code-v1.0.0 \
 Then run one defense task and inspect both the model trace and replay before scaling. Record dataset revision, model, harness, Modal resources, sampling settings, run IDs, costs, rewards and failure classifications. Harness setup has public access to install its tools; during actual play, only model API hosts are allowlisted, and verification requests no network. The task needs no external game server. Actual phase-policy enforcement still needs a Modal pilot. Keep full model decisions separate from oracle scripts; `fast_decision_frac` is only a review diagnostic, not an automatic score penalty.
 
 The README's required opening overview remains human-authored; this implementation adds only documentation links beneath it.
+
+Revision `@4` (tag `modal-inkling`) adds the exact Inkling Modal endpoint hostname
+to all eleven agent allowlists. It retains the Qwen hostname from `@3`; scenario
+inputs, scoring, resource limits and verifier isolation are unchanged. Dataset
+discovery/configuration/LF checks passed. Inkling authentication and a model pilot
+are pending its matching proxy secret; see [Inkling setup](inkling_modal.md).

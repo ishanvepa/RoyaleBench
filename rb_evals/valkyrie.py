@@ -274,12 +274,14 @@ class Valkyrie:
 
     # ------------------------------------------------------------------ run control
     def start_run(self, *, benchmark: str, dataset: str, ref: str, agent: str, model: str, concurrency: int,
-                  task_ids: Sequence[str] | None, label: str, provider: str, secrets: dict[str, str]) -> dict:
+                  task_ids: Sequence[str] | None, label: str, provider: str, secrets: dict[str, str],
+                  agent_kwargs: dict[str, str] | None = None) -> dict:
         async def op(c):
             response = await c.datasets.start_run(
                 agent, HostedDataset(benchmark=benchmark, dataset=dataset, ref=ref), benchmark=benchmark,
                 model=model, concurrency=concurrency, task_ids=list(task_ids) if task_ids else None,
-                label=label, provider=provider, secrets=secrets)
+                label=label, provider=provider, secrets=secrets,
+                **({"agent_kwargs": agent_kwargs} if agent_kwargs else {}))
             return {"run_id": str(response.benchmark_id), "task_count": response.task_count,
                     "dataset_version": _dump(response.dataset_version),
                     "warning": response.dataset_version_warning, "started_at": response.started_at.isoformat()}
@@ -290,7 +292,8 @@ class Valkyrie:
             try:
                 enroll(result["run_id"], config={"benchmark": benchmark, "dataset": dataset, "revision": ref,
                     "agent": agent, "model": model, "concurrency": concurrency, "task_ids": task_ids,
-                    "provider": provider, "label": label, "resolved_dataset": result.get("dataset_version")})
+                    "provider": provider, "label": label, "agent_kwargs": agent_kwargs or {},
+                    "resolved_dataset": result.get("dataset_version")})
             except OSError as exc:
                 result["warning"] = f"Run started but archive enrollment failed: {exc}"
         return result

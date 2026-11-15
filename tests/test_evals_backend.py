@@ -71,6 +71,20 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(secret_env_for("acme-ai/m"), "ACME_AI_API_KEY")
         self.assertEqual(secret_env_for("anthropic/special", presets), "SPECIAL_KEY")
 
+    def test_reads_endpoint_secret_references_and_stock_agent_options(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = write(Path(d) / "evals.toml", '''[[models]]
+id = "openai/Qwen/example"
+secret_env = "OPENAI_API_KEY"
+agent = "mini_swe_agent"
+secrets = { OPENAI_API_BASE = "endpoint-url" }
+agent_kwargs = { cost_tracking = "ignore_errors", step_limit = "12" }
+''')
+            preset = load_config(path).models[0]
+            self.assertEqual(preset.agent, "mini_swe_agent")
+            self.assertEqual(preset.secrets, {"OPENAI_API_BASE": "endpoint-url"})
+            self.assertEqual(preset.agent_kwargs, {"cost_tracking": "ignore_errors", "step_limit": "12"})
+
     def test_repo_config_targets_modal_and_the_verified_model(self):
         cfg = load_config(ROOT / "evals.toml")
         self.assertEqual((cfg.benchmark, cfg.provider), ("royalebench", "modal"))
@@ -507,9 +521,11 @@ class FacadeTests(unittest.TestCase):
         v._cache.get_or_set("k", 60, lambda: "stale")
         out = v.start_run(benchmark="royalebench", dataset="smoke", ref="1", agent="claude_code-v1.0.0",
                           model="anthropic/claude-sonnet-4-6", concurrency=2, task_ids=["a"], label="L",
-                          provider="modal", secrets={"ANTHROPIC_API_KEY": "s"})
+                          provider="modal", secrets={"ANTHROPIC_API_KEY": "s"},
+                          agent_kwargs={"cost_tracking": "ignore_errors"})
         self.assertEqual(out["run_id"], "11111111-1111-1111-1111-111111111111")
         self.assertEqual(out["task_count"], 3)
+        self.assertEqual(captured["agent_kwargs"], {"cost_tracking": "ignore_errors"})
         self.assertEqual(captured["dataset"], HostedDataset(benchmark="royalebench", dataset="smoke", ref="1"))
         self.assertEqual((captured["provider"], captured["task_ids"], captured["secrets"], captured["concurrency"]),
                          ("modal", ["a"], {"ANTHROPIC_API_KEY": "s"}, 2))

@@ -53,6 +53,11 @@ uv run python -m rb_evals.archive collect RUN_ID
 
 `ROYALEBENCH_ANALYSIS_DIR` controls hosted working bundles (default `runs/analysis`). Global `--root PATH` overrides it for the CLI. Original archives, extracted files, metadata snapshots, all service log pages, and artifact inventories are retained. `.collection.lock` serializes concurrent collectors. Cache deletion does not delete the durable copy.
 
+The hosted collector currently requires Unix `fcntl`; its `collect` command cannot
+run directly in Windows Python. The [Modal Qwen pilot](qwen_modal.md#validation)
+preserves a checksum-verified raw download and durable copy instead; it has no
+normalized analysis exports yet.
+
 ```text
 <analysis_dir>/<run_id>/
   manifest.json

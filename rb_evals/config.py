@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,6 +18,9 @@ PROVIDER_KEY_ENV = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY"
 class ModelPreset:
     id: str  # Valkyrie model key, e.g. anthropic/claude-sonnet-4-6
     secret_env: str = ""  # variable the harness reads the API key from
+    agent: str = ""  # optional harness required by this endpoint configuration
+    secrets: dict[str, str] = field(default_factory=dict)  # extra environment -> secret references
+    agent_kwargs: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -50,7 +53,9 @@ def load_config(path: Path | str | None = None) -> EvalsConfig:
         data = tomllib.loads(path.read_text(encoding="utf-8"))
     v = data.get("valkyrie", {})
     defaults = EvalsConfig()
-    models = tuple(ModelPreset(m["id"], m.get("secret_env", "")) for m in data.get("models", []) if m.get("id"))
+    models = tuple(ModelPreset(m["id"], m.get("secret_env", ""), m.get("agent", ""),
+                               dict(m.get("secrets", {})), dict(m.get("agent_kwargs", {})))
+                   for m in data.get("models", []) if m.get("id"))
     return EvalsConfig(
         benchmark=v.get("benchmark", defaults.benchmark),
         provider=v.get("provider", defaults.provider),

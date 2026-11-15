@@ -241,6 +241,31 @@ class JobControlTests(ApiCase):
 
 
 class StartJobTests(ApiCase):
+    def test_model_preset_supplies_endpoint_to_unmodified_mini_swe(self):
+        from rb_evals.config import ModelPreset
+        preset = ModelPreset("openai/Qwen/example", "OPENAI_API_KEY", agent="mini_swe_agent",
+                             secrets={"OPENAI_API_BASE": "endpoint-url"},
+                             agent_kwargs={"cost_tracking": "ignore_errors", "step_limit": "12"})
+        self.ctx.cfg = dataclasses.replace(self.cfg, models=(preset,))
+        with patch.object(self.fake, "agent_names", return_value=["mini_swe_agent"]), \
+             patch.object(self.fake, "secret_names", return_value=["anthropic-api-key-demo", "endpoint-url"]):
+            preview = self.preview(agent="mini_swe_agent", model=preset.id)
+            self.assertTrue(preview["valid"], preview)
+            self.assertIn("-s OPENAI_API_BASE endpoint-url", preview["cli_command"])
+            self.assertIn("-s OPENAI_API_KEY anthropic-api-key-demo", preview["cli_command"])
+            self.assertIn("-k cost_tracking ignore_errors", preview["cli_command"])
+            rid = self.start(agent="mini_swe_agent", model=preset.id)
+            contract = self.fake.run_metadata(rid)["benchmark_arguments"]["contract"]
+            self.assertIn("OPENAI_API_BASE", contract["secrets"])
+            self.assertEqual(contract["kwargs"]["step_limit"], "12")
+            wrong = self.preview(agent="claude_code-v1.0.0", model=preset.id)
+            self.assertFalse(wrong["valid"])
+            self.assertIn("requires harness", " ".join(wrong["errors"]))
+        with patch.object(self.fake, "agent_names", return_value=["mini_swe_agent"]):
+            missing = self.preview(agent="mini_swe_agent", model=preset.id)
+            self.assertFalse(missing["valid"])
+            self.assertIn("endpoint-url", " ".join(missing["errors"]))
+
     def preview(self, **overrides):
         r = self.client.post(f"{JOBS}/preview", json=self.spec(**overrides))
         self.assertEqual(r.status_code, 200, r.text)

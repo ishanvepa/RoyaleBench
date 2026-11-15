@@ -214,10 +214,19 @@ def inspect_spec(ctx: AppContext, body: JobSpecIn) -> tuple[JobSpec, list[str], 
         errors.append(f"Secret {body.secret_name!r} does not exist in this organisation.")
     if body.model.strip() and body.model.strip() not in {m.id for m in cfg.models}:
         warnings.append("This model key is not in evals.toml, so it has not been verified. Start with a one-task job.")
+    preset = next((m for m in cfg.models if m.id == body.model.strip()), None)
+    if preset and preset.agent and body.agent != preset.agent:
+        errors.append(f"This model configuration requires harness {preset.agent!r}.")
+    if preset and secrets:
+        for ref in preset.secrets.values():
+            if ref not in secrets:
+                errors.append(f"Model configuration secret {ref!r} does not exist in this organisation.")
     spec = JobSpec(dataset=body.dataset, revision=revision or body.revision, agent=body.agent, model=body.model.strip(),
                    secret_name=body.secret_name, secret_env=secret_env_for(body.model.strip(), cfg.models),
                    concurrency=body.concurrency, label=body.label.strip(), task_ids=body.task_ids,
-                   benchmark=cfg.benchmark, provider=cfg.provider)
+                   benchmark=cfg.benchmark, provider=cfg.provider,
+                   extra_secrets=dict(preset.secrets) if preset else {},
+                   agent_kwargs=dict(preset.agent_kwargs) if preset else {})
     try:
         spec.validate(cfg, known_tasks=known if known else None)
     except ValueError as exc:

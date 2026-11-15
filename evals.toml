@@ -75,3 +75,12 @@ secret_env = "OPENAI_API_KEY"
 [[models]]
 id = "openai/gpt-6.1-terra"
 secret_env = "OPENAI_API_KEY"
+
+# Modal Qwen: use the existing mini_swe_agent and secret modal-qwen-api-key.
+# The openai/ prefix selects the harness's compatible API transport.
+[[models]]
+id = "openai/Qwen/Qwen3.8-2.4T-A95B"
+secret_env = "OPENAI_API_KEY"
+agent = "mini_swe_agent"
+secrets = { OPENAI_API_BASE = "modal-qwen-base-url" }
+agent_kwargs = { cost_tracking = "ignore_errors", step_limit = "12" }

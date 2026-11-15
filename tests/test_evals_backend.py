@@ -51,14 +51,16 @@ class ConfigTests(unittest.TestCase):
         cfg = load_config(Path(tempfile.gettempdir()) / "does-not-exist-evals.toml")
         self.assertEqual((cfg.benchmark, cfg.provider, cfg.default_concurrency), ("royalebench", "modal", 1))
         self.assertEqual(cfg.models, ())
+        self.assertEqual(cfg.default_dataset, "royalebench-v3")
 
     def test_reads_values_and_read_only_flag(self):
         with tempfile.TemporaryDirectory() as d:
-            path = write(Path(d) / "evals.toml", '[valkyrie]\nmax_concurrency = 3\nconfirm_over_tasks = 2\n'
+            path = write(Path(d) / "evals.toml", '[valkyrie]\ndefault_dataset = "custom-coordinates"\nmax_concurrency = 3\nconfirm_over_tasks = 2\n'
                                                 '[[models]]\nid = "openai/gpt-x"\nsecret_env = "MY_KEY"\n')
             with patch.dict(os.environ, {"ROYALEBENCH_EVALS_READONLY": "1"}):
                 cfg = load_config(path)
             self.assertEqual((cfg.max_concurrency, cfg.confirm_over_tasks), (3, 2))
+            self.assertEqual(cfg.default_dataset, "custom-coordinates")
             self.assertEqual(cfg.models, (ModelPreset("openai/gpt-x", "MY_KEY"),))
             self.assertTrue(cfg.read_only)
             with patch.dict(os.environ, {"ROYALEBENCH_EVALS_READONLY": ""}):

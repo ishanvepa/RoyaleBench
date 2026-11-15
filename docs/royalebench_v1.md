@@ -1,8 +1,15 @@
 # RoyaleBench v1
 
+This is the historical menu interface. [RoyaleBench v3](royalebench_v3.md) is the default release
+and uses coordinates across the same 11 released positions. These v1 task snapshots remain frozen.
+
 RoyaleBench v1 is a versioned set of strategic continuations based on the twelve proposed tasks. Every opponent is **Planner**. Each task starts from an exact mid-match engine setup and uses the existing `cr` interface, an isolated referee, and replay grading in a fresh container. The dataset lives at [`benchmarks/royalebench-v1`](../benchmarks/royalebench-v1); its exact title in the evals dashboard is **RoyaleBench v1**.
 
-Reference calibration establishes solvability; measured model runs are needed to establish difficulty. The [manifest](../benchmarks/royalebench-v1/manifest.json) records which tasks are runnable and why other variants are gated. Do not describe gated candidates as evaluated tasks.
+Reference calibration establishes solvability; measured model runs are needed to establish difficulty. The three-task Valkyrie/Modal harness pilot is recorded separately in the [coordinate guide](coordinate_harness.md#model-comparison). The [manifest](../benchmarks/royalebench-v1/manifest.json) records which tasks are runnable and why other variants are gated. Do not describe gated candidates as evaluated tasks.
+
+The [coordinate-action pilot](coordinate_harness.md) is a separate dataset using three matching
+positions with direct placement commands. Existing packaged v1 tasks retain the numbered menu
+and their calibrated runtime snapshots.
 
 Validation on November 14, 2026, after updating to three-ply Planner: **11/11 runnable references score 1 with integrity 1** through the actual `cr` socket, restart, and fresh-container grader with networking disabled. All eleven replay traces reproduce every frame hash. The Windows scenario/referee run passes 18 cases (socket test excluded); the Linux referee/Planner run passes 15 cases, including the socket test. Those test sets overlap. Additional Planner/registry, public-play and web checks are recorded in [checks.json](../runs/royalebench-v1/checks.json). Evidence: [local calibration](../runs/royalebench-v1/validation.json), [container checks](../runs/royalebench-v1/docker/validation.json), [trace hashes](../runs/royalebench-v1/docker/trace_validation.json), and [placement/race contrasts](../runs/royalebench-v1/contrasts.json).
 

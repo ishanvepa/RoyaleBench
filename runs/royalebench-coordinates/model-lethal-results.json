@@ -1,0 +1,208 @@
+{
+    "benchmark_id": "d9d59d13-2e91-414e-a1db-bf1f1374b308",
+    "benchmark_name": "royalebench",
+    "started_at": "2026-11-15T07:12:25.378813",
+    "finished_at": "2026-11-15T07:14:53.663779",
+    "status": "FINISHED",
+    "benchmark_arguments": {
+        "contract": {
+            "name": "claude_code-v1.0.0",
+            "model": "anthropic/claude-sonnet-4-6",
+            "install_cmd": "bash setup.sh",
+            "run_cmd": "bash -lc 'set -o pipefail && mkdir -p /logs && AGENT_OUTPUT_ROOT=/logs python3 /bundle/claude_code-v1.0.0/collect_outputs.py {problem_statement_path} --task-id {task_id} --model {model}'",
+            "final_output": "/logs",
+            "output_artifacts": [],
+            "egress_allowlist": [],
+            "allow_provider_tools": false,
+            "isolate_agent_uid": false,
+            "inference_settings_attested": true
+        },
+        "agent_attempts": [],
+        "concurrency": 1,
+        "task_ids": [
+            "01-immediate-lethal"
+        ],
+        "dataset": "royalebench-coordinates",
+        "dataset_version": {
+            "id": "royalebench/royalebench-coordinates@1"
+        },
+        "sandbox_provider": "modal",
+        "sandbox_provider_secret_name": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/modal-credentials",
+        "environment": "aws",
+        "properties": {
+            "region": "us-east-1",
+            "s3_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+            "log_group": "/valkyrie/benchmarks-prod/tenants/49113804-bbae-46cc-82a7-70f78706d1e5",
+            "log_retention_days": 365
+        }
+    },
+    "final_evaluation": {
+        "id": "262cca89-05db-4102-a97e-1b5f2c7c26ba",
+        "org_id": "49113804-bbae-46cc-82a7-70f78706d1e5",
+        "benchmark": "d9d59d13-2e91-414e-a1db-bf1f1374b308",
+        "final_score": 100.0,
+        "properties": {
+            "total": 1,
+            "n_trials": 1,
+            "n_errors": 0,
+            "metrics": [
+                {
+                    "completed": 1.0,
+                    "crowns_against": 0.0,
+                    "crowns_for": 1.0,
+                    "decisions": 1.0,
+                    "enemy_tower_damage_frac": 0.3127,
+                    "fast_decision_frac": 0.0,
+                    "integrity": 1.0,
+                    "objective_met": 1.0,
+                    "own_tower_damage_frac": 0.2095,
+                    "rejected_actions": 0.0,
+                    "reward": 1.0,
+                    "spent_elixir": 4.0,
+                    "tower_damage": 0.0,
+                    "win": 1.0
+                }
+            ],
+            "reward_stats": {
+                "reward": {
+                    "1.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "win": {
+                    "1.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "crowns_for": {
+                    "1.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "crowns_against": {
+                    "0.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "enemy_tower_damage_frac": {
+                    "0.3127": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "own_tower_damage_frac": {
+                    "0.2095": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "completed": {
+                    "1.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "integrity": {
+                    "1.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "decisions": {
+                    "1.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "fast_decision_frac": {
+                    "0.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "spent_elixir": {
+                    "4.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "tower_damage": {
+                    "0.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "objective_met": {
+                    "1.0": [
+                        "01-immediate-lethal"
+                    ]
+                },
+                "rejected_actions": {
+                    "0.0": [
+                        "01-immediate-lethal"
+                    ]
+                }
+            },
+            "score_key": "reward",
+            "mean_reward": 1.0
+        }
+    },
+    "average_task_breakdown": {
+        "sandbox_build_duration": 19.740096389999962,
+        "agent_run_duration": 18.135000767999998,
+        "evaluation_run_duration": 39.58268208699997,
+        "sandbox_run_duration": 73.06197699
+    },
+    "evaluation_results": {
+        "01-immediate-lethal": {
+            "task_id": "01-immediate-lethal",
+            "rewards": {
+                "reward": 1.0,
+                "win": 1.0,
+                "crowns_for": 1.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.3127,
+                "own_tower_damage_frac": 0.2095,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 1.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 4.0,
+                "tower_damage": 0.0,
+                "objective_met": 1.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 1.0,
+                    "win": 1.0,
+                    "crowns_for": 1.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.3127,
+                    "own_tower_damage_frac": 0.2095,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 1.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 4.0,
+                    "tower_damage": 0.0,
+                    "objective_met": 1.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2095,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 1.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 4.0,\n  \"tower_damage\": 0.0,\n  \"objective_met\": 1.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2095,\n  \"ticks\": 5139,\n  \"tower_damage\": 0,\n  \"spent_elixir\": 4,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Fireball\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 4\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 1.95,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 1,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 18.135000767999998,
+                "sandbox_run_duration": 73.06197699,
+                "sandbox_build_duration": 19.740096389999962,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 39.58268208699997,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 18.135002901999997
+            },
+            "attempts": 1
+        }
+    }
+}

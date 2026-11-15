@@ -1397,6 +1397,10 @@
             "title": "Default Concurrency",
             "type": "integer"
           },
+          "default_dataset": {
+            "title": "Default Dataset",
+            "type": "string"
+          },
           "max_concurrency": {
             "title": "Max Concurrency",
             "type": "integer"
@@ -1417,6 +1421,7 @@
           "benchmark",
           "provider",
           "default_agent",
+          "default_dataset",
           "default_concurrency",
           "max_concurrency",
           "confirm_over_tasks",

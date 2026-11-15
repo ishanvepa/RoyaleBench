@@ -1,0 +1,13 @@
+{
+  "task": "08-cycle-to-lethal",
+  "family": 8,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+  "config_sha256": "847b279b9397bbeb63b4371eb04e7e16ce16c89ca4c368ff3db50b2254a1c7f2",
+  "image": "sha256:0ff4070d366347a47aa4b7f22413e7e12b07cd7b7b92db228277d3a00566e84b",
+  "isolated": true,
+  "restart_verified": true,
+  "network": "none",
+  "elapsed_s": 10.302
+}

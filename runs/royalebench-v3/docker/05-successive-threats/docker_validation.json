@@ -1,0 +1,13 @@
+{
+  "task": "05-successive-threats",
+  "family": 5,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+  "config_sha256": "99b278c4c0ebe90672f86ec80026e715ea0280beda63de8defcfcad79e75780c",
+  "image": "sha256:e6eff9ee76effde25b45df87d0a03bc73f6f0b85b771f87ac5b1fc1fd48adb26",
+  "isolated": true,
+  "restart_verified": true,
+  "network": "none",
+  "elapsed_s": 79.702
+}

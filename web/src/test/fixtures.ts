@@ -29,6 +29,7 @@ export const environment = (overrides: Partial<Environment> = {}): Environment =
     benchmark: "royalebench",
     provider: "modal",
     default_agent: "claude_code-v1.0.0",
+    default_dataset: "royalebench-v3",
     default_concurrency: 1,
     max_concurrency: 10,
     confirm_over_tasks: 5,

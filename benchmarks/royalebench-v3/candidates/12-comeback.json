@@ -1,0 +1,96 @@
+{
+  "id": "12-comeback",
+  "family": 12,
+  "title": "Plan a comeback",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 112,
+  "agent_team": 0,
+  "agent_deck": [
+    "Xbow",
+    "Tesla",
+    "Archer",
+    "Knight",
+    "IceSpirits",
+    "Skeletons",
+    "Fireball",
+    "Log"
+  ],
+  "opponent_deck": [
+    "Golem",
+    "BabyDragon",
+    "MegaMinion",
+    "ElectroWizard",
+    "Lightning",
+    "Zap",
+    "Tombstone",
+    "Bats"
+  ],
+  "player_deck_name": "xbow-cycle",
+  "opponent_deck_name": "golem-beatdown",
+  "csv_win_rate": 32.7,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win from a 0-1 crown deficit, within 50 seconds of regulation plus up to 120 seconds of overtime. Xbow is out of hand.",
+  "scenario": {
+    "start_tick": 2600,
+    "horizon_s": 170,
+    "elixir": 8,
+    "opponent_elixir": 0,
+    "order": [
+      "Knight",
+      "IceSpirits",
+      "Skeletons",
+      "Fireball",
+      "Xbow",
+      "Tesla",
+      "Archer",
+      "Log"
+    ],
+    "opponent_order": [
+      "Golem",
+      "BabyDragon",
+      "MegaMinion",
+      "ElectroWizard",
+      "Lightning",
+      "Zap",
+      "Tombstone",
+      "Bats"
+    ],
+    "units": [
+      {
+        "card": "Archer",
+        "team": 0,
+        "x": 3.5,
+        "y": 12
+      }
+    ],
+    "grading": "win",
+    "tower_hp": [
+      [
+        4824,
+        1373,
+        0
+      ],
+      [
+        4824,
+        3052,
+        916
+      ]
+    ]
+  },
+  "release_gate": "A winning reference continuation through the same action interface must demonstrate recovery.",
+  "action_mode": "coordinates-v1"
+}

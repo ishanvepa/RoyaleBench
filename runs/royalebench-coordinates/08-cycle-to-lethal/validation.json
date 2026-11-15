@@ -1,0 +1,53 @@
+{
+  "task": "08-cycle-to-lethal",
+  "reward": 1,
+  "integrity": 1.0,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0
+  },
+  "config_sha256": "847b279b9397bbeb63b4371eb04e7e16ce16c89ca4c368ff3db50b2254a1c7f2",
+  "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+  "reference_log_sha256": "34939d0280d980c157625361a7b3946228045ab5bcc1daa16b034aebeea7482e",
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2374,
+    "ticks": 5759,
+    "tower_damage": 0,
+    "spent_elixir": 8,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "IceSpirits",
+        "x": 63000,
+        "y": 189000,
+        "cost": 1
+      },
+      {
+        "decision": 1,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 189000,
+        "cost": 3
+      },
+      {
+        "decision": 2,
+        "card": "Fireball",
+        "x": 63000,
+        "y": 459000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 5.95,
+    "rejected_actions": 0
+  },
+  "decisions": 3,
+  "menu_baseline_reward": 1,
+  "frontier_model_runs": []
+}

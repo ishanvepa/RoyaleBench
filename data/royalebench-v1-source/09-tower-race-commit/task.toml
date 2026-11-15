@@ -1,0 +1,45 @@
+schema_version = "1.4"
+artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
+
+[task]
+name = "royalebench/09-tower-race-commit"
+description = "Evaluate a tower race (commit). Win the overtime continuation within 30 seconds. This is one of two independently graded positions in the tower-race family. | opponent=planner-bot | seed=109 | version=1.0.0"
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "hard"
+opponent = "planner"
+deck = "giant-beatdown"
+seed = 109
+seat = "blue"
+decision_ticks = 40
+
+dataset_version = "1.0.0"
+family = 9
+opponent_deck = "lavaloon"
+control = false
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai"]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

@@ -56,3 +56,19 @@ class TaskResolutionTests(ApiCase):
         (evidence / "t1" / "replay.msgpack").unlink()
         self.assertFalse(self.client.get(self.URL).json()["available"])
         self.assertEqual(self.client.get("/api/evals/benchmarks/alpha/tasks/ghost/resolution").status_code, 404)
+
+    def test_mixed_runtime_manifest_requires_matching_task_protocol(self):
+        _, evidence = self.save_resolution()
+        path = evidence / "validation.json"
+        manifest = json.loads(path.read_text())
+        protocol = manifest.pop("protocol_sha256")
+        manifest["tasks"].append(dict(manifest["tasks"][0], task="other", protocol_sha256="other-runtime"))
+        write(path, json.dumps(manifest))
+        self.assertTrue(self.client.get(self.URL).json()["available"])
+        manifest["tasks"][0]["protocol_sha256"] = "stale-runtime"
+        write(path, json.dumps(manifest))
+        self.assertFalse(self.client.get(self.URL).json()["available"])
+        manifest["tasks"][0]["protocol_sha256"] = protocol
+        manifest["protocol_sha256"] = "stale-common-runtime"
+        write(path, json.dumps(manifest))
+        self.assertFalse(self.client.get(self.URL).json()["available"])

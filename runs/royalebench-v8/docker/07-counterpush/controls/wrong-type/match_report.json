@@ -1,0 +1,253 @@
+{
+ "seed": 107,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 0,
+ "integrity_error": "log entries must be objects",
+ "outcome": {
+  "result": "loss",
+  "crowns_for": 0,
+  "crowns_against": 2,
+  "enemy_tower_damage_frac": 0.2213,
+  "own_tower_damage_frac": 0.9267,
+  "ticks": 3600,
+  "tower_damage": 7760,
+  "spent_elixir": 0,
+  "plays": [],
+  "opponent_plays": [
+   {
+    "tick": 3020,
+    "card": "ElectroWizard",
+    "x": 63000,
+    "y": 333000
+   },
+   {
+    "tick": 3140,
+    "card": "BattleRam",
+    "x": 63000,
+    "y": 315000
+   },
+   {
+    "tick": 3260,
+    "card": "MiniPekka",
+    "x": 261000,
+    "y": 315000
+   },
+   {
+    "tick": 3340,
+    "card": "Bats",
+    "x": 63000,
+    "y": 225000
+   }
+  ],
+  "elapsed_s": 35.0,
+  "rejected_actions": 0
+ },
+ "rewards": {
+  "reward": 0.0,
+  "win": 0.0,
+  "crowns_for": 0.0,
+  "crowns_against": 2.0,
+  "enemy_tower_damage_frac": 0.2213,
+  "own_tower_damage_frac": 0.9267,
+  "completed": 0.0,
+  "integrity": 0.0,
+  "decisions": 0.0,
+  "fast_decision_frac": 0.0,
+  "spent_elixir": 0.0,
+  "tower_damage": 7760.0,
+  "objective_met": 0.0,
+  "rejected_actions": 0.0
+ },
+ "decisions_applied": 0,
+ "completed": false,
+ "termination_tick": 2900,
+ "timing_known": 0,
+ "task_config": {
+  "id": "07-counterpush",
+  "family": 7,
+  "title": "Convert defense into offense",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 107,
+  "agent_team": 0,
+  "agent_deck": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "opponent_deck": [
+   "Pekka",
+   "BattleRam",
+   "ElectroWizard",
+   "MiniPekka",
+   "Bats",
+   "Zap",
+   "Poison",
+   "Wizard"
+  ],
+  "player_deck_name": "giant-beatdown",
+  "opponent_deck_name": "pekka-bridge-spam",
+  "csv_win_rate": 51.4,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win the continuation before the match ends (35 seconds of regulation plus up to 120 seconds of overtime).",
+  "scenario": {
+   "start_tick": 2900,
+   "horizon_s": 155,
+   "elixir": 7,
+   "opponent_elixir": 0,
+   "order": [
+    "Giant",
+    "Fireball",
+    "Cannon",
+    "Zap",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions"
+   ],
+   "opponent_order": [
+    "Pekka",
+    "BattleRam",
+    "ElectroWizard",
+    "MiniPekka",
+    "Bats",
+    "Zap",
+    "Poison",
+    "Wizard"
+   ],
+   "units": [
+    {
+     "card": "Musketeer",
+     "team": 0,
+     "x": 3.5,
+     "y": 14,
+     "hp": 360
+    },
+    {
+     "card": "Knight",
+     "team": 0,
+     "x": 3.5,
+     "y": 14.5,
+     "hp": 883
+    }
+   ],
+   "grading": "win",
+   "tower_hp": [
+    [
+     4824,
+     763,
+     3052
+    ],
+    [
+     4824,
+     3052,
+     1068
+    ]
+   ]
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1",
+  "task_id": "07-counterpush",
+  "instruction_sha256": "5841481628ba78dac9bd92c5212fd1b8daf1e6519391a22765f421bd0e3aa11b",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+   "agent_timeout_s": 3600,
+   "verifier_timeout_s": 600,
+   "cpus": 1,
+   "memory_mb": 2048,
+   "storage_mb": 4096
+  }
+ },
+ "rubric": "scenario-objective-coordinates-v1",
+ "tiebreak_reason": "crowns",
+ "benchmark": "RoyaleBench v3",
+ "task_id": "07-counterpush",
+ "scenario": {
+  "start_tick": 2900,
+  "horizon_s": 155,
+  "elixir": 7,
+  "opponent_elixir": 0,
+  "order": [
+   "Giant",
+   "Fireball",
+   "Cannon",
+   "Zap",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions"
+  ],
+  "opponent_order": [
+   "Pekka",
+   "BattleRam",
+   "ElectroWizard",
+   "MiniPekka",
+   "Bats",
+   "Zap",
+   "Poison",
+   "Wizard"
+  ],
+  "units": [
+   {
+    "card": "Musketeer",
+    "team": 0,
+    "x": 3.5,
+    "y": 14,
+    "hp": 360
+   },
+   {
+    "card": "Knight",
+    "team": 0,
+    "x": 3.5,
+    "y": 14.5,
+    "hp": 883
+   }
+  ],
+  "grading": "win",
+  "tower_hp": [
+   [
+    4824,
+    763,
+    3052
+   ],
+   [
+    4824,
+    3052,
+    1068
+   ]
+  ]
+ },
+ "setup_hash": "3f6bd96f02b011e5b097b58ba31c729e186487c7fc1827beb4314c4ba9708d89",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ },
+ "action_mode": "coordinates-v1"
+}

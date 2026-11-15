@@ -1,0 +1,10 @@
+{
+  "run_id": "8a64cce1-a84f-48cb-ab73-b82d876abf75",
+  "task_count": 4,
+  "dataset_version": {
+    "id": "royalebench/royalebench-v7@1",
+    "label": null
+  },
+  "warning": null,
+  "started_at": "2026-11-15T18:17:20.031677+00:00"
+}

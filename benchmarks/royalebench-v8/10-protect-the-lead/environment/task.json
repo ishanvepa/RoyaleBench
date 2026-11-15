@@ -1,0 +1,113 @@
+{
+  "id": "10-protect-the-lead",
+  "family": 10,
+  "title": "Protect a crown lead",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 110,
+  "agent_team": 0,
+  "agent_deck": [
+    "Xbow",
+    "Tesla",
+    "Archer",
+    "Knight",
+    "IceSpirits",
+    "Skeletons",
+    "Fireball",
+    "Log"
+  ],
+  "opponent_deck": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+  ],
+  "player_deck_name": "xbow-cycle",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": 37.3,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Retain a strict crown lead when regulation ends in 12 seconds.",
+  "scenario": {
+    "start_tick": 3360,
+    "horizon_s": 12,
+    "elixir": 8,
+    "opponent_elixir": 0,
+    "order": [
+      "Tesla",
+      "Knight",
+      "Archer",
+      "Fireball",
+      "Xbow",
+      "IceSpirits",
+      "Skeletons",
+      "Log"
+    ],
+    "opponent_order": [
+      "Giant",
+      "Musketeer",
+      "Knight",
+      "Archer",
+      "Minions",
+      "Cannon",
+      "Fireball",
+      "Zap"
+    ],
+    "units": [
+      {
+        "card": "Giant",
+        "team": 1,
+        "x": 3.5,
+        "y": 13
+      },
+      {
+        "card": "Musketeer",
+        "team": 1,
+        "x": 3.5,
+        "y": 17
+      }
+    ],
+    "grading": "protect_lead",
+    "tower_hp": [
+      [
+        4824,
+        549,
+        3052
+      ],
+      [
+        4824,
+        0,
+        3052
+      ]
+    ]
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1",
+  "task_id": "10-protect-the-lead",
+  "instruction_sha256": "244a02c42f2a8ed2f62de7b50cef163a36ef2d496493bc775d401749e079aca7",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "task": "02-second-wave-air-race",
+  "config_sha256": "ab0bc86f9574211e58d0fc500f4ffbeb63439acb14a4e93373006f6b7a5ee783",
+  "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+  "reference_log_sha256": "20bbe9f1ebb5873cc2a2d519dbf02b29a95fd64d9a0a082c664f974b99274427",
+  "reward": 1,
+  "integrity": 1,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "spell-rush": 0.0,
+    "bridge-rush": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0,
+    "partial": 0.0
+  },
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2646,
+    "ticks": 5047,
+    "tower_damage": 240,
+    "spent_elixir": 19,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      },
+      {
+        "decision": 1,
+        "card": "Fireball",
+        "x": 63000,
+        "y": 414000,
+        "cost": 4
+      },
+      {
+        "decision": 2,
+        "card": "Minions",
+        "x": 63000,
+        "y": 189000,
+        "cost": 3
+      },
+      {
+        "decision": 3,
+        "card": "Musketeer",
+        "x": 63000,
+        "y": 270000,
+        "cost": 4
+      },
+      {
+        "decision": 4,
+        "card": "Zap",
+        "x": 63000,
+        "y": 432000,
+        "cost": 2
+      },
+      {
+        "decision": 5,
+        "card": "Archer",
+        "x": 63000,
+        "y": 270000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 4880,
+        "card": "Minions",
+        "x": 63000,
+        "y": 396000
+      },
+      {
+        "tick": 4920,
+        "card": "Tombstone",
+        "x": 171000,
+        "y": 459000
+      }
+    ],
+    "elapsed_s": 12.35,
+    "rejected_actions": 0
+  },
+  "decisions": 7,
+  "frontier_model_runs": [],
+  "reference_policy": "private explicit opening followed by privileged Planner; log proves solvability"
+}

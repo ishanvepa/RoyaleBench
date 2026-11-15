@@ -1,0 +1,79 @@
+{
+  "task_count": 18,
+  "sources": [
+    {
+      "dataset": "royalebench/royalebench-v6@1",
+      "digest": "sha256:813f00528a075f38acf4c8af9614da226de739e6a3d67e6e95be78b290e3fdf9",
+      "task_count": 14
+    },
+    {
+      "dataset": "royalebench/royalebench-v7@1",
+      "digest": "sha256:8cc4ceee579bdb878039229758ca2aea57660509c5a5ccec439d44bf8f9fe3b3",
+      "task_count": 4
+    }
+  ],
+  "task_packages_unchanged": true,
+  "static_task_problems": 0,
+  "regression_tests": {
+    "passed": 114,
+    "subtests_passed": 18,
+    "command": "uv run --with pytest python -X utf8 -m pytest -q tests/test_royalebench_v8.py tests/test_royalebench_v7.py tests/test_royalebench_v6.py tests/test_evals_backend.py tests/test_api_evals.py"
+  },
+  "reference_playback_tests": {
+    "passed": 4,
+    "command": "uv run --with pytest python -X utf8 -m pytest -q tests/test_api_task_resolutions.py"
+  },
+  "grading_counts": {
+    "win": 12,
+    "one_spell": 2,
+    "defend": 3,
+    "protect_lead": 1
+  },
+  "model_run_note": "This is an exact package merge. Source model runs and reviewed calibration remain recorded under v6 and v7; no new v8 model result is claimed.",
+  "validation_retry": {
+    "failure": "Windows Docker rejected an extended bind path for the fresh verifier on 04-critical-cycle-and-connect",
+    "task_bytes_changed": false,
+    "retry_command": "uv run python -X utf8 -m cr_arena.validate_v6_docker --benchmark benchmarks/royalebench-v8 --jobs 2 --resume",
+    "reused_completed_checks": 8
+  },
+  "container_validation": {
+    "task_count": 18,
+    "reference_wins": 18,
+    "integrity": 1,
+    "negative_controls_zero": 54,
+    "runtime_images": [
+      {
+        "environment_sha256": "ceeb3280030c5bdf6c1778b8592e955b5a9f1cc9b131788e5ee7a7b244b83cd5",
+        "image": "royalebench-v8:validation-ceeb3280030c",
+        "image_digest": "sha256:f76e04e031f0d686267b4cd6c18a0a52b1c4962c7e6d15e4910fde147d249d5b"
+      },
+      {
+        "environment_sha256": "1dbd722e5afc95abbb4a85429cf441487304bbedfb1c5ecde5a1ef6ebf5da191",
+        "image": "royalebench-v8:validation-1dbd722e5afc",
+        "image_digest": "sha256:717cf37420b92d52d81ca97e1d5effbab963c452427021b6f69401cf5e2eeba2"
+      }
+    ],
+    "evidence": "docker/validation.json"
+  },
+  "publication": {
+    "revision": 1,
+    "digest": "sha256:e5807bda20b03468993ef75b0eeb4f881f7e70fe0a674be977888d5502f979b2",
+    "task_count": 18,
+    "tags": [
+      "latest",
+      "v8"
+    ],
+    "created_by": "ishanvepa171@gmail.com",
+    "created_at": "2026-11-15T18:41:56.019216Z"
+  },
+  "hosted_task_digests_match": 18,
+  "live_dashboard": {
+    "state": "published",
+    "task_count": 18,
+    "all_in_sync": true,
+    "problems": 0,
+    "default_dataset": "royalebench-v8",
+    "evidence": "dashboard-check.json"
+  },
+  "reference_replays_available": 18
+}

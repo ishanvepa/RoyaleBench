@@ -205,7 +205,8 @@ its hand, queue and elixir remain hidden unless inferable from history.
 {tail}'''
 
 
-def package_task(cfg, out, evidence, template, *, task_prefix="coordinates-", strip_trailing_whitespace=False):
+def package_task(cfg, out, evidence, template, *, task_prefix="coordinates-", strip_trailing_whitespace=False,
+                 task_instruction=None, rubric="scenario-objective-coordinates-v1"):
     """Package one already-calibrated scenario with the shared v3 runtime and protocol."""
     import tomli_w
 
@@ -214,19 +215,19 @@ def package_task(cfg, out, evidence, template, *, task_prefix="coordinates-", st
     name = cfg["id"]
     with tempfile.TemporaryDirectory(prefix="royale-coordinates-") as tmp:
         d = Path(tmp) / name
-        task_instruction = instruction(cfg)
+        task_instruction = instruction(cfg) if task_instruction is None else task_instruction
         if strip_trailing_whitespace:
             task_instruction = "\n".join(line.rstrip() for line in task_instruction.splitlines()) + "\n"
         packaged_config = dict(cfg, task_id=name, instruction_sha256=digest(task_instruction),
-                               rubric="scenario-objective-coordinates-v1",
+                               rubric=rubric,
                                capture_schema_version=CAPTURE_VERSION,
                                resources={"agent_timeout_s": 3600, "verifier_timeout_s": 600,
                                           "cpus": 1, "memory_mb": 2048, "storage_mb": 4096})
         for source in RUNTIME:
-            write(d / "environment/referee" / source, (ROOT / source).read_text())
+            write(d / "environment/referee" / source, (ROOT / source).read_text(encoding="utf-8"))
         for relative, text in {
-            "environment/Dockerfile": (template / "environment/Dockerfile").read_text(),
-            "environment/cr": (ROOT / "cr_client.py").read_text(),
+            "environment/Dockerfile": (template / "environment/Dockerfile").read_text(encoding="utf-8"),
+            "environment/cr": (ROOT / "cr_client.py").read_text(encoding="utf-8"),
             "environment/royale-start-server": START_SERVER,
             "environment/sudoers": SUDOERS,
             "environment/task.json": json.dumps(packaged_config, indent=2) + "\n",
@@ -235,7 +236,7 @@ def package_task(cfg, out, evidence, template, *, task_prefix="coordinates-", st
             "instruction.md": task_instruction,
             "solution/solve.sh": "#!/bin/bash\nset -euo pipefail\npython3 /solution/replay_reference.py\n",
             "solution/replay_reference.py": SOLUTION,
-            "solution/reference.jsonl": (evidence / name / "reference.jsonl").read_text(),
+            "solution/reference.jsonl": (evidence / name / "reference.jsonl").read_text(encoding="utf-8"),
         }.items():
             write(d / relative, text)
         task = tomllib.loads((template / "task.toml").read_text())

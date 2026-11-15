@@ -1,0 +1,162 @@
+{
+  "run_id": "8a64cce1-a84f-48cb-ab73-b82d876abf75",
+  "raw_cache": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75",
+  "artifacts": [
+    {
+      "remote": {
+        "path": "01-critical-cycle-conversion/agent_output.tar.gz",
+        "size": 6282,
+        "last_modified": "2026-11-15T18:19:34Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\0\\01-critical-cycle-conversion\\agent_output.tar.gz",
+      "sha256": "03f0421f3d4f57f88a4a6a95524d81501f2351d14b64eed695b5238d89b007ec"
+    },
+    {
+      "remote": {
+        "path": "01-critical-cycle-conversion/artifacts/royale.tar.gz",
+        "size": 184020,
+        "last_modified": "2026-11-15T18:19:38Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\1\\01-critical-cycle-conversion\\artifacts\\royale.tar.gz",
+      "sha256": "9ebfe98a95cf885f60df7fd7be946a7b5405aa3beba0313e07520495c6f9379b"
+    },
+    {
+      "remote": {
+        "path": "02-second-wave-air-race/agent_output.tar.gz",
+        "size": 4889,
+        "last_modified": "2026-11-15T18:18:56Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\2\\02-second-wave-air-race\\agent_output.tar.gz",
+      "sha256": "feb9a35a78c7eeb26ed1bd27e421659bc909a77d2bf5a4b88677ed757ec3f227"
+    },
+    {
+      "remote": {
+        "path": "02-second-wave-air-race/artifacts/royale.tar.gz",
+        "size": 132601,
+        "last_modified": "2026-11-15T18:19:01Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\3\\02-second-wave-air-race\\artifacts\\royale.tar.gz",
+      "sha256": "51bab7eae54ce96ea266350a1c41d98dad7d3fa8c2fd3a7a1f53032e4c0447d3"
+    },
+    {
+      "remote": {
+        "path": "03-supported-tank-conversion/agent_output.tar.gz",
+        "size": 6254,
+        "last_modified": "2026-11-15T18:19:07Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\4\\03-supported-tank-conversion\\agent_output.tar.gz",
+      "sha256": "6d8793598d94ac68d10a62145aeddc45c7249242bd978d345f353efdfb1852c4"
+    },
+    {
+      "remote": {
+        "path": "03-supported-tank-conversion/artifacts/royale.tar.gz",
+        "size": 186970,
+        "last_modified": "2026-11-15T18:19:10Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\5\\03-supported-tank-conversion\\artifacts\\royale.tar.gz",
+      "sha256": "1ffd8a30cc569e9fa1451f34b8754744c99f3247e15a6f62062fce20974cd41d"
+    },
+    {
+      "remote": {
+        "path": "04-split-lane-conversion/agent_output.tar.gz",
+        "size": 4414,
+        "last_modified": "2026-11-15T18:18:40Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\6\\04-split-lane-conversion\\agent_output.tar.gz",
+      "sha256": "8e6af44883a939e534c2ffcbb5a29ba2ba55d1b261ab63a2c46514eda1b04ac3"
+    },
+    {
+      "remote": {
+        "path": "04-split-lane-conversion/artifacts/royale.tar.gz",
+        "size": 112590,
+        "last_modified": "2026-11-15T18:18:44Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\7\\04-split-lane-conversion\\artifacts\\royale.tar.gz",
+      "sha256": "2baa2cad77bd62a14c038a9804cef4aa95215a4e3b11bf102907dec3eaeb77bf"
+    }
+  ],
+  "reviewed": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "trajectory_sha256": "7ce382d397eea6ba30bc952b16f42af1f721e87083747f3daff7e4c6fc9b28b9",
+      "commands": [
+        "/bin/bash -lc cr",
+        "/bin/bash -lc 'cr play 0 3.5 10'",
+        "/bin/bash -lc 'cr play 0 6 9'",
+        "/bin/bash -lc 'cr play 1 4 11'",
+        "/bin/bash -lc 'cr play 1 3.5 14'",
+        "/bin/bash -lc 'cr play 2 3.5 14'",
+        "/bin/bash -lc 'cr play 0 4 20'",
+        "/bin/bash -lc 'cr play 1 3.5 14'",
+        "/bin/bash -lc 'cr play 2 3.5 14'",
+        "/bin/bash -lc 'cr play 2 1 14.5'",
+        "/bin/bash -lc 'cr play 2 3.5 14'",
+        "/bin/bash -lc 'cr play 3 3.5 14'",
+        "/bin/bash -lc 'cr play 3 3.3 21'",
+        "/bin/bash -lc 'cr play 1 3.5 14'",
+        "/bin/bash -lc 'cr play 1 3.5 14'"
+      ],
+      "model_text": [
+        "I\u2019ll inspect the push, defend the immediate threat, and cycle into tower damage.\n",
+        "The Giant is down, but the first Hog was stopped. I\u2019m supporting the second Hog against the Cannon and Knight; the enemy tower still has 900 HP.\n",
+        "The match ended in **scenario FAILURE**. I defended the Giant, but couldn\u2019t destroy an enemy tower within 28 seconds. Reward: **0**."
+      ]
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "trajectory_sha256": "bf21514cc388bbcab8b064083d9b70f582b056278de8f8bce71ddcf87e70b082",
+      "commands": [
+        "/bin/bash -lc cr",
+        "/bin/bash -lc 'cr play 3 6.5 10.5'",
+        "/bin/bash -lc 'cr play 0 5.5 9.5'",
+        "/bin/bash -lc 'cr play 1 3.5 23.5'",
+        "/bin/bash -lc 'cr play 1 3.5 15'",
+        "/bin/bash -lc 'cr wait'",
+        "/bin/bash -lc 'cr play 1 3.5 25.5'"
+      ],
+      "model_text": [
+        "I\u2019ll inspect the board, then play through to the match result.",
+        "Won: GAME OVER \u2014 scenario SUCCESS. Destroyed the enemy\u2019s left princess tower within 12 seconds, winning 1\u20130."
+      ]
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "trajectory_sha256": "6509cfaad56cb648d510e0165c3347759e843057d06a4f1f0d5b9d18e87fd9ca",
+      "commands": [
+        "/bin/bash -lc cr",
+        "/bin/bash -lc 'cr play 0 7.5 11.5'",
+        "/bin/bash -lc 'cr play 1 3.5 14'",
+        "/bin/bash -lc 'cr play 1 2 14'",
+        "/bin/bash -lc 'cr play 1 3.5 15'",
+        "/bin/bash -lc 'cr play 1 3.5 25.5'",
+        "/bin/bash -lc 'cr play 2 3.5 15'",
+        "/bin/bash -lc 'cr play 3 3.5 14'",
+        "/bin/bash -lc 'cr play 3 1 15'",
+        "/bin/bash -lc 'cr play 0 3.5 26.5'",
+        "/bin/bash -lc 'cr play 0 3.5 15'",
+        "/bin/bash -lc 'cr play 0 3.5 25.5'",
+        "/bin/bash -lc 'cr play 3 3.5 15'",
+        "/bin/bash -lc 'cr play 3 3.5 15'"
+      ],
+      "model_text": [
+        "I\u2019ll inspect the push, defend it, and look for a tower finish within the window.\n",
+        "The first Giant is down, and the enemy left tower has 1,022 HP. Rocket is in flight; I\u2019m cycling back to Barrel to finish it.\n",
+        "Won by destroying the enemy left princess tower in 26 seconds. Final crowns: 1\u20130. Engine reported **GAME OVER: scenario SUCCESS**."
+      ]
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "trajectory_sha256": "c60b601a93e3465f472587bcace4145dca74c9324f487f2c3867e3b3b4bd0f7f",
+      "commands": [
+        "/bin/bash -lc cr",
+        "/bin/bash -lc 'cr play 1 12 8'",
+        "/bin/bash -lc 'cr play 0 7 10'",
+        "/bin/bash -lc 'cr play 3 3 14'"
+      ],
+      "model_text": [
+        "I\u2019ll inspect the push, defend both lanes, and look for a Hog connection to finish the match.\n",
+        "The match ended in a loss: the enemy destroyed a tower after my Hog deployment. I failed to secure a win within the scoring window."
+      ]
+    }
+  ]
+}

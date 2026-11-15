@@ -1,0 +1,255 @@
+{
+  "run_id": "45124458-3a52-4e73-b380-ee42f6934b19",
+  "reviewed": [
+    {
+      "task": "01-cycle-and-connect",
+      "trajectory_sha256": "91b22e4e03615174bb3a90a63e712ff286ab9a1fcb5a00b6883d0d05429368da",
+      "commands": [
+        {
+          "command": "cd /app; cr"
+        },
+        {
+          "command": "cd /app; cr play 0 3.5 11"
+        },
+        {
+          "command": "cd /app; cr play 0 6 10"
+        },
+        {
+          "command": "cd /app; cr play 0 3.5 25.5"
+        },
+        {
+          "command": "cd /app; cr play 0 3.5 14.5"
+        },
+        {
+          "command": "cd /app; cr play 3 3.5 21"
+        },
+        {
+          "command": "cd /app; cr play 3 4.2 9.5"
+        }
+      ],
+      "model_text": [
+        "Giant is moving onto my left tower and my Hog is crossing the bridge. Next I'm rolling Log down that lane to chip the enemy tower and clear any defenders.",
+        "I won the match: the engine reported `GAME OVER: scenario SUCCESS` with crowns 1\u20130 to BLUE and 8 seconds of overtime left.\n\n| Time left | Play | Effect |\n|---|---|---|\n| 0:18 | Ice Spirits on the Giant | Froze it at the bridge. |\n| 0:16 | Cannon at (6, 10) | Pulled the Giant away from my left princess tower (700 HP) for about 4 seconds. |\n| 0:14 | Fireball on the enemy left princess tower | Took it from 450 to 291 HP. |\n| 0:12 | Hog Rider at the left bridge | Sent it at the weakened tower. |\n| 0:10 | Log down the left lane | Cleared the lane in front of the Hog. |\n| 0:08 | Ice Spirits on the Giant | Froze it again with my tower at 447 HP. The Hog then destroyed the enemy tower for the overtime win. |\n\nThat is 6 decisions and 15 elixir spent. Every command was entered by hand with `cr`, and none were rejected."
+      ]
+    },
+    {
+      "task": "03-bait-damage-sequence",
+      "trajectory_sha256": "1a7906b463f003ca3cd10720e83e66fd5242b993e17baf975993fb0822745c1a",
+      "commands": [
+        {
+          "command": "cd /app; cr"
+        },
+        {
+          "command": "cd /app; cr play 0 6.5 10.5"
+        },
+        {
+          "command": "cd /app; cr play 0 3.5 25.5"
+        },
+        {
+          "command": "cd /app; cr play 1 2.5 14.5"
+        },
+        {
+          "command": "cd /app; cr play 1 3.5 14.5"
+        },
+        {
+          "command": "cd /app; cr play 1 3.5 25.5"
+        },
+        {
+          "command": "cd /app; cr play 3 3.5 15"
+        },
+        {
+          "command": "cd /app; cr wait"
+        },
+        {
+          "command": "cd /app; cr wait"
+        },
+        {
+          "command": "cd /app; cr play 3 3.5 25.5"
+        },
+        {
+          "command": "cd /app; cr play 0 3.5 9.5"
+        },
+        {
+          "command": "cd /app; cr play 0 2.8 12.5"
+        },
+        {
+          "command": "cd /app; cr play 3 14.5 10"
+        }
+      ],
+      "model_text": [
+        "The giant is down and the enemy's left tower is at 658 HP, so I'm ahead on tower HP. Next I'm sending a Goblin Barrel at that tower to do more damage.",
+        "Enemy tower is at 156 HP. I'm using Ice Spirits to finish off the minions heading for my left tower.",
+        "I won the match (BLUE) on the tower-HP tiebreak when overtime ran out. Neither side took a tower, so crowns stayed 0\u20130, and the game reported \"scenario SUCCESS\".\n\n**Final tower HP** (from the last board before the final play):\n- **My towers:** about 8,540 total (king 4,824, left 1,068, right 2,648).\n- **Enemy towers:** about 8,032 total (king 4,824, left 156, right 3,052).\n- **Lead:** about 500 HP. The enemy Knight was still hitting my right tower in the last 2 seconds, so the exact final numbers may be a little lower.\n\n**How it went:**\n1. **Inferno Tower and Knight** killed the Giant. Ice Spirits froze the two Musketeers, and the Log finished off the damaged one.\n2. **First Rocket and Goblin Barrel** took the enemy's left tower from 1,000 to 498 HP.\n3. **Second Rocket** brought it down to 156 HP. I couldn't destroy it outright: that would have needed a third Rocket, which I didn't have time or elixir for.\n4. **Princess and Ice Spirits** killed the Minions before they reached my left tower (1,068 HP). If they had, I'd have lost that tower and the game.\n5. **Last play:** I put down a Knight next to the enemy Knight on my right tower to draw its attacks; the game ended right after."
+      ]
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "trajectory_sha256": "02d38517f4c1b879a199d2e95169ce5117079eb01ab7b6ad3144fb4f1d76b9ae",
+      "commands": [
+        {
+          "command": "cr"
+        },
+        {
+          "command": "cr play 0 3.5 11"
+        },
+        {
+          "command": "cr play 0 7.5 10.5"
+        },
+        {
+          "command": "cr play 0 3.5 25.5"
+        },
+        {
+          "command": "cr play 0 3.5 15"
+        },
+        {
+          "command": "cr play 3 3.5 24.5"
+        },
+        {
+          "command": "cr play 3 4.4 9"
+        }
+      ],
+      "model_text": [
+        "Hog Rider is crossing toward the enemy tower, which is at 291. Next I'm sending Log to chip it lower.",
+        "I lost the match. The enemy destroyed my left princess tower (250 HP) first, so the result was 0\u20131 in crowns and no win.\n\n1. **Ice Spirits on the Giant:** froze it briefly near my tower.\n2. **Cannon at (7.5, 10.5):** pulled the Giant away from my tower for about 4 seconds before the Cannon died.\n3. **Fireball on the enemy left tower:** took it from 450 to 291.\n4. **Hog Rider at the left bridge:** it crossed and was at y\u224821.7, a few tiles short of the tower.\n5. **Log on the tower:** it hadn't hit yet when the game ended.\n6. **Second Ice Spirits on the Giant:** too late. The Giant was already in range and its next hit took my tower down with about 8 seconds left, before the Hog arrived.\n\nThe mistake was timing. Once the Cannon fell, my tower had only one or two Giant hits left, and the Hog was still several seconds out. I should have played Hog Rider at the bridge right away and used Fireball and Log afterwards. A better choice would also have been to place the Cannon farther from my tower, or play a second Ice Spirits earlier to keep the Giant busy longer."
+      ]
+    },
+    {
+      "task": "09-tower-race-defend",
+      "trajectory_sha256": "425845a8a038ed4c002eed387b116607216c0db14f21bc61e1bb36042b582e99",
+      "commands": [
+        {
+          "command": "cd /app; cr"
+        },
+        {
+          "command": "cd /app; cr play 3 3.5 12.5"
+        },
+        {
+          "command": "cd /app; cr play 1 3.5 25.5"
+        }
+      ],
+      "model_text": [
+        "I won the overtime with two plays, 2 seconds into the 30-second window. The game ended with `GAME OVER: scenario SUCCESS`, 1 crown to 0, no damage to my towers and 7 elixir spent.\n\n1. **Cannon at (3.5, 12.5):** The enemy Balloon was heading for my left princess tower, which had only 305 HP. I placed the Cannon closer to the Balloon than the tower was, so it turned back to attack the Cannon. That kept it away from the tower while my tower shot it.\n2. **Fireball at (3.5, 25.5):** In those 2 seconds my Giant and Musketeer had brought the enemy's left princess tower down from 366 to 149 HP. The Fireball destroyed it, and in overtime the first tower to fall wins.\n\nI never needed the Minions or Knight. I couldn't check the score myself: the verifier replays the moves on its own."
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "runs\\recent\\v7-design\\opus\\01-cycle-and-connect\\agent_output.tar.gz\\01-cycle-and-connect\\agent_output.tar.gz",
+      "sha256": "64e825fb6bf7cc01e10b4ced63cdf8a1952865734a246e318559900894daccf8"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\01-cycle-and-connect\\artifacts\\royale.tar.gz\\01-cycle-and-connect\\artifacts\\royale.tar.gz",
+      "sha256": "4fecb6f810f72078540b90245c2d32faf256d0188f1c1dc06fa77d1b66e27497"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\01-timed-spell-a\\agent_output.tar.gz\\01-timed-spell-a\\agent_output.tar.gz",
+      "sha256": "e93a85ccf2d31e78121ae202754fca74bf3006979880ada9acc2ef941f939edc"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\01-timed-spell-a\\artifacts\\royale.tar.gz\\01-timed-spell-a\\artifacts\\royale.tar.gz",
+      "sha256": "1856f1583f6baf32e0c79a712b45f439f8819c4238706bc4d21705b54eb13408"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\02-reserve-counter-a\\agent_output.tar.gz\\02-reserve-counter-a\\agent_output.tar.gz",
+      "sha256": "3595bdf6002ed6d50a77d8b3d84fd6e42cd682b9094e11e921d2b2af602395aa"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\02-reserve-counter-a\\artifacts\\royale.tar.gz\\02-reserve-counter-a\\artifacts\\royale.tar.gz",
+      "sha256": "61f4bc0e69213123f3d0be51e2154a646bacb4c5d94ff93d55b49524c725a672"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\02-sustained-tower-race\\agent_output.tar.gz\\02-sustained-tower-race\\agent_output.tar.gz",
+      "sha256": "b78a34a7f1a130c264ae500a4eb442632e2e4da0c649dfd3e9697cb6f3f2f5e2"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\02-sustained-tower-race\\artifacts\\royale.tar.gz\\02-sustained-tower-race\\artifacts\\royale.tar.gz",
+      "sha256": "833a41d478e2f7640dab9df054fe1fe9b81a4a27980fab795ee5c92b1a22ad62"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\03-bait-damage-sequence\\agent_output.tar.gz\\03-bait-damage-sequence\\agent_output.tar.gz",
+      "sha256": "7646b4abf6112b11b43dfe6eb78ff142500e289114407f672510e61b0f32b929"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\03-bait-damage-sequence\\artifacts\\royale.tar.gz\\03-bait-damage-sequence\\artifacts\\royale.tar.gz",
+      "sha256": "49e070f13beee84ce58fb95263bdad73f74a2ec83f06c548266e8d5e3864495f"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\03-spell-placement\\agent_output.tar.gz\\03-spell-placement\\agent_output.tar.gz",
+      "sha256": "4fe0bb857d54628eaff888ec34d321f3275d49d5c3a1755a76e3a717042c1996"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\03-spell-placement\\artifacts\\royale.tar.gz\\03-spell-placement\\artifacts\\royale.tar.gz",
+      "sha256": "6be5217b26798c15daf4e8ecd344cb7c97d4bfd05cbc998e4a494a2bb2c5a84f"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\03-tower-race-b\\agent_output.tar.gz\\03-tower-race-b\\agent_output.tar.gz",
+      "sha256": "3fd07f2ff4e4d6af0ddb846c14e1ad17f44e333848fb3cf5f3d50b5c6b1819f1"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\03-tower-race-b\\artifacts\\royale.tar.gz\\03-tower-race-b\\artifacts\\royale.tar.gz",
+      "sha256": "835644a5b00eb962c121e878e9c33c62671fc86a6b17645d65a25b40831ae37b"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\04-critical-cycle-and-connect\\agent_output.tar.gz\\04-critical-cycle-and-connect\\agent_output.tar.gz",
+      "sha256": "24b48bdde7e52f9a661e233b127afd5d7d94a242602b40ba9f88e2150864cd44"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\04-critical-cycle-and-connect\\artifacts\\royale.tar.gz\\04-critical-cycle-and-connect\\artifacts\\royale.tar.gz",
+      "sha256": "45dcdbfad6800a31b8382fdc29171fa5385d0747b0ec2ebbe52ebd7e7e85a2ec"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\05-successive-threats-mirror\\agent_output.tar.gz\\05-successive-threats-mirror\\agent_output.tar.gz",
+      "sha256": "3c3c33501e020ac954e9f87b9b209863aba77f20a826835a8dde9b139bdeff37"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\05-successive-threats-mirror\\artifacts\\royale.tar.gz\\05-successive-threats-mirror\\artifacts\\royale.tar.gz",
+      "sha256": "65164038376d77aaa9d125dc58f4f0bc2d672953d99c176c27d86ed88573c371"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\06-unequal-threats\\agent_output.tar.gz\\06-unequal-threats\\agent_output.tar.gz",
+      "sha256": "5f8b0f13b2cc8b06be126481ac07f5674b6f636981026a07f8293138f29c57db"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\06-unequal-threats\\artifacts\\royale.tar.gz\\06-unequal-threats\\artifacts\\royale.tar.gz",
+      "sha256": "5ac1578f5f1a01d938573f293401e1bb30b4874275841d475420911e3b2e3763"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\07-counterpush\\agent_output.tar.gz\\07-counterpush\\agent_output.tar.gz",
+      "sha256": "4dc9da5b35d976804c27772af070671ad7084b5c721da8b89eda13a28c8460e6"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\07-counterpush\\artifacts\\royale.tar.gz\\07-counterpush\\artifacts\\royale.tar.gz",
+      "sha256": "4a3fd2cb2d90df8fb357e7dea62cce356d5678a2b2168dd85493a5bf18fd75a0"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\08-cycle-to-lethal-plus\\agent_output.tar.gz\\08-cycle-to-lethal-plus\\agent_output.tar.gz",
+      "sha256": "bea5a57068f1be10e42b405480e55a6ff0421585c5a9597297dad95d75bd31cd"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\08-cycle-to-lethal-plus\\artifacts\\royale.tar.gz\\08-cycle-to-lethal-plus\\artifacts\\royale.tar.gz",
+      "sha256": "dad59359f97829b8f2c6fb82f7e59f3f56c388adbdabc454bfd5f22669ee44df"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\09-tower-race-defend\\agent_output.tar.gz\\09-tower-race-defend\\agent_output.tar.gz",
+      "sha256": "2bd87e9a6607aa4cf30afee0ec6f659ee845d51b9c31556665c0f9a535486b8f"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\09-tower-race-defend\\artifacts\\royale.tar.gz\\09-tower-race-defend\\artifacts\\royale.tar.gz",
+      "sha256": "e741a84716e356fb7bd4febeac626f0a9f152c754acc7589d8e85af6ce2175af"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\10-protect-the-lead\\agent_output.tar.gz\\10-protect-the-lead\\agent_output.tar.gz",
+      "sha256": "51492616c57f353d7b555b30ef0d79146249f4f9bea8bf424b88b7aee36e8b5a"
+    },
+    {
+      "path": "runs\\recent\\v7-design\\opus\\10-protect-the-lead\\artifacts\\royale.tar.gz\\10-protect-the-lead\\artifacts\\royale.tar.gz",
+      "sha256": "09393bb97404a2e66146991bf10419857db8972608a4c77c40ca2d97d8ba6d39"
+    }
+  ],
+  "findings": [
+    "The bait success explicitly pursues a tower-HP lead and ends without a crown. This satisfies the old published rules; v7 uses a shorter window that requires a tower win.",
+    "The successful race-defend task takes two plays. The cycle-to-lethal success takes three.",
+    "The critical cycle fails despite integrity 1 and legal actions: offensive Log is followed by a late freeze and tower loss.",
+    "v6 objective success is not a per-task game-win metric."
+  ]
+}

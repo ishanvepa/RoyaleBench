@@ -1,0 +1,17 @@
+{
+  "task": "01-critical-cycle-conversion",
+  "family": 1,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+  "config_sha256": "5b209b7bc223af62cb6e9355d71af48a67c7863010c28ac33200c89f7f5e28a8",
+  "image": "sha256:c39cba47565f281e2530f9c49e6740f01b5b5e06d79c18f2491f0b521d468ddf",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 289,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 51.91
+}

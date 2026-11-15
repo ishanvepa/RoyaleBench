@@ -85,6 +85,33 @@
   .battle-button:hover { filter: brightness(1.07); transform: translateY(-2px); }
   .battle-button:active { transform: translateY(4px); box-shadow: 0 1px 0 #925c23, 0 3px 0 #080e19, inset 0 2px 0 #fff1c18c; }
   .battle-action .battle-hint { font-size: 11px; color: #8998b0; }
+  .benchmark-link { width: 270px; min-height: 44px; margin-top: -2px; border: 1px solid #d2b16c75;
+    border-radius: 9px; background: #d2b16c12; color: #e9cf95; font-weight: 700; font-size: 14px; }
+  .benchmark-link:hover { background: #d2b16c22; border-color: #e9cf95; }
+  #benchmark-select { flex: 1; width: calc(100% - 64px); max-width: 710px; margin: 24px auto 42px; }
+  .benchmark-panel { margin-top: 22px; padding: 30px; border: 1px solid #d2b16c55; border-radius: 16px;
+    background: radial-gradient(ellipse at 50% 0, #d2b16c14, transparent 70%), #172033e8; box-shadow: 0 18px 50px #0003; }
+  .benchmark-panel .eyebrow { justify-content: flex-start; }
+  .benchmark-panel .eyebrow::before, .benchmark-panel .eyebrow::after { display: none; }
+  #setup #benchmark-title { font-size: 32px; margin: 12px 0; }
+  #setup #benchmark-objective { max-width: 57ch; font-size: 15px; color: var(--fg); }
+  .benchmark-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin: 24px 0; }
+  .benchmark-facts div { padding: 13px 11px; border: 1px solid #8297b52b; border-radius: 10px; background: #101929; }
+  .benchmark-facts strong { display: block; color: #e9cf95; font: 800 23px/1.2 var(--num); }
+  .benchmark-facts span { color: var(--dim); font-size: 10px; }
+  .benchmark-panel .label { margin-bottom: 10px; }
+  .benchmark-panel .deck-cards { grid-template-columns: repeat(8, minmax(0, 1fr)); padding: 0; margin-bottom: 20px; }
+  #setup .benchmark-note { font-size: 11px; margin: 17px 0 20px; }
+  .benchmark-panel .battle-button { width: 100%; min-height: 57px; font-size: 20px; border-radius: 10px; }
+  #benchmark-strip { width: 100%; display: flex; justify-content: space-between; gap: 12px; align-items: center;
+    border: 1px solid #d2b16c75; border-radius: 8px; padding: 5px 10px; background: #d2b16c14;
+    color: #e9cf95; font-size: 10px; font-weight: 750; letter-spacing: .04em; }
+  #benchmark-strip strong { color: var(--fg); font: 700 11px var(--num); }
+  #benchmark-controls { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  #benchmark-progress { color: #fff; font-size: 11px; font-weight: 700; }
+  #benchmark-wait { min-height: 38px; padding: 6px 13px; border: 1px solid #ffdc80; border-radius: 8px;
+    background: #e9b342; color: #3a2c1b; font-weight: 800; white-space: nowrap; }
+  #benchmark-wait:disabled { opacity: .5; cursor: wait; }
   .lobby-features { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; max-width: 768px; margin: 33px auto 0; border: 1px solid #8094b52b;
     border-radius: 12px; background: #172033a6; text-align: left; box-shadow: 0 4px 16px #050a1510; }
   .lobby-feature { display: flex; align-items: center; gap: 13px; padding: 19px 23px; min-width: 0; }
@@ -184,6 +211,20 @@
     .player-name-field { width: 250px; }
     .battle-button { width: 250px; min-height: 72px; font-size: 29px; }
     .battle-action .battle-hint { font-size: 10px; }
+    .benchmark-link { width: 250px; }
+    #benchmark-select { width: calc(100% - 36px); margin: 18px auto 28px; }
+    .benchmark-panel { padding: 21px; }
+    #setup #benchmark-title { font-size: 28px; }
+    .benchmark-panel .deck-cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .benchmark-facts { gap: 5px; }
+    .benchmark-facts div { padding: 10px 6px; }
+    .benchmark-facts strong { font-size: 17px; }
+    .benchmark-facts span { font-size: 9px; }
+    #benchmark-select { padding-bottom: 86px; }
+    .benchmark-start-area { position: fixed; z-index: 5; bottom: 0; left: 0; width: 100%;
+      padding: 12px 18px calc(17px + env(safe-area-inset-bottom)); background: #111a2bf5;
+      border-top: 1px solid var(--line); backdrop-filter: blur(12px); }
+    .benchmark-start-area .battle-button { max-width: 450px; min-height: 51px; margin: 0 auto; display: flex; }
     .lobby-features { margin-top: 30px; }
     .lobby-feature { display: flex; flex-direction: column; gap: 5px; text-align: center; padding: 14px 5px; }
     .feature-icon { width: 28px; height: 25px; } .feature-icon svg { width: 22px; height: 22px; }
@@ -455,6 +496,7 @@
         <p id="name-hint">Shown on the leaderboard · 1–24 characters</p>
         <p id="name-error" role="alert"></p>
         <button type="submit" class="battle-button" id="battle"><svg class="ui-icon" aria-hidden="true"><use href="#i-swords"/></svg>Battle</button>
+        <button type="button" class="benchmark-link" id="open-benchmark">Try Benchmark</button>
         <p class="battle-hint">Choose your deck. Make your move.</p>
       </form>
       <div class="lobby-features">
@@ -471,6 +513,24 @@
           <div><div class="label">Your objective</div><strong>Take the crown</strong><small>Real-time strategy</small></div>
         </div>
       </div>
+    </main>
+
+    <main id="benchmark-select" aria-labelledby="benchmark-title" hidden>
+      <button type="button" class="text-button back-button" id="benchmark-back"><svg class="ui-icon" aria-hidden="true"><use href="#i-arrow"/></svg>Back to arena</button>
+      <section class="benchmark-panel">
+        <div class="eyebrow">RoyaleBench Tactics · Challenge 05</div>
+        <h1 id="benchmark-title" tabindex="-1">One hit. One chance.</h1>
+        <p id="benchmark-objective">Your left princess tower has 1 HP. Defend the incoming Hog Rider for 16 seconds without taking tower damage. You have three elixir to spend.</p>
+        <div class="benchmark-facts">
+          <div><strong>1 HP</strong><span>Left tower</span></div>
+          <div><strong>3</strong><span>Elixir to spend</span></div>
+          <div><strong>8</strong><span>Half-second decisions</span></div>
+        </div>
+        <div class="label">Your fixed deck</div>
+        <div class="deck-cards" id="benchmark-deck-cards" role="list" aria-label="Benchmark deck cards"></div>
+        <p class="benchmark-note">Choose a card and tap the arena, or wait 0.5 seconds. The clock advances only when you decide. After eight decisions, the rest of the 16-second defense plays out. This practice run does not affect the leaderboard.</p>
+        <div class="benchmark-start-area"><button type="button" class="battle-button" id="benchmark-start" disabled><svg class="ui-icon" aria-hidden="true"><use href="#i-shield"/></svg>Start challenge</button></div>
+      </section>
     </main>
 
     <main id="deck-select" aria-labelledby="setup-title" hidden>
@@ -543,6 +603,7 @@
 
 <div id="game" hidden>
   <div id="col">
+    <div id="benchmark-strip" hidden><span>TACTICS · ONE-HIT DEFENSE</span><strong id="benchmark-turns">Move 1 of 8</strong></div>
     <div id="hud">
       <div class="sides">
         <div class="side-tag op"><span class="dot" style="background:var(--red)"></span><span class="who" id="opp-name">search-bot</span>
@@ -568,6 +629,7 @@
         <div id="elx" role="meter" aria-label="Elixir" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
           <div id="elx-fill"></div><div id="elx-ticks"></div><div id="elx-num" aria-hidden="true"></div></div>
       </div>
+      <div id="benchmark-controls" hidden><span id="benchmark-progress">0 / 3 elixir spent</span><button type="button" id="benchmark-wait">Wait 0.5s</button></div>
     </div>
   </div>
   <div id="rail">
@@ -575,7 +637,7 @@
       <button class="ghost" id="quit">Quit game</button>
     </div>
     <div class="box">
-      <div class="label">Bot's thinking (gain over waiting, in tower HP)</div>
+      <div class="label" id="think-label">Bot's thinking (gain over waiting, in tower HP)</div>
       <div id="think">waiting for its first decision</div>
     </div>
     <div class="box" style="flex:1">
@@ -588,7 +650,7 @@
 </div>
 
 <dialog id="banner" aria-labelledby="banner-title" aria-describedby="banner-sub banner-score">
-  <div class="eyebrow">Battle complete</div>
+  <div class="eyebrow" id="banner-eyebrow">Battle complete</div>
   <svg class="result-emblem" viewBox="0 0 64 72" fill="none" aria-hidden="true">
     <path d="m32 3 26 10v23c0 17-26 32-26 32S6 53 6 36V13L32 3Z" fill="currentColor" fill-opacity=".06" stroke="currentColor" stroke-opacity=".55"/>
     <path d="m32 8 21 8v20c0 12-21 26-21 26S11 48 11 36V16L32 8Z" stroke="currentColor" stroke-opacity=".2"/>
@@ -612,9 +674,11 @@
       <span class="result-deck" id="result-op-deck"></span>
     </div>
   </div>
+  <p id="benchmark-result" hidden></p>
   <p id="banner-record" role="status"></p>
   <div class="result-actions">
     <button class="battle-button" id="again" autofocus><svg class="ui-icon" aria-hidden="true"><use href="#i-swords"/></svg>Battle again</button>
+    <button class="ghost" id="view-resolution" type="button" hidden>View resolution</button>
     <button class="ghost" id="change">Change deck</button>
     <button class="text-button" id="view-leaderboard"><svg class="ui-icon" aria-hidden="true"><use href="#i-crown"/></svg>View leaderboard</button>
   </div>
@@ -634,6 +698,7 @@
   let renderer;
 
   let ws, cards = {}, decks = {}, myDeck = null, lastStart = null, starting = false, fixedOpponent = null;
+  let benchmarkInfo = null, mode = "battle", benchmarkPending = false;
   let handMasks = new Map();
   let snaps = [], clock0 = null, sel = -1, mask = null, maskSlot = -1, hover = null, dragging = false, dragMoved = false;
   let over = false, handKey = "", T = 16;
@@ -702,12 +767,12 @@
       $("lb-table").hidden = !board.entries.length;
       $("lb-status").hidden = !!board.entries.length;
       $("lb-status").textContent = "No results yet. Finish a battle to claim your place!";
-      if ($("banner-record").dataset.error !== "true")
+      if (mode !== "benchmark" && $("banner-record").dataset.error !== "true")
         $("banner-record").textContent = "Your record: " + you.wins + " wins · " + you.losses + " losses";
     } catch (_) {
       $("lb-status").hidden = false;
       $("lb-status").textContent = "Couldn't load the leaderboard. Tap Refresh to try again.";
-      if (over && $("banner-record").dataset.error !== "true")
+      if (over && mode !== "benchmark" && $("banner-record").dataset.error !== "true")
         $("banner-record").textContent = "Your record is temporarily unavailable.";
     } finally {
       $("lb-refresh").disabled = false;
@@ -733,9 +798,10 @@
 
   function setupScreen(screen, focus = true) {
     $("lobby").hidden = screen !== "lobby"; $("deck-select").hidden = screen !== "decks";
+    $("benchmark-select").hidden = screen !== "benchmark";
     $("leaderboard-screen").hidden = screen !== "leaderboard";
     $("setup").scrollTop = 0;
-    if (focus) $({lobby: "lobby-title", decks: "setup-title", leaderboard: "lb-title"}[screen]).focus({preventScroll: true});
+    if (focus) $({lobby: "lobby-title", decks: "setup-title", benchmark: "benchmark-title", leaderboard: "lb-title"}[screen]).focus({preventScroll: true});
     if (screen === "leaderboard") loadLeaderboard();
   }
   function navigateSetup(screen) {
@@ -744,11 +810,13 @@
     setupScreen(screen);
   }
   $("player-form").onsubmit = (ev) => { ev.preventDefault(); if (requireName()) navigateSetup("decks"); };
+  $("open-benchmark").onclick = () => navigateSetup("benchmark");
+  $("benchmark-back").onclick = () => navigateSetup("lobby");
   $("back-home").onclick = () => navigateSetup("lobby");
   $("lb-back").onclick = () => navigateSetup("lobby");
   $("open-leaderboard").onclick = () => navigateSetup("leaderboard");
   $("edit-name").onclick = () => { navigateSetup("lobby"); $("player-name").focus(); };
-  const routeScreen = () => ({"#decks": "decks", "#leaderboard": "leaderboard"}[location.hash] || "lobby");
+  const routeScreen = () => ({"#decks": "decks", "#benchmark": "benchmark", "#leaderboard": "leaderboard"}[location.hash] || "lobby");
   window.addEventListener("popstate", () => {
     if ($("game").hidden) setupScreen(routeScreen());
   });
@@ -764,12 +832,12 @@
 
   // ---------------------------------------------------------------- connection
   function connect() {
-    $("reconnect").hidden = true; $("start").disabled = true;
+    $("reconnect").hidden = true; $("start").disabled = true; $("benchmark-start").disabled = true;
     connectionState("connecting", "Connecting");
     ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/ws");
     $("conn").textContent = "connecting…";
     ws.onclose = () => {
-      starting = false; $("start").disabled = true; $("again").disabled = false;
+      starting = false; $("start").disabled = true; $("benchmark-start").disabled = true; $("again").disabled = false;
       $("banner").close();
       $("game").hidden = true; $("setup").hidden = false; $("reconnect").hidden = false;
       connectionState("offline", "Offline");
@@ -783,18 +851,21 @@
     if (m.t === "s") return onSnap(m);
     if (m.t === "hello") return showSetup(m);
     if (m.t === "init") return onInit(m);
+    if (m.t === "benchmark_turn") return onBenchmarkTurn(m);
     if (m.t === "bot") { $("think").textContent = m.raw.replace(/^search:\s*/, "").split("; ").join("\n"); return; }
     if (m.t === "ev") return onEvent(m);
     if (m.t === "over") return onOver(m);
     if (m.t === "invalid") {
-      if (starting) { starting = false; $("start").disabled = false; $("again").disabled = false; $("start-label").textContent = "Enter battle"; }
+      benchmarkPending = false; $("benchmark-wait").disabled = false;
+      if (starting) { starting = false; $("start").disabled = false; $("benchmark-start").disabled = false; $("again").disabled = false; $("start-label").textContent = "Enter battle"; }
       $("conn").textContent = m.message; toast(m.message); return;
     }
     if (m.t === "busy" || m.t === "error") {
-      starting = false; $("start").disabled = false; $("again").disabled = false;
+      starting = false; benchmarkPending = false; $("start").disabled = false; $("benchmark-start").disabled = false; $("again").disabled = false;
       $("banner").close();
       $("start-label").textContent = "Enter battle";
       $("game").hidden = true; $("setup").hidden = false;
+      if (lastStart?.mode === "benchmark") setupScreen("benchmark");
       $("conn").textContent = m.message || "Server at capacity — please try again shortly.";
       $("conn").scrollIntoView({block: "nearest"}); return;
     }
@@ -803,7 +874,7 @@
   // ---------------------------------------------------------------- setup screen
   function showSetup(m) {
     loadLeaderboard();
-    $("conn").textContent = ""; $("start").disabled = false;
+    $("conn").textContent = ""; $("start").disabled = false; $("benchmark-start").disabled = false;
     $("start-label").textContent = "Enter battle";
     connectionState("online", "Arena online");
     fixedOpponent = m.fixed_opponent || null;
@@ -814,6 +885,19 @@
     $("lobby-opponent").textContent = fixedOpponent ? "Planner bot" : "Arena bots";
     $("lobby-opponent-detail").textContent = fixedOpponent ? "Hog 2.6 Cycle" : "Choose your challenge";
     decks = m.decks;
+    benchmarkInfo = m.benchmark;
+    $("benchmark-objective").textContent = benchmarkInfo.prompt;
+    const facts = $("benchmark-select").querySelectorAll(".benchmark-facts strong");
+    facts[0].textContent = "1 HP"; facts[1].textContent = benchmarkInfo.budget; facts[2].textContent = benchmarkInfo.decisions;
+    const challengeDeck = $("benchmark-deck-cards"); challengeDeck.textContent = "";
+    for (const name of benchmarkInfo.deck) {
+      const card = document.createElement("div"); card.className = "preview-card";
+      card.setAttribute("role", "listitem"); card.setAttribute("aria-label", pretty(name));
+      const portrait = document.createElement("span"); portrait.className = "portrait";
+      card.append(portrait); paintCard(portrait, name);
+      const label = document.createElement("span"); label.className = "preview-card-name";
+      label.textContent = pretty(name); card.append(label); challengeDeck.append(card);
+    }
     const opponent = $("opponent"); opponent.textContent = "";
     for (const [key, bot] of Object.entries(m.bots)) {
       const option = document.createElement("option"); option.value = key;
@@ -877,17 +961,33 @@
     send(lastStart);
   }
   $("start").onclick = () => { $("conn").textContent = ""; start(false); };
+  function startBenchmark(again) {
+    if (starting || !benchmarkInfo || !ws || ws.readyState !== 1) return;
+    starting = true; $("benchmark-start").disabled = true; $("again").disabled = true;
+    $("conn").textContent = "Starting challenge…";
+    if (!again || !lastStart) {
+      lastStart = {t: "start", mode: "benchmark"};
+      const name = arenaName();
+      if (name) { lastStart.player_name = name; rememberName(); }
+    }
+    send(lastStart);
+  }
+  $("benchmark-start").onclick = () => startBenchmark(false);
   $("reconnect").onclick = () => connect();
-  $("again").onclick = () => start(true);
+  $("again").onclick = () => lastStart?.mode === "benchmark" ? startBenchmark(true) : start(true);
+  $("view-resolution").onclick = () => window.open("/benchmark/resolution", "_blank", "noopener");
   $("change").onclick = $("quit").onclick = $("mobile-quit").onclick = () => {
     $("banner").close();
-    send({ t: "quit" }); $("game").hidden = true; $("setup").hidden = false; navigateSetup("decks"); loadLeaderboard();
+    send({ t: "quit" }); $("game").hidden = true; $("setup").hidden = false;
+    navigateSetup(mode === "benchmark" ? "benchmark" : "decks");
+    if (mode !== "benchmark") loadLeaderboard();
   };
   $("banner").addEventListener("cancel", (ev) => { ev.preventDefault(); $("change").click(); });
 
   function onInit(m) {
-    starting = false; $("start").disabled = false; $("again").disabled = false; $("conn").textContent = "";
+    starting = false; $("start").disabled = false; $("benchmark-start").disabled = false; $("again").disabled = false; $("conn").textContent = "";
     $("start-label").textContent = "Enter battle";
+    mode = m.mode || "battle"; benchmarkPending = false;
     cards = m.cards; snaps = []; clock0 = null; sel = -1; mask = null; handMasks = new Map(); over = false; handKey = "";
     renderer = BattleRenderer.create(cv, m.arena); delayTicks = m.delay || 0;
     TX = m.arena.tiles_x; TY = m.arena.tiles_y; HALF = m.arena.half;
@@ -901,6 +1001,16 @@
       $("result-" + side + "-deck").title = detailOf(m.decks[i]).name;
     }
     $("think").textContent = m.opp === "heuristic-bot" ? "Defends threatened lanes, spells clusters, and attacks at high elixir." : "waiting for its first decision";
+    $("benchmark-strip").hidden = $("benchmark-controls").hidden = mode !== "benchmark";
+    $("think-label").textContent = mode === "benchmark" ? "Challenge rules" : "Bot's thinking (gain over waiting, in tower HP)";
+    if (mode === "benchmark") $("think").textContent = "Choose a card and tap the arena, or wait. Each decision advances 0.5 seconds.";
+    $("change").textContent = mode === "benchmark" ? "Back to challenge" : "Change deck";
+    $("again").lastChild.textContent = mode === "benchmark" ? "Try again" : "Battle again";
+    $("view-leaderboard").hidden = mode === "benchmark";
+    $("view-resolution").hidden = mode !== "benchmark";
+    $("banner-score").hidden = mode === "benchmark";
+    $("benchmark-result").hidden = mode !== "benchmark";
+    $("banner-eyebrow").textContent = mode === "benchmark" ? "Benchmark complete" : "Battle complete";
     $("banner").close(); $("setup").hidden = true; $("game").hidden = false;
     $("banner-record").textContent = "";
     delete $("banner-record").dataset.error;
@@ -922,11 +1032,17 @@
     const base = now - s.k * TICK_MS;
     if (clock0 === null || Math.abs(base - clock0) > 250) clock0 = base; else clock0 += (base - clock0) * 0.05;
     updateHud(s);
+    if (s.benchmark) {
+      benchmarkPending = false;
+      $("benchmark-turns").textContent = "Move " + Math.min(s.benchmark.decision + 1, s.benchmark.max_decisions) + " of " + s.benchmark.max_decisions;
+      $("benchmark-progress").textContent = s.benchmark.spent + " / " + s.benchmark.budget + " elixir spent";
+      $("benchmark-wait").disabled = benchmarkPending || s.benchmark.decision >= s.benchmark.max_decisions;
+    }
     usePreloadedMask();
   }
   function fmtClock(sec) { sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0"); }
   function updateHud(s) {
-    const label = s.starting ? "Starting" : s.ot ? "Overtime" : "Time left:";
+    const label = s.benchmark ? "Defense left:" : s.starting ? "Starting" : s.ot ? "Overtime" : "Time left:";
     $("clock").textContent = fmtClock(s.left); $("clock-label").textContent = label;
     $("timebox").classList.toggle("ot", !!s.ot);
     $("timebox").setAttribute("aria-label", label.replace(":", "") + " " + fmtClock(s.left));
@@ -1015,6 +1131,18 @@
   }
   function onOver(m) {
     over = true; select(-1);
+    if (m.mode === "benchmark") {
+      benchmarkPending = false; $("benchmark-wait").disabled = true;
+      $("banner").dataset.outcome = m.success ? "win" : "loss";
+      $("banner-title").textContent = m.success ? "Defense held!" : "Challenge failed";
+      $("banner-sub").textContent = m.success ? "The one-HP tower survived without taking damage." :
+        m.tower_damage ? "The Hog broke through. Your tower took damage." : "You spent beyond the three-elixir limit.";
+      $("benchmark-result").textContent = "Tower damage " + m.tower_damage + " · Elixir spent " + m.spent + " / " + m.budget;
+      $("banner-record").textContent = "Practice attempt · Leaderboard unchanged";
+      $("banner-replay").textContent = m.saved ? "Practice replay saved on the game server." : "Practice replay unavailable.";
+      if (!$("banner").open) $("banner").showModal();
+      return;
+    }
     const [a, b] = m.crowns;
     $("banner").dataset.outcome = m.winner === 0 ? "win" : m.winner === 1 ? "loss" : "draw";
     $("banner-title").textContent = m.winner === 0 ? "Victory!" : m.winner === 1 ? "Defeat" : "Draw";
@@ -1032,6 +1160,13 @@
     if (!m.leaderboard_error) loadLeaderboard();
   }
   let toastTimer = 0;
+  function onBenchmarkTurn(m) {
+    const row = document.createElement("div"); row.className = "h";
+    row.textContent = m.action.cmd === "wait" ? "you  waited 0.5s" :
+      m.accepted ? "you  " + m.result : "you  rejected (" + m.rejection + "); waited 0.5s";
+    $("log").prepend(row);
+    if (!m.accepted) toast("Move rejected: " + m.rejection);
+  }
   function toast(text, ms) { const t = $("toast"); t.textContent = text; t.classList.add("on"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("on"), ms || 1400); }
 
   // ---------------------------------------------------------------- input
@@ -1048,13 +1183,18 @@
   function tileAt(ev) {
     const r = cv.getBoundingClientRect();
     const x = (ev.clientX - r.left) / r.width * TX, y = TY - (ev.clientY - r.top) / r.height * TY;
-    return placement.at(x, y, {half: HALF, width: TX * HALF, height: TY * HALF});
+    const point = placement.at(x, y, {half: HALF, width: TX * HALF, height: TY * HALF});
+    return point && mode === "benchmark" ? {...point, x: Math.round(x * 100) / 100, y: Math.round(y * 100) / 100} : point;
   }
   function tryPlay(t) {
     const s = snaps[snaps.length - 1];
-    if (!t || sel < 0 || !s || over) return;
+    if (!t || sel < 0 || !s || over || benchmarkPending) return;
     const [cid, cost] = s.me.hand[sel] || [-1, 0];
     if (cid < 0) return;
+    if (mode === "benchmark") {
+      benchmarkPending = true; $("benchmark-wait").disabled = true;
+      send({t: "play", slot: sel, x: t.x, y: t.y}); select(-1); return;
+    }
     if (s.me.e < cost * 1000) return toast("Need " + cost + " elixir");
     if (!mask || maskSlot !== sel || mask.card !== cid) return toast("Placement is updating…");
     if (!placement.allowed(mask, t)) {
@@ -1067,6 +1207,10 @@
     renderer.addEffect({ kind: "drop", x: t.x, y: t.y, at: performance.now() });
     select(-1);
   }
+  $("benchmark-wait").onclick = () => {
+    if (mode !== "benchmark" || benchmarkPending || over) return;
+    benchmarkPending = true; $("benchmark-wait").disabled = true; select(-1); send({t: "wait"});
+  };
   window.addEventListener("pointermove", (ev) => { hover = tileAt(ev); if (dragging) dragMoved = true; });
   window.addEventListener("pointerup", (ev) => {
     if (dragging) { dragging = false; const t = tileAt(ev); if (dragMoved && t) tryPlay(t); }

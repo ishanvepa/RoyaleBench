@@ -29,20 +29,35 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
 - [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
+- [`demo/README.md`](demo/README.md): active 76-second Remotion demo, media layout, production status, and historical v01 cut.
+- [`demo/remotion/README.md`](demo/remotion/README.md): editable video project, official Remotion skills used, asset preparation, preview, and export commands.
+- [`demo/storyboard.md`](demo/storyboard.md): timed headliner sequence and model/reference comparison.
+- [`demo/script.md`](demo/script.md): draft voiceover and evidence-based editorial notes.
+- [`demo/shot-list.md`](demo/shot-list.md): footage sources, capture queue, and edit checklist.
+- [`demo/evidence.json`](demo/evidence.json): selected Opus v6 run metadata, task outcome, trace excerpt, and validated reference provenance.
+- [`demo/production.json`](demo/production.json): current Remotion edit, capture provenance, historical first-cut media details, verification, and remaining production work.
 - [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, compact opponent-play observations, pinned dependencies, and benchmark validation priorities.
 - [`docs/hog_body_block.md`](docs/hog_body_block.md): TikTok extraction and scripted Hog Rider / Ice Golem / Skeletons body-block recreation, replay verification, placement sensitivity, and controls.
 - [`docs/bots.md`](docs/bots.md): shared bot catalog, registry, implementation layout, adding opponents, live/turn-based bot strength comparisons, paired live duels, and planner settings.
 - [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
 - [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
 - [`docs/phone_play.md`](docs/phone_play.md): launch interactive play and share a temporary public link.
-- [`docs/public_play.md`](docs/public_play.md): arena lobby, player names and deck selection, seven-match public Planner play at local-play strength without pausing, persistent CSV leaderboard, fixed Hog Cycle opponent, preloaded masks, permanent RoyaleBench share link, results before worker cleanup, and unranked hosting checks.
+- [`docs/public_play.md`](docs/public_play.md): arena lobby, player names and deck selection, seven-match public Planner play at local-play strength without pausing, Tactics @5 Try Benchmark challenge and reference resolution, persistent CSV leaderboard, fixed Hog Cycle opponent, preloaded masks, permanent RoyaleBench share link, results before worker cleanup, and unranked hosting checks.
 - [`docs/public_play_plan.md`](docs/public_play_plan.md): implementation scope, checklist, and validation for public play.
 - [`docs/public_play_validation.json`](docs/public_play_validation.json): historical five-match and ten-match measurements (two Planner workers per match; the seven-match eight-worker deployment is not yet measured), latency limits, and deployment status.
 - [`docs/rendering.md`](docs/rendering.md): dark replay viewer and synchronized agent decisions, lobby miniature, card previews and match result dialog, shared live/replay graphics, mobile troop sizing, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
 - [`docs/royalebench_v3.md`](docs/royalebench_v3.md): historical coordinate-action benchmark, all 11 released scenarios, scoring, validation, and Harbor/Valkyrie workflow.
 - [`docs/royalebench_win.md`](docs/royalebench_win.md): separate win-only continuation tasks, v3 saturation audit, calibration controls, and container/hosted validation.
-- [`docs/royalebench_v6.md`](docs/royalebench_v6.md): default 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
+- [`docs/royalebench_v6.md`](docs/royalebench_v6.md): historical 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
+- [`docs/royalebench_v8.md`](docs/royalebench_v8.md): default 18-task merge of v6@1 and v7@1, exact source provenance, retained grading, runtime-specific validation and publication.
+- [`runs/royalebench-v8/merge.json`](runs/royalebench-v8/merge.json): all 18 source task digests, archive checksums, objectives and packaged protocol hashes.
+- [`runs/royalebench-v8/checks.json`](runs/royalebench-v8/checks.json): merged source identity, protected reference and negative-control checks, regression tests and publication evidence.
+- [`docs/royalebench_v7.md`](docs/royalebench_v7.md): separate harder tower-winning continuations included in v8, latest eight-model v6 audit, second-wave and split-lane task design, validation and frontier calibration.
+- [`runs/royalebench-v7/v6-audit.json`](runs/royalebench-v7/v6-audit.json): latest v6 model scores, exact revisions and run settings, per-task rewards and independently verified gameplay outcomes informing v7.
+- [`runs/royalebench-v7/checks.json`](runs/royalebench-v7/checks.json): v7 static, deterministic reference, negative-control and isolated container checks, pinned runtime and publication.
+- [`runs/royalebench-v7/opus-review.json`](runs/royalebench-v7/opus-review.json): first full v7 Opus calibration, all four gameplay failure reviews, captured final states, exact run settings and model API cost.
+- [`runs/royalebench-v7/sol-review.json`](runs/royalebench-v7/sol-review.json): first full v7 Sol comparison, reviewed wins and losses, final captured tower states, and token/cost reporting limits.
 - [`docs/royalebench_v4.md`](docs/royalebench_v4.md): Opus and Sonnet v3 comparison, task-level failure evidence, focused challenge variants, validation, and publication workflow.
 - [`runs/royalebench-v4/checks-revision2.json`](runs/royalebench-v4/checks-revision2.json): corrected v4 `@2` digest, protocol and Docker checks, full Opus/Sonnet run settings, costs, and per-task scores.
 - [`docs/royalebench_v5.md`](docs/royalebench_v5.md): ten-case coordinate dataset, source revisions, Opus/Sonnet/Haiku selection evidence, scoring, validation, and Valkyrie workflow.

@@ -20,6 +20,7 @@ runs/analysis/
 runs/recent/
 runs/latest-*.json
 runs/royalebench-win/exploration/
+runs/royalebench-v7/exploration/
 runs/**/analysis/
 runs/e2e-arena/
 

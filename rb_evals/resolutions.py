@@ -29,7 +29,9 @@ def resolution_replay(task: Path, evidence_root: Path) -> dict:
     protocol_hash = protocol_for(cfg, task)
     for manifest_path in candidates:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        if manifest.get("protocol_sha256") != protocol_hash:
+        # Merged cohorts carry multiple packaged runtimes. Their per-task rows
+        # bind the protocol; older single-runtime manifests also bind it here.
+        if manifest.get("protocol_sha256") not in (None, protocol_hash):
             continue
         row = next((r for r in manifest.get("tasks", []) if r.get("task") == task.name), None)
         if row is None or row.get("config_sha256") != config_hash or row.get("protocol_sha256") != protocol_hash:

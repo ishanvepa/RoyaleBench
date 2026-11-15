@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench v8"
+kind = "eval"
+description = "18 unchanged tasks: all 14 v6@1 tasks plus the four harder v7@1 continuations. Source grading retained."

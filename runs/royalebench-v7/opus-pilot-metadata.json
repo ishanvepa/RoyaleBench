@@ -1,0 +1,71 @@
+{
+  "benchmark_id": "62553e61-afff-4f15-a3bb-61d3124f39d3",
+  "benchmark_name": "royalebench",
+  "benchmark_arguments": {
+    "contract": {
+      "name": "claude_code-v1.0.0",
+      "model": "anthropic/claude-opus-5-5",
+      "install_cmd": "bash setup.sh",
+      "run_cmd": "bash -lc 'set -o pipefail && mkdir -p /logs && AGENT_OUTPUT_ROOT=/logs python3 /bundle/claude_code-v1.0.0/collect_outputs.py {problem_statement_path} --task-id {task_id} --model {model}'",
+      "turns": null,
+      "final_output": "/logs",
+      "output_artifacts": [],
+      "egress_allowlist": [],
+      "install_egress": null,
+      "allow_provider_tools": false,
+      "isolate_agent_uid": false,
+      "secrets": {
+        "ANTHROPIC_API_KEY": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/anthropic-api-key-ishan"
+      },
+      "kwargs": {
+        "model": "anthropic/claude-opus-5-5"
+      },
+      "inference_settings_attested": true,
+      "agent_release": null
+    },
+    "agent_attempts": [],
+    "concurrency": 1,
+    "task_ids": [
+      "03-supported-tank-conversion"
+    ],
+    "slice_str": null,
+    "lambda_function": null,
+    "dataset": "royalebench-v7",
+    "dataset_version": {
+      "id": "royalebench/royalebench-v7@1",
+      "label": null
+    },
+    "sandbox_provider": "modal",
+    "sandbox_provider_secret_name": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/modal-credentials",
+    "monitoring": null,
+    "monitoring_rules": null,
+    "environment": "aws",
+    "properties": {
+      "region": "us-east-1",
+      "s3_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+      "log_group": "/valkyrie/benchmarks-prod/tenants/49113804-bbae-46cc-82a7-70f78706d1e5",
+      "log_retention_days": 365
+    }
+  },
+  "storage_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+  "started_by_email": "ishanvepa171@gmail.com",
+  "executor_release_id": "git-6540c6fe1a96-1190559ddbb15b5f",
+  "current_execution_release_id": "git-6540c6fe1a96-1190559ddbb15b5f",
+  "executor_artifact_uri": "629807611108.dkr.ecr.us-east-1.amazonaws.com/valkyrie-executor-prod@sha256:1190559ddbb15b5fbe78c62b7d1378702d0c7533b891ac10c1c0707a79680d8f",
+  "executor_artifact_digest": "1190559ddbb15b5fbe78c62b7d1378702d0c7533b891ac10c1c0707a79680d8f",
+  "executor_protocol_version": "7",
+  "regraded_from_run_id": null,
+  "regrade_skipped_task_ids": null,
+  "project": {
+    "id": "440fa56e-55f9-4a29-bb26-b61c722e5f68",
+    "handle": "default",
+    "name": "Default",
+    "spend_type": "development",
+    "subcategory": "new_benchmark_generation",
+    "customer": null,
+    "extra_tags": {},
+    "created_at": "2026-11-14T23:08:30.553740+00:00",
+    "created_by_email": "ishanvepa171@gmail.com",
+    "archived_at": null
+  }
+}

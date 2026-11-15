@@ -1,0 +1,20 @@
+{
+  "01-critical-cycle-conversion": true,
+  "01-cycle-and-connect": true,
+  "01-timed-spell-a": true,
+  "02-reserve-counter-a": true,
+  "02-second-wave-air-race": true,
+  "02-sustained-tower-race": true,
+  "03-bait-damage-sequence": true,
+  "03-spell-placement": true,
+  "03-supported-tank-conversion": true,
+  "03-tower-race-b": true,
+  "04-critical-cycle-and-connect": true,
+  "04-split-lane-conversion": true,
+  "05-successive-threats-mirror": true,
+  "06-unequal-threats": true,
+  "07-counterpush": true,
+  "08-cycle-to-lethal-plus": true,
+  "09-tower-race-defend": true,
+  "10-protect-the-lead": true
+}

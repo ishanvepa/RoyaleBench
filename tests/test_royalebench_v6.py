@@ -7,11 +7,10 @@ from valkyrie.sdk.task_content import task_digest
 from cr_arena.build_v6 import OUT, SOURCES
 from cr_arena.coordinate_benchmark import packaged_protocol_digest
 from rb_evals.benchmarks import load_benchmark, task_problems
-from rb_evals.config import load_config
 
 
-def test_v6_is_the_dashboard_default():
-    assert load_config().default_dataset == OUT.name == "royalebench-v6"
+def test_v6_remains_a_separate_historical_release():
+    assert OUT.name == "royalebench-v6"
 
 
 def test_merge_is_the_exact_pinned_union_with_original_grading():

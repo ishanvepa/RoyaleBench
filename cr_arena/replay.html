@@ -352,7 +352,9 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
       fmtTime(tick(cur)) + "  (" + (cur + 1) + "/" + N + ")";
     playBtn.innerHTML = playing ? "&#10074;&#10074;" : "&#9654;";
     var res = document.getElementById("result");
-    if (cur === N - 1 && D.result) {
+    if (cur === N - 1 && D.scenario_result) {
+      res.textContent = D.scenario_result;
+    } else if (cur === N - 1 && D.result) {
       var w = D.result.winner, c = D.result.crowns;
       res.textContent = (w === 2 ? "Draw" : w === 0 ? "Blue wins" : w === 1 ? "Red wins" :
         "Episode cut before the game ended") + "  (crowns " + c[0] + " - " + c[1] +

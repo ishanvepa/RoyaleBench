@@ -1,0 +1,267 @@
+{
+ "seed": 105,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 0,
+ "integrity_error": "log entries must be objects",
+ "outcome": {
+  "result": "unfinished",
+  "crowns_for": 0,
+  "crowns_against": 1,
+  "enemy_tower_damage_frac": 0.0,
+  "own_tower_damage_frac": 0.3567,
+  "ticks": 3100,
+  "tower_damage": 3556,
+  "spent_elixir": 0,
+  "plays": [],
+  "opponent_plays": [
+   {
+    "tick": 2820,
+    "card": "GoblinBarrel",
+    "x": 63000,
+    "y": 117000
+   },
+   {
+    "tick": 2860,
+    "card": "GoblinGang",
+    "x": 63000,
+    "y": 315000
+   },
+   {
+    "tick": 2900,
+    "card": "Princess",
+    "x": 261000,
+    "y": 315000
+   },
+   {
+    "tick": 2980,
+    "card": "Knight",
+    "x": 63000,
+    "y": 315000
+   },
+   {
+    "tick": 3020,
+    "card": "IceSpirits",
+    "x": 171000,
+    "y": 405000
+   }
+  ],
+  "elapsed_s": 20.0,
+  "rejected_actions": 0
+ },
+ "rewards": {
+  "reward": 0.0,
+  "win": 0.0,
+  "crowns_for": 0.0,
+  "crowns_against": 1.0,
+  "enemy_tower_damage_frac": 0.0,
+  "own_tower_damage_frac": 0.3567,
+  "completed": 0.0,
+  "integrity": 0.0,
+  "decisions": 0.0,
+  "fast_decision_frac": 0.0,
+  "spent_elixir": 0.0,
+  "tower_damage": 3556.0,
+  "objective_met": 0.0,
+  "rejected_actions": 0.0
+ },
+ "decisions_applied": 0,
+ "completed": false,
+ "termination_tick": 2700,
+ "timing_known": 0,
+ "task_config": {
+  "id": "02-reserve-counter-a",
+  "family": 2,
+  "title": "Allocate a counter across two attacks: position A",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench Tactics",
+  "version": "2.0.0",
+  "seed": 105,
+  "agent_team": 0,
+  "agent_deck": [
+   "HogRider",
+   "Musketeer",
+   "Cannon",
+   "IceGolemite",
+   "IceSpirits",
+   "Skeletons",
+   "Fireball",
+   "Log"
+  ],
+  "opponent_deck": [
+   "GoblinBarrel",
+   "Princess",
+   "GoblinGang",
+   "Knight",
+   "InfernoTower",
+   "Rocket",
+   "Log",
+   "IceSpirits"
+  ],
+  "player_deck_name": "hog-2.6-cycle",
+  "opponent_deck_name": "log-bait",
+  "csv_win_rate": null,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Keep both princess towers alive for 20 seconds, take at most 450 additional total crown-tower damage, and spend at most 6 elixir. At elapsed 6.0 seconds the opponent casts its reserved GoblinBarrel on your left princess tower (3.5, 6.5).",
+  "scenario": {
+   "start_tick": 2700,
+   "horizon_s": 20,
+   "elixir": 5,
+   "opponent_elixir": 3,
+   "order": [
+    "Log",
+    "IceGolemite",
+    "IceSpirits",
+    "Musketeer",
+    "HogRider",
+    "Cannon",
+    "Skeletons",
+    "Fireball"
+   ],
+   "opponent_order": [
+    "GoblinBarrel",
+    "Princess",
+    "GoblinGang",
+    "Knight",
+    "InfernoTower",
+    "Rocket",
+    "Log",
+    "IceSpirits"
+   ],
+   "units": [
+    {
+     "card": "GoblinGang",
+     "team": 1,
+     "x": 3.5,
+     "y": 13
+    }
+   ],
+   "grading": "defend",
+   "tower_hp": [
+    [
+     4824,
+     3052,
+     3052
+    ],
+    [
+     4824,
+     3052,
+     3052
+    ]
+   ],
+   "spend_budget": 6,
+   "damage_limit": 450,
+   "scheduled_attack": {
+    "after_s": 6,
+    "card": "GoblinBarrel",
+    "x": 3.5,
+    "y": 6.5
+   }
+  },
+  "release_gate": "Current coordinate references, negative controls and strategic contrasts are required.",
+  "control": false,
+  "validation_requirements": {
+   "spend_then_musketeer": 0,
+   "spend_then_recover": 0
+  },
+  "action_mode": "coordinates-v1",
+  "foundation_dataset": "royalebench/royalebench-v3@2",
+  "source_dataset": "royalebench/royalebench-tactics@2",
+  "source_config_sha256": "9eabf091903b8e02a2a666dcb62b70185f3e089c0c420acb8cfccb6873f83a44",
+  "task_id": "02-reserve-counter-a",
+  "instruction_sha256": "d993624678de0f0efad56eceb99d27ba70431d04cde0e8808366ecdd101127fd",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+   "agent_timeout_s": 3600,
+   "verifier_timeout_s": 600,
+   "cpus": 1,
+   "memory_mb": 2048,
+   "storage_mb": 4096
+  }
+ },
+ "rubric": "scenario-objective-coordinates-v1",
+ "tiebreak_reason": "crowns",
+ "benchmark": "RoyaleBench Tactics",
+ "task_id": "02-reserve-counter-a",
+ "scenario": {
+  "start_tick": 2700,
+  "horizon_s": 20,
+  "elixir": 5,
+  "opponent_elixir": 3,
+  "order": [
+   "Log",
+   "IceGolemite",
+   "IceSpirits",
+   "Musketeer",
+   "HogRider",
+   "Cannon",
+   "Skeletons",
+   "Fireball"
+  ],
+  "opponent_order": [
+   "GoblinBarrel",
+   "Princess",
+   "GoblinGang",
+   "Knight",
+   "InfernoTower",
+   "Rocket",
+   "Log",
+   "IceSpirits"
+  ],
+  "units": [
+   {
+    "card": "GoblinGang",
+    "team": 1,
+    "x": 3.5,
+    "y": 13
+   }
+  ],
+  "grading": "defend",
+  "tower_hp": [
+   [
+    4824,
+    3052,
+    3052
+   ],
+   [
+    4824,
+    3052,
+    3052
+   ]
+  ],
+  "spend_budget": 6,
+  "damage_limit": 450,
+  "scheduled_attack": {
+   "after_s": 6,
+   "card": "GoblinBarrel",
+   "x": 3.5,
+   "y": 6.5
+  }
+ },
+ "setup_hash": "f4331971edc83f2a59639657dc680803d773383fb9650d0bd847fe29e8a01503",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ },
+ "action_mode": "coordinates-v1"
+}

@@ -1,0 +1,225 @@
+{
+  "run_id": "8a64cce1-a84f-48cb-ab73-b82d876abf75",
+  "revision": "royalebench/royalebench-v7@1",
+  "harness": "codex-v1.0.0",
+  "model": "openai/gpt-6.1-sol",
+  "provider": "modal",
+  "concurrency": 4,
+  "inference_overrides": {},
+  "task_reviews": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "classification": "gameplay failure",
+      "finding": "Defended the opening Giant, but both Hog pushes were intercepted; one NO_DEPLOY rejection consumed an interval. The target retained 865 HP at the deadline.",
+      "final_tower_hp": [
+        [
+          4824,
+          202,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          865
+        ]
+      ],
+      "final_tick": 5360,
+      "elapsed_s": 28.0,
+      "game_over": false,
+      "winner": -1,
+      "capture_status": "completed",
+      "capture_errors": [],
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.2001,
+        "own_tower_damage_frac": 0.2608,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 14.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 32.0,
+        "tower_damage": 48.0,
+        "objective_met": 0.0,
+        "rejected_actions": 1.0
+      }
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "classification": "gameplay win",
+      "finding": "Used Cannon and Minions against Balloon, then offensive Fireball and Musketeer support through the disclosed second Minions wave. The starting Giant took the tower at 11.1 seconds; actual crown win.",
+      "final_tower_hp": [
+        [
+          4824,
+          160,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          0
+        ]
+      ],
+      "final_tick": 5022,
+      "elapsed_s": 11.1,
+      "game_over": true,
+      "winner": 0,
+      "capture_status": "completed",
+      "capture_errors": [],
+      "rewards": {
+        "reward": 1.0,
+        "win": 1.0,
+        "crowns_for": 1.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2646,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 6.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 16.0,
+        "tower_damage": 240.0,
+        "objective_met": 1.0,
+        "rejected_actions": 0.0
+      }
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "classification": "gameplay win",
+      "finding": "Used Inferno and Knight defense, then Princess, Barrel, Rocket and a second Barrel to take the target at 24.8 seconds. Won despite one WATER rejection and damage on the opposite own tower.",
+      "final_tower_hp": [
+        [
+          4824,
+          700,
+          1967
+        ],
+        [
+          4824,
+          3052,
+          0
+        ]
+      ],
+      "final_tick": 5296,
+      "elapsed_s": 24.8,
+      "game_over": true,
+      "winner": 0,
+      "capture_status": "completed",
+      "capture_errors": [],
+      "rewards": {
+        "reward": 1.0,
+        "win": 1.0,
+        "crowns_for": 1.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.3145,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 13.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 35.0,
+        "tower_damage": 1085.0,
+        "objective_met": 1.0,
+        "rejected_actions": 1.0
+      }
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "classification": "gameplay failure",
+      "finding": "Deployed Musketeer and Cannon, then Hog before controlling both threats. The enemy Balloon destroyed the right tower at 4.4 seconds; no enemy tower damage.",
+      "final_tower_hp": [
+        [
+          4824,
+          600,
+          0
+        ],
+        [
+          4824,
+          3052,
+          900
+        ]
+      ],
+      "final_tick": 4888,
+      "elapsed_s": 4.4,
+      "game_over": true,
+      "winner": 1,
+      "capture_status": "completed",
+      "capture_errors": [],
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 1.0,
+        "enemy_tower_damage_frac": 0.1969,
+        "own_tower_damage_frac": 0.5267,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 3.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 11.0,
+        "tower_damage": 600.0,
+        "objective_met": 0.0,
+        "rejected_actions": 0.0
+      }
+    }
+  ],
+  "harness_reported_cost_usd": null,
+  "cost_note": "Stock Codex metrics report token usage but cost is null. This is unknown cost, not zero.",
+  "telemetry_note": "Normalized model_calls are empty for this stock Codex format; raw trajectory.jsonl events and harness token metrics are preserved and reviewed directly.",
+  "metrics_sources": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "path": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\0\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": null,
+        "wall_clock_duration": 65.083,
+        "input_tokens": 307430,
+        "cached_input_tokens": 283414,
+        "cache_write_input_tokens": 23968,
+        "output_tokens": 673,
+        "reasoning_output_tokens": 44
+      }
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "path": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\2\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": null,
+        "wall_clock_duration": 25.281,
+        "input_tokens": 132684,
+        "cached_input_tokens": 114146,
+        "cache_write_input_tokens": 18514,
+        "output_tokens": 460,
+        "reasoning_output_tokens": 157
+      }
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "path": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\4\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": null,
+        "wall_clock_duration": 50.184,
+        "input_tokens": 287013,
+        "cached_input_tokens": 263017,
+        "cache_write_input_tokens": 23951,
+        "output_tokens": 711,
+        "reasoning_output_tokens": 105
+      }
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "path": "runs\\recent\\v7-design\\frontier\\8a64cce1-a84f-48cb-ab73-b82d876abf75\\6\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": null,
+        "wall_clock_duration": 15.155,
+        "input_tokens": 76909,
+        "cached_input_tokens": 60692,
+        "cache_write_input_tokens": 16202,
+        "output_tokens": 204,
+        "reasoning_output_tokens": 13
+      }
+    }
+  ],
+  "interpretation": "Four-task development calibration, one attempt per task. Native harnesses differ between models; this is not an isolated comparison of model weights or a stable model ranking."
+}

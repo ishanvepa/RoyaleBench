@@ -14,9 +14,32 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 [TODO: State the specific capability gap supported by the final results.]
 
-## RoyaleBench v6
+## RoyaleBench v8
 
-[RoyaleBench v6](docs/royalebench_v6.md) is the default benchmark for new jobs. It
+[RoyaleBench v8](docs/royalebench_v8.md) is the default benchmark: **all 14 v6@1
+tasks plus the four harder v7@1 tasks**, for 18 tasks total. Every source task
+package and grading rule is preserved. The score is mean binary objective success
+across all 18 equally weighted tasks; 12 require terminal match wins and six retain
+other v6 objectives. See the guide for pinned sources, validation and publication.
+Published as `royalebench/royalebench-v8@1` (`v8`); all 18 references and 54 invalid-input controls pass.
+Source model results below remain development results on their original datasets.
+
+## RoyaleBench v7 challenge cohort
+
+[RoyaleBench v7](docs/royalebench_v7.md) remains available separately and is included in v8. It adds critical cycling, a second-wave air
+race, supported-tank conversion, and split-lane defense into offense. Every task
+requires taking a crown and winning before its scoring window ends; the HP
+tiebreak cannot award success. It follows the latest v6 run, where Opus 5.5 scored
+10/14 (71.4%) and GPT-6.1 Sol scored 9/14 (64.3%). In the first full v7 calibration,
+**Opus scored 0/4 and GPT-6.1 Sol scored 2/4**, with all eight attempts independently
+replayed at integrity 1.
+All four references win, all 28 negative controls fail, and all container checks pass.
+These are different task sets with one attempt per task, so the scores are development
+calibration. See the guide for exact settings, traces and failure analysis.
+
+## Historical RoyaleBench v6
+
+[RoyaleBench v6](docs/royalebench_v6.md) remains available as the 14-task merged benchmark. It
 merges all 10 tasks from `royalebench/royalebench-v5@1` and all four from
 `royalebench/royalebench-win@2`, preserving every source task package and objective.
 Its score is mean binary objective success across 14 tasks: eight require match
@@ -56,7 +79,7 @@ set was chosen; compare models by running all ten tasks on v5 `@1`.
 against Planner using direct coordinate actions: `cr play SLOT X Y` and `cr wait`, with paused text
 observations and independent replay grading. Starting positions and objectives match the released
 v1 set; cycle-history and comeback candidates remain gated. Build with
-`uv run python -m cr_arena.build_v3 --jobs 2`. New jobs now default to RoyaleBench v6.
+`uv run python -m cr_arena.build_v3 --jobs 2`. New jobs now default to RoyaleBench v8.
 See the guide and manifest for release validation and model-run evidence.
 Current release: `royalebench/royalebench-v3@2` (tag `v3-support`), with capture provenance,
 compact opponent play observations and the Modal model endpoint allowlist. All 11 references pass isolated Docker
@@ -156,8 +179,11 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 
 ## Quick guides
 
+- [Demo video](demo/README.md): editable 76-second Remotion cut, captured gameplay, storyboard, and evidence.
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
-- [RoyaleBench v6](docs/royalebench_v6.md): default merged benchmark, source digests, retained grading, validation, and publication.
+- [RoyaleBench v8](docs/royalebench_v8.md): default 18-task merge of v6@1 and v7@1, exact source provenance, grading and validation.
+- [RoyaleBench v7](docs/royalebench_v7.md): separate harder tower-winning continuations, latest v6 audit, validation and frontier calibration.
+- [RoyaleBench v6](docs/royalebench_v6.md): historical merged benchmark, source digests, retained grading, validation, and publication.
 - [RoyaleBench Win](docs/royalebench_win.md): separate win-only benchmark, saturation audit, validation, and frontier-model runs.
 - [RoyaleBench v3](docs/royalebench_v3.md): historical continuation benchmark using coordinate actions, release validation, and run commands.
 - [RoyaleBench v5](docs/royalebench_v5.md): selected ten-case coordinate benchmark, source-run evidence, validation, and run commands.

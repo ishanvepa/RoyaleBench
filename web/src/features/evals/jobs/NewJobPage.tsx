@@ -7,6 +7,7 @@ import { z } from "zod";
 import { ApiError } from "@/api/client";
 import type { BenchmarkRow, Environment, JobSpecIn } from "@/api/types";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
+import { ProviderLogo } from "@/components/domain/ProviderLogo";
 import { Banner } from "@/components/ui/banner";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,7 @@ import { useBenchmark, useBenchmarks } from "../api/benchmarks";
 import { useEnvironment } from "../api/environment";
 import { useJobPreview, useStartJob } from "../api/jobs";
 import { useCanStart } from "../useCanStart";
-import { CUSTOM_MODEL, defaultLabel, defaultSecret, providerOf } from "./defaults";
+import { CUSTOM_MODEL, defaultLabel, defaultSecretForModel, usableSecrets } from "./defaults";
 import { TaskChecklist } from "./TaskChecklist";
 
 function makeSchema(maxConcurrency: number) {
@@ -106,7 +107,7 @@ function NewJobForm({ environment, benchmarks }: { environment: Environment; ben
       agent: initialAgent,
       modelChoice: initialModel,
       customModel: "",
-      secretName: defaultSecret(environment.secrets, providerOf(initialModel), environment.identity),
+      secretName: defaultSecretForModel(environment.secrets, initialModel, environment.identity),
       concurrency: Math.min(settings.default_concurrency, settings.max_concurrency),
       label: defaultLabel(initialDataset, initialModel),
     },
@@ -120,7 +121,6 @@ function NewJobForm({ environment, benchmarks }: { environment: Environment; ben
 
   // Defaults that follow the user's choices until they type their own value.
   const [labelTouched, setLabelTouched] = useState(false);
-  const [secretTouched, setSecretTouched] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
 
   const benchmark = useBenchmark(values.dataset || "_");
@@ -164,7 +164,7 @@ function NewJobForm({ environment, benchmarks }: { environment: Environment; ben
 
   function onModelChange(choice: string, custom: string) {
     const next = choice === CUSTOM_MODEL ? custom.trim() : choice;
-    if (!secretTouched) setValue("secretName", defaultSecret(environment.secrets, providerOf(next), environment.identity), { shouldValidate: true });
+    setValue("secretName", defaultSecretForModel(environment.secrets, next, environment.identity), { shouldValidate: true });
     if (!labelTouched) setValue("label", defaultLabel(values.dataset, next));
   }
 
@@ -184,7 +184,7 @@ function NewJobForm({ environment, benchmarks }: { environment: Environment; ben
     );
   }
 
-  const secretOptions = environment.secrets.filter((s) => !/modal/i.test(s));
+  const secretOptions = usableSecrets(environment.secrets);
 
   return (
     <form
@@ -314,7 +314,15 @@ function NewJobForm({ environment, benchmarks }: { environment: Environment; ben
                       onModelChange(choice, values.customModel);
                     }}
                     options={[
-                      ...settings.models.map((m) => ({ value: m.id, label: m.id })),
+                      ...settings.models.map((m) => ({
+                        value: m.id,
+                        label: (
+                          <span className="inline-flex max-w-full items-center gap-2 align-middle">
+                            <ProviderLogo logoUrl={m.logo_url} fallback={m.family.slice(0, 1).toUpperCase()} />
+                            <span className="truncate">{m.id}</span>
+                          </span>
+                        ),
+                      })),
                       { value: CUSTOM_MODEL, label: "Other model key…" },
                     ]}
                   />
@@ -344,7 +352,6 @@ function NewJobForm({ environment, benchmarks }: { environment: Environment; ben
                   id={c.id}
                   value={values.secretName}
                   onValueChange={(v) => {
-                    setSecretTouched(true);
                     setValue("secretName", v, { shouldValidate: true });
                   }}
                   aria-invalid={c.invalid}

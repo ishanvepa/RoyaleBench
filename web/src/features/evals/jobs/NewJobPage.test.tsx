@@ -88,6 +88,27 @@ describe("New job page", () => {
     expect(within(draft).getByText("Publish it first")).toBeInTheDocument();
   });
 
+  it.each([
+    "openai/Qwen/Qwen3.8-2.4T-A95B",
+    "openai/inkling-2-small",
+    "openai/deepseek-v4.1-flash-1017",
+    "openai/kimi-k3.1-pro",
+  ])("selects the shared Modal key when switching to %s after a manual key choice", async (model) => {
+    useJobHandlers();
+    const env = environment();
+    server.use(http.get("*/api/evals/environment", () => HttpResponse.json(environment({
+      secrets: [...env.secrets, "modal-qwen-api-key"],
+      settings: { ...env.settings, models: [...env.settings.models, { id: model, secret_env: "OPENAI_API_KEY", family: "openai" }] },
+    }))));
+    const { user } = renderApp("/evals/jobs/new?benchmark=alpha");
+    await user.click(await screen.findByLabelText("API key secret"));
+    await user.click(await screen.findByRole("option", { name: "anthropic-api-key-ben" }));
+    await user.click(screen.getByLabelText("Model"));
+    await user.click(await screen.findByRole("option", { name: model }));
+    expect(screen.getByLabelText("API key secret")).toHaveTextContent("modal-qwen-api-key");
+    await waitFor(() => expect(previews.at(-1)).toMatchObject({ model, secret_name: "modal-qwen-api-key" }), WAIT);
+  });
+
   it("starts the whole benchmark and opens the job monitor", async () => {
     useJobHandlers();
     const { router, user } = renderApp("/evals/jobs/new?benchmark=alpha");

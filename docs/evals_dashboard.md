@@ -35,6 +35,12 @@ Select the existing `mini_swe_agent`, the Qwen model preset and secret
 `modal-qwen-api-key`; use dataset revision `@3`, which allows the endpoint hostname.
 The preset adds the endpoint URL's `OPENAI_API_BASE` secret mapping and the
 standard harness options to both dashboard launches and their preview commands.
+The **API key secret** dropdown includes `modal-qwen-api-key`, the shared Modal
+proxy key used by the configured Modal models. Selecting Qwen, Inkling, DeepSeek
+or Kimi automatically selects this key, including after a manual key selection.
+You can choose another key after selecting the model. If the shared key is absent,
+the field stays empty so you can select a credential explicitly.
+Modal sandbox credentials and Modal base-URL secrets remain hidden from this dropdown.
 
 For [Inkling on Modal](inkling_modal.md), select `mini_swe_agent`, model
 `openai/inkling-2-small`, existing secret `modal-qwen-api-key` and dataset revision
@@ -77,7 +83,7 @@ Workspace billing access is separate from the Valkyrie sandbox provider connecti
 | Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
 | Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
 
-Model labels use family logos, including Qwen, Inkling (Thinking Machines), DeepSeek, and Kimi. Family detection checks the model name before the provider prefix, so OpenAI-compatible Modal endpoints retain the correct family logo. Kimi and Moonshot model names share the Kimi logo.
+Model labels use family logos, including Qwen, Inkling (Thinking Machines), DeepSeek, and Kimi. The New job model dropdown shows these logos beside each model and in the selected value. Family detection checks the model name before the provider prefix, so OpenAI-compatible Modal endpoints retain the correct family logo. Kimi and Moonshot model names share the Kimi logo.
 
 One job is one Valkyrie run: one model on a whole benchmark or a subset. To compare models, start one job
 per model. Valkyrie stays the source of truth; finished runs and downloaded costs are cached under

@@ -285,6 +285,16 @@ class ResultsCache:
         finally:
             tmp.unlink(missing_ok=True)
 
+    def invalidate_changed_tasks(self, run_id: str, old: dict | None, new: dict) -> None:
+        """Forget downloaded agent output (and cost) for tasks whose outcome changed, e.g. after a retry."""
+        if old is None:
+            return
+        before = {t["task"]: (t["reward"], t["error"]) for t in task_results(old)}
+        for t in task_results(new):
+            if before.get(t["task"]) != (t["reward"], t["error"]):
+                shutil.rmtree(self.task_dir(run_id, t["task"]), ignore_errors=True)
+                shutil.rmtree(self.replay_dir(run_id, t["task"]), ignore_errors=True)
+
     def task_dir(self, run_id: str, task_id: str) -> Path:
         return self._run(run_id) / "tasks" / self._safe(task_id)
 
@@ -340,6 +350,16 @@ def task_metrics(valkyrie: Valkyrie, cache: ResultsCache, run_id: str, task_id: 
 
 
 # ---------------------------------------------------------------------- loading many runs
+def results_stale(results: dict, run: dict) -> bool:
+    """A FINISHED run can be retried in place, so a cached results JSON is only valid while the run row agrees with it."""
+    cached_end, row_end = parse_ts(results.get("finished_at")), parse_ts(run.get("finished_at"))
+    if cached_end and row_end and cached_end != row_end:
+        return True
+    cached = (results.get("final_evaluation") or {}).get("final_score")
+    row = run.get("final_score")
+    return isinstance(cached, (int, float)) and isinstance(row, (int, float)) and abs(cached - row) > 1e-9
+
+
 def load_records(valkyrie: Valkyrie, cache: ResultsCache, runs: Iterable[dict], *, fetch_costs: bool,
                  workers: int = 4, on_progress: Callable[[int, int], None] | None = None) -> list[dict]:
     """A record per FINISHED run: run-list fields + launch info + task rows (with cost when known)."""
@@ -348,12 +368,16 @@ def load_records(valkyrie: Valkyrie, cache: ResultsCache, runs: Iterable[dict], 
     def load(run: dict) -> dict | None:
         run_id = str(run["id"])
         results = cache.results(run_id)
+        if results is not None and results_stale(results, run):
+            results = None  # the run was retried/resumed after this snapshot
         if results is None:
             try:
-                results = valkyrie.results(run_id)
+                fresh = valkyrie.results(run_id)
             except ValkyrieError:
                 return None
-            cache.save_results(run_id, results)
+            cache.invalidate_changed_tasks(run_id, cache.results(run_id), fresh)
+            cache.save_results(run_id, fresh)
+            results = fresh
         info = run_info(results)
         tasks = task_results(results)
         for t in tasks:

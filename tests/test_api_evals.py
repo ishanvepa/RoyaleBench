@@ -422,6 +422,16 @@ class BenchmarkTests(ApiCase):
         self.assertEqual({t["id"]: t["sync"] for t in d["tasks"]}, {"t1": "in sync", "t2": "modified", "t3": "in sync"})
         self.assertEqual(d["benchmark"]["state"], "modified")
 
+    def test_calibrated_difficulty_reaches_benchmark_and_task_pages_without_package_drift(self):
+        with (self.benchmarks / "alpha" / "benchmark.toml").open("a") as meta:
+            meta.write('\n[task_difficulties]\nt1 = "hard"\n')
+        detail = self.client.get("/api/evals/benchmarks/alpha").json()
+        self.assertEqual(detail["benchmark"]["state"], "published")
+        task = next(t for t in detail["tasks"] if t["id"] == "t1")
+        self.assertEqual((task["difficulty"], task["sync"]), ("hard", "in sync"))
+        task_detail = self.client.get("/api/evals/benchmarks/alpha/tasks/t1").json()
+        self.assertEqual(task_detail["task"]["difficulty"], "hard")
+
     def test_remote_only_benchmark_has_tasks_but_no_local_files(self):
         d = self.client.get("/api/evals/benchmarks/arena-lite").json()
         self.assertEqual((d["folder"], d["benchmark"]["local"], [t["local"] for t in d["tasks"]]), (None, False, [False] * 4))

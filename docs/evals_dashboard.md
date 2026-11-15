@@ -83,6 +83,14 @@ Workspace billing access is separate from the Valkyrie sandbox provider connecti
 | Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
 | Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
 
+Difficulty badges use `[task_difficulties]` in a benchmark's `benchmark.toml`
+when present, falling back to each task's `[metadata].difficulty`. This lets
+observed pass rates revise display labels while preserving published task
+packages and validated replays. Overrides accept `easy`, `medium` and `hard`;
+unknown task IDs or invalid labels appear as benchmark problems. See the
+[v9 calibration](royalebench_v9.md#difficulty-calibrated-from-observed-pass-rates)
+for the recorded pass rates and thresholds.
+
 Model labels use family logos, including Qwen, Inkling (Thinking Machines), DeepSeek, and Kimi. The New job model dropdown shows these logos beside each model and in the selected value. Family detection checks the model name before the provider prefix, so OpenAI-compatible Modal endpoints retain the correct family logo. Kimi and Moonshot model names share the Kimi logo.
 
 Enable **Full benchmark runs only** to exclude task subsets from the leaderboard and its manual cost
@@ -94,7 +102,15 @@ defaults to off and is saved in shareable URLs as `full_only=true`. It combines 
 One job is one Valkyrie run: one model on a whole benchmark or a subset. To compare models, start one job
 per model. Valkyrie stays the source of truth; finished runs and downloaded costs are cached under
 `runs/evals/` (git-ignored). Cost comes from the harness's own summary in each task's output (Claude Code
-writes one), or from complete Modal endpoint token usage at verified, pinned rates.
+writes one), or from complete Modal endpoint token usage at verified, pinned rates. Codex (GPT) runs
+write `"cost": null` with token counts only, so their cost is derived from those tokens at the OpenAI
+rate card in [`rb_evals/codex_inference.py`](../rb_evals/codex_inference.py) (`gpt-6-astra`, `gpt-6.1-sol`,
+`gpt-6.1-terra`, `gpt-6-luna`) and saved as `token_cost.json` beside the task output, with the rates used
+(later rate changes do not rewrite saved costs). Codex's input count already includes cached and
+cache-written tokens, so uncached input is the remainder; reasoning tokens are inside output. The logs do not
+say which cache-write retention was used, so writes are priced at the cheaper 30-minute rate; the 12-hour
+rate is about 2x higher, so those costs are a slight underestimate if the 12-hour window applied. Models
+without a listed rate keep an unknown cost.
 Task and job inference costs exclude infrastructure charges. The Modal endpoint
 billing table includes the same inference charges, so its total must not be added
 to task/job API spend. See [inference pricing and persistence](modal_billing.md#task-and-job-inference-costs).

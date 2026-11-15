@@ -2,3 +2,33 @@
 title = "RoyaleBench v9"
 kind = "eval"
 description = "21 unchanged tasks: all 18 v8@1 tasks plus Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball defenses."
+
+[difficulty_calibration]
+snapshot = "../../runs/royalebench-v9/difficulty.json"
+observed_at = "2026-11-15T19:47:54.770606+00:00"
+runs_considered = 12
+easy_min_pass_rate = 0.7
+medium_min_pass_rate = 0.3
+
+[task_difficulties]
+01-critical-cycle-conversion = "hard"
+01-cycle-and-connect = "medium"
+01-timed-spell-a = "medium"
+02-reserve-counter-a = "hard"
+02-second-wave-air-race = "hard"
+02-sustained-tower-race = "medium"
+03-bait-damage-sequence = "medium"
+03-spell-placement = "easy"
+03-supported-tank-conversion = "hard"
+03-tower-race-b = "hard"
+04-critical-cycle-and-connect = "hard"
+04-split-lane-conversion = "hard"
+05-hog-body-block = "hard"
+05-successive-threats-mirror = "hard"
+06-mini-pekka-kite = "medium"
+06-unequal-threats = "medium"
+07-balloon-fireball = "hard"
+07-counterpush = "medium"
+08-cycle-to-lethal-plus = "hard"
+09-tower-race-defend = "medium"
+10-protect-the-lead = "easy"

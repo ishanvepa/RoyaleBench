@@ -139,6 +139,27 @@ class LocalBenchmarkTests(unittest.TestCase):
         crlf = bm.discover_local(self.root)["alpha"].tasks["crlf"]
         self.assertTrue(any("CRLF" in p for p in bm.task_problems(crlf)))
 
+    def test_benchmark_difficulties_override_display_without_changing_packages(self):
+        path = self.root / "alpha"
+        before = bm.local_digests(bm.load_benchmark(path))
+        with (path / "benchmark.toml").open("a") as meta:
+            meta.write('\n[task_difficulties]\nt1 = "hard"\n')
+        bench = bm.load_benchmark(path)
+        self.assertEqual(bench.errors, [])
+        self.assertEqual(bench.tasks["t1"].difficulty, "hard")
+        self.assertEqual(bench.tasks["t2"].difficulty, "easy")
+        self.assertEqual(bench.tasks["t1"].config["metadata"]["difficulty"], "easy")
+        self.assertEqual(bm.local_digests(bench), before)
+
+    def test_invalid_difficulty_overrides_are_reported_without_hiding_tasks(self):
+        path = self.root / "alpha"
+        with (path / "benchmark.toml").open("a") as meta:
+            meta.write('\n[task_difficulties]\nt1 = "impossible"\nmissing = "hard"\n')
+        bench = bm.load_benchmark(path)
+        self.assertEqual(len(bench.errors), 2)
+        self.assertEqual(bench.tasks["t1"].difficulty, "easy")
+        self.assertEqual(set(bench.tasks), {"t1", "t2"})
+
     def test_sync_states_and_benchmark_state(self):
         states = bm.sync_states({"a": "1", "b": "2", "c": "3"}, {"a": "1", "b": "X", "d": "4"})
         self.assertEqual(states, {"a": "in sync", "b": "modified", "c": "not published", "d": "published only"})

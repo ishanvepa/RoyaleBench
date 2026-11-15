@@ -40,6 +40,51 @@ objective success rather than an all-task match-win rate. V8 contributes 18/21
 of the score and the three added defenses contribute 3/21. No source scores are
 presented as a new full v9 model run.
 
+## Difficulty calibrated from observed pass rates
+
+The dashboard difficulty labels use a **November 15, 2026, 11:47 a.m. PST**
+snapshot of the [v9 task ranking](http://127.0.0.1:5173/evals/benchmarks/royalebench-v9):
+**12 finished runs and 12 attempts per task**, excluding infrastructure errors.
+Each attempt has equal weight across the models, harnesses and revisions in
+those runs. These are empirical labels for this sample, updated explicitly
+when recalibrating; they do not change automatically as runs finish.
+
+Use **easy for pass rates >=70%**, **medium for >=30% and <70%**, and
+**hard for <30%**. This yields **2 easy, 8 medium and 11 hard tasks**.
+
+| Task | Passed / attempts | Pass rate | Difficulty |
+|---|---:|---:|---|
+| `02-reserve-counter-a` | 0/12 | 0.0% | hard |
+| `04-critical-cycle-and-connect` | 0/12 | 0.0% | hard |
+| `05-hog-body-block` | 0/12 | 0.0% | hard |
+| `07-balloon-fireball` | 0/12 | 0.0% | hard |
+| `02-second-wave-air-race` | 1/12 | 8.3% | hard |
+| `03-tower-race-b` | 1/12 | 8.3% | hard |
+| `01-critical-cycle-conversion` | 2/12 | 16.7% | hard |
+| `04-split-lane-conversion` | 2/12 | 16.7% | hard |
+| `03-supported-tank-conversion` | 3/12 | 25.0% | hard |
+| `05-successive-threats-mirror` | 3/12 | 25.0% | hard |
+| `08-cycle-to-lethal-plus` | 3/12 | 25.0% | hard |
+| `06-unequal-threats` | 4/12 | 33.3% | medium |
+| `01-cycle-and-connect` | 6/12 | 50.0% | medium |
+| `02-sustained-tower-race` | 6/12 | 50.0% | medium |
+| `06-mini-pekka-kite` | 6/12 | 50.0% | medium |
+| `01-timed-spell-a` | 8/12 | 66.7% | medium |
+| `03-bait-damage-sequence` | 8/12 | 66.7% | medium |
+| `07-counterpush` | 8/12 | 66.7% | medium |
+| `09-tower-race-defend` | 8/12 | 66.7% | medium |
+| `03-spell-placement` | 11/12 | 91.7% | easy |
+| `10-protect-the-lead` | 11/12 | 91.7% | easy |
+
+The exact counts, source endpoint, timestamp and thresholds are recorded in
+[`runs/royalebench-v9/difficulty.json`](../runs/royalebench-v9/difficulty.json).
+The `[task_difficulties]` table in
+[`benchmark.toml`](../benchmarks/royalebench-v9/benchmark.toml) supplies the
+labels for the benchmark, task and job pages. The v9 builder preserves this
+benchmark-level metadata. Published task files, task digests and reference
+resolution evidence retain their original bytes; the `task.toml` files inside
+the frozen packages still contain their historical difficulty estimates.
+
 ## Build and prepare resolutions
 
 ```sh

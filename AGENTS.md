@@ -54,7 +54,8 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/royalebench_win.md`](docs/royalebench_win.md): separate win-only continuation tasks, v3 saturation audit, calibration controls, and container/hosted validation.
 - [`docs/royalebench_v6.md`](docs/royalebench_v6.md): historical 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
 - [`docs/royalebench_v8.md`](docs/royalebench_v8.md): default 18-task merge of v6@1 and v7@1, exact source provenance, retained grading, runtime-specific validation and publication.
-- [`docs/royalebench_v9.md`](docs/royalebench_v9.md): 21-task extension of v8@1 with Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball, exact provenance, validation and all-task resolution playback.
+- [`docs/royalebench_v9.md`](docs/royalebench_v9.md): 21-task extension of v8@1 with Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball, exact provenance, validation, all-task resolution playback and observed pass-rate difficulty calibration.
+- [`runs/royalebench-v9/difficulty.json`](runs/royalebench-v9/difficulty.json): timestamped 12-run task pass-rate snapshot and thresholds behind v9's benchmark-level difficulty labels.
 - [`runs/royalebench-v9/checks.json`](runs/royalebench-v9/checks.json): source identity, passing references, publication, live API resolution hashes and browser playback checks for all 21 v9 tasks.
 - [`runs/royalebench-v8/merge.json`](runs/royalebench-v8/merge.json): all 18 source task digests, archive checksums, objectives and packaged protocol hashes.
 - [`runs/royalebench-v8/checks.json`](runs/royalebench-v8/checks.json): merged source identity, protected reference and negative-control checks, regression tests and publication evidence.

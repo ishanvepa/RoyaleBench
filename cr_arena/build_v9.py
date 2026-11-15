@@ -10,6 +10,9 @@ import json
 from pathlib import Path
 import shutil
 import tempfile
+import tomllib
+
+import tomli_w
 
 from valkyrie.sdk import ValkyrieClient
 from valkyrie.sdk.task_content import task_digest
@@ -106,9 +109,11 @@ def build():
         validation="See runs/royalebench-v9/checks.json and resolution-check.json. Source model scores are not v9 run results.")
     write_json(OUT / "manifest.json", manifest)
     write_json(EVIDENCE / "merge.json", manifest)
-    (OUT / "benchmark.toml").write_text(
-        '[benchmark]\ntitle = "RoyaleBench v9"\nkind = "eval"\n'
-        'description = "21 unchanged tasks: all 18 v8@1 tasks plus Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball defenses."\n')
+    metadata_path = OUT / "benchmark.toml"
+    metadata = tomllib.loads(metadata_path.read_text(encoding="utf-8")) if metadata_path.exists() else {}
+    metadata["benchmark"] = dict(title="RoyaleBench v9", kind="eval",
+        description="21 unchanged tasks: all 18 v8@1 tasks plus Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball defenses.")
+    metadata_path.write_text(tomli_w.dumps(metadata), encoding="utf-8", newline="\n")
     (OUT / "README.md").write_text(
         "# RoyaleBench v9\n\nAll 18 `royalebench-v8@1` tasks plus three unchanged `royalebench-tactics@6` defenses.\n"
         "The Hog package is identical to the linked Tactics @5 pilot. Source task IDs, instructions, resources, references and grading are preserved.\n"

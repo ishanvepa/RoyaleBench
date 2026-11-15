@@ -183,6 +183,14 @@ storage_mb = 4096
 
 Set timeouts from what the task needs, with headroom. Keep `cpus`, `memory_mb`, and `storage_mb` identical across models in a comparison. Keep real tasks distinct from smoke tests by `kind` in `benchmark.toml`; smoke tasks are excluded from reported results.
 
+For published packages, revise dashboard difficulty labels with a
+`[task_difficulties]` table in the parent `benchmark.toml`, mapping task IDs to
+`easy`, `medium` or `hard`. Record the observed attempts, passes, thresholds
+and capture time alongside the benchmark evidence. The override changes display
+metadata without editing task bytes or invalidating source digests. Tasks
+without an override retain their `task.toml` difficulty. See the
+[v9 calibration](royalebench_v9.md#difficulty-calibrated-from-observed-pass-rates).
+
 ## Writing `instruction.md`
 
 The instruction is the entire interface. Write it so that a careful human could complete the task with no other information.

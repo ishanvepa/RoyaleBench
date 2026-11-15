@@ -23,6 +23,7 @@ from pathlib import Path
 from statistics import mean
 
 from .jobs import parse_ts
+from .codex_inference import read_codex_metrics
 from .modal_inference import record_inference_cost
 from .valkyrie import Valkyrie, ValkyrieError
 
@@ -88,6 +89,9 @@ def read_agent_metrics(root: Path) -> dict | None:
         if isinstance(data, dict) and str(data.get("trajectory_format", "")).startswith("mini-swe-agent"):
             model = (((data.get("info") or {}).get("config") or {}).get("model") or {}).get("model_name", "")
             return record_inference_cost(root, model, _mini_metrics(data), hashlib.sha256(raw).hexdigest())
+    # Codex reports tokens with "cost": null; price them. A numeric harness cost is never overridden.
+    if (priced := read_codex_metrics(root)) is not None:
+        return priced
     for name in ("summary.json", "metrics_total.json"):
         for path in sorted(root.rglob(name)):
             try:

@@ -1,0 +1,181 @@
+{
+  "source": "http://127.0.0.1:5173/api/evals/benchmarks/royalebench-v9/ranking",
+  "observed_at": "2026-11-15T19:47:54.770606+00:00",
+  "runs_considered": 12,
+  "method": "Equal weight per attempt across models, harnesses and revisions in finished runs; infrastructure errors excluded.",
+  "thresholds": {
+    "easy_min_pass_rate": 0.7,
+    "medium_min_pass_rate": 0.3,
+    "hard_max_pass_rate_exclusive": 0.3
+  },
+  "tasks": [
+    {
+      "task": "02-reserve-counter-a",
+      "attempts": 12,
+      "solved": 0,
+      "pass_rate": 0.0,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "attempts": 12,
+      "solved": 0,
+      "pass_rate": 0.0,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "05-hog-body-block",
+      "attempts": 12,
+      "solved": 0,
+      "pass_rate": 0.0,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "07-balloon-fireball",
+      "attempts": 12,
+      "solved": 0,
+      "pass_rate": 0.0,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "attempts": 12,
+      "solved": 1,
+      "pass_rate": 0.08333333333333333,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "03-tower-race-b",
+      "attempts": 12,
+      "solved": 1,
+      "pass_rate": 0.08333333333333333,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "01-critical-cycle-conversion",
+      "attempts": 12,
+      "solved": 2,
+      "pass_rate": 0.16666666666666666,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "attempts": 12,
+      "solved": 2,
+      "pass_rate": 0.16666666666666666,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "attempts": 12,
+      "solved": 3,
+      "pass_rate": 0.25,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "05-successive-threats-mirror",
+      "attempts": 12,
+      "solved": 3,
+      "pass_rate": 0.25,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "08-cycle-to-lethal-plus",
+      "attempts": 12,
+      "solved": 3,
+      "pass_rate": 0.25,
+      "infra_errors": 0,
+      "difficulty": "hard"
+    },
+    {
+      "task": "06-unequal-threats",
+      "attempts": 12,
+      "solved": 4,
+      "pass_rate": 0.3333333333333333,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "01-cycle-and-connect",
+      "attempts": 12,
+      "solved": 6,
+      "pass_rate": 0.5,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "02-sustained-tower-race",
+      "attempts": 12,
+      "solved": 6,
+      "pass_rate": 0.5,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "06-mini-pekka-kite",
+      "attempts": 12,
+      "solved": 6,
+      "pass_rate": 0.5,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "01-timed-spell-a",
+      "attempts": 12,
+      "solved": 8,
+      "pass_rate": 0.6666666666666666,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "03-bait-damage-sequence",
+      "attempts": 12,
+      "solved": 8,
+      "pass_rate": 0.6666666666666666,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "07-counterpush",
+      "attempts": 12,
+      "solved": 8,
+      "pass_rate": 0.6666666666666666,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "09-tower-race-defend",
+      "attempts": 12,
+      "solved": 8,
+      "pass_rate": 0.6666666666666666,
+      "infra_errors": 0,
+      "difficulty": "medium"
+    },
+    {
+      "task": "03-spell-placement",
+      "attempts": 12,
+      "solved": 11,
+      "pass_rate": 0.9166666666666666,
+      "infra_errors": 0,
+      "difficulty": "easy"
+    },
+    {
+      "task": "10-protect-the-lead",
+      "attempts": 12,
+      "solved": 11,
+      "pass_rate": 0.9166666666666666,
+      "infra_errors": 0,
+      "difficulty": "easy"
+    }
+  ]
+}

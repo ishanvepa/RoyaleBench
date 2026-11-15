@@ -37,6 +37,7 @@ class LocalTask:
     path: Path
     config: dict = field(default_factory=dict)
     config_error: str = ""
+    difficulty_override: str = ""
 
     def _get(self, section: str, key: str, default=None):
         value = self.config.get(section, {})
@@ -56,7 +57,7 @@ class LocalTask:
 
     @property
     def difficulty(self) -> str:
-        return str(self._get("metadata", "difficulty", "") or "")
+        return self.difficulty_override or str(self._get("metadata", "difficulty", "") or "")
 
     @property
     def agent_timeout_s(self) -> float | None:
@@ -165,6 +166,18 @@ def load_benchmark(path: Path) -> LocalBenchmark | None:
         bench.tasks[task_id] = LocalTask(task_id, folder, config, err)
         if err:
             bench.errors.append(f"{task_id}/{err}")
+    # Display calibration belongs outside the immutable, published task packages.
+    difficulties = meta.get("task_difficulties", {})
+    if not isinstance(difficulties, dict):
+        bench.errors.append("benchmark.toml: task_difficulties must be a table")
+    else:
+        for task_id, difficulty in difficulties.items():
+            if task_id not in bench.tasks:
+                bench.errors.append(f"benchmark.toml: unknown task in task_difficulties: {task_id}")
+            elif difficulty not in ("easy", "medium", "hard"):
+                bench.errors.append(f"benchmark.toml: invalid difficulty for {task_id}: {difficulty!r}")
+            else:
+                bench.tasks[task_id].difficulty_override = difficulty
     return bench
 
 

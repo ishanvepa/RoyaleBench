@@ -319,6 +319,122 @@ towers retain their arena-defined exclusion block.
 Replay interpolation is a straight-line estimate between recorded frames; a
 replay cannot recover live events or pending placements absent from its trace.
 
+## Classic card portraits
+
+The live hand and its Next preview use 35 original pixel-style SVG portraits in
+`cr_arena/card_art.js`, replacing the earlier emoji. The artwork uses a shared
+48×60 viewBox, stepped silhouettes, dark outlines, hard-edged shading, and the
+arena's muted colours. Common, rare, epic and legendary cards have silver, amber,
+purple and pale teal frames. Selected and pending states override those frames
+with gold. The name has a shaded backing so it stays readable over the portrait.
+
+`CardArt.mount` paints normal, pending and Next cards through the same allowlisted
+SVG builder. It caches the SVG strings, embeds no fonts or remote images, and
+uses text for the existing fallback on cards outside `CLASSIC_DECKS`.
+`rendering.embed_renderer` inlines the portrait script at the live page's
+`__CARD_ART__` marker. The arena renderer continues to provide units and placement
+previews; these portraits are hand UI artwork.
+
+![All 35 original classic card portraits](images/card-portraits.png)
+
+Inspect the collection locally by serving the repository root and opening
+[`tests/visual/cards.html`](../tests/visual/cards.html):
+
+```sh
+uv run python -m http.server 8793 --bind 127.0.0.1
+# Open http://127.0.0.1:8793/tests/visual/cards.html
+```
+
+### Portrait references
+
+All 35 non-evolved card portraits were fetched and visually checked on
+2026-11-14 before drawing the new artwork. The source is
+[RoyaleAPI's card image archive](https://github.com/RoyaleAPI/cr-api-assets/tree/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards),
+with names and rarities checked against its
+[card metadata](https://royaleapi.github.io/cr-api-data/json/cards.json).
+Each link below points to the inspected image at asset commit
+`b4530a1043b213ee2baf9c50a3d0d7fae22c2313`. Downloaded Supercell artwork is kept
+only as a local reference, outside the shipped assets. The implemented SVGs are
+original simplified drawings.
+
+| Engine key | Reference portrait | Identifying features |
+| --- | --- | --- |
+| `Archer` | [Archers](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/archers.png) | Bright pink blunt bob and fringe; blue eyes; green tunic; wooden bow and arrow across the foreground. |
+| `Arrows` | [Arrows](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/arrows.png) | A diagonal shower of wooden arrows with red fletching and pale steel points against blue sky. |
+| `BabyDragon` | [Baby Dragon](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/baby-dragon.png) | Round green dragon head; light green snout and horns; big dark open smile, tiny fangs and turquoise tongue. |
+| `Balloon` | [Balloon](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/balloon.png) | Large blue balloon envelope with tan rope net; grinning skeleton in wooden basket carrying a black bomb. |
+| `Bats` | [Bats](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/bats.png) | Blue-violet flying bats; long triangular ears with pink interiors; large pale cyan eyes and small white fangs. |
+| `BattleRam` | [Battle Ram](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/battle-ram.png) | Wooden ram with a large faceted dark gray iron head and metal rings, carried by blond barbarians. |
+| `Cannon` | [Cannon](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/cannon.png) | Large black/gunmetal cannon muzzle and long barrel with blue band, on a square honey-brown timber mount. |
+| `ElectroWizard` | [Electro Wizard](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/electro-wizard.png) | Tall spiky black hair; huge black brows and handlebar moustache; blue eyes; cyan lightning framing the face. |
+| `Fireball` | [Fireball](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/fireball.png) | Bright white-yellow fireball head with orange-red teardrop flame trail and small embers on dark red. |
+| `Giant` | [Giant](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/giant.png) | Broad square face; orange eyebrows and chinstrap sideburns; blue eyes; heavy brown tunic with a shoulder stud. |
+| `GoblinBarrel` | [Goblin Barrel](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/goblin-barrel.png) | Grinning green goblin with long pointed ears and broad nose emerging from a metal-banded wooden barrel. |
+| `GoblinGang` | [Goblin Gang](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/goblin-gang.png) | Cluster of green goblin faces with pointed ears, wide grins, daggers and blue wraps. |
+| `Golem` | [Golem](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/golem.png) | Huge blocky gray/purple stone face; sharply recessed bright magenta eyes; layered rock brow and underbite. |
+| `HogRider` | [Hog Rider](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/hog-rider.png) | Dark brown skin; black mohawk, thick brows and beard; gold earring; joyous open mouth and broad white teeth. |
+| `IceGolemite` | [Ice Golem](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/ice-golem.png) | Pale icy blue block face; jagged cobalt crystal crown; cyan eyes; dark angular nose and protruding ice teeth. |
+| `IceSpirits` | [Ice Spirit](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/ice-spirit.png) | Small bright cyan spirit; pointed icy crown and side fins; glowing blue eyes; huge happy dark open mouth. |
+| `InfernoTower` | [Inferno Tower](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/inferno-tower.png) | Tall dark metal tower with orange furnace glow, gold cap and a bright yellow/orange fiery orb at its top. |
+| `Knight` | [Knight](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/knight.png) | Rounded steel helmet with chain sides; thick golden brows and sweeping golden moustache; blue eyes and blue tunic. |
+| `LavaHound` | [Lava Hound](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/lava-hound.png) | Charcoal-brown faceted rock beast face; angular ridge/horns; intensely glowing orange eyes and lava cracks. |
+| `Lightning` | [Lightning](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/lightning.png) | Broad faceted potion bottle with cork, pale shoulder and deep blue liquid, surrounded by branching white lightning. |
+| `Log` | [The Log](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/the-log.png) | Diagonal brown rolling log with pale concentric end grain, rough bark and large triangular dark metal spikes. |
+| `MegaMinion` | [Mega Minion](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/mega-minion.png) | Armored gunmetal minion with pale icy eyes, slotted grille mask, horned helmet and blue wings. |
+| `MiniPekka` | [Mini P.E.K.K.A](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/mini-pekka.png) | Rounded slate-blue steel helmet and chest; small side horns; single bright cyan visor; blue shoulder details. |
+| `Minions` | [Minions](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/minions.png) | Blue flying gargoyle; swept pointed ears/horns, membranous wings, purple eyes and white fangs. |
+| `Musketeer` | [Musketeer](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/musketeer.png) | Purple hair with a side ringlet; silver-blue peaked helmet; blue eyes and brown wooden musket foreground. |
+| `Pekka` | [P.E.K.K.A](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/pekka.png) | Dark indigo steel horned helmet; magenta horns and eyes; pale metallic T-shaped skull-like faceplate. |
+| `Poison` | [Poison](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/poison.png) | Tall glass vial with brown cork and red-orange liquid, floating in orange toxic smoke with subtle skull shapes. |
+| `Princess` | [Princess](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/princess.png) | Long swept brown hair, small gold tiara, large dark eyes, blue neck bow/cape and bow with arrows in foreground. |
+| `Rocket` | [Rocket](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/rocket.png) | Olive-gray cylindrical rocket with thick metal bands and fin/nose shapes; bright gold exhaust and flying sparks. |
+| `Skeletons` | [Skeletons](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/skeletons.png) | Ivory grinning skull with big black eye sockets and nasal opening; bony fingers and small steel sword. |
+| `Tesla` | [Tesla](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/tesla.png) | Cross-braced orange-brown wooden tower; blue blocks and metallic coil on top emitting cyan-white sparks. |
+| `Tombstone` | [Tombstone](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/tombstone.png) | Teal-gray grave marker with an eerie pale skeletal hand reaching up in front, mist and a grave base. |
+| `Wizard` | [Wizard](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/wizard.png) | Blue hood with pale gold trim; brown pointed beard and moustache; heavy brows and a confident smile. |
+| `Xbow` | [X-Bow](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/x-bow.png) | Broad wooden crossbow limbs with steel center/bolt, mounted on a squat blue-gray stone and iron pedestal. |
+| `Zap` | [Zap](https://raw.githubusercontent.com/RoyaleAPI/cr-api-assets/b4530a1043b213ee2baf9c50a3d0d7fae22c2313/cards/zap.png) | Tall narrow corked glass vial with bright blue liquid and jagged white electric branches against deep blue. |
+
+### Portrait inspection and validation
+
+REA 6.9.0 analyzed a copy of the live page's original inline script as inert
+JavaScript. The extracted source SHA-256 was
+`7951a24592c199203d0b3ae16b6f719e548527fc3547f3a56214cf9e11fc3459`;
+complete analysis Evidence ID:
+`ev_017c98546e49803057488ac24e94ab2a81598ac9d9556762852c42efb19314d5`.
+It recovered `buildHand`, `faceOf` and the literal `CARD_FACE` properties, with
+candidate calls to `faceOf` at the Next, pending and normal card paint sites.
+Source inspection confirmed those three paint sites and the separate selection
+handlers. Application and call-flow coverage remain partial: this is static
+code evidence, and REA did not create the portraits or judge visual similarity.
+The evidence bundle and original script are in the git-ignored
+`output/playwright/cards/` folder. This invocation used the installed 26.5 SDK:
+
+```sh
+SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX26.5.sdk \
+  npx --yes rea-agents@6.9.0 analyze-javascript-application output/playwright/cards \
+  --source-path live-before.js --detail summary \
+  --evidence_output output/playwright/cards/rea-before.json --format json
+```
+
+Chromium checked all seven deck fixtures at 390×844 and 1280×1050, before and
+after (28 layouts), plus keyboard and pointer selection, Escape, the gold
+selection border, pending cards, low-elixir dimming and safe text fallback.
+The gallery renders 35 distinct SVGs with no invalid path geometry or console
+errors. Reference metadata confirms the rarity of every portrait.
+Matched screenshots differ only within the hand and Next card regions:
+`(25,697)–(365,782)` on phone and `(286,884)–(730,994)` on desktop.
+The screenshots use seed-2 engine snapshots with full elixir and a paused clock;
+they are deterministic UI fixtures, not live match rollouts.
+
+![The new portraits in the phone hand](images/card-hand-phone.png)
+
+Checks: `node --check cr_arena/card_art.js`,
+`node --test tests/battle_renderer.test.cjs` (32 passed), and
+`uv run --frozen python -m unittest discover -s tests -p 'test_rendering.py'`
+(7 passed). The rendering test verifies that the card set matches
+`CLASSIC_DECKS` and that the served live page embeds the art without asset requests.
+
 ## Live HUD and placement cues
 
 The live HUD follows the layout of the Arena 1 reference video while keeping the
@@ -326,8 +442,8 @@ original artwork. A timer box shows "Time left", "Overtime", or "Paused", and a
 badge appears when elixir runs at x2 or x3. Each side has a crown badge. The hand
 tray shows a "Next:" preview card, four portrait cards with the elixir cost in a drop
 at the bottom, and a ten-segment elixir bar with the whole-elixir count beneath them.
-Hand art is defined only for the 35 distinct cards in the seven `CLASSIC_DECKS`.
-Other cards fall back to the shared unit icon. The cards, next card, timer, crowns,
+Hand art uses the original pixel portraits above for the 35 distinct cards in
+the seven `CLASSIC_DECKS`. Other cards fall back to the shared unit icon. The cards, next card, timer, crowns,
 and elixir meter have accessible labels.
 
 `placement.draw` still shades each blocked half-cell. It also outlines the boundary

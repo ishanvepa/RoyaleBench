@@ -1,0 +1,53 @@
+<!doctype html>
+<!-- Serve the repository root and open /tests/visual/cards.html to inspect every portrait. -->
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classic card portraits · RoyaleBench</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #111c2a; color: #e8e6df; font: 14px/1.4 system-ui, sans-serif; }
+  main { max-width: 1120px; margin: auto; padding: 44px 44px 32px; }
+  header { border-bottom: 1px solid #334151; padding-bottom: 23px; margin-bottom: 28px; }
+  .eyebrow { color: #b6d1c6; text-transform: uppercase; font: 11px monospace; letter-spacing: .2em; }
+  h1 { font-size: 34px; letter-spacing: -.035em; margin: 6px 0; font-weight: 650; }
+  header p { color: #9cabb6; margin: 0; }
+  #cards { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 24px 20px; }
+  figure { margin: 0; min-width: 0; }
+  .portrait { aspect-ratio: 4/5; border: 2px solid #a1b2bd; border-radius: 6px; overflow: hidden;
+              box-shadow: 0 3px 0 #080f18, 0 0 0 2px #080f18; }
+  .portrait[data-rarity="rare"] { border-color: #e9aa61; }
+  .portrait[data-rarity="epic"] { border-color: #bc82e2; }
+  .portrait[data-rarity="legendary"] { border-color: #8ed6d5; }
+  .ic, svg { display: block; width: 100%; height: 100%; }
+  svg { image-rendering: pixelated; }
+  figcaption { margin-top: 9px; font-size: 11px; font-weight: 600; }
+  .rarity { margin-top: 2px; color: #8498a8; font: 9px monospace; text-transform: uppercase; letter-spacing: .08em; }
+  footer { margin-top: 28px; padding-top: 18px; border-top: 1px solid #334151; color: #9cabb6; font-size: 11px; }
+  a { color: #bdd5c4; }
+  @media (max-width: 650px) { main { padding: 24px; } #cards { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px 12px; } h1 { font-size: 28px; } }
+</style>
+<main>
+  <header><div class="eyebrow">RoyaleBench / Classic collection</div><h1>Small portraits. Big personalities.</h1>
+    <p>35 original pixel portraits · 7 classic decks · one shared pixel-art style</p></header>
+  <div id="cards"></div>
+  <footer>48 × 60 pixel grid. Original SVG artwork, embedded in the live hand and Next preview.
+    Reference sources and validation: <a href="../../docs/rendering.md#classic-card-portraits">rendering notes</a>.</footer>
+</main>
+<script src="../../cr_arena/card_art.js"></script>
+<script>
+  const names = {Archer: 'Archers', IceGolemite: 'Ice Golem', IceSpirits: 'Ice Spirit', Log: 'The Log',
+    MiniPekka: 'Mini P.E.K.K.A', Pekka: 'P.E.K.K.A', Xbow: 'X-Bow'};
+  for (const name of CardArt.names) {
+    const figure = document.createElement('figure');
+    const frame = document.createElement('div'); frame.className = 'portrait';
+    const icon = document.createElement('span'); icon.className = 'ic'; frame.append(icon);
+    CardArt.mount(icon, name);
+    const caption = document.createElement('figcaption');
+    caption.textContent = names[name] || name.replace(/([a-z])([A-Z])/g, '$1 $2');
+    const rarity = document.createElement('div'); rarity.className = 'rarity'; rarity.textContent = frame.dataset.rarity;
+    figure.append(frame, caption, rarity); document.querySelector('#cards').append(figure);
+  }
+  document.body.dataset.ready = '1';
+</script>
+</html>

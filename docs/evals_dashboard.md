@@ -267,9 +267,9 @@ execution path for one task, not the complete eleven-task benchmark.
 ## Legacy
 
 Leaderboard, Play (you against a bot or model, turn by turn, or two models in a battle), Decks, Overview,
-job and match pages with replays, and Models. They read the arena database: `DATABASE_URL` from `.env`
-(the shared Postgres), else `runs/arena.db`. The real-time game for the phone-play link is separate and
-unchanged: `uv run python -m cr_arena.live` (see [phone play](phone_play.md)).
+job and match pages with replays, and Models. They read the local SQLite arena database from
+`CR_ARENA_DB` in `.env`, or `runs/arena.db` by default. The real-time game for the phone-play link is
+separate and unchanged: `uv run python -m cr_arena.live` (see [phone play](phone_play.md)).
 
 ## Safety
 
@@ -288,7 +288,8 @@ unchanged: `uv run python -m cr_arena.live` (see [phone play](phone_play.md)).
 | `ROYALEBENCH_FAKE_VALKYRIE=1` | Same as `--fake`. |
 | `ROYALEBENCH_EVALS_READONLY=1` | Read-only mode. |
 | `ROYALEBENCH_EVALS_CONFIG`, `ROYALEBENCH_BENCHMARKS_DIR`, `ROYALEBENCH_CACHE_DIR` | Override `evals.toml`, `benchmarks/` and `runs/evals/`. |
-| `ROYALEBENCH_ARENA_DB` | A SQLite path or Postgres URL for the Legacy pages (default: `DATABASE_URL`, else `runs/arena.db`). |
+| `ROYALEBENCH_ARENA_DB` | Optional SQLite path for the Legacy pages; overrides `CR_ARENA_DB`. |
+| `CR_ARENA_DB` | SQLite file path used by arena tools (default: `runs/arena.db`). |
 | `ROYALEBENCH_STATIC_DIR` | Serve a build other than `web/dist`. |
 
 ## Changing the API or the app

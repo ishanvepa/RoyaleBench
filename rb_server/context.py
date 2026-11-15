@@ -113,7 +113,7 @@ class ArenaHandle:
                 if self._db is None:
                     try:
                         self._db = DB(self._target)
-                    except Exception as exc:  # noqa: BLE001 - a bad URL, a down database, a missing driver
+                    except Exception as exc:  # noqa: BLE001 - inaccessible path or incompatible local database
                         raise ApiError(503, "database_unavailable", f"Cannot open the arena database: {type(exc).__name__}: {exc}") from exc
         return self._db
 

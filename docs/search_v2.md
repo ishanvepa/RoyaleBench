@@ -171,8 +171,9 @@ Artifacts: [summary](../runs/search-v2/held-out/summary.json),
 [trace verification](../runs/search-v2/held-out/replay_verification.json), and
 [fresh-game reproduction](../runs/search-v2/reproducibility.json).
 Decision logs are saved as `runs/search-v2/held-out/logs/*.jsonl.gz`.
-The [test report](../runs/search-v2/validation.json) records 44 tests run: 35 passed,
-9 PostgreSQL integration tests skipped because `ARENA_TEST_DATABASE_URL` was unset.
+The historical [test report](../runs/search-v2/validation.json), from before the
+Postgres adapter was removed, records 44 tests run: 35 passed and 9 optional
+PostgreSQL integration tests skipped because `ARENA_TEST_DATABASE_URL` was unset.
 
 The useful next experiments are improving opponent responses in the losing
 Giant/Hog and Lava/Giant matchups, reducing work on small menus, and comparing

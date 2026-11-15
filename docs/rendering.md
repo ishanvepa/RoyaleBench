@@ -698,8 +698,9 @@ upright ground-troop poses, tower ruins, spell volleys, and placement cues remai
 active together. Damage feedback uses the shared translucent overlay after each
 miniature, preserving the new artwork's team colors.
 
-The combined checkout passes `node --test tests/battle_renderer.test.cjs` (32 tests)
-and `uv run --frozen python -m unittest discover -s tests` (79 tests, 9 Postgres
+At the time of this combined rendering validation, the checkout passed
+`node --test tests/battle_renderer.test.cjs` (32 tests) and
+`uv run --frozen python -m unittest discover -s tests` (79 tests, 9 optional Postgres
 integration tests skipped). Chromium smoke checks render all seven generated
 classic-deck scenes in both orientations and the live HUD at 390×844 using recorded
 snapshots. These browser checks report no JavaScript errors; the HUD check also

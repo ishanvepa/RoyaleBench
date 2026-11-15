@@ -91,10 +91,7 @@ def launch_battle(root: Path, config_text: str, names: list[str], mode: str, par
     command = [sys.executable, "-u", "-m", "cr_arena.tournament", "--config", str(config_path), "--job", name,
                "--players", ",".join(names), "--deck-mode", mode, "--parallel", str(parallel)]
     env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
-    if db_target.startswith(("postgres://", "postgresql://")):
-        env["DATABASE_URL"] = db_target  # the URL carries credentials: keep it off the command line and out of process lists
-    else:
-        command += ["--db", db_target]
+    command += ["--db", db_target]
     with log_path.open("wb") as log:
         process = subprocess.Popen(command, cwd=root, stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT, env=env,
                                    creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)

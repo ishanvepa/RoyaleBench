@@ -19,7 +19,7 @@ from .players import LLMPlayer, build_player
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="config.toml")
-    ap.add_argument("--db", help="Override DATABASE_URL with a SQLite path or Postgres URL")
+    ap.add_argument("--db", help="SQLite database path (default: CR_ARENA_DB or runs/arena.db)")
     args = ap.parse_args()
     load_dotenv()
     cfg = tomllib.loads(Path(args.config).read_text())

@@ -8,7 +8,6 @@ dependencies = [
     "numpy>=2.5.4",
     "openai>=3.46.0",
     "python-dotenv>=1.2.4",
-    "psycopg[binary]>=3.2,<4",
     "royalegym[all]>=0.1.28",
     "tomli-w>=1.2.0",
     "valkyrie-sdk>=0.36,<1",

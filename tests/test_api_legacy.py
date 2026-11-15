@@ -343,15 +343,14 @@ class BattleTests(LegacyCase):
         self.assertEqual((r["state"], r["exit_code"], r["job_exists"], r["output"]), ("failed", 1, True, "runner failed"))
         self.assertEqual(self.client.get(f"{L}/battles/battle-unknown").status_code, 404)
 
-    def test_a_database_url_never_goes_on_a_command_line(self):
+    def test_local_arena_path_is_passed_to_runner(self):
         from cr_arena.battles import launch_battle
 
+        db_path = Path(self.tmp.name) / "arena.db"
         with patch("cr_arena.battles.subprocess.Popen") as popen:
-            launch_battle(Path(self.tmp.name), ARENA_CONFIG, ["model-a", "model-b"], "mirror", 1, "postgresql://user:secret@host/db")
+            launch_battle(Path(self.tmp.name), ARENA_CONFIG, ["model-a", "model-b"], "mirror", 1, str(db_path))
         command = popen.call_args.args[0]
-        self.assertNotIn("--db", command)
-        self.assertFalse(any("secret" in str(part) for part in command))
-        self.assertEqual(popen.call_args.kwargs["env"]["DATABASE_URL"], "postgresql://user:secret@host/db")
+        self.assertEqual(command[command.index("--db") + 1], str(db_path))
 
 
 class ReadOnlyLegacyTests(LegacyCase):
@@ -371,9 +370,11 @@ class ReadOnlyLegacyTests(LegacyCase):
 
 
 class DatabaseUnavailableTests(unittest.TestCase):
-    def test_legacy_pages_report_an_unreachable_database_without_breaking_evals(self):
+    def test_legacy_pages_report_an_unavailable_database_path_without_breaking_evals(self):
         tmp = Path(__import__("tempfile").mkdtemp())
-        settings = Settings(static_dir=tmp / "none", arena_db="postgresql://nobody:x@127.0.0.1:1/none")
+        blocked_parent = tmp / "not-a-directory"
+        blocked_parent.write_text("file", encoding="utf-8")
+        settings = Settings(static_dir=tmp / "none", arena_db=str(blocked_parent / "arena.db"))
         ctx = build_context(settings, valkyrie=__import__("rb_evals.fake", fromlist=["FakeValkyrie"]).FakeValkyrie(seed=False))
         ctx.arena = ArenaHandle(settings.arena_db)
         client = TestClient(create_app(settings, ctx=ctx), headers={"x-rb-client": "web"})

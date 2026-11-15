@@ -1,4 +1,4 @@
-"""Shared Postgres (DATABASE_URL) or local SQLite storage for all arena data."""
+"""Local SQLite storage for arena data."""
 
 from __future__ import annotations
 
@@ -18,9 +18,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def database_target(explicit: Path | str | None = None) -> str:
-    """Explicit --db wins; otherwise every entry point uses the same .env."""
+    """Use an explicit path, then CR_ARENA_DB from .env, then the repo-local default."""
     load_dotenv(ROOT / ".env")
-    return str(explicit or os.getenv("DATABASE_URL") or os.getenv("CR_ARENA_DB") or ROOT / DEFAULT_DB)
+    return str(explicit or os.getenv("CR_ARENA_DB") or ROOT / DEFAULT_DB)
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS jobs (
@@ -60,113 +60,45 @@ CREATE TABLE IF NOT EXISTS custom_decks (
 
 
 class DB:
-    def __init__(self, path: Path | str | None = None, *, initialize: bool | None = None):
+    def __init__(self, path: Path | str | None = None):
         self.target = database_target(path)
-        self.postgres = self.target.startswith(("postgres://", "postgresql://"))
+        if self.target.startswith(("postgres://", "postgresql://")):
+            raise ValueError("Only local SQLite databases are supported; set CR_ARENA_DB to a file path.")
         self.lock = threading.RLock()
-        self._transaction_depth = 0
-        self._job_name = None
         self._closed = False
-        self.path = None if self.postgres else Path(self.target)
-        if self.postgres:
-            self.conn = self._connect_postgres()
-            try:
-                if initialize is None:
-                    initialize = os.getenv("CR_ARENA_DB_INIT", "1") != "0"
-                if initialize:
-                    with self.conn.transaction():
-                        self.conn.execute("SELECT pg_advisory_xact_lock(68267, 0)")
-                        for migration in sorted((ROOT / "supabase" / "migrations").glob("*.sql")):
-                            self.conn.execute(migration.read_text(), prepare=False)
-            except BaseException:
-                self.conn.close()
-                raise
-        else:
-            self.path.parent.mkdir(parents=True, exist_ok=True)
-            self.conn = sqlite3.connect(self.path, check_same_thread=False, timeout=30)
-            self.conn.row_factory = sqlite3.Row
-            self.conn.execute("PRAGMA journal_mode=WAL")
-            self.conn.execute("PRAGMA synchronous=NORMAL")
-            self.conn.executescript(SCHEMA)
-            cols = {r[1] for r in self.conn.execute("PRAGMA table_info(decisions)")}
-            if "cost_usd" not in cols:
-                self.conn.execute("ALTER TABLE decisions ADD COLUMN cost_usd REAL")
-            self.conn.commit()
-
-    def _connect_postgres(self):
-        import psycopg
-        from psycopg.rows import dict_row
-
-        # Session pooler or direct connection. Never expose the URL in the UI/logs.
-        conn = psycopg.connect(self.target, autocommit=True, row_factory=dict_row,
-                               prepare_threshold=None, connect_timeout=15)
-        try:
-            conn.execute("SET search_path TO cr_arena, public")
-            # Some hosted configs round float text by default. Preserve timestamps/costs.
-            conn.execute("SET extra_float_digits TO 3")
-        except BaseException:
-            conn.close()
-            raise
-        return conn
+        self.path = Path(self.target)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.conn = sqlite3.connect(self.path, check_same_thread=False, timeout=30)
+        self.conn.row_factory = sqlite3.Row
+        self.conn.execute("PRAGMA journal_mode=WAL")
+        self.conn.execute("PRAGMA synchronous=NORMAL")
+        self.conn.executescript(SCHEMA)
+        cols = {r[1] for r in self.conn.execute("PRAGMA table_info(decisions)")}
+        if "cost_usd" not in cols:
+            self.conn.execute("ALTER TABLE decisions ADD COLUMN cost_usd REAL")
+        self.conn.commit()
 
     def _ensure_connection(self):
         if self._closed:
             raise RuntimeError("Database has been closed")
-        if self.postgres and self.conn.closed:
-            # A dashboard may reconnect on its next refresh/save attempt. Never silently
-            # retry a write with an unknown commit outcome or lose an active runner's lock.
-            if self._transaction_depth or self._job_name:
-                raise RuntimeError("Database connection lost during a run; restore connectivity and resume the job")
-            self.conn = self._connect_postgres()
 
     @property
     def label(self) -> str:
-        return "Shared PostgreSQL" if self.postgres else str(self.path)
-
-    def _sql(self, sql: str) -> str:
-        # Internal queries use qmark parameters and contain no quoted question marks.
-        return sql.replace("%", "%%").replace("?", "%s") if self.postgres else sql
+        return str(self.path)
 
     @contextmanager
     def transaction(self):
         with self.lock:
             self._ensure_connection()
-            self._transaction_depth += 1
+            # Savepoints support nested DB methods and roll back the entire outer unit.
+            self.conn.execute("SAVEPOINT arena_write")
             try:
-                if self.postgres:
-                    with self.conn.transaction():
-                        yield
-                else:
-                    # Savepoints support nested DB methods and roll back the entire outer unit.
-                    self.conn.execute("SAVEPOINT arena_write")
-                    try:
-                        yield
-                        self.conn.execute("RELEASE SAVEPOINT arena_write")
-                    except BaseException:
-                        self.conn.execute("ROLLBACK TO SAVEPOINT arena_write")
-                        self.conn.execute("RELEASE SAVEPOINT arena_write")
-                        raise
-            finally:
-                self._transaction_depth -= 1
-
-    @contextmanager
-    def job_lock(self, name: str):
-        """One runner per shared job; released by Postgres even if the runner dies."""
-        if not self.postgres:
-            yield
-            return
-        row = self.query("SELECT pg_try_advisory_lock(68268, hashtext(?)) AS acquired", (name,))[0]
-        if not row["acquired"]:
-            raise RuntimeError(f"Job {name!r} already has an active runner. Use a different --job name.")
-        self._job_name = name
-        try:
-            yield
-        finally:
-            try:
-                if not self.conn.closed:
-                    self.query("SELECT pg_advisory_unlock(68268, hashtext(?))", (name,))
-            finally:
-                self._job_name = None
+                yield
+                self.conn.execute("RELEASE SAVEPOINT arena_write")
+            except BaseException:
+                self.conn.execute("ROLLBACK TO SAVEPOINT arena_write")
+                self.conn.execute("RELEASE SAVEPOINT arena_write")
+                raise
 
     def close(self):
         with self.lock:
@@ -175,21 +107,17 @@ class DB:
 
     def execute(self, sql: str, params=()):
         with self.transaction():
-            cur = self.conn.execute(self._sql(sql), params)
+            cur = self.conn.execute(sql, params)
             return cur
 
     def executemany(self, sql: str, rows):
         with self.transaction():
-            if self.postgres:
-                with self.conn.cursor() as cur:
-                    cur.executemany(self._sql(sql), rows)
-            else:
-                self.conn.executemany(sql, rows)
+            self.conn.executemany(sql, rows)
 
     def query(self, sql: str, params=()) -> list[dict]:
         with self.lock:
             self._ensure_connection()
-            return [dict(r) for r in self.conn.execute(self._sql(sql), params).fetchall()]
+            return [dict(r) for r in self.conn.execute(sql, params).fetchall()]
 
     # ------------------------------------------------------------------ custom decks
     def custom_decks(self) -> list[dict]:
@@ -260,39 +188,14 @@ class DB:
     def match_started(self, job_id: int, match_id: str, log_path: str, replay_path: str) -> None:
         with self.transaction():
             self.execute("DELETE FROM decisions WHERE job_id = ? AND match_id = ?", (job_id, match_id))  # clean retry
-            if self.postgres:
-                self.execute("DELETE FROM replays WHERE job_id = ? AND match_id = ?", (job_id, match_id))
             self.execute("UPDATE matches SET status = 'running', started_at = ?, finished_at = NULL, error = NULL, log_path = ?, replay_path = ?"
                          " WHERE job_id = ? AND match_id = ?", (time.time(), log_path, replay_path, job_id, match_id))
 
     def match_finished(self, job_id: int, res: dict) -> None:
-        # Save the replay before publishing status=done. Never claim a cloud save succeeded
-        # when any part of the persistence failed.
         with self.transaction():
-            if self.postgres:
-                rows = self.query("SELECT replay_path FROM matches WHERE job_id = ? AND match_id = ?",
-                                  (job_id, res["match_id"]))
-                replay = rows[0]["replay_path"] if rows else None
-                if replay:
-                    content = Path(replay).read_bytes()
-                    self.execute("INSERT INTO replays (job_id, match_id, content) VALUES (?, ?, ?) "
-                                 "ON CONFLICT (job_id, match_id) DO UPDATE SET content = excluded.content",
-                                 (job_id, res["match_id"], content))
             self._finish_match(job_id, res)
 
     def replay_file(self, job_id: int, match_id: str, local_path: str | None) -> Path | None:
-        if self.postgres:
-            # Cache by content hash so different jobs/reruns cannot return a stale local replay.
-            import hashlib
-            rows = self.query("SELECT content FROM replays WHERE job_id = ? AND match_id = ?", (job_id, match_id))
-            if not rows:
-                return None
-            content = bytes(rows[0]["content"])
-            path = ROOT / "runs" / "replay-cache" / f"{hashlib.sha256(content).hexdigest()}.msgpack"
-            path.parent.mkdir(parents=True, exist_ok=True)
-            if not path.exists():
-                path.write_bytes(content)
-            return path
         if not local_path:
             return None
         path = Path(local_path)

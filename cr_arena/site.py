@@ -459,7 +459,7 @@ render();
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--db", help="Override DATABASE_URL with a SQLite path or Postgres URL")
+    ap.add_argument("--db", help="SQLite database path (default: CR_ARENA_DB or runs/arena.db)")
     ap.add_argument("--classic", default="classic-v2")
     ap.add_argument("--build", default="build-v2")
     ap.add_argument("--out", default=str(OUT))

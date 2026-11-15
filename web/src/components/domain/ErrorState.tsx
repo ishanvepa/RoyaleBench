@@ -15,7 +15,7 @@ function hintFor(error: unknown): string | null {
     case "not_found":
       return "It may have been removed, or the link may be wrong.";
     case "database_unavailable":
-      return "Check DATABASE_URL in .env, or remove it to use the local runs/arena.db.";
+      return "Check that the arena SQLite path is writable, then try again.";
     default:
       return null;
   }

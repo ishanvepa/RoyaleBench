@@ -233,7 +233,7 @@ uv run --frozen --extra hosting modal app stop royalebench-play
 The volume is retained. Run the deploy command again to bring the app back.
 The image installs the committed lockfile's `play` dependency group, containing
 the CPU game runtime without the benchmark's model SDKs, training packages, or
-GPU dependencies. It includes game code, bot configs, and migrations. It does not
+GPU dependencies. It includes game code and bot configs. It does not
 copy the repository's `.env`, run data, or frontend dependencies. Docker is not
 required locally.
 

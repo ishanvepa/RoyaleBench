@@ -22,7 +22,7 @@ class Settings:
     evals_config: Path | None = None  # evals.toml override
     benchmarks_dir: Path | None = None
     cache_dir: Path | None = None
-    arena_db: str | None = None  # SQLite path or Postgres URL for the legacy arena pages
+    arena_db: str | None = None  # SQLite path for the legacy arena pages
 
     @classmethod
     def from_env(cls) -> "Settings":

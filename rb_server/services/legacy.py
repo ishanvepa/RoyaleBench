@@ -33,7 +33,7 @@ from ..schemas.legacy import (
 )
 from .common import logo_url
 
-MEMO_TTL_S = 5.0  # polling pages ask often, and the database may be a remote Postgres
+MEMO_TTL_S = 5.0  # polling pages ask often
 
 
 def _memo(ctx: AppContext, key: tuple, make):
@@ -223,8 +223,8 @@ def start_check(ctx: AppContext) -> CommandStatus:
     if ctx.processes.running(CHECK):
         raise ApiError(409, "conflict", "A model check is already running.")
     args = ["-m", "cr_arena.check_models", "--config", str(analytics.config_path())]
-    if ctx.settings.arena_db and not ctx.settings.arena_db.startswith(("postgres://", "postgresql://")):
-        args += ["--db", ctx.settings.arena_db]  # a Postgres URL stays in the environment (.env), never on a command line
+    if ctx.settings.arena_db:
+        args += ["--db", ctx.settings.arena_db]
     ctx.processes.add(spawn(CHECK, args, cwd=ROOT, log_path=ROOT / "runs" / "dashboard" / "model-check.log"))
     ctx.memo.clear()
     return check_status(ctx)

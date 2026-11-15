@@ -86,7 +86,7 @@ function Monitor({ detail }: { detail: JobDetail }) {
         <Metric label="Score" value={<Score value={job.score} />} hint={job.score == null ? "Shown when the run finishes" : undefined} />
         <Metric label={detail.active ? "Elapsed" : "Duration"} value={<Duration seconds={elapsed} />} />
         <Metric label="Time left" value={timeLeft} hint={queueHint} />
-        <Metric label="API cost" value={<RunCost job={job} />} hint={`Known for ${job.cost_known ?? 0} of ${job.total} tasks; excludes Modal charges`} />
+        <Metric label="API cost" value={<RunCost job={job} />} hint={`Known for ${job.cost_known ?? 0} of ${job.total} tasks; excludes infrastructure charges`} />
         <Metric label="Cost / task" value={<Money usd={job.cost_per_task} />} hint={job.status === "FINISHED" ? "Average over tasks with known cost" : "Available after the run finishes"} />
       </dl>
       <JobCosts jobs={[job]} />

@@ -7,7 +7,7 @@ import { ALL_RESULTS, useCostsDownload } from "../api/leaderboard";
 
 export function RunCost({ job }: { job: JobRow }) {
   return (
-    <span title={`API cost known for ${job.cost_known ?? 0} of ${job.total} tasks; excludes Modal charges`}>
+    <span title={`API cost known for ${job.cost_known ?? 0} of ${job.total} tasks; excludes infrastructure charges`}>
       <Money usd={job.cost_usd} />
       {job.cost_usd != null && (job.cost_known ?? 0) < job.total ? <span className="text-muted">*</span> : null}
     </span>

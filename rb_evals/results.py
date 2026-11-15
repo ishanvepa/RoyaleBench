@@ -2,12 +2,14 @@
 
 Valkyrie's final results JSON has rewards, durations and errors but no cost. Cost is only in each task's
 agent output (``<task>/agent_output.tar.gz``, in Claude summaries or mini-SWE-agent trajectories),
-so it is downloaded once per task and cached. Cost is the model usage the harness reports; Modal sandbox
-charges are not included. Only FINISHED runs are cached for good: failed or stopped runs can be retried.
+so it is downloaded once per task and cached. Cost is harness-reported spend or Modal inference tokens
+priced at verified rates; infrastructure charges are excluded. Only FINISHED runs are cached for good:
+failed or stopped runs can be retried.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import os
@@ -21,6 +23,7 @@ from pathlib import Path
 from statistics import mean
 
 from .jobs import parse_ts
+from .modal_inference import record_inference_cost
 from .valkyrie import Valkyrie, ValkyrieError
 
 SOLVED_AT = 1.0  # a task counts as solved ("won") at full reward
@@ -74,6 +77,17 @@ def task_results(results: dict) -> list[dict]:
 # ---------------------------------------------------------------------- agent output / cost
 def read_agent_metrics(root: Path) -> dict | None:
     """Cost and token usage from extracted Claude summaries or mini-SWE-agent trajectories."""
+    # Mini-SWE's trajectory is authoritative, including when a summary has a
+    # fallback zero or a generic transport provider's unrelated price.
+    for path in sorted(set(root.rglob("trajectory.json")) | set(root.rglob("*.traj.json"))):
+        try:
+            raw = path.read_bytes()
+            data = json.loads(raw)
+        except (OSError, ValueError):
+            continue
+        if isinstance(data, dict) and str(data.get("trajectory_format", "")).startswith("mini-swe-agent"):
+            model = (((data.get("info") or {}).get("config") or {}).get("model") or {}).get("model_name", "")
+            return record_inference_cost(root, model, _mini_metrics(data), hashlib.sha256(raw).hexdigest())
     for name in ("summary.json", "metrics_total.json"):
         for path in sorted(root.rglob(name)):
             try:
@@ -87,15 +101,6 @@ def read_agent_metrics(root: Path) -> dict | None:
                         "cache_read_tokens": metrics.get("cache_read_input_tokens"),
                         "cache_write_tokens": metrics.get("cache_creation_input_tokens"),
                         "wall_s": metrics.get("wall_clock_duration")}
-    # Stock mini-SWE-agent writes a metadata-only summary and keeps billing/usage
-    # in trajectory.json. Parse existing cached artifacts too (no redownload needed).
-    for path in sorted(set(root.rglob("trajectory.json")) | set(root.rglob("*.traj.json"))):
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
-            continue
-        if isinstance(data, dict) and str(data.get("trajectory_format", "")).startswith("mini-swe-agent"):
-            return _mini_metrics(data)
     return None
 
 
@@ -118,28 +123,37 @@ def _mini_metrics(data: dict) -> dict:
         note = "The harness reported zero with cost tracking disabled or unknown-price fallback; billing is unknown."
     totals: dict[str, list[int]] = {k: [] for k in ("input_tokens", "output_tokens", "cache_read_tokens", "reasoning_tokens")}
     calls = [m for m in data.get("messages", []) if isinstance(m, dict) and m.get("role") == "assistant"]
-    seen = set()
+    seen = {}
     call_count = 0
+    usage_valid = True
     for message in calls:
         extra = message.get("extra") or {}
         response = extra.get("response") or {}
         # Multiple tool calls in a response are one model call, not one each.
         response_id = response.get("id")
         if response_id and response_id in seen:
+            usage_valid &= seen[response_id] == response.get("usage")
             continue
         if response_id:
-            seen.add(response_id)
+            seen[response_id] = response.get("usage")
         call_count += 1
         usage = response.get("usage") or {}
         values = {"input_tokens": usage.get("prompt_tokens", usage.get("input_tokens")),
                   "output_tokens": usage.get("completion_tokens", usage.get("output_tokens")),
                   "cache_read_tokens": (usage.get("prompt_tokens_details") or usage.get("input_tokens_details") or {}).get("cached_tokens"),
                   "reasoning_tokens": (usage.get("completion_tokens_details") or usage.get("output_tokens_details") or {}).get("reasoning_tokens")}
+        required = (values["input_tokens"], values["cache_read_tokens"], values["output_tokens"])
+        if any(type(v) is not int or v < 0 for v in required):
+            usage_valid = False
+        elif (values["cache_read_tokens"] > values["input_tokens"]
+              or ("total_tokens" in usage and usage["total_tokens"] != values["input_tokens"] + values["output_tokens"])):
+            usage_valid = False
         for key, value in values.items():
-            if _number(value) is not None:
-                totals[key].append(int(value))
+            if type(value) is int and value >= 0:
+                totals[key].append(value)
     return {"cost": cost, "reported_cost": reported, "cost_source": "harness" if cost is not None else "unknown",
             "cost_note": note, "api_calls": stats.get("api_calls"),
+            "usage_complete": usage_valid and type(stats.get("api_calls")) is int and stats["api_calls"] == call_count and call_count > 0,
             # Never turn missing/partial usage into a complete-looking total.
             **{k: sum(v) if v and len(v) == call_count else None for k, v in totals.items()},
             "cache_write_tokens": None, "wall_s": None}

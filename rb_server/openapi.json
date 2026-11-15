@@ -1556,6 +1556,40 @@
         "title": "Identity",
         "type": "object"
       },
+      "InferencePricing": {
+        "properties": {
+          "cost_by_resource_usd": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Cost By Resource Usd",
+            "type": "object"
+          },
+          "rate_source": {
+            "title": "Rate Source",
+            "type": "string"
+          },
+          "rate_version": {
+            "title": "Rate Version",
+            "type": "string"
+          },
+          "rates_usd_per_million": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Rates Usd Per Million",
+            "type": "object"
+          }
+        },
+        "required": [
+          "rate_version",
+          "rate_source",
+          "rates_usd_per_million",
+          "cost_by_resource_usd"
+        ],
+        "title": "InferencePricing",
+        "type": "object"
+      },
       "JobDetail": {
         "properties": {
           "active": {
@@ -2940,6 +2974,14 @@
           "app": {
             "title": "App",
             "type": "string"
+          },
+          "cost_by_resource": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "default": {},
+            "title": "Cost By Resource",
+            "type": "object"
           },
           "cost_usd": {
             "anyOf": [
@@ -4745,6 +4787,27 @@
             "default": "",
             "title": "Final Message",
             "type": "string"
+          },
+          "inference_cost_usd_exact": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inference Cost Usd Exact"
+          },
+          "inference_pricing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InferencePricing"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "input_tokens": {
             "anyOf": [
@@ -8207,7 +8270,7 @@
             "description": "Valkyrie unreachable"
           }
         },
-        "summary": "Persisted Modal endpoint compute billing",
+        "summary": "Persisted Modal endpoint billing",
         "tags": [
           "evals: leaderboard"
         ]

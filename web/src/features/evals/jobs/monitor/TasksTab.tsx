@@ -80,7 +80,7 @@ export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDet
         return (
           <div className="space-y-3">
             <p className="text-[13px] text-muted">
-              API costs are reported by the harness and exclude Modal charges. A dash means the cost is unknown.
+              API costs include harness-reported usage and Modal inference tokens; infrastructure charges are excluded. A dash means the cost is unknown.
             </p>
             <div className={row ? "grid items-start gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]" : ""}>
               <DataTable

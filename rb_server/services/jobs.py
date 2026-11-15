@@ -152,7 +152,9 @@ def task_trace(ctx: AppContext, run_id: str, task_id: str) -> TraceOut:
                     steps_total=trace["steps_total"], cost_usd=m.get("cost"), input_tokens=m.get("input_tokens"),
                     output_tokens=m.get("output_tokens"), cache_read_tokens=m.get("cache_read_tokens"),
                     reasoning_tokens=m.get("reasoning_tokens"), api_calls=m.get("api_calls"),
-                    cost_source=m.get("cost_source"), cost_note=m.get("cost_note"))
+                    cost_source=m.get("cost_source"), cost_note=m.get("cost_note"),
+                    inference_cost_usd_exact=m.get("inference_cost_usd_exact"),
+                    inference_pricing=m.get("inference_pricing"))
 
 
 def task_replay(ctx: AppContext, run_id: str, task_id: str) -> ReplayOut:

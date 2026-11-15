@@ -41,7 +41,7 @@ describe("Job monitor", () => {
     expect(requested).toEqual(["run-1"]);
     expect(await screen.findByText("$0.600", {}, { timeout: 4000 })).toBeInTheDocument();
     expect(screen.getByText("$0.300")).toBeInTheDocument();
-    expect(screen.getByText("Known for 2 of 2 tasks; excludes Modal charges")).toBeInTheDocument();
+    expect(screen.getByText("Known for 2 of 2 tasks; excludes infrastructure charges")).toBeInTheDocument();
     expect(await within(screen.getByRole("table", { name: "Tasks in this run" })).findByText("$0.200")).toBeInTheDocument();
   }, 10_000);
 
@@ -190,6 +190,11 @@ describe("Job monitor", () => {
       http.get("*/api/evals/jobs/:runId/tasks/:taskId", () =>
         HttpResponse.json({ task: "elixir-check", status: "FINISHED", category: "", error: "", reward: 1, solved: true, rewards: { reward: 1 }, verifier_output: "reward: 1", agent_s: 5, sandbox_s: 20, build_s: 1, eval_s: 1, exit_reason: null }),
       ),
+      http.get("*/api/evals/jobs/:runId/tasks/:taskId/trace", () => HttpResponse.json({
+        available: true, final_message: "", steps: [], steps_total: 0,
+        cost_usd: 0.00123413, cost_source: "modal_token_usage", inference_cost_usd_exact: "0.00123413",
+        cost_note: "Modal inference tokens only; excludes infrastructure.",
+      })),
     );
     const { router, user } = renderApp("/evals/jobs/run-1");
     await user.click(await screen.findByRole("row", { name: /elixir-check/ }));
@@ -197,6 +202,8 @@ describe("Job monitor", () => {
     expect(screen.getByText("1.0 (solved)")).toBeInTheDocument();
     expect(router.state.location.search).toBe("?task=elixir-check");
     expect(screen.getByRole("button", { name: "Load agent trace" })).toBeInTheDocument(); // not downloaded until asked
+    await user.click(screen.getByRole("button", { name: "Load agent trace" }));
+    expect(await screen.findByText("Exact inference cost: $0.00123413")).toBeInTheDocument();
     expect(taskList().tasks).toHaveLength(1);
   });
 });

@@ -55,11 +55,13 @@ the dashboard's Modal billing lookup.
 
 ## Evals
 
-The Overview also shows [actual Modal endpoint compute billing](modal_billing.md)
-for configured hosted models, including Qwen, Inkling and DeepSeek. This separate
+The Overview also shows [actual Modal endpoint spend](modal_billing.md)
+for configured hosted models, including Qwen, Inkling, DeepSeek and Kimi. This separate
 table uses the workspace billing API and persists metered charges across restarts;
-it includes idle serving compute and all traffic to each App, before invoice
-credits/discounts. It refreshes every five minutes and displays the queried UTC
+it includes inference tokens, serving compute and all traffic to each App, before invoice
+credits/discounts, with an expandable resource breakdown. It includes the latest
+completed UTC hour and reconciles late corrections, including the previous month
+when a snapshot exists. It refreshes every five minutes and displays the queried UTC
 window, last successful sync, and billing-access errors. Run the server with
 `uv run --extra hosting python -m rb_server` in an authenticated Modal environment.
 Workspace billing access is separate from the Valkyrie sandbox provider connection.
@@ -80,7 +82,10 @@ Model labels use family logos, including Qwen, Inkling (Thinking Machines), Deep
 One job is one Valkyrie run: one model on a whole benchmark or a subset. To compare models, start one job
 per model. Valkyrie stays the source of truth; finished runs and downloaded costs are cached under
 `runs/evals/` (git-ignored). Cost comes from the harness's own summary in each task's output (Claude Code
-writes one) and does not include Modal's sandbox charges.
+writes one), or from complete Modal endpoint token usage at verified, pinned rates.
+Task and job inference costs exclude infrastructure charges. The Modal endpoint
+billing table includes the same inference charges, so its total must not be added
+to task/job API spend. See [inference pricing and persistence](modal_billing.md#task-and-job-inference-costs).
 
 Run cost metrics are available for **finished runs** and share the leaderboard's task-output cache.
 The real dashboard server automatically fetches missing cost data **when a job finishes completely**,
@@ -93,16 +98,20 @@ The Jobs and Job monitor pages offer **Fetch cost data**, show background downlo
 the figures when it completes. The Overview's recent jobs also show each run's API cost. Unknown cost is
 shown as a dash; a reported zero is `$0` unless mini-SWE-agent used an unknown-price
 fallback or disabled cost tracking. Its token usage is recovered from `trajectory.json`,
-including for previously cached tasks. An asterisk marks a partial total, with task coverage shown on
+including for previously cached tasks. Complete usage for the four configured Modal
+models produces a persisted `inference_cost.json` with exact decimal costs, the
+original rate snapshot and trajectory hash; incomplete usage stays unknown.
+An asterisk marks a partial total, with task coverage shown on
 hover and on the monitor. Cost per task averages only tasks with known costs. Run totals include all tasks
 with reported costs, including infrastructure failures; the leaderboard excludes infrastructure failures
 from its model-scoring pool and associated cost totals. Failed, stopped, and active runs have no run-level
 cost metrics yet. Downloading costs does not launch evaluations.
 
 Each job's **Tasks** tab also shows a sortable **API cost** column and the selected task's cost
-in its detail panel. These are the individual harness-reported costs from the same cache as the run
+in its detail panel. These are the individual harness-reported or Modal token costs from the same cache as the run
 total, available for finished runs. The table refreshes as cost data is downloaded; zero is shown as
-`$0` and unknown costs as a dash. These figures exclude Modal sandbox and endpoint serving charges.
+`$0` and unknown costs as a dash. These figures exclude sandbox and endpoint infrastructure charges.
+The task trace shows the exact Modal inference dollar amount and its pricing source.
 
 To watch a task, select its row in a job's **Tasks** tab, then **Watch replay**. The same button is on
 each row of a task definition's **Results** tab. Playback opens in a wide dialog with play/pause,

@@ -1,4 +1,4 @@
-"""Persist Modal's metered endpoint compute, separately from harness API costs.
+"""Persist Modal's metered endpoint charges, separately from harness API costs.
 
 Reports cover complete UTC hours, including idle serving compute. They are never
 apportioned to tasks/runs: multiple evaluations can share an endpoint.
@@ -70,31 +70,26 @@ class ModalBilling:
             return False
         try:
             now = self.now().astimezone(timezone.utc)
-            # Exclude the latest complete hour as a buffer for billing ingestion.
-            end = now.replace(minute=0, second=0, microsecond=0) - timedelta(hours=1)
+            # Include every completed hour. Reports are provisional: requerying
+            # the window picks up ingestion delays without hiding available bills.
+            end = now.replace(minute=0, second=0, microsecond=0)
             start = (end - timedelta(microseconds=1)).replace(day=1, hour=0, minute=0, second=0, microsecond=0)
             workspace, identities, rows = self.fetch(start, end, self.models)
-            normalized = []
-            for row in rows:
-                if row["object_id"] not in set(identities.values()) - {None}:
-                    continue
-                cost = Decimal(str(row["cost"]))
-                if not cost.is_finite() or cost < 0:
-                    raise ValueError("Invalid Modal billing amount")
-                interval = row["interval_start"]
-                if isinstance(interval, datetime):
-                    interval = interval.replace(tzinfo=interval.tzinfo or timezone.utc).astimezone(timezone.utc).isoformat()
-                normalized.append({"object_id": row["object_id"], "description": row["description"],
-                    "environment_name": row["environment_name"], "interval_start": interval,
-                    "cost_usd": str(cost), "cost_by_resource": {k: str(v) for k, v in row.get("cost_by_resource", {}).items()},
-                    "tags": row.get("tags", {})})
-            snapshot = {"workspace": workspace, "start": start.isoformat(), "end": end.isoformat(),
-                "updated_at": now.isoformat(), "identities": identities,
-                "apps": {m.id: m.modal_app for m in self.models}, "rows": normalized}
-            # Whole-window replacement is idempotent and picks up late/corrected bills.
-            # Retain monthly raw snapshots; a failed sync never erases the last good data.
-            self._save(f"{workspace}-{start:%Y-%m}.json", snapshot)
-            self._save("latest.json", snapshot)
+            snapshots = [self._snapshot(workspace, start, end, now, identities, rows)]
+            # Finish and reconcile a recorded previous month after rollover,
+            # including its last hour and any late-posted corrections.
+            previous = (start - timedelta(microseconds=1)).replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            if self._read(f"{workspace}-{previous:%Y-%m}.json"):
+                old_workspace, old_ids, old_rows = self.fetch(previous, start, self.models)
+                if old_workspace != workspace:
+                    raise ValueError("Modal workspace changed during sync")
+                snapshots.insert(0, self._snapshot(workspace, previous, start, now, old_ids, old_rows))
+            # Whole-window replacement is idempotent and picks up corrected bills.
+            # Fetch every window before replacing any previously complete snapshot.
+            for snapshot in snapshots:
+                month = snapshot["start"][:7]
+                self._save(f"{workspace}-{month}.json", snapshot)
+            self._save("latest.json", snapshots[-1])
             self._save("status.json", {"error": None, "attempted_at": now.isoformat()})
             return True
         except Exception as exc:
@@ -107,6 +102,26 @@ class ModalBilling:
         finally:
             self._lock.release()
 
+    def _snapshot(self, workspace, start, end, now, identities, rows) -> dict:
+        normalized = []
+        app_ids = set(identities.values()) - {None}
+        for row in rows:
+            if row["object_id"] not in app_ids:
+                continue
+            cost = Decimal(str(row["cost"]))
+            if not cost.is_finite() or cost < 0:
+                raise ValueError("Invalid Modal billing amount")
+            interval = row["interval_start"]
+            if isinstance(interval, datetime):
+                interval = interval.replace(tzinfo=interval.tzinfo or timezone.utc).astimezone(timezone.utc).isoformat()
+            normalized.append({"object_id": row["object_id"], "description": row["description"],
+                "environment_name": row["environment_name"], "interval_start": interval,
+                "cost_usd": str(cost), "cost_by_resource": {k: str(v) for k, v in row.get("cost_by_resource", {}).items()},
+                "tags": row.get("tags", {})})
+        return {"workspace": workspace, "start": start.isoformat(), "end": end.isoformat(),
+            "updated_at": now.isoformat(), "identities": identities,
+            "apps": {m.id: m.modal_app for m in self.models}, "rows": normalized}
+
     def view(self) -> dict:
         data = self._read("latest.json")
         status = self._read("status.json")
@@ -118,11 +133,16 @@ class ModalBilling:
             matched = [r for r in rows if r["object_id"] == object_id] if object_id else []
             # No report row can mean delayed billing or unused compute; don't invent $0.
             amount = sum((Decimal(r["cost_usd"]) for r in matched), Decimal(0)) if matched else None
+            resources: dict[str, Decimal] = {}
+            for row in matched:
+                for resource, cost in row.get("cost_by_resource", {}).items():
+                    resources[resource] = resources.get(resource, Decimal(0)) + Decimal(cost)
             changed = data and data.get("apps", {}).get(model.id) != model.modal_app
             error = ("Billing mapping changed; sync billing to resolve this App." if changed else
                      "Configured Modal App was not found in this workspace/environment." if data and not object_id else None)
             models.append({"model": model.id, "app": model.modal_app, "object_id": object_id,
                 "cost_usd": float(amount) if amount is not None else None, "intervals": len(matched),
+                "cost_by_resource": {k: float(v) for k, v in resources.items()},
                 "error": error})
         # Shared App mappings must not double the workspace endpoint total.
         ids = {m["object_id"] for m in models} - {None}

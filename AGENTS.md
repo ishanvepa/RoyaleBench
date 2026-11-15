@@ -44,7 +44,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
 - [`docs/coordinate_harness.md`](docs/coordinate_harness.md): separate coordinate-action pilot, CLI, illegal-action handling, replay grading, reference validation, and comparison with frozen v1.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch recorded task gameplay, inspect per-run and per-task API costs and task difficulty, repair harness issues, and browse the arena.
-- [`docs/modal_billing.md`](docs/modal_billing.md): actual Modal endpoint compute billing, workspace access, App mappings, persistent snapshots, refresh behavior, and verification limits.
+- [`docs/modal_billing.md`](docs/modal_billing.md): actual Modal endpoint spend, persisted task/job inference costs and verified token rates, resource breakdowns, workspace access, App mappings, completed-hour refresh, month reconciliation, and verification limits.
 - [`docs/qwen_modal.md`](docs/qwen_modal.md): use the existing mini-SWE-agent harness with the Modal Qwen endpoint, configure API-key/base-URL references, and run a one-task Valkyrie pilot.
 - [`docs/inkling_modal.md`](docs/inkling_modal.md): Inkling endpoint setup, revision `@4` network access, Qwen credential reuse, secure model discovery, and stock mini-SWE-agent pilot status.
 - [`docs/deepseek_modal.md`](docs/deepseek_modal.md): DeepSeek endpoint setup, revision `@5` network access, shared proxy credential, and stock mini-SWE-agent pilot status.

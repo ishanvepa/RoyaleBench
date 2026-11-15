@@ -12,7 +12,7 @@ from ..services import leaderboard as service
 router = APIRouter(tags=["evals: leaderboard"], responses=COMMON_ERRORS)
 
 
-@router.get("/modal-billing", response_model=ModalBillingOut, summary="Persisted Modal endpoint compute billing")
+@router.get("/modal-billing", response_model=ModalBillingOut, summary="Persisted Modal endpoint billing")
 def modal_billing(ctx: Ctx):
     return ctx.billing.view()
 

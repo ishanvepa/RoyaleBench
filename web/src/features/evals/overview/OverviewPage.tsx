@@ -56,7 +56,7 @@ function Body({ jobs, results }: { jobs: JobRow[]; results: ReturnType<typeof us
   // The solved and spend tiles come from the leaderboard, a heavier request than the job list, so they fill in
   // when it arrives (or say why they cannot) instead of holding the whole page back.
   let solvedHint: ReactNode = "Graded tasks in finished runs, smoke tests included";
-  let costHint: ReactNode = "Model usage the harness reports; excludes Modal charges";
+  let costHint: ReactNode = "Harness API costs and Modal inference tokens; excludes infrastructure charges";
   if (!totals) {
     solvedHint = costHint = results.isError ? "Couldn't load results" : "Loading results…";
   } else if (totals.tasks === 0) {

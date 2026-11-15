@@ -388,7 +388,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Persisted Modal endpoint compute billing */
+        /** Persisted Modal endpoint billing */
         get: operations["modal_billing_api_evals_modal_billing_get"];
         put?: never;
         post?: never;
@@ -1367,6 +1367,21 @@ export interface components {
             /** Organization */
             organization: string;
         };
+        /** InferencePricing */
+        InferencePricing: {
+            /** Cost By Resource Usd */
+            cost_by_resource_usd: {
+                [key: string]: string;
+            };
+            /** Rate Source */
+            rate_source: string;
+            /** Rate Version */
+            rate_version: string;
+            /** Rates Usd Per Million */
+            rates_usd_per_million: {
+                [key: string]: string;
+            };
+        };
         /** JobDetail */
         JobDetail: {
             /** Active */
@@ -1792,6 +1807,13 @@ export interface components {
         ModalModelCost: {
             /** App */
             app: string;
+            /**
+             * Cost By Resource
+             * @default {}
+             */
+            cost_by_resource: {
+                [key: string]: number;
+            };
             /** Cost Usd */
             cost_usd?: number | null;
             /** Error */
@@ -2442,6 +2464,9 @@ export interface components {
              * @default
              */
             final_message: string;
+            /** Inference Cost Usd Exact */
+            inference_cost_usd_exact?: string | null;
+            inference_pricing?: components["schemas"]["InferencePricing"] | null;
             /** Input Tokens */
             input_tokens?: number | null;
             /** Output Tokens */

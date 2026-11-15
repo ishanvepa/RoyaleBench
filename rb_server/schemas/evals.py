@@ -155,6 +155,7 @@ class ModalModelCost(BaseModel):
     app: str
     object_id: str | None = None
     cost_usd: float | None = None
+    cost_by_resource: dict[str, float] = {}
     intervals: int
     error: str | None = None
 
@@ -170,6 +171,13 @@ class ModalBillingOut(BaseModel):
     models: list[ModalModelCost]
 
 
+class InferencePricing(BaseModel):
+    rate_version: str
+    rate_source: str
+    rates_usd_per_million: dict[str, str]
+    cost_by_resource_usd: dict[str, str]
+
+
 class TraceOut(BaseModel):
     available: bool
     final_message: str = ""
@@ -183,6 +191,8 @@ class TraceOut(BaseModel):
     api_calls: int | None = None
     cost_source: str | None = None
     cost_note: str | None = None
+    inference_cost_usd_exact: str | None = None
+    inference_pricing: InferencePricing | None = None
 
 
 class ReplayOut(BaseModel):

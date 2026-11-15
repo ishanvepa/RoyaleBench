@@ -20,14 +20,14 @@ export function ModalBilling() {
   return (
     <section aria-labelledby="modal-billing" className="space-y-3 rounded-lg border border-line p-4">
       <div className="flex items-center justify-between gap-3">
-        <h2 id="modal-billing" className="text-base">Modal endpoint compute</h2>
+        <h2 id="modal-billing" className="text-base">Modal endpoint spend</h2>
         <Button variant="secondary" size="sm" disabled={sync.isPending || data?.syncing} onClick={() => sync.mutate()}>
           {data?.syncing ? "Syncing billing…" : "Sync billing"}
         </Button>
       </div>
       <p className="text-[13px] text-subtle">
-        Actual metered serving charges from Modal, before credits and discounts. Includes idle compute and all traffic
-        to these Apps; shared endpoint costs are counted once in the total. Task API spend is shown separately.
+        Actual metered charges from Modal, before credits and discounts. Includes inference tokens, serving compute and all traffic
+        to these Apps; shared endpoint costs are counted once in the total. Includes inference costs also shown in task API spend; do not add the totals together.
       </p>
       {billing.isError || sync.isError ? <p role="alert">Couldn’t reach billing data. Try syncing again.</p> : null}
       {data?.error && <p role="alert" className="text-[13px] text-subtle">{data.error}{data.updated_at && " Last successful data is retained below."}</p>}
@@ -35,15 +35,20 @@ export function ModalBilling() {
         {data?.workspace && `Workspace: ${data.workspace}. `}
         {data?.start && data?.end ? `Report: ${data.start} to ${data.end} (exclusive). ` : "No billing report downloaded yet. "}
         {data?.updated_at && `Last synced: ${data.updated_at}. `}
-        Reports use complete UTC hours with a one-hour delay; later syncs pick up billing corrections.
+        Reports include the latest completed UTC hour. Recent charges are provisional; later syncs pick up billing corrections.
       </p>
       <table className="w-full text-left text-[13px]">
-        <caption className="sr-only">Modal endpoint compute costs by model</caption>
-        <thead><tr><th className="py-2">Model / App</th><th className="text-right">Metered compute</th></tr></thead>
+        <caption className="sr-only">Modal endpoint costs by model</caption>
+        <thead><tr><th className="py-2">Model / App</th><th className="text-right">Metered spend</th></tr></thead>
         <tbody>
           {data?.models.map((model) => (
             <tr key={model.model}>
-              <td className="py-2">{model.model}<span className="block text-muted">{model.app}</span>{model.error && <span className="block text-muted">{model.error}</span>}</td>
+              <td className="py-2">{model.model}<span className="block text-muted">{model.app}</span>{model.error && <span className="block text-muted">{model.error}</span>}
+                {Object.keys(model.cost_by_resource ?? {}).length > 0 && <details className="text-muted">
+                  <summary>Resource breakdown</summary>
+                  <ul>{Object.entries(model.cost_by_resource).map(([resource, cost]) => <li key={resource}>{resource}: <Money usd={cost} /></li>)}</ul>
+                </details>}
+              </td>
               <td className="text-right"><Money usd={model.cost_usd} /></td>
             </tr>
           ))}

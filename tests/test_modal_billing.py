@@ -50,7 +50,23 @@ class ModalBillingTests(unittest.TestCase):
         raw = json.loads((self.root / "workspace-2026-11.json").read_text())
         self.assertEqual(raw["rows"][0]["cost_usd"], str(self.amount))
         start, end = self.calls[-1]
-        self.assertEqual((start.day, start.hour, end.hour, end.minute), (1, 0, 17, 0))
+        self.assertEqual((start.day, start.hour, end.hour, end.minute), (1, 0, 18, 0))
+
+    def test_latest_complete_hour_is_persisted_with_resource_breakdown(self):
+        interval = self.now.replace(minute=0) - timedelta(hours=1)
+        def fetch(start, end, models):
+            workspace, ids, rows = self.fetch(start, end, models)
+            rows[0].update(interval_start=interval, cost_by_resource={
+                "Input Tokens (Uncached)": Decimal("0.1"), "CPU": Decimal("0.023456789")})
+            return workspace, ids, rows[:1] if start <= interval < end else []
+        self.assertTrue(self.service(fetch=fetch).sync())
+        view = self.service(fetch=lambda *a: self.fail("restart must read persisted charges")).view()
+        self.assertEqual(view["cost_usd"], float(self.amount))
+        self.assertEqual(view["models"][0]["cost_by_resource"], {
+            "Input Tokens (Uncached)": 0.1, "CPU": 0.023456789})
+        self.amount = Decimal("0.25")
+        self.assertTrue(self.service(fetch=fetch).sync())
+        self.assertEqual(self.service().view()["cost_usd"], 0.25)
 
     def test_revised_bill_replaces_previous_total_and_failure_retains_data(self):
         billing = self.service()
@@ -83,11 +99,34 @@ class ModalBillingTests(unittest.TestCase):
         self.assertIsNone(billing.view()["models"][0]["cost_usd"])
         self.assertIn("mapping changed", billing.view()["models"][0]["error"])
 
-    def test_month_boundary_queries_last_complete_billing_period(self):
+    def test_month_boundary_at_midnight_queries_last_complete_billing_period(self):
         self.now = datetime(2026, 12, 1, 0, 20, tzinfo=timezone.utc)
         self.service().sync()
         start, end = self.calls[-1]
-        self.assertEqual((start.month, start.day, start.hour, end.month, end.day, end.hour), (11, 1, 0, 11, 30, 23))
+        self.assertEqual((start.month, start.day, start.hour, end.month, end.day, end.hour), (11, 1, 0, 12, 1, 0))
+
+    def test_rollover_reconciles_previous_month_including_last_hour(self):
+        self.assertTrue(self.service().sync())
+        self.now = datetime(2026, 12, 1, 1, 20, tzinfo=timezone.utc)
+        self.amount = Decimal("0.5")
+        self.assertTrue(self.service().sync())
+        prior = json.loads((self.root / "workspace-2026-11.json").read_text())
+        self.assertEqual(prior["end"], "2026-12-01T00:00:00+00:00")
+        self.assertEqual(prior["rows"][0]["cost_usd"], "0.5")
+        self.assertEqual(self.service().view()["start"], "2026-12-01T00:00:00+00:00")
+        self.assertTrue(self.service().sync())
+        self.assertEqual(self.service().view()["cost_usd"], 0.5)
+
+    def test_failed_previous_month_reconciliation_keeps_latest_snapshot(self):
+        self.assertTrue(self.service().sync())
+        before = (self.root / "latest.json").read_bytes()
+        self.now = datetime(2026, 12, 1, 1, 20, tzinfo=timezone.utc)
+        def fetch(start, end, models):
+            if start.month == 11:
+                raise RuntimeError("delayed report unavailable")
+            return self.fetch(start, end, models)
+        self.assertFalse(self.service(fetch=fetch).sync())
+        self.assertEqual((self.root / "latest.json").read_bytes(), before)
 
     def test_sdk_month_request_uses_contiguous_seven_day_windows(self):
         @dataclass
@@ -152,10 +191,12 @@ class BillingApiTests(ApiCase):
         billing.models = (ModelPreset("openai/qwen", modal_app="ep-qwen"),)
         billing.now = lambda: datetime(2026, 11, 14, 18, tzinfo=timezone.utc)
         billing.fetch = lambda start, end, models: ("workspace", {"openai/qwen": "ap-qwen"}, [dict(
-            object_id="ap-qwen", description="qwen", environment_name="main", interval_start=start, cost=Decimal("2.5"))])
+            object_id="ap-qwen", description="qwen", environment_name="main", interval_start=start, cost=Decimal("2.5"),
+            cost_by_resource={"Output Tokens": Decimal("2.4"), "CPU": Decimal("0.1")})])
         self.assertTrue(billing.sync())
         response = self.client.get("/api/evals/modal-billing")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["cost_usd"], 2.5)
         self.assertEqual(response.json()["models"][0]["object_id"], "ap-qwen")
+        self.assertEqual(response.json()["models"][0]["cost_by_resource"], {"Output Tokens": 2.4, "CPU": 0.1})
         self.assertIsNone(self.client.get("/api/evals/jobs/claude-smoke").json()["job"]["cost_usd"])

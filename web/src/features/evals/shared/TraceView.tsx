@@ -87,6 +87,7 @@ function TraceBody({ trace }: { trace: Trace }) {
         {trace.reasoning_tokens != null && <span>Reasoning tokens {formatNumber(trace.reasoning_tokens)} (included in output)</span>}
       </p>
       {trace.cost_note && <p className="text-[13px] text-muted">{trace.cost_note}</p>}
+      {trace.inference_cost_usd_exact && <p className="text-[13px] text-muted">Exact inference cost: ${trace.inference_cost_usd_exact}</p>}
       {trace.steps.length === 0 ? (
         <p className="text-[13px] text-muted">The agent left no step-by-step trajectory.</p>
       ) : (

@@ -3,6 +3,7 @@
 import asyncio
 import json
 import tempfile
+import threading
 import time
 import unittest
 from contextlib import ExitStack, suppress
@@ -308,6 +309,69 @@ class PublicPlayTests(unittest.TestCase):
                 self.assertEqual(db.query('SELECT total_matches FROM jobs')[0]['total_matches'], 10)
             finally:
                 db.close()
+
+    def test_result_arrives_while_worker_shutdown_is_still_blocked(self):
+        async def scenario(board):
+            release_worker = threading.Event()
+            cleanup_started = asyncio.Event()
+            result_received = asyncio.Event()
+            loop = asyncio.get_running_loop()
+            proc = unittest.mock.Mock()
+            proc.is_alive.return_value = True
+
+            def join(*, timeout):
+                loop.call_soon_threadsafe(cleanup_started.set)
+                if not release_worker.wait(timeout=5):
+                    raise TimeoutError('Test did not release worker cleanup')
+                proc.is_alive.return_value = False
+
+            proc.join.side_effect = join
+            conn = unittest.mock.Mock()
+            conn.poll.return_value = False
+            ctx = unittest.mock.Mock()
+            ctx.Process.return_value = proc
+            ctx.Pipe.return_value = (conn, unittest.mock.Mock())
+            ctx.Event.return_value = threading.Event()
+
+            class Socket(MemorySocket):
+                async def send_text(self, text):
+                    await super().send_text(text)
+                    if self.messages[-1]['t'] == 'over':
+                        result_received.set()
+
+            with patch.object(live.mp, 'get_context', return_value=ctx):
+                session = live.Session(Socket(), 'giant-beatdown', 'giant-beatdown', 11,
+                                       leaderboard=board, player_id='test-player', player_name='Alice')
+            # Run the actual final tick with an idle bot that could otherwise start another search.
+            state = session.game.state
+            session.game.engine.step([], state.regular_ticks + state.overtime_ticks - 1)
+            self.assertFalse(session.game.over)
+            session.bot_busy = False
+            task = asyncio.create_task(session.run())
+            try:
+                await asyncio.wait_for(result_received.wait(), timeout=2)
+                await asyncio.wait_for(cleanup_started.wait(), timeout=2)
+                self.assertFalse(task.done())
+                self.assertNotIn(session, live.ACTIVE)
+                self.assertTrue(session.shutdown.is_set())
+                conn.send.assert_not_called()
+                result = session.ws.messages[-1]
+                self.assertEqual(result['winner'], 1)
+                self.assertTrue(result['saved'], result)
+                self.assertEqual(board.standings('test-player')['you']['losses'], 1)
+            finally:
+                release_worker.set()
+                await asyncio.wait_for(task, timeout=3)
+            proc.join.assert_called_once_with(timeout=live.BOT_EXIT_SECONDS)
+            self.assertTrue(session.closed)
+            self.assertFalse(proc.is_alive())
+            self.assertFalse(session.ws.closed)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / 'arena.db'
+            DB(db_path).close()
+            with patch.object(live, 'OUT_DIR', Path(tmp)), patch.object(live, 'DB', lambda: DB(db_path)):
+                asyncio.run(scenario(Leaderboard(Path(tmp) / 'leaderboard.csv')))
 
 
 if __name__ == '__main__':

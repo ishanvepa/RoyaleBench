@@ -427,7 +427,7 @@ class Session:
                         except Exception:
                             status = -1
                         await self.send(self.event(team, card, reason == 0, status, self.aim.pop((team, card), None), tick))
-                if not self.bot_busy and tick - self.bot_asked_tick >= BOT_EVERY_TICKS:
+                if not g.over and not self.bot_busy and tick - self.bot_asked_tick >= BOT_EVERY_TICKS:
                     self.bot_sent_at, self.bot_source_tick = loop.time(), g.state.tick
                     self.bot_send = loop.run_in_executor(None, self.conn.send, e.save_state())
                     self.bot_send.add_done_callback(lambda done: done.exception() if not done.cancelled() else None)
@@ -439,7 +439,9 @@ class Session:
                 due = loop.time()
             await asyncio.sleep(max(0.0, delay))
         ACTIVE.discard(self)
-        await asyncio.to_thread(self.close)
+        # Stop new bot work now, but let run()'s finally wait for its processes only after
+        # the saved result reaches the browser. Planner cleanup can take up to 15 seconds.
+        self.shutdown.set()
         await self.send({"t": "over", **await asyncio.to_thread(self.save)})
 
     def event(self, team: int, card: int, ok: bool, status: int, spot, tick: int) -> dict:

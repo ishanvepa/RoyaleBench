@@ -261,7 +261,10 @@ refresh rate. Both sides retain the intentional **21-tick / 1.05-second card
 deployment delay**; a local drop marker appears immediately. That game rule is
 separate from network latency. Replay compression/database writes and worker
 shutdown run outside the event loop, and slow socket writes time out after one
-second instead of retaining a match indefinitely.
+second instead of retaining a match indefinitely. Completed matches save their
+replay and leaderboard result and send the result dialog before waiting for bot
+worker shutdown. The shutdown grace period cannot delay the result screen, and
+no new bot search starts on the final tick.
 
 Regression checks:
 

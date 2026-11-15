@@ -989,7 +989,7 @@
         b.querySelector(".kd").textContent = {building: "bldg"}[kindOf(info)] || kindOf(info);
         b.setAttribute("aria-label", pretty(info[0]) + ", " + kindOf(info) + ", " + cost + " elixir, key " + (i + 1));
         b.setAttribute("aria-pressed", String(i === sel));
-        b.addEventListener("pointerdown", (ev) => { ev.preventDefault(); select(sel === i ? -1 : i); dragging = sel === i; dragMoved = false; });
+        b.addEventListener("pointerdown", (ev) => { ev.preventDefault(); select(i); dragging = true; dragMoved = false; });
       } else { b.disabled = true; b.setAttribute("aria-label", "Empty slot"); }
       hand.append(b);
     });
@@ -1062,7 +1062,12 @@
     if (cid < 0) return;
     if (s.me.e < cost * 1000) return toast("Need " + cost + " elixir");
     if (!mask || maskSlot !== sel || mask.card !== cid) return toast("Placement is updating…");
-    if (!placement.allowed(mask, t)) return toast("Can't place it there");
+    if (!placement.allowed(mask, t)) {
+      // A blocked tap in the opponent's half snaps to the closest legal spot on our side.
+      if (t.y < TY / 2) return toast("Can't place it there");
+      t = placement.nearest(mask, t);
+      if (!t) return toast("Can't place it there");
+    }
     send({ t: "play", slot: sel, x: t.x, y: t.y });
     renderer.addEffect({ kind: "drop", x: t.x, y: t.y, at: performance.now() });
     select(-1);
@@ -1075,7 +1080,7 @@
   cv.addEventListener("pointerleave", () => { if (!dragging) hover = null; });
   window.addEventListener("keydown", (ev) => {
     if ($("game").hidden || over) return;
-    if (ev.key >= "1" && ev.key <= "4") { const i = Number(ev.key) - 1; select(sel === i ? -1 : i); }
+    if (ev.key >= "1" && ev.key <= "4") { select(Number(ev.key) - 1); }
     else if (ev.key === "Escape") select(-1);
     else if (ev.key === "p" || ev.key === "P") togglePause();
   });

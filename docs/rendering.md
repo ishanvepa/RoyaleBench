@@ -26,6 +26,11 @@ radii in tiles, with Blue at the bottom; its file header documents the row layou
 Both views supply the arena grid from the simulation or trace, rather than
 guessing bridge positions.
 
+Troop miniatures use a shared 1.5× visual scale to make ground and flying units
+easier to see on phones. Their shadows, health bars, status rings, labels, and
+tooltip targets follow the larger artwork. Simulator positions, collision radii,
+building and tower footprints, and spell areas are unchanged.
+
 The terrain follows Arena 1: a two-tone grass checker, worn lanes from each
 bridge towards the princess towers, a turquoise river with a shaded upper bank
 and lily pads, plank bridges that reach half a tile onto each bank, and a wooden

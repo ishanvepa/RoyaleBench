@@ -1,0 +1,79 @@
+{
+  "dataset": "royalebench/royalebench-tactics@3",
+  "version": "2.0.0",
+  "foundation_dataset": "royalebench/royalebench-v3@2",
+  "integrated_main_commit": "4eb50d4",
+  "branch": "codex/tactics-coordinate-foundation",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "foundation_protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "tests": {
+    "passed": 76,
+    "failed": 0,
+    "skipped": 0,
+    "duration_s": 111.95,
+    "command": "python -m pytest -q tests/test_tactics.py tests/test_coordinate_task.py tests/test_royalebench_v3.py tests/test_royalebench_v1.py tests/test_royale_task.py"
+  },
+  "reference_passes": 7,
+  "container_passes": 7,
+  "docker_image": "sha256:f4c234db18c28359589120f36e383dee4537de43f60d1370fcb669011fb5c418",
+  "spatial_screen_points": 17535,
+  "verified_spatial_witnesses": 44,
+  "gated_tasks": [
+    "02-reserve-counter-b"
+  ],
+  "published_tags": [
+    "coordinates-v1",
+    "v3-foundation"
+  ],
+  "task_config_file_sha256": {
+    "01-timed-spell-a": "d10b01fc96053dfa11589ea36506a4b94160efd016b06611fc59438b7346cdf9",
+    "01-timed-spell-b": "a19cb73280a9445e278ccec3022ae685f144cc249fb125d8405a4e036e01fec6",
+    "02-reserve-counter-a": "a3605816b239918d32531a40a430d814e34457383c03c311ac0b42cdd1ba9585",
+    "03-tower-race-a": "464dbae97b0e112386e082a9d99d197c32685b95d39b8278176463bac602c673",
+    "03-tower-race-b": "a4f89cc080ffa14fdb8143e347386477f223afb1ea24141e69f17410aff0ce36",
+    "04-tower-trade-a": "2c7d6ab66baa0c49b4bb763444e17bef603aa9611dc15b44da42b4447c86711d",
+    "04-tower-trade-b": "c993cca110912fe0eafa287967cf7a22202165da5546dec87b73e59d58acec27"
+  },
+  "hosted_pilot": {
+    "run_id": "88a361db-f330-4823-b202-b07f6fee8e27",
+    "dataset": "royalebench/royalebench-tactics@3",
+    "task": "03-tower-race-a",
+    "model": "anthropic/claude-sonnet-4-6",
+    "harness": "claude_code-v1.0.0",
+    "provider": "modal",
+    "concurrency": 1,
+    "status": "FINISHED",
+    "rewards": {
+      "reward": 1.0,
+      "win": 1.0,
+      "crowns_for": 1.0,
+      "crowns_against": 0.0,
+      "enemy_tower_damage_frac": 0.3127,
+      "own_tower_damage_frac": 0.2747,
+      "completed": 1.0,
+      "integrity": 1.0,
+      "decisions": 1.0,
+      "fast_decision_frac": 0.0,
+      "spent_elixir": 4.0,
+      "tower_damage": 0.0,
+      "objective_met": 1.0,
+      "rejected_actions": 0.0
+    },
+    "agent_time_s": 40.242061801000006,
+    "api_cost_usd": 0.08928225000000001,
+    "capture": {
+      "artifact_count": 94,
+      "complete": true,
+      "counts": {
+        "commands": 4,
+        "events": 42,
+        "matches": 1,
+        "model_calls": 3,
+        "observations": 2,
+        "states": 4
+      },
+      "gaps": [],
+      "schema_version": "1.0"
+    }
+  }
+}

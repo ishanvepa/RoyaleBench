@@ -1,0 +1,63 @@
+{
+  "run_id": "50b70c82-7768-4ca2-932b-28bfc074ba36",
+  "dataset": "royalebench/royalebench-v1@3",
+  "task_id": "01-immediate-lethal",
+  "harness": "mini_swe_agent_modal_qwen",
+  "model": "openai/Qwen/Qwen3.8-2.4T-A95B",
+  "served_model": "Qwen/Qwen3.8-2.4T-A95B",
+  "provider": "modal",
+  "concurrency": 1,
+  "secret_mapping": {
+    "QWEN_API_KEY": "modal-qwen-api-key"
+  },
+  "endpoint": "https://ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct/v1",
+  "max_output_tokens": 16384,
+  "agent_step_limit": 12,
+  "status": "FINISHED",
+  "rewards": {
+    "reward": 1.0,
+    "win": 1.0,
+    "crowns_for": 1.0,
+    "crowns_against": 0.0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2095,
+    "completed": 1.0,
+    "integrity": 1.0,
+    "decisions": 1.0,
+    "fast_decision_frac": 0.0,
+    "spent_elixir": 4.0,
+    "tower_damage": 0.0,
+    "objective_met": 1.0
+  },
+  "agent_run_duration_s": 17.244086609999954,
+  "model_api_calls": 5,
+  "usage": {
+    "prompt_tokens": 21686,
+    "completion_tokens": 1597,
+    "total_tokens": 23283,
+    "cached_prompt_tokens": 16512,
+    "reasoning_tokens": 991
+  },
+  "actual_cost_usd": null,
+  "cost_note": "Unknown-price fallback reports zero; no billing retrieved.",
+  "action": "cr act 5: Fireball at enemy left princess tower",
+  "upstream": {
+    "repo": "SWE-agent/mini-swe-agent",
+    "tag": "v2.4.6",
+    "commit": "a83fcae82d2a08f0ee0c688f9d137b3566c097f8",
+    "submodule": "mini-swe-agent"
+  },
+  "artifact_sha256": {
+    "mini_swe_agent_modal_qwen.zip": "ab8542abe542a8dd005c3075f9c7cfbd7bab38c07505b0b4c6bd90d1d0551d5a",
+    "run_metadata.json": "5968fea659b685e4eee5475649c99dff41b9ac32f227c42cd2ba9f7c1e7c1ce3",
+    "task_result.json": "eb6af77d9967595c6185addbbc4068acf311c1a0df6150983fa279001c19081f",
+    "01-immediate-lethal/agent_output.tar.gz": "25bbc033f53693061e1ef17c75d416eade937c80d39aee5d6f4ddbbc67b4a0fc",
+    "01-immediate-lethal/artifacts/royale.tar.gz": "fb7fdf24544a70d1ff03e8160ca6c2860507b5ddfedc9d5282e7e8b741774790",
+    "01-immediate-lethal/mini_swe_agent/summary.json": "5df3fea463f7dd0f6fd046a2a1aa6549575161f054601a680cb16764786d87b1",
+    "01-immediate-lethal/mini_swe_agent/trajectory.json": "98cf668805c49f1601c7e709b64f031100cfe328f22f6856e0cc48eef8cf6a14"
+  },
+  "artifacts_local": "runs/evals/modal-qwen/pilot-output",
+  "artifacts_durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\50b70c82-7768-4ca2-932b-28bfc074ba36\\manual-download",
+  "artifact_copy_verified": true,
+  "collection_limitation": "The existing normalized archive collector imports fcntl and cannot run on Windows. Raw outputs, model trajectory, launch metadata and verifier result are downloaded and mirrored with SHA-256 verification."
+}

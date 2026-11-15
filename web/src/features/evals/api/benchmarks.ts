@@ -18,11 +18,28 @@ export function useBenchmark(name: string) {
   });
 }
 
+export function useTaskRanking(name: string) {
+  return useQuery({
+    queryKey: qk.evals.taskRanking(name),
+    queryFn: () => unwrap(api.GET("/api/evals/benchmarks/{name}/ranking", { params: { path: { name } } })),
+    staleTime: 10_000,
+    refetchInterval: 30_000,
+  });
+}
+
 export function useBenchmarkTask(name: string, taskId: string) {
   return useQuery({
     queryKey: qk.evals.benchmarkTask(name, taskId),
     queryFn: () =>
       unwrap(api.GET("/api/evals/benchmarks/{name}/tasks/{task_id}", { params: { path: { name, task_id: taskId } } })),
+  });
+}
+
+export function useTaskResolution(name: string, taskId: string) {
+  return useQuery({
+    queryKey: qk.evals.taskResolution(name, taskId),
+    queryFn: () =>
+      unwrap(api.GET("/api/evals/benchmarks/{name}/tasks/{task_id}/resolution", { params: { path: { name, task_id: taskId } } })),
   });
 }
 

@@ -45,3 +45,16 @@ element('flip').checked = true;
 seek(max - 1);
 seek(max);
 assert.match(element('result').textContent, /final hash/);
+
+// Seeking backward must remove future decisions, including previously revealed history.
+const payload = JSON.parse(scripts.find(([attrs]) => attrs.type === 'application/json')[1]);
+const tickField = payload.frame_fields.indexOf('tick');
+for (const i of [max, 0, Math.floor(max / 2), 1, max]) {
+  seek(i);
+  const tick = payload.frames[i][tickField];
+  for (const decision of payload.agent_decisions || []) {
+    const text = decision.steps[0].text;
+    assert.equal(element('decision-body').innerHTML.includes(text), decision.tick <= tick,
+      `decision at ${decision.tick} must follow replay tick ${tick}`);
+  }
+}

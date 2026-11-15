@@ -1,0 +1,3 @@
+I failed the scenario. Both princess towers survived, but the right one took 634 damage against the 400 limit. I spent 3 of the 4 allowed elixir.
+
+I put a Cannon at (14.5, 11) to pull the Hog Rider, and the Cannon was killed. The Hog then reached the right princess tower and hit it twice before the tower killed it. The only other play I could afford was a Zap, but that would have taken spending to 5 elixir, over the cap. I didn't try a different card or placement.

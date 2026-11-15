@@ -1,0 +1,455 @@
+{
+    "benchmark_id": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+    "benchmark_name": "royalebench",
+    "started_at": "2026-11-15T09:48:41.438981",
+    "finished_at": "2026-11-15T09:51:27.372998",
+    "status": "FINISHED",
+    "benchmark_arguments": {
+        "contract": {
+            "name": "claude_code-v1.0.0",
+            "model": "anthropic/claude-opus-5-5",
+            "install_cmd": "bash setup.sh",
+            "run_cmd": "bash -lc 'set -o pipefail && mkdir -p /logs && AGENT_OUTPUT_ROOT=/logs python3 /bundle/claude_code-v1.0.0/collect_outputs.py {problem_statement_path} --task-id {task_id} --model {model}'",
+            "final_output": "/logs",
+            "output_artifacts": [],
+            "egress_allowlist": [],
+            "allow_provider_tools": false,
+            "isolate_agent_uid": false,
+            "inference_settings_attested": true
+        },
+        "agent_attempts": [],
+        "concurrency": 4,
+        "dataset": "royalebench-win",
+        "dataset_version": {
+            "id": "royalebench/royalebench-win@2"
+        },
+        "sandbox_provider": "modal",
+        "sandbox_provider_secret_name": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/modal-credentials",
+        "environment": "aws",
+        "properties": {
+            "region": "us-east-1",
+            "s3_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+            "log_group": "/valkyrie/benchmarks-prod/tenants/49113804-bbae-46cc-82a7-70f78706d1e5",
+            "log_retention_days": 365
+        }
+    },
+    "final_evaluation": {
+        "id": "4b2f0214-f7a4-4a94-a603-8e55111bdb75",
+        "org_id": "49113804-bbae-46cc-82a7-70f78706d1e5",
+        "benchmark": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+        "final_score": 50.0,
+        "properties": {
+            "total": 4,
+            "n_trials": 4,
+            "n_errors": 0,
+            "metrics": [
+                {
+                    "completed": 1.0,
+                    "crowns_against": 0.5,
+                    "crowns_for": 0.5,
+                    "decisions": 5.5,
+                    "enemy_tower_damage_frac": 0.246,
+                    "fast_decision_frac": 0.0,
+                    "integrity": 1.0,
+                    "objective_met": 0.5,
+                    "own_tower_damage_frac": 0.26134999999999997,
+                    "rejected_actions": 0.0,
+                    "reward": 0.5,
+                    "spent_elixir": 14.5,
+                    "tower_damage": 202.0,
+                    "win": 0.5
+                }
+            ],
+            "reward_stats": {
+                "reward": {
+                    "1.0": [
+                        "01-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ],
+                    "0.0": [
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect"
+                    ]
+                },
+                "win": {
+                    "1.0": [
+                        "01-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ],
+                    "0.0": [
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect"
+                    ]
+                },
+                "crowns_for": {
+                    "1.0": [
+                        "01-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ],
+                    "0.0": [
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect"
+                    ]
+                },
+                "crowns_against": {
+                    "0.0": [
+                        "01-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ],
+                    "1.0": [
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect"
+                    ]
+                },
+                "enemy_tower_damage_frac": {
+                    "0.3127": [
+                        "01-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ],
+                    "0.1059": [
+                        "02-sustained-tower-race"
+                    ],
+                    "0.2527": [
+                        "04-critical-cycle-and-connect"
+                    ]
+                },
+                "own_tower_damage_frac": {
+                    "0.2384": [
+                        "01-cycle-and-connect"
+                    ],
+                    "0.3127": [
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect"
+                    ],
+                    "0.1816": [
+                        "03-bait-damage-sequence"
+                    ]
+                },
+                "completed": {
+                    "1.0": [
+                        "01-cycle-and-connect",
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ]
+                },
+                "integrity": {
+                    "1.0": [
+                        "01-cycle-and-connect",
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ]
+                },
+                "decisions": {
+                    "6.0": [
+                        "01-cycle-and-connect"
+                    ],
+                    "3.0": [
+                        "02-sustained-tower-race"
+                    ],
+                    "5.0": [
+                        "04-critical-cycle-and-connect"
+                    ],
+                    "8.0": [
+                        "03-bait-damage-sequence"
+                    ]
+                },
+                "fast_decision_frac": {
+                    "0.0": [
+                        "01-cycle-and-connect",
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ]
+                },
+                "spent_elixir": {
+                    "14.0": [
+                        "01-cycle-and-connect",
+                        "04-critical-cycle-and-connect"
+                    ],
+                    "10.0": [
+                        "02-sustained-tower-race"
+                    ],
+                    "20.0": [
+                        "03-bait-damage-sequence"
+                    ]
+                },
+                "tower_damage": {
+                    "253.0": [
+                        "01-cycle-and-connect"
+                    ],
+                    "305.0": [
+                        "02-sustained-tower-race"
+                    ],
+                    "250.0": [
+                        "04-critical-cycle-and-connect"
+                    ],
+                    "0.0": [
+                        "03-bait-damage-sequence"
+                    ]
+                },
+                "objective_met": {
+                    "1.0": [
+                        "01-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ],
+                    "0.0": [
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect"
+                    ]
+                },
+                "rejected_actions": {
+                    "0.0": [
+                        "01-cycle-and-connect",
+                        "02-sustained-tower-race",
+                        "04-critical-cycle-and-connect",
+                        "03-bait-damage-sequence"
+                    ]
+                }
+            },
+            "score_key": "reward",
+            "mean_reward": 0.5
+        }
+    },
+    "average_task_breakdown": {
+        "sandbox_build_duration": 5.296077666500054,
+        "agent_run_duration": 38.3290866815,
+        "evaluation_run_duration": 41.12321722900006,
+        "sandbox_run_duration": 94.12985584250004
+    },
+    "evaluation_results": {
+        "04-critical-cycle-and-connect": {
+            "task_id": "04-critical-cycle-and-connect",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.2527,
+                "own_tower_damage_frac": 0.3127,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 5.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 14.0,
+                "tower_damage": 250.0,
+                "objective_met": 0.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.2527,
+                    "own_tower_damage_frac": 0.3127,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 5.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 14.0,
+                    "tower_damage": 250.0,
+                    "objective_met": 0.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.2527,\n  \"own_tower_damage_frac\": 0.3127,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 5.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 14.0,\n  \"tower_damage\": 250.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.2527,\n  \"own_tower_damage_frac\": 0.3127,\n  \"ticks\": 5819,\n  \"tower_damage\": 250,\n  \"spent_elixir\": 14,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"IceSpirits\",\n    \"x\": 63000,\n    \"y\": 207000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"Cannon\",\n    \"x\": 117000,\n    \"y\": 189000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Fireball\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 4\n   },\n   {\n    \"decision\": 3,\n    \"card\": \"HogRider\",\n    \"x\": 63000,\n    \"y\": 270000,\n    \"cost\": 4\n   },\n   {\n    \"decision\": 4,\n    \"card\": \"Log\",\n    \"x\": 63000,\n    \"y\": 432000,\n    \"cost\": 2\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 8.95,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 5,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 39.18845415499993,
+                "sandbox_run_duration": 90.9772819640001,
+                "sandbox_build_duration": 19.63898309900003,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 35.9022362070001,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 39.188456008
+            },
+            "attempts": 1
+        },
+        "03-bait-damage-sequence": {
+            "task_id": "03-bait-damage-sequence",
+            "rewards": {
+                "reward": 1.0,
+                "win": 1.0,
+                "crowns_for": 1.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.3127,
+                "own_tower_damage_frac": 0.1816,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 8.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 20.0,
+                "tower_damage": 0.0,
+                "objective_met": 1.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 1.0,
+                    "win": 1.0,
+                    "crowns_for": 1.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.3127,
+                    "own_tower_damage_frac": 0.1816,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 8.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 20.0,
+                    "tower_damage": 0.0,
+                    "objective_met": 1.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.1816,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 8.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 20.0,\n  \"tower_damage\": 0.0,\n  \"objective_met\": 1.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.1816,\n  \"ticks\": 5830,\n  \"tower_damage\": 0,\n  \"spent_elixir\": 20,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"InfernoTower\",\n    \"x\": 117000,\n    \"y\": 189000,\n    \"cost\": 5\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"Rocket\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 6\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Knight\",\n    \"x\": 81000,\n    \"y\": 252000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 3,\n    \"card\": \"IceSpirits\",\n    \"x\": 63000,\n    \"y\": 270000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 4,\n    \"card\": \"Log\",\n    \"x\": 63000,\n    \"y\": 297000,\n    \"cost\": 2\n   },\n   {\n    \"decision\": 5,\n    \"card\": \"GoblinBarrel\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 3\n   }\n  ],\n  \"opponent_plays\": [\n   {\n    \"tick\": 5600,\n    \"card\": \"Musketeer\",\n    \"x\": 63000,\n    \"y\": 315000\n   }\n  ],\n  \"elapsed_s\": 15.5,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 8,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 43.37698205600009,
+                "sandbox_run_duration": 105.50530720699999,
+                "sandbox_build_duration": 0.5980047630000627,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 45.69836215700002,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 43.37698416300009
+            },
+            "attempts": 1
+        },
+        "01-cycle-and-connect": {
+            "task_id": "01-cycle-and-connect",
+            "rewards": {
+                "reward": 1.0,
+                "win": 1.0,
+                "crowns_for": 1.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.3127,
+                "own_tower_damage_frac": 0.2384,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 6.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 14.0,
+                "tower_damage": 253.0,
+                "objective_met": 1.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 1.0,
+                    "win": 1.0,
+                    "crowns_for": 1.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.3127,
+                    "own_tower_damage_frac": 0.2384,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 6.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 14.0,
+                    "tower_damage": 253.0,
+                    "objective_met": 1.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2384,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 6.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 14.0,\n  \"tower_damage\": 253.0,\n  \"objective_met\": 1.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2384,\n  \"ticks\": 5868,\n  \"tower_damage\": 253,\n  \"spent_elixir\": 14,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"IceSpirits\",\n    \"x\": 63000,\n    \"y\": 198000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"Cannon\",\n    \"x\": 135000,\n    \"y\": 171000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Skeletons\",\n    \"x\": 99000,\n    \"y\": 180000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 3,\n    \"card\": \"HogRider\",\n    \"x\": 63000,\n    \"y\": 270000,\n    \"cost\": 4\n   },\n   {\n    \"decision\": 4,\n    \"card\": \"Fireball\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 4\n   },\n   {\n    \"decision\": 5,\n    \"card\": \"IceSpirits\",\n    \"x\": 81000,\n    \"y\": 171000,\n    \"cost\": 1\n   }\n  ],\n  \"opponent_plays\": [\n   {\n    \"tick\": 5760,\n    \"card\": \"Musketeer\",\n    \"x\": 63000,\n    \"y\": 315000\n   }\n  ],\n  \"elapsed_s\": 11.4,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 6,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 41.43679548299997,
+                "sandbox_run_duration": 99.767594368,
+                "sandbox_build_duration": 0.4757831200000737,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 47.406629130000056,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 41.43679664299998
+            },
+            "attempts": 1
+        },
+        "02-sustained-tower-race": {
+            "task_id": "02-sustained-tower-race",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.1059,
+                "own_tower_damage_frac": 0.3127,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 3.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 10.0,
+                "tower_damage": 305.0,
+                "objective_met": 0.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.1059,
+                    "own_tower_damage_frac": 0.3127,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 3.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 10.0,
+                    "tower_damage": 305.0,
+                    "objective_met": 0.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.1059,\n  \"own_tower_damage_frac\": 0.3127,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 3.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 10.0,\n  \"tower_damage\": 305.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.1059,\n  \"own_tower_damage_frac\": 0.3127,\n  \"ticks\": 5506,\n  \"tower_damage\": 305,\n  \"spent_elixir\": 10,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Cannon\",\n    \"x\": 63000,\n    \"y\": 207000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"Fireball\",\n    \"x\": 61200,\n    \"y\": 180000,\n    \"cost\": 4\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Minions\",\n    \"x\": 57600,\n    \"y\": 153000,\n    \"cost\": 3\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 5.3,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 3,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 29.314115032000018,
+                "sandbox_run_duration": 80.26923983100005,
+                "sandbox_build_duration": 0.4715396840000494,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 35.48564142200007,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 29.31411690599998
+            },
+            "attempts": 1
+        }
+    }
+}

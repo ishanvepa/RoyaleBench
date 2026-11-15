@@ -102,6 +102,41 @@ describe("Leaderboard page", () => {
     expect(posts).toBe(1);
   });
 
+  it("filters to full benchmark runs, persists the filter, and scopes cost downloads", async () => {
+    const requests: URL[] = [];
+    let costRequest: URL | undefined;
+    server.use(
+      http.get("*/api/evals/leaderboard", ({ request }) => {
+        const url = new URL(request.url);
+        requests.push(url);
+        return HttpResponse.json(leaderboard(url.searchParams.get("full_only") === "true" ? rows.slice(0, 1) : rows, { costs_pending: 4 }));
+      }),
+      http.get("*/api/evals/leaderboard/costs", () => HttpResponse.json({ state: "idle", done: 0, total: 0, error: null })),
+      http.post("*/api/evals/leaderboard/costs", ({ request }) => {
+        costRequest = new URL(request.url);
+        return HttpResponse.json({ state: "done", done: 4, total: 4, error: null });
+      }),
+    );
+    const { user, router, unmount } = renderApp("/evals/leaderboard?dataset=arena-lite&revision=1");
+    const toggle = await screen.findByRole("switch", { name: "Full benchmark runs only" });
+    expect(toggle).not.toBeChecked();
+    await user.click(toggle);
+    await waitFor(() => expect(models()).toEqual(["claude-opus-5-5"]));
+    expect(router.state.location.search).toContain("full_only=true");
+    expect(requests.at(-1)?.searchParams.get("dataset")).toBe("arena-lite");
+    expect(requests.at(-1)?.searchParams.get("revision")).toBe("1");
+    await user.click(screen.getByRole("button", { name: "Fetch cost data" }));
+    await waitFor(() => expect(costRequest?.searchParams.get("full_only")).toBe("true"));
+    const url = router.state.location.pathname + router.state.location.search;
+    unmount();
+    const restored = renderApp(url);
+    expect(await screen.findByRole("switch", { name: "Full benchmark runs only" })).toBeChecked();
+    await waitFor(() => expect(models()).toEqual(["claude-opus-5-5"]));
+    await restored.user.click(screen.getByRole("switch", { name: "Full benchmark runs only" }));
+    await waitFor(() => expect(models()).toHaveLength(3));
+    expect(restored.router.state.location.search).not.toContain("full_only");
+  });
+
   it("explains an empty leaderboard", async () => {
     stubLeaderboard(leaderboard([]));
     renderApp("/evals/leaderboard");

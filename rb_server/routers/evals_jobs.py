@@ -12,6 +12,7 @@ from ..schemas.common import ActionOut
 from ..schemas.evals import (
     ConcurrencyIn,
     ConcurrencyOut,
+    CostsStatus,
     EnvironmentOut,
     ErrorsOut,
     JobDetail,
@@ -20,6 +21,7 @@ from ..schemas.evals import (
     JobSpecIn,
     JobStartOut,
     LogsOut,
+    ReplayOut,
     ResumeIn,
     TaskDetail,
     TaskList,
@@ -53,6 +55,11 @@ def start_job(body: JobSpecIn, ctx: Ctx):
     return jobs_service.start_job(ctx, body)
 
 
+@router.post("/jobs/costs", response_model=CostsStatus, summary="Download task costs for selected finished runs")
+def start_job_costs(ctx: Ctx, run_ids: Annotated[list[str], Body(max_length=1000)]):
+    return jobs_service.start_job_costs(ctx, run_ids)
+
+
 @router.get("/jobs/{run_id}", response_model=JobDetail)
 def get_job(run_id: RunId, ctx: Ctx):
     return jobs_service.job_detail(ctx, run_id)
@@ -77,6 +84,12 @@ def get_task(run_id: RunId, task_id: TaskId, ctx: Ctx):
             summary="The agent's trajectory and cost for one task (downloaded on demand, then cached)")
 def get_trace(run_id: RunId, task_id: TaskId, ctx: Ctx):
     return jobs_service.task_trace(ctx, run_id, task_id)
+
+
+@router.get("/jobs/{run_id}/tasks/{task_id}/replay", response_model=ReplayOut,
+            summary="Recorded task gameplay, rendered on demand for a sandboxed iframe")
+def get_replay(run_id: RunId, task_id: TaskId, ctx: Ctx):
+    return jobs_service.task_replay(ctx, run_id, task_id)
 
 
 @router.get("/jobs/{run_id}/logs", response_model=LogsOut)

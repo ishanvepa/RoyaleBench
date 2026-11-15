@@ -1,0 +1,45 @@
+schema_version = "1.4"
+artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
+
+[task]
+name = "royalebench/08-cycle-to-lethal"
+description = "Cycle while defending. Win before your tower falls and before overtime ends in 18 seconds. The full draw order is disclosed below; Fireball enters your hand after two card plays. | opponent=planner-bot | seed=108 | version=1.0.0"
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "hard"
+opponent = "planner"
+deck = "hog-2.6-cycle"
+seed = 108
+seat = "blue"
+decision_ticks = 40
+
+dataset_version = "1.0.0"
+family = 8
+opponent_deck = "giant-beatdown"
+control = false
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai"]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

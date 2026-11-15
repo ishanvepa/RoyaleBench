@@ -1,0 +1,115 @@
+{
+  "id": "04-tank-and-support",
+  "family": 4,
+  "title": "Separate tank and support",
+  "difficulty": "medium",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 104,
+  "agent_team": 0,
+  "agent_deck": [
+    "GoblinBarrel",
+    "Princess",
+    "GoblinGang",
+    "Knight",
+    "InfernoTower",
+    "Rocket",
+    "Log",
+    "IceSpirits"
+  ],
+  "opponent_deck": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+  ],
+  "player_deck_name": "log-bait",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": 52.8,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Preserve both princess towers for 20 seconds and spend at most 9 elixir.",
+  "scenario": {
+    "start_tick": 2500,
+    "horizon_s": 20,
+    "elixir": 6,
+    "opponent_elixir": 0,
+    "order": [
+      "InfernoTower",
+      "Knight",
+      "GoblinGang",
+      "Log",
+      "GoblinBarrel",
+      "Princess",
+      "Rocket",
+      "IceSpirits"
+    ],
+    "opponent_order": [
+      "Giant",
+      "Musketeer",
+      "Knight",
+      "Archer",
+      "Minions",
+      "Cannon",
+      "Fireball",
+      "Zap"
+    ],
+    "units": [
+      {
+        "card": "Giant",
+        "team": 1,
+        "x": 3.5,
+        "y": 15.5
+      },
+      {
+        "card": "Musketeer",
+        "team": 1,
+        "x": 3.5,
+        "y": 19.5
+      }
+    ],
+    "grading": "defend",
+    "tower_hp": [
+      [
+        4824,
+        1068,
+        3052
+      ],
+      [
+        4824,
+        3052,
+        3052
+      ]
+    ],
+    "spend_budget": 9,
+    "damage_limit": 10000
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1",
+  "task_id": "04-tank-and-support",
+  "instruction_sha256": "3d067f4d5a603459ee53b7df4d5e58ccd2d34a122f976c6839ad66624af1e88a",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
+}

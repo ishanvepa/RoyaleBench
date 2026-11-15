@@ -14,7 +14,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { ALL, Select } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { boolParam, enumParam, stringParam, useSearchState } from "@/hooks/useSearchState";
-import { formatPercent, harnessName, plural } from "@/lib/format";
+import { harnessName, plural } from "@/lib/format";
 import { useCostsDownload, useLeaderboard, type LeaderboardFilters } from "../api/leaderboard";
 
 const searchSchema = z.object({
@@ -22,7 +22,8 @@ const searchSchema = z.object({
   revision: stringParam(),
   harness: stringParam(),
   smoke: boolParam(),
-  sort: stringParam("rank"),
+  full_only: boolParam(),
+  sort: stringParam("rank").transform((v) => (v === "pass_rate" ? "score" : v)),
   dir: enumParam(["asc", "desc"] as const, "asc"),
 });
 
@@ -42,14 +43,6 @@ function useColumns() {
       col.accessor("runs", { header: head("Runs", "Finished runs pooled into this row"), meta: numeric, sortDescFirst: true }),
       col.accessor("tasks_run", { header: head("Tasks run", "Tasks attempted across those runs (matches played)"), meta: numeric, sortDescFirst: true }),
       col.accessor("solved", { header: head("Solved", "Tasks that earned full reward (wins)"), meta: numeric, sortDescFirst: true }),
-      col.accessor((r) => r.pass_rate ?? undefined, {
-        id: "pass_rate",
-        header: head("Pass rate", "Solved divided by tasks run"),
-        meta: numeric,
-        sortDescFirst: true,
-        sortUndefined: "last",
-        cell: (c) => <span className="tabular-nums">{formatPercent(c.row.original.pass_rate)}</span>,
-      }),
       col.accessor((r) => r.score ?? undefined, {
         id: "score",
         header: head("Score", "Mean reward across tasks, as a percentage"),
@@ -110,7 +103,6 @@ const SORT_LABELS: Record<string, string> = {
   runs: "Runs",
   tasks_run: "Tasks run",
   solved: "Solved",
-  pass_rate: "Pass rate",
   score: "Score",
   agent_failures: "Agent failures",
   infra_errors: "Infra errors",
@@ -121,11 +113,11 @@ const SORT_LABELS: Record<string, string> = {
 };
 
 /** Higher-is-better and count columns start descending; names, rank and speed start ascending. */
-const DESC_FIRST = new Set(["runs", "tasks_run", "solved", "pass_rate", "score", "last_run", "cost_usd", "cost_per_task", "agent_failures", "infra_errors"]);
+const DESC_FIRST = new Set(["runs", "tasks_run", "solved", "score", "last_run", "cost_usd", "cost_per_task", "agent_failures", "infra_errors"]);
 
 export function Component() {
   const [state, setState] = useSearchState(searchSchema);
-  const filters: LeaderboardFilters = { dataset: state.dataset, revision: state.revision, harness: state.harness, includeSmoke: state.smoke };
+  const filters: LeaderboardFilters = { dataset: state.dataset, revision: state.revision, harness: state.harness, includeSmoke: state.smoke, fullOnly: state.full_only };
   const leaderboard = useLeaderboard(filters);
   const costs = useCostsDownload(filters);
   const columns = useColumns();
@@ -149,6 +141,10 @@ export function Component() {
               <FilterSelect label="Benchmark" value={state.dataset} onChange={(v) => setState({ dataset: v, revision: "" })} allLabel={state.smoke ? "All benchmarks" : "All (except smoke tests)"} options={data.filters.datasets} />
               <FilterSelect label="Revision" value={state.revision} onChange={(v) => setState({ revision: v })} allLabel="Any revision" options={data.filters.revisions} format={(r) => `r${r}`} />
               <FilterSelect label="Harness" value={state.harness} onChange={(v) => setState({ harness: v })} allLabel="Any harness" options={data.filters.harnesses} format={harnessName} />
+              <label className="flex items-center gap-2 pb-2 text-[13px] text-subtle" title="Runs with a result or error for every task in their published benchmark revision.">
+                <Switch checked={state.full_only} onCheckedChange={(full_only) => setState({ full_only })} />
+                Full benchmark runs only
+              </label>
               <label className="flex items-center gap-2 pb-2 text-[13px] text-subtle">
                 <Switch checked={state.smoke} onCheckedChange={(smoke) => setState({ smoke, dataset: "" })} />
                 Include smoke tests
@@ -185,7 +181,7 @@ export function Component() {
                 <EmptyState
                   icon={<Trophy className="size-6" aria-hidden />}
                   title="No finished runs match"
-                  description={state.dataset || state.revision || state.harness ? "Try clearing a filter." : "Results appear here once a job finishes. Smoke tests are hidden unless you include them."}
+                  description={state.dataset || state.revision || state.harness || state.full_only ? "Try clearing a filter." : "Results appear here once a job finishes. Smoke tests are hidden unless you include them."}
                   className="border-0"
                 />
               }

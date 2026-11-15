@@ -1,0 +1,17 @@
+{
+  "task": "10-protect-the-lead",
+  "family": 10,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "e479b6f125b2f172b573f9b3fb3945ba34bcf9bd53ff9c8645fae5439e91b001",
+  "image": "sha256:eab3f42376629e689795cda5af1e8d311f853c6d9d9b4d2b30e48a021ebc8af6",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 241,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 14.676
+}

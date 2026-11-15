@@ -29,7 +29,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
 - [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
-- [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, pinned dependencies, and benchmark validation priorities.
+- [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, compact opponent-play observations, pinned dependencies, and benchmark validation priorities.
 - [`docs/bots.md`](docs/bots.md): shared bot catalog, registry, implementation layout, adding opponents, live/turn-based bot strength comparisons, paired live duels, and planner settings.
 - [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
 - [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
@@ -37,21 +37,43 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/public_play.md`](docs/public_play.md): arena lobby, player names and deck selection, seven-match public Planner play at local-play strength without pausing, persistent CSV leaderboard, fixed Hog Cycle opponent, preloaded masks, permanent RoyaleBench share link, results before worker cleanup, and unranked hosting checks.
 - [`docs/public_play_plan.md`](docs/public_play_plan.md): implementation scope, checklist, and validation for public play.
 - [`docs/public_play_validation.json`](docs/public_play_validation.json): historical five-match and ten-match measurements (two Planner workers per match; the seven-match eight-worker deployment is not yet measured), latency limits, and deployment status.
-- [`docs/rendering.md`](docs/rendering.md): lobby miniature, card previews and match result dialog, shared live/replay graphics, mobile troop sizing, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
+- [`docs/rendering.md`](docs/rendering.md): dark replay viewer and synchronized agent decisions, lobby miniature, card previews and match result dialog, shared live/replay graphics, mobile troop sizing, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
-- [`docs/royalebench_v1.md`](docs/royalebench_v1.md): RoyaleBench v1 continuation scenarios against Planner, scoring, calibration, release gates, and Harbor/Valkyrie packaging.
-- [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from the web app and browse the arena.
+- [`docs/royalebench_v3.md`](docs/royalebench_v3.md): historical coordinate-action benchmark, all 11 released scenarios, scoring, validation, and Harbor/Valkyrie workflow.
+- [`docs/royalebench_win.md`](docs/royalebench_win.md): separate win-only continuation tasks, v3 saturation audit, calibration controls, and container/hosted validation.
+- [`docs/royalebench_v6.md`](docs/royalebench_v6.md): default 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
+- [`docs/royalebench_v4.md`](docs/royalebench_v4.md): Opus and Sonnet v3 comparison, task-level failure evidence, focused challenge variants, validation, and publication workflow.
+- [`runs/royalebench-v4/checks-revision2.json`](runs/royalebench-v4/checks-revision2.json): corrected v4 `@2` digest, protocol and Docker checks, full Opus/Sonnet run settings, costs, and per-task scores.
+- [`docs/royalebench_v5.md`](docs/royalebench_v5.md): ten-case coordinate dataset, source revisions, Opus/Sonnet/Haiku selection evidence, scoring, validation, and Valkyrie workflow.
+- [`runs/royalebench-v5/selection.json`](runs/royalebench-v5/selection.json): task-by-task source revisions, package hashes, model run IDs, and selection rewards.
+- [`runs/royalebench-v5/checks.json`](runs/royalebench-v5/checks.json): v5 static, Docker, negative-control, and hosted publication checks.
+- [`runs/royalebench-v3/checks-revision2.json`](runs/royalebench-v3/checks-revision2.json): v3 `@2` publication digest, protocol hash, validation counts and hosted Qwen pilot pointer.
+- [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
+- [`docs/tactics.md`](docs/tactics.md): coordinate Tactics on the v3 foundation, four task families, bounded spatial contrasts, historical menu results and release evidence.
+- [`runs/tactics-coordinates/checks.json`](runs/tactics-coordinates/checks.json): Tactics `@3` foundation/runtime hashes, focused tests, container checks, coordinate sweeps and hosted pilot evidence.
+- [`docs/coordinate_harness.md`](docs/coordinate_harness.md): separate coordinate-action pilot, CLI, illegal-action handling, replay grading, reference validation, and comparison with frozen v1.
+- [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, filter the leaderboard to full benchmark runs and compare model scores, watch recorded task gameplay and validated reference resolutions, inspect per-run and per-task API costs, benchmark task rankings by average pass rate and cost, and task difficulty, repair harness issues, and browse the arena.
+- [`docs/modal_billing.md`](docs/modal_billing.md): actual Modal endpoint spend, persisted task/job inference costs and verified token rates, resource breakdowns, workspace access, App mappings, completed-hour refresh, month reconciliation, and verification limits.
+- [`docs/qwen_modal.md`](docs/qwen_modal.md): use the existing mini-SWE-agent harness with the Modal Qwen endpoint, configure API-key/base-URL references, and run a one-task Valkyrie pilot.
+- [`docs/inkling_modal.md`](docs/inkling_modal.md): Inkling endpoint setup, revision `@4` network access, Qwen credential reuse, secure model discovery, and stock mini-SWE-agent pilot status.
+- [`docs/deepseek_modal.md`](docs/deepseek_modal.md): DeepSeek endpoint setup, revision `@5` network access, shared proxy credential, and stock mini-SWE-agent pilot status.
+- [`docs/kimi_modal.md`](docs/kimi_modal.md): Kimi endpoint setup, revision `@6` network access, shared proxy credential, and stock mini-SWE-agent pilot status.
+- [`runs/royalebench-v1/kimi_mini_swe_pilot.json`](runs/royalebench-v1/kimi_mini_swe_pilot.json): successful stock mini-SWE-agent Kimi pilot, independent verifier result, exact configuration, token usage, and checksum-verified raw artifact locations.
+- [`runs/royalebench-v1/deepseek_mini_swe_pilot.json`](runs/royalebench-v1/deepseek_mini_swe_pilot.json): successful stock mini-SWE-agent DeepSeek pilot, independent verifier result, shared credential reference, token usage, and checksum-verified artifact locations.
+- [`runs/royalebench-v1/inkling_mini_swe_pilot.json`](runs/royalebench-v1/inkling_mini_swe_pilot.json): successful stock mini-SWE-agent Inkling pilot, shared credential reference, independent verifier result, usage, and checksum-verified artifact locations.
+- [`runs/royalebench-v1/qwen_mini_swe_pilot.json`](runs/royalebench-v1/qwen_mini_swe_pilot.json): successful stock mini-SWE-agent Qwen pilot, independent verifier result, exact configuration, usage, and checksum-verified raw artifact locations.
+- [`runs/royalebench-v1/qwen_modal_pilot.json`](runs/royalebench-v1/qwen_modal_pilot.json): historical Qwen pilot with the removed custom harness, independent rewards, token usage, and checksum-verified raw artifact locations.
 - [`docs/data_collection_plan.md`](docs/data_collection_plan.md): telemetry design, implementation stages, analysis targets, and validation gates for future runs.
 - [`docs/data_collection.md`](docs/data_collection.md): implemented telemetry, automatic collection for new runs, analysis exports, archive verification/restoration, and limitations.
 - [`docs/telemetry.schema.json`](docs/telemetry.schema.json): machine-readable schema for versioned match evidence records.
-- [`docs/data_collection_validation.json`](docs/data_collection_validation.json): local, container, archival and hosted-pilot validation evidence for data collection.
+- [`docs/data_collection_validation.json`](docs/data_collection_validation.json): local, container, archival and hosted-pilot validation evidence, including RoyaleBench v1 revision `@2`.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
 - [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
 - [`docs/match_tasks.md`](docs/match_tasks.md): full-match Harbor tasks played through the `cr` CLI, referee isolation, replay grading, rewards, and how to build and publish them.
 - [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
 - [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
-- [`data/README.md`](data/README.md): documentation for project data, including the tracked deck-strength data (CrownScribe archetype win rates in `data/deck_strength.csv` and head-to-head matchups in `data/deck_matchups.csv`, ranked by `cr_arena/deck_strength.py`).
+- [`data/README.md`](data/README.md): documentation for project data, including the frozen v1@1 build inputs used by v3, tracked deck-strength data (CrownScribe archetype win rates in `data/deck_strength.csv` and head-to-head matchups in `data/deck_matchups.csv`, ranked by `cr_arena/deck_strength.py`).
 
 ## Project references
 

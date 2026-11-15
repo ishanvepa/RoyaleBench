@@ -1,0 +1,45 @@
+schema_version = "1.4"
+artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
+
+[task]
+name = "royalebench/06-unequal-threats"
+description = "Prioritize unequal threats. Keep both princess towers alive for 20 seconds. Spend at most 8 elixir in total, including at most 4 on placements in the right lane (x > 10.5). | opponent=planner-bot | seed=106 | version=1.0.0"
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "medium"
+opponent = "planner"
+deck = "giant-beatdown"
+seed = 106
+seat = "blue"
+decision_ticks = 40
+
+dataset_version = "1.0.0"
+family = 6
+opponent_deck = "pekka-bridge-spam"
+control = false
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai"]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

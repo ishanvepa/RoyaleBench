@@ -21,7 +21,9 @@ import { enumParam, useSearchState } from "@/hooks/useSearchState";
 import { formatBytes, formatDuration, formatPercent, formatReward, harnessName } from "@/lib/format";
 import { useBenchmarkTask, useTaskResults } from "../api/benchmarks";
 import { TraceView } from "../shared/TraceView";
+import { TaskReplay } from "../shared/TaskReplay";
 import { DifficultyBadge, SyncBadge } from "./badges";
+import { TaskResolution } from "./TaskResolution";
 
 const TABS = ["overview", "files", "results"] as const;
 const searchSchema = z.object({ tab: enumParam(TABS, "overview") });
@@ -56,6 +58,7 @@ function TaskView({ detail }: { detail: BenchmarkTaskDetail }) {
           </>
         }
         description={task.description || undefined}
+        actions={<TaskResolution benchmark={detail.benchmark} taskId={task.id} />}
       />
       <Tabs value={state.tab} onValueChange={(tab) => setState({ tab: tab as (typeof TABS)[number] })}>
         <TabsList aria-label="Task details">
@@ -251,6 +254,11 @@ function Results({ benchmark, taskId }: { benchmark: string; taskId: string }) {
         cell: (c) => <RelativeTime value={c.row.original.started_at} />,
       }),
       resultCol.display({
+        id: "replay",
+        header: () => <span className="sr-only">Replay</span>,
+        cell: (c) => <TaskReplay runId={c.row.original.run_id} taskId={taskId} />,
+      }),
+      resultCol.display({
         id: "trace",
         header: () => <span className="sr-only">Trace</span>,
         cell: (c) => (
@@ -260,7 +268,7 @@ function Results({ benchmark, taskId }: { benchmark: string; taskId: string }) {
         ),
       }),
     ],
-    [],
+    [taskId],
   );
 
   return (

@@ -99,5 +99,16 @@
     "max_decisions": 1,
     "verified_fireball_crown_damage": 159
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "01-immediate-lethal",
+  "instruction_sha256": "e66dcf8ca5c66ba104e4906dec3496d51eb37cc433dc5fba8a9f4959ae5bb5ac",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

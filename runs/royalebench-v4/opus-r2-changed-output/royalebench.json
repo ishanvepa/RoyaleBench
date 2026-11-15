@@ -1,0 +1,304 @@
+{
+    "benchmark_id": "de9d3146-3b85-4ee3-823f-e2f477d58966",
+    "benchmark_name": "royalebench",
+    "started_at": "2026-11-15T09:07:42.208514",
+    "finished_at": "2026-11-15T09:11:21.073729Z",
+    "status": "FINISHED",
+    "benchmark_arguments": {
+        "contract": {
+            "name": "claude_code-v1.0.0",
+            "model": "anthropic/claude-opus-5-5",
+            "install_cmd": "bash setup.sh",
+            "run_cmd": "bash -lc 'set -o pipefail && mkdir -p /logs && AGENT_OUTPUT_ROOT=/logs python3 /bundle/claude_code-v1.0.0/collect_outputs.py {problem_statement_path} --task-id {task_id} --model {model}'",
+            "final_output": "/logs",
+            "output_artifacts": [],
+            "egress_allowlist": [],
+            "allow_provider_tools": false,
+            "isolate_agent_uid": false,
+            "secrets": {
+                "ANTHROPIC_API_KEY": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/anthropic-api-key-ben"
+            },
+            "kwargs": {
+                "model": "anthropic/claude-opus-5-5"
+            },
+            "inference_settings_attested": true
+        },
+        "concurrency": 2,
+        "task_ids": [
+            "05-successive-threats-mirror",
+            "08-cycle-to-lethal-critical"
+        ],
+        "dataset": "royalebench-v4",
+        "dataset_version": {
+            "id": "royalebench/royalebench-v4@2"
+        },
+        "sandbox_provider": "modal",
+        "sandbox_provider_secret_name": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/modal-credentials",
+        "environment": "aws",
+        "properties": {
+            "region": "us-east-1",
+            "s3_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+            "log_group": "/valkyrie/benchmarks-prod/tenants/49113804-bbae-46cc-82a7-70f78706d1e5",
+            "log_retention_days": 365
+        }
+    },
+    "final_evaluation": {
+        "id": "13753a71-78b9-40a6-83f6-4f3532f85b8f",
+        "org_id": "49113804-bbae-46cc-82a7-70f78706d1e5",
+        "benchmark": "de9d3146-3b85-4ee3-823f-e2f477d58966",
+        "final_score": 50.0,
+        "properties": {
+            "total": 2,
+            "n_trials": 2,
+            "n_errors": 0,
+            "metrics": [
+                {
+                    "completed": 1.0,
+                    "crowns_against": 0.0,
+                    "crowns_for": 0.5,
+                    "decisions": 6.5,
+                    "enemy_tower_damage_frac": 0.15635,
+                    "fast_decision_frac": 0.0,
+                    "integrity": 1.0,
+                    "objective_met": 0.5,
+                    "own_tower_damage_frac": 0.2011,
+                    "rejected_actions": 0.0,
+                    "reward": 0.5,
+                    "spent_elixir": 8.5,
+                    "tower_damage": 796.5,
+                    "win": 0.5
+                }
+            ],
+            "reward_stats": {
+                "reward": {
+                    "0.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "1.0": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "win": {
+                    "0.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "1.0": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "crowns_for": {
+                    "0.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "1.0": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "crowns_against": {
+                    "0.0": [
+                        "05-successive-threats-mirror",
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "enemy_tower_damage_frac": {
+                    "0.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "0.3127": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "own_tower_damage_frac": {
+                    "0.1458": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "0.2564": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "completed": {
+                    "1.0": [
+                        "05-successive-threats-mirror",
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "integrity": {
+                    "1.0": [
+                        "05-successive-threats-mirror",
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "decisions": {
+                    "10.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "3.0": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "fast_decision_frac": {
+                    "0.0": [
+                        "05-successive-threats-mirror",
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "spent_elixir": {
+                    "8.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "9.0": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "tower_damage": {
+                    "1593.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "0.0": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "objective_met": {
+                    "0.0": [
+                        "05-successive-threats-mirror"
+                    ],
+                    "1.0": [
+                        "08-cycle-to-lethal-critical"
+                    ]
+                },
+                "rejected_actions": {
+                    "0.0": [
+                        "05-successive-threats-mirror",
+                        "08-cycle-to-lethal-critical"
+                    ]
+                }
+            },
+            "score_key": "reward",
+            "mean_reward": 0.5
+        }
+    },
+    "average_task_breakdown": {
+        "sandbox_build_duration": 16.277110395500017,
+        "agent_run_duration": 47.360009076500006,
+        "evaluation_run_duration": 51.10221183249999,
+        "sandbox_run_duration": 112.700473107
+    },
+    "evaluation_results": {
+        "05-successive-threats-mirror": {
+            "task_id": "05-successive-threats-mirror",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.0,
+                "own_tower_damage_frac": 0.1458,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 10.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 8.0,
+                "tower_damage": 1593.0,
+                "objective_met": 0.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.0,
+                    "own_tower_damage_frac": 0.1458,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 10.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 8.0,
+                    "tower_damage": 1593.0,
+                    "objective_met": 0.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.1458,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 10.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 8.0,\n  \"tower_damage\": 1593.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"unfinished\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.1458,\n  \"ticks\": 3100,\n  \"tower_damage\": 1593,\n  \"spent_elixir\": 8,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Log\",\n    \"x\": 261000,\n    \"y\": 198000,\n    \"cost\": 2\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Musketeer\",\n    \"x\": 225000,\n    \"y\": 72000,\n    \"cost\": 4\n   },\n   {\n    \"decision\": 3,\n    \"card\": \"IceSpirits\",\n    \"x\": 261000,\n    \"y\": 144000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 4,\n    \"card\": \"Skeletons\",\n    \"x\": 261000,\n    \"y\": 81000,\n    \"cost\": 1\n   }\n  ],\n  \"opponent_plays\": [\n   {\n    \"tick\": 2820,\n    \"card\": \"GoblinBarrel\",\n    \"x\": 261000,\n    \"y\": 117000\n   },\n   {\n    \"tick\": 2860,\n    \"card\": \"GoblinGang\",\n    \"x\": 63000,\n    \"y\": 315000\n   },\n   {\n    \"tick\": 2900,\n    \"card\": \"Princess\",\n    \"x\": 63000,\n    \"y\": 405000\n   },\n   {\n    \"tick\": 2940,\n    \"card\": \"Log\",\n    \"x\": 261000,\n    \"y\": 117000\n   },\n   {\n    \"tick\": 3020,\n    \"card\": \"Knight\",\n    \"x\": 261000,\n    \"y\": 405000\n   }\n  ],\n  \"elapsed_s\": 20.0,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 10,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "sandbox_build_duration": 16.024932033000027,
+                "evaluation_run_duration": 61.963626413999975,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 70.534851898,
+                "agent_run_duration": 70.534850113,
+                "sandbox_run_duration": 147.775536978,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        },
+        "08-cycle-to-lethal-critical": {
+            "task_id": "08-cycle-to-lethal-critical",
+            "rewards": {
+                "reward": 1.0,
+                "win": 1.0,
+                "crowns_for": 1.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.3127,
+                "own_tower_damage_frac": 0.2564,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 3.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 9.0,
+                "tower_damage": 0.0,
+                "objective_met": 1.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 1.0,
+                    "win": 1.0,
+                    "crowns_for": 1.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.3127,
+                    "own_tower_damage_frac": 0.2564,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 3.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 9.0,
+                    "tower_damage": 0.0,
+                    "objective_met": 1.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2564,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 3.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 9.0,\n  \"tower_damage\": 0.0,\n  \"objective_met\": 1.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2564,\n  \"ticks\": 5759,\n  \"tower_damage\": 0,\n  \"spent_elixir\": 9,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Log\",\n    \"x\": 63000,\n    \"y\": 441000,\n    \"cost\": 2\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"Cannon\",\n    \"x\": 99000,\n    \"y\": 198000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Fireball\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 4\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 5.95,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 3,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "sandbox_build_duration": 16.529288758000007,
+                "evaluation_run_duration": 40.240797251000004,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 24.18517017100004,
+                "agent_run_duration": 24.185168040000008,
+                "sandbox_run_duration": 77.625409236,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null
+            },
+            "attempts": 1
+        }
+    }
+}

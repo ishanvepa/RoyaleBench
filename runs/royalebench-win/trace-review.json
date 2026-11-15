@@ -1,0 +1,579 @@
+{
+  "created_at": "2026-11-15T09:56:06.940573+00:00",
+  "observations": [
+    "Both full @2 cohorts win 01 and 03 and lose 02 and 04. All eight attempts complete with integrity 1 and no rejected actions.",
+    "Opus 02 uses Cannon (3.5,11.5), Fireball (3.4,10), Minions (3.2,8.5), but the Balloon takes its 305 HP tower at 5.3s. Its @1 attempt won with different play.",
+    "Sol 02 uses Cannon (7,10); the Balloon takes its 305 HP tower at 1.85s, before another decision.",
+    "Opus 04 uses Cannon (6.5,10.5), Fireball and Hog, then Log toward the enemy tower; its tower falls at 8.95s. Sol uses Cannon (7,10) and loses at 10.1s.",
+    "The 04 reference uses Cannon (7,11.5), then a defensive Log and Ice Spirits, and wins with zero additional tower damage. Comparisons vary several decisions, so single-coordinate causal attribution is not established.",
+    "Sol 03 is a terminal overtime HP-tiebreak win with no crown taken; the other three model wins destroy a tower."
+  ],
+  "tasks": [
+    {
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "run_id": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+      "task": "01-cycle-and-connect",
+      "reward": 1.0,
+      "outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2384,
+        "ticks": 5868,
+        "tower_damage": 253,
+        "spent_elixir": 14,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 198000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 135000,
+            "y": 171000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Skeletons",
+            "x": 99000,
+            "y": 180000,
+            "cost": 1
+          },
+          {
+            "decision": 3,
+            "card": "HogRider",
+            "x": 63000,
+            "y": 270000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          },
+          {
+            "decision": 5,
+            "card": "IceSpirits",
+            "x": 81000,
+            "y": 171000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 5760,
+            "card": "Musketeer",
+            "x": 63000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 11.4,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/opus/01-cycle-and-connect",
+      "original_trajectory_sha256": "b170e54e816893e5ee503dac4ac4f3add06824a66ddaf9d7d2f8a008ba7b7fd2",
+      "replay_sha256": "4e3a63158c0d75303ae3f16e839f9ee097f892f0029436b39a7f393576943ce5",
+      "capture_manifest_sha256": "8ce23c1185d420de2da5e2cb2542fc7955f49681a662ea39c72b7b80c06acc41",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    },
+    {
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "run_id": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+      "task": "02-sustained-tower-race",
+      "reward": 0.0,
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.1059,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5506,
+        "tower_damage": 305,
+        "spent_elixir": 10,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Cannon",
+            "x": 63000,
+            "y": 207000,
+            "cost": 3
+          },
+          {
+            "decision": 1,
+            "card": "Fireball",
+            "x": 61200,
+            "y": 180000,
+            "cost": 4
+          },
+          {
+            "decision": 2,
+            "card": "Minions",
+            "x": 57600,
+            "y": 153000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 5.3,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/opus/02-sustained-tower-race",
+      "original_trajectory_sha256": "bff9af729e9127962637be11de67914dfddeb934af6d019b8394ee9dd739b00b",
+      "replay_sha256": "6ef9b66fad2068075c5b5bb97ce91a46c4860aabc49e3aaf4543e0c42d5546e0",
+      "capture_manifest_sha256": "52575c42398e729c0ba218d517002892b61f42b9a050b936d36f8ea345ffb4e7",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    },
+    {
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "run_id": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+      "task": "03-bait-damage-sequence",
+      "reward": 1.0,
+      "outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.1816,
+        "ticks": 5830,
+        "tower_damage": 0,
+        "spent_elixir": 20,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "InfernoTower",
+            "x": 117000,
+            "y": 189000,
+            "cost": 5
+          },
+          {
+            "decision": 1,
+            "card": "Rocket",
+            "x": 63000,
+            "y": 459000,
+            "cost": 6
+          },
+          {
+            "decision": 2,
+            "card": "Knight",
+            "x": 81000,
+            "y": 252000,
+            "cost": 3
+          },
+          {
+            "decision": 3,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 270000,
+            "cost": 1
+          },
+          {
+            "decision": 4,
+            "card": "Log",
+            "x": 63000,
+            "y": 297000,
+            "cost": 2
+          },
+          {
+            "decision": 5,
+            "card": "GoblinBarrel",
+            "x": 63000,
+            "y": 459000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 5600,
+            "card": "Musketeer",
+            "x": 63000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 15.5,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/opus/03-bait-damage-sequence",
+      "original_trajectory_sha256": "ec9ffb9bcf74e82e4b075e6fc35349fbb728017d3b4305d78d31cd8de7e25154",
+      "replay_sha256": "233ad35c92698f7452ef21d58bd0d4e62f599439c19a786d80a7ebe883ec0405",
+      "capture_manifest_sha256": "8ac160c6bb872b3bf45df712e90ca27160522d308c09ee39f81e5fc2c648de1c",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    },
+    {
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "run_id": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+      "task": "04-critical-cycle-and-connect",
+      "reward": 0.0,
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.2527,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5819,
+        "tower_damage": 250,
+        "spent_elixir": 14,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 207000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 117000,
+            "y": 189000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          },
+          {
+            "decision": 3,
+            "card": "HogRider",
+            "x": 63000,
+            "y": 270000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Log",
+            "x": 63000,
+            "y": 432000,
+            "cost": 2
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 8.95,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/opus/04-critical-cycle-and-connect",
+      "original_trajectory_sha256": "391a11942ef13373d3a2668d5138380c043fa85c3121dce4db5af61907b10e8e",
+      "replay_sha256": "8477a205fd32809655b0cccbd04c95bc48bc616f74bc3db8e0c9edf3a1f72292",
+      "capture_manifest_sha256": "95ce15d058c1871424e0a87ee8daa08f6fc8c06288b435e8732ab85e4835c239",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    },
+    {
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "run_id": "b736a4c1-3e6e-463f-bd8b-3e39c106365b",
+      "task": "01-cycle-and-connect",
+      "reward": 1.0,
+      "outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2615,
+        "ticks": 5864,
+        "tower_damage": 506,
+        "spent_elixir": 14,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 180000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 108000,
+            "y": 180000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Skeletons",
+            "x": 72000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 3,
+            "card": "HogRider",
+            "x": 63000,
+            "y": 270000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          },
+          {
+            "decision": 5,
+            "card": "IceSpirits",
+            "x": 68400,
+            "y": 153000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 11.2,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/sol/01-cycle-and-connect",
+      "original_trajectory_sha256": "87c015e5f655488493d49e253df0e881079cc7160cb3f1a981d98805b8703dd3",
+      "replay_sha256": "d770bf534d5d2897d04dc547490acb9caedf576a5cad976371ddc472f16c2b7b",
+      "capture_manifest_sha256": "1366b18ff383ad4cad358b14b9f60c3f65e81bf0a6b778bdbf4c41777810e9ee",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    },
+    {
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "run_id": "b736a4c1-3e6e-463f-bd8b-3e39c106365b",
+      "task": "02-sustained-tower-race",
+      "reward": 0.0,
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5437,
+        "tower_damage": 305,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Cannon",
+            "x": 126000,
+            "y": 180000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.85,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/sol/02-sustained-tower-race",
+      "original_trajectory_sha256": "d996a06ce402717855d59e0a660fd66af88ffad960b03ea007e10a357a7cbdc2",
+      "replay_sha256": "08e33200a1a051b854e4fbcea1ada804461e64d9230803a2b2b16a915fef35aa",
+      "capture_manifest_sha256": "17b685eeec5844b974432fee80af7fe0f45219ecd54bb9e2db48d12efb5b47bf",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    },
+    {
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "run_id": "b736a4c1-3e6e-463f-bd8b-3e39c106365b",
+      "task": "03-bait-damage-sequence",
+      "reward": 1.0,
+      "outcome": {
+        "result": "win",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.2732,
+        "own_tower_damage_frac": 0.1816,
+        "ticks": 6000,
+        "tower_damage": 0,
+        "spent_elixir": 33,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "InfernoTower",
+            "x": 126000,
+            "y": 198000,
+            "cost": 5
+          },
+          {
+            "decision": 1,
+            "card": "Rocket",
+            "x": 63000,
+            "y": 459000,
+            "cost": 6
+          },
+          {
+            "decision": 2,
+            "card": "Knight",
+            "x": 63000,
+            "y": 261000,
+            "cost": 3
+          },
+          {
+            "decision": 3,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 261000,
+            "cost": 1
+          },
+          {
+            "decision": 4,
+            "card": "GoblinBarrel",
+            "x": 63000,
+            "y": 459000,
+            "cost": 3
+          },
+          {
+            "decision": 5,
+            "card": "Log",
+            "x": 63000,
+            "y": 243000,
+            "cost": 2
+          },
+          {
+            "decision": 7,
+            "card": "GoblinGang",
+            "x": 54000,
+            "y": 252000,
+            "cost": 3
+          },
+          {
+            "decision": 9,
+            "card": "Rocket",
+            "x": 63000,
+            "y": 459000,
+            "cost": 6
+          },
+          {
+            "decision": 10,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 216000,
+            "cost": 1
+          },
+          {
+            "decision": 11,
+            "card": "Knight",
+            "x": 63000,
+            "y": 180000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 5600,
+            "card": "Musketeer",
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "tick": 5720,
+            "card": "Minions",
+            "x": 63000,
+            "y": 513000
+          },
+          {
+            "tick": 5760,
+            "card": "Knight",
+            "x": 63000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 24.0,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/sol/03-bait-damage-sequence",
+      "original_trajectory_sha256": "1b2503d0a28bf2a2323721fb4936cd8214f9a58224c90d9ac61a9853ff5daf32",
+      "replay_sha256": "2290b80abdf0686da4bb7372002ff4342162cc9c7c6fc04647c601d11c553e66",
+      "capture_manifest_sha256": "82feda487ce3244e5699f299c429da72ed1877635086d97e8290b1e3d692c5db",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    },
+    {
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "run_id": "b736a4c1-3e6e-463f-bd8b-3e39c106365b",
+      "task": "04-critical-cycle-and-connect",
+      "reward": 0.0,
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.2527,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5842,
+        "tower_damage": 250,
+        "spent_elixir": 14,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 180000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 126000,
+            "y": 180000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          },
+          {
+            "decision": 3,
+            "card": "HogRider",
+            "x": 63000,
+            "y": 261000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Skeletons",
+            "x": 86400,
+            "y": 171000,
+            "cost": 1
+          },
+          {
+            "decision": 5,
+            "card": "IceSpirits",
+            "x": 81000,
+            "y": 144000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 10.1,
+        "rejected_actions": 0
+      },
+      "compact_evidence": "runs/royalebench-win/hosted/sol/04-critical-cycle-and-connect",
+      "original_trajectory_sha256": "ecc870c685adec910054b732d31aaac99a14168a86ae68c9392bb5320efae0c9",
+      "replay_sha256": "d62b72c52afa61347e8c8ae75c88a36b2d8a11bf4cd6848268ce40e002f3232a",
+      "capture_manifest_sha256": "2838f79977d46d951d47ad3d13b86fc7e29fb8484b713582e33f326ced13e3c3",
+      "gameplay_complete": true,
+      "integrity": 1,
+      "rejected_actions": 0
+    }
+  ]
+}

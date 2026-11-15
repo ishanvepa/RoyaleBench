@@ -36,6 +36,35 @@ beforeEach(() => {
 });
 
 describe("New job page", () => {
+  it.each([
+    ["/evals/jobs/new", "RoyaleBench v5", "royalebench-v5"],
+    ["/evals/jobs/new?benchmark=alpha", "Alpha", "alpha"],
+  ])("prefers the configured benchmark and respects explicit links: %s", async (path, title, dataset) => {
+    useJobHandlers();
+    server.use(
+      http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList([
+        benchmarkRow({ name: "alpha", title: "Alpha" }),
+        benchmarkRow({ name: "royalebench-v5", title: "RoyaleBench v5" }),
+      ]))),
+      http.get("*/api/evals/benchmarks/:name", ({ params }) =>
+        HttpResponse.json(benchmarkDetail({ name: String(params.name) }))),
+    );
+    renderApp(path);
+    expect(await screen.findByLabelText("Benchmark")).toHaveTextContent(title);
+    await waitFor(() => expect(previews.at(-1)?.dataset).toBe(dataset), WAIT);
+  });
+
+  it("falls back to a published benchmark when the configured default is unpublished", async () => {
+    useJobHandlers();
+    server.use(http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList([
+      benchmarkRow({ name: "alpha", title: "Alpha" }),
+      benchmarkRow({ name: "royalebench-v5", title: "RoyaleBench v5", versions: 0, latest_revision: null, state: "draft" }),
+    ]))));
+    renderApp("/evals/jobs/new");
+    expect(await screen.findByLabelText("Benchmark")).toHaveTextContent("Alpha");
+    await waitFor(() => expect(previews.at(-1)?.dataset).toBe("alpha"), WAIT);
+  });
+
   it("starts with sensible defaults taken from the environment", async () => {
     useJobHandlers();
     renderApp("/evals/jobs/new?benchmark=alpha");
@@ -57,6 +86,27 @@ describe("New job page", () => {
     const draft = await screen.findByRole("option", { name: /Draft/ });
     expect(draft).toHaveAttribute("aria-disabled", "true");
     expect(within(draft).getByText("Publish it first")).toBeInTheDocument();
+  });
+
+  it.each([
+    "openai/Qwen/Qwen3.8-2.4T-A95B",
+    "openai/inkling-2-small",
+    "openai/deepseek-v4.1-flash-1017",
+    "openai/kimi-k3.1-pro",
+  ])("selects the shared Modal key when switching to %s after a manual key choice", async (model) => {
+    useJobHandlers();
+    const env = environment();
+    server.use(http.get("*/api/evals/environment", () => HttpResponse.json(environment({
+      secrets: [...env.secrets, "modal-qwen-api-key"],
+      settings: { ...env.settings, models: [...env.settings.models, { id: model, secret_env: "OPENAI_API_KEY", family: "openai" }] },
+    }))));
+    const { user } = renderApp("/evals/jobs/new?benchmark=alpha");
+    await user.click(await screen.findByLabelText("API key secret"));
+    await user.click(await screen.findByRole("option", { name: "anthropic-api-key-ben" }));
+    await user.click(screen.getByLabelText("Model"));
+    await user.click(await screen.findByRole("option", { name: model }));
+    expect(screen.getByLabelText("API key secret")).toHaveTextContent("modal-qwen-api-key");
+    await waitFor(() => expect(previews.at(-1)).toMatchObject({ model, secret_name: "modal-qwen-api-key" }), WAIT);
   });
 
   it("starts the whole benchmark and opens the job monitor", async () => {

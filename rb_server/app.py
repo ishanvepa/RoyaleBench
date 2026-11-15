@@ -55,13 +55,20 @@ def create_app(settings: Settings | None = None, *, ctx: AppContext | None = Non
     from contextlib import asynccontextmanager
     from rb_evals.archive import ArchiveWorker
     from rb_evals.valkyrie import Valkyrie
+    from .cost_refresh import CostRefresher
 
     @asynccontextmanager
     async def lifespan(app):
         worker = ArchiveWorker(ctx.valkyrie).start() if isinstance(ctx.valkyrie, Valkyrie) and not ctx.fake else None
+        costs = CostRefresher(ctx).start() if isinstance(ctx.valkyrie, Valkyrie) and not ctx.fake else None
+        billing = ctx.billing.start() if isinstance(ctx.valkyrie, Valkyrie) and not ctx.fake else None
         try:
             yield
         finally:
+            if billing:
+                billing.close()
+            if costs:
+                costs.close()
             if worker:
                 worker.close()
 

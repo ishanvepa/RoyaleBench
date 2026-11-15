@@ -20,13 +20,16 @@ _TEMPLATE = Path(__file__).with_name("replay.html")
 _PLACEHOLDER = re.compile(r"__(TITLE|DATA_ID|DATA)__")
 
 
-def patched_html(replay: str | Path, *, title: str | None = None, stride: int = 1) -> str:
+def patched_html(replay: str | Path, *, title: str | None = None, stride: int = 1,
+                 decisions: list[dict] | None = None, decisions_note: str = "") -> str:
     """Keep the existing public entry point; playback controls are now owned locally."""
     trace = load_trace(replay)
     payload = build_view(trace, stride=stride)
     payload["projectile_fields"] = list(trace.header.projectile_fields)
     # Spawned units keep their card's ID; the unit-type names tell a Golemite from its Golem.
     payload["unit_types"] = list(trace.header.unit_types)
+    payload["agent_decisions"] = decisions or []
+    payload["decisions_note"] = decisions_note
     # A trace's card names and caller-supplied title must never become script markup.
     data = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
     data = data.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")

@@ -5,7 +5,9 @@
 
 import dataclasses
 import time
+import threading
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -30,6 +32,7 @@ class EnvironmentTests(ApiCase):
         self.assertIn("claude_code-v1.0.0", env["agents"])
         self.assertEqual((env["read_only"], env["settings"]["provider"], env["settings"]["max_concurrency"]), (False, "modal", 4))
         self.assertEqual(env["queue"], {"waiting": 0, "building": 0, "in_progress": 0, "evaluating": 0})
+        self.assertEqual(env["settings"]["default_dataset"], "royalebench-v6")
 
     def test_a_valkyrie_outage_is_reported_not_raised(self):
         def down(*args, **kwargs):
@@ -47,7 +50,96 @@ class EnvironmentTests(ApiCase):
         self.assertEqual(env["settings"]["benchmark"], "royalebench")  # local settings still available
 
 
+class CostRefreshTests(ApiCase):
+    def test_refresh_downloads_missing_finished_costs_and_reuses_cache(self):
+        from rb_server.cost_refresh import CostRefresher
+        from rb_evals import results as R
+
+        active_id = self.start(task_ids=["t1"])
+        refresher = CostRefresher(self.ctx)
+        with patch.object(self.fake, "download_artifact", wraps=self.fake.download_artifact) as download:
+            refresher.refresh(lambda done, total: None)
+            self.assertGreater(download.call_count, 0)
+            self.assertNotIn(active_id, [call.args[0] for call in download.call_args_list])
+            self.assertEqual(R.uncached_task_count(self.ctx.cache, self.fake.list_runs(self.cfg.benchmark)), 0)
+            count = download.call_count
+            refresher.refresh(lambda done, total: None)
+            self.assertEqual(download.call_count, count)
+            # The next check picks up this job only after every task has finished.
+            self.advance(30)
+            refresher.refresh(lambda done, total: None)
+            self.assertIn(active_id, [call.args[0] for call in download.call_args_list])
+        job = self.client.get(JOBS + "/claude-smoke").json()["job"]
+        self.assertGreater(job["cost_usd"], 0)
+
+    def test_scheduler_runs_on_startup_repeats_and_stops(self):
+        from rb_server.cost_refresh import COST_CHECK_SECONDS, CostRefresher
+
+        self.assertEqual(COST_CHECK_SECONDS, 10)
+        repeated = threading.Event()
+        calls = []
+
+        def start(work):
+            calls.append(work)
+            if len(calls) >= 2:
+                repeated.set()
+            return True
+
+        refresher = CostRefresher(self.ctx, interval=0.01)
+        with patch.object(self.ctx.costs, "start", side_effect=start):
+            refresher.start()
+            try:
+                self.assertTrue(repeated.wait(timeout=2))
+            finally:
+                refresher.close()
+        self.assertFalse(refresher._thread.is_alive())
+
+
 class JobListTests(ApiCase):
+    def test_per_run_costs_download_and_appear_in_list_and_detail(self):
+        run_id = self.start(task_ids=["t1", "t2"], label="costed run")
+        self.advance(30)
+        before = self.client.get(f"{JOBS}/{run_id}").json()["job"]
+        self.assertIsNone(before["cost_usd"])
+        self.assertEqual((before["cost_known"], before["costs_pending"]), (0, 2))
+        self.assertEqual(self.client.post(JOBS + "/costs", json=[run_id]).status_code, 200)
+        for _ in range(100):
+            status = self.client.get("/api/evals/leaderboard/costs").json()
+            if status["state"] != "running":
+                break
+            time.sleep(0.01)
+        self.assertEqual(status["state"], "done")
+        detail = self.client.get(f"{JOBS}/{run_id}").json()["job"]
+        listed = next(j for j in self.client.get(JOBS).json()["jobs"] if j["id"] == run_id)
+        self.assertGreater(detail["cost_usd"], 0)
+        self.assertEqual((detail["cost_known"], detail["costs_pending"]), (2, 0))
+        self.assertAlmostEqual(detail["cost_usd"], detail["cost_per_task"] * 2)
+        for field in ("cost_usd", "cost_per_task", "cost_known", "costs_pending"):
+            self.assertEqual(detail[field], listed[field])
+        with patch.object(self.fake, "download_artifact", wraps=self.fake.download_artifact) as download:
+            tasks = self.client.get(f"{JOBS}/{run_id}/tasks").json()["tasks"]
+            download.assert_not_called()
+        self.assertTrue(all(t["cost_usd"] is not None for t in tasks))
+        self.assertAlmostEqual(sum(t["cost_usd"] for t in tasks), detail["cost_usd"])
+        other = self.client.get(f"{JOBS}/claude-smoke").json()["job"]
+        self.assertIsNone(other["cost_usd"])  # only the selected run was downloaded
+
+    def test_partial_costs_include_zero_cost_tasks(self):
+        from rb_evals.results import fetch_task_files
+        run_id = self.start(task_ids=["t1", "t2"])
+        self.advance(30)
+        folder = fetch_task_files(self.fake, self.ctx.cache, run_id, "t1", final=True)
+        summary = next(folder.rglob("summary.json"))
+        summary.write_text('{"metrics": {"cost": 0}}', encoding="utf-8")
+        job = self.client.get(f"{JOBS}/{run_id}").json()["job"]
+        self.assertEqual((job["cost_usd"], job["cost_per_task"], job["cost_known"], job["costs_pending"]), (0, 0, 1, 1))
+        tasks = self.client.get(f"{JOBS}/{run_id}/tasks").json()["tasks"]
+        self.assertEqual({t["task"]: t["cost_usd"] for t in tasks}, {"t1": 0, "t2": None})
+        # A retry/resume must not expose costs from a previous completed attempt.
+        with patch.object(self.fake, "run", return_value={"status": "IN_PROGRESS"}):
+            tasks = self.client.get(f"{JOBS}/{run_id}/tasks").json()["tasks"]
+        self.assertTrue(all(t["cost_usd"] is None for t in tasks))
+
     def test_lists_runs_newest_first_with_provider_family(self):
         body = self.client.get(JOBS).json()
         self.assertEqual(body["total"], 7)
@@ -161,6 +253,31 @@ class JobControlTests(ApiCase):
 
 
 class StartJobTests(ApiCase):
+    def test_model_preset_supplies_endpoint_to_unmodified_mini_swe(self):
+        from rb_evals.config import ModelPreset
+        preset = ModelPreset("openai/Qwen/example", "OPENAI_API_KEY", agent="mini_swe_agent",
+                             secrets={"OPENAI_API_BASE": "endpoint-url"},
+                             agent_kwargs={"cost_tracking": "ignore_errors", "step_limit": "12"})
+        self.ctx.cfg = dataclasses.replace(self.cfg, models=(preset,))
+        with patch.object(self.fake, "agent_names", return_value=["mini_swe_agent"]), \
+             patch.object(self.fake, "secret_names", return_value=["anthropic-api-key-demo", "endpoint-url"]):
+            preview = self.preview(agent="mini_swe_agent", model=preset.id)
+            self.assertTrue(preview["valid"], preview)
+            self.assertIn("-s OPENAI_API_BASE endpoint-url", preview["cli_command"])
+            self.assertIn("-s OPENAI_API_KEY anthropic-api-key-demo", preview["cli_command"])
+            self.assertIn("-k cost_tracking ignore_errors", preview["cli_command"])
+            rid = self.start(agent="mini_swe_agent", model=preset.id)
+            contract = self.fake.run_metadata(rid)["benchmark_arguments"]["contract"]
+            self.assertIn("OPENAI_API_BASE", contract["secrets"])
+            self.assertEqual(contract["kwargs"]["step_limit"], "12")
+            wrong = self.preview(agent="claude_code-v1.0.0", model=preset.id)
+            self.assertFalse(wrong["valid"])
+            self.assertIn("requires harness", " ".join(wrong["errors"]))
+        with patch.object(self.fake, "agent_names", return_value=["mini_swe_agent"]):
+            missing = self.preview(agent="mini_swe_agent", model=preset.id)
+            self.assertFalse(missing["valid"])
+            self.assertIn("endpoint-url", " ".join(missing["errors"]))
+
     def preview(self, **overrides):
         r = self.client.post(f"{JOBS}/preview", json=self.spec(**overrides))
         self.assertEqual(r.status_code, 200, r.text)
@@ -416,6 +533,55 @@ class LeaderboardTests(ApiCase):
         self.assertEqual(body["filters"]["revisions"], ["1"])
         self.assertEqual(self.client.get(self.URL, params={"dataset": "arena-lite", "revision": "7"}).json()["rows"], [])
 
+    def test_full_runs_excludes_subsets_from_scores_and_cost_downloads(self):
+        full = self.start(task_ids=None)
+        explicit_full = self.start(task_ids=["t3", "t1", "t2"])
+        subset = self.start(task_ids=["t1"])
+        self.advance(30)
+        self.start(task_ids=None)  # an unfinished full run must stay excluded
+        params = {"dataset": "alpha", "full_only": True}
+        unfiltered = self.client.get(self.URL, params={"dataset": "alpha"}).json()
+        self.assertEqual((unfiltered["runs_considered"], unfiltered["tasks_considered"]), (3, 7))
+        body = self.client.get(self.URL, params=params).json()
+        self.assertEqual((body["runs_considered"], body["tasks_considered"], body["costs_pending"]), (2, 6, 6))
+        self.assertEqual((body["rows"][0]["runs"], body["rows"][0]["tasks_run"]), (2, 6))
+        self.assertEqual(body["filters"], unfiltered["filters"])
+        with patch.object(self.ctx.costs, "start") as start:
+            response = self.client.post(self.URL + "/costs", params=params)
+            self.assertEqual(response.status_code, 200)
+            with patch.object(self.fake, "download_artifact", wraps=self.fake.download_artifact) as download:
+                start.call_args.args[0](lambda done, total: None)
+                downloaded = {call.args[0] for call in download.call_args_list}
+        self.assertEqual(downloaded, {full, explicit_full})
+        self.assertNotIn(subset, downloaded)
+
+    def test_full_runs_uses_the_pinned_published_revision(self):
+        self.start(task_ids=None)
+        self.advance(30)
+        make_task(self.benchmarks / "alpha" / "t4")
+        self.fake.push_dataset(self.cfg.benchmark, "alpha", self.benchmarks / "alpha")
+        with patch.object(self.fake, "dataset_tasks", wraps=self.fake.dataset_tasks) as tasks:
+            body = self.client.get(self.URL, params={"dataset": "alpha", "revision": "1", "full_only": True}).json()
+        self.assertEqual((body["runs_considered"], body["tasks_considered"]), (1, 3))
+        tasks.assert_called_once_with(self.cfg.benchmark, "alpha", "1")
+
+    def test_full_runs_checks_task_identities_and_includes_task_errors(self):
+        run_id = self.start(task_ids=None)
+        self.advance(30)
+        raw = self.fake.results(run_id)
+        entry = raw["evaluation_results"].pop("t3")
+        raw["evaluation_results"]["other-task"] = entry  # same count, wrong task
+        self.ctx.cache.save_results(run_id, raw)
+        params = {"dataset": "alpha", "full_only": True}
+        self.assertEqual(self.client.get(self.URL, params=params).json()["runs_considered"], 0)
+        raw["evaluation_results"].pop("other-task")
+        raw["task_errors"] = {"t3": "Sandbox connection lost"}
+        raw["task_failure_categories"] = {"t3": "infrastructure"}
+        self.ctx.cache.save_results(run_id, raw)
+        body = self.client.get(self.URL, params=params).json()
+        self.assertEqual((body["runs_considered"], body["tasks_considered"]), (1, 3))
+        self.assertEqual((body["rows"][0]["tasks_run"], body["rows"][0]["infra_errors"]), (2, 1))
+
     def test_cost_download_runs_in_the_background_and_fills_in_costs(self):
         before = self.client.get(self.URL).json()
         self.assertEqual(before["costs_pending"], 16)
@@ -456,9 +622,12 @@ class LeaderboardTests(ApiCase):
 
 class AssetTests(ApiCase):
     def test_logos(self):
-        r = self.client.get("/api/assets/logos/claude")
-        self.assertEqual((r.status_code, r.headers["content-type"]), (200, "image/svg+xml"))
-        self.assertIn("max-age", r.headers["cache-control"])
+        for family in ("claude", "qwen", "inkling", "deepseek", "kimi"):
+            with self.subTest(family=family):
+                r = self.client.get(f"/api/assets/logos/{family}")
+                self.assertEqual((r.status_code, r.headers["content-type"]), (200, "image/svg+xml"))
+                self.assertIn("max-age", r.headers["cache-control"])
+                self.assertIn("<svg", r.text)
         self.assertEqual(self.client.get("/api/assets/logos/other").status_code, 404)
 
 

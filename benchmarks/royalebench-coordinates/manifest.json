@@ -1,0 +1,150 @@
+{
+  "benchmark": "RoyaleBench coordinates pilot",
+  "version": "1.0.0-coordinate.1",
+  "action_mode": "coordinates-v1",
+  "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+  "runnable_tasks": [
+    "01-immediate-lethal",
+    "03-spell-placement",
+    "08-cycle-to-lethal"
+  ],
+  "dependencies": {
+    "royalegym": "0.1.28",
+    "royalesim": "0.1.48",
+    "msgspec": "0.22.0"
+  },
+  "tasks": [
+    {
+      "task": "01-immediate-lethal",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "5c527bdac773931c37bd5ba05ef78184aed3158f7d8425e5681208da7ab9e54a",
+      "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+      "reference_log_sha256": "0a82060bd70781e73b1471f7561ad3eefb5fb70827c061ecd72546794c05175e",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "ticks": 5139,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.95,
+        "rejected_actions": 0
+      },
+      "decisions": 1,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "03-spell-placement",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "970bf8a64d916204273f19a3d462bd175155256c0e4384092fa1aee8c099bc46",
+      "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+      "reference_log_sha256": "f562da3dd8e250dfc0b3e2711431e49f71d7102b20ef1b4e44155a39194f8165",
+      "reference_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0098,
+        "ticks": 2440,
+        "tower_damage": 107,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 180000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 12.0,
+        "rejected_actions": 0
+      },
+      "decisions": 1,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "08-cycle-to-lethal",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "847b279b9397bbeb63b4371eb04e7e16ce16c89ca4c368ff3db50b2254a1c7f2",
+      "protocol_sha256": "d5a0ce2db6f023942d34b5e47ca68446acde31e54950b8916d0b0e8360a5c8c8",
+      "reference_log_sha256": "34939d0280d980c157625361a7b3946228045ab5bcc1daa16b034aebeea7482e",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2374,
+        "ticks": 5759,
+        "tower_damage": 0,
+        "spent_elixir": 8,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 63000,
+            "y": 189000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 5.95,
+        "rejected_actions": 0
+      },
+      "decisions": 3,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    }
+  ],
+  "status": "Local reference calibration only; Docker and model runs tracked separately."
+}

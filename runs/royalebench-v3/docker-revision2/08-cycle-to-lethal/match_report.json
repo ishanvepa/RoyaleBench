@@ -1,0 +1,237 @@
+{
+ "seed": 108,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 3,
+ "outcome": {
+  "result": "win",
+  "crowns_for": 1,
+  "crowns_against": 0,
+  "enemy_tower_damage_frac": 0.3127,
+  "own_tower_damage_frac": 0.2374,
+  "ticks": 5759,
+  "tower_damage": 0,
+  "spent_elixir": 8,
+  "plays": [
+   {
+    "decision": 0,
+    "card": "IceSpirits",
+    "x": 63000,
+    "y": 189000,
+    "cost": 1
+   },
+   {
+    "decision": 1,
+    "card": "Cannon",
+    "x": 63000,
+    "y": 189000,
+    "cost": 3
+   },
+   {
+    "decision": 2,
+    "card": "Fireball",
+    "x": 63000,
+    "y": 459000,
+    "cost": 4
+   }
+  ],
+  "opponent_plays": [],
+  "elapsed_s": 5.95,
+  "rejected_actions": 0
+ },
+ "rewards": {
+  "reward": 1.0,
+  "win": 1.0,
+  "crowns_for": 1.0,
+  "crowns_against": 0.0,
+  "enemy_tower_damage_frac": 0.3127,
+  "own_tower_damage_frac": 0.2374,
+  "completed": 1.0,
+  "integrity": 1.0,
+  "decisions": 3.0,
+  "fast_decision_frac": 1.0,
+  "spent_elixir": 8.0,
+  "tower_damage": 0.0,
+  "objective_met": 1.0,
+  "rejected_actions": 0.0
+ },
+ "decisions_applied": 3,
+ "completed": true,
+ "termination_tick": 5759,
+ "timing_known": 3,
+ "task_config": {
+  "id": "08-cycle-to-lethal",
+  "family": 8,
+  "title": "Cycle while defending",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 108,
+  "agent_team": 0,
+  "agent_deck": [
+   "HogRider",
+   "Musketeer",
+   "Cannon",
+   "IceGolemite",
+   "IceSpirits",
+   "Skeletons",
+   "Fireball",
+   "Log"
+  ],
+  "opponent_deck": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "player_deck_name": "hog-2.6-cycle",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": 44.0,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win before your tower falls and before overtime ends in 18 seconds. The full draw order is disclosed below; Fireball enters your hand after two card plays.",
+  "scenario": {
+   "start_tick": 5640,
+   "horizon_s": 18,
+   "elixir": 6,
+   "opponent_elixir": 0,
+   "order": [
+    "IceSpirits",
+    "Skeletons",
+    "IceGolemite",
+    "Log",
+    "Cannon",
+    "Fireball",
+    "HogRider",
+    "Musketeer"
+   ],
+   "opponent_order": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+   ],
+   "units": [
+    {
+     "card": "Giant",
+     "team": 1,
+     "x": 3.5,
+     "y": 12
+    }
+   ],
+   "grading": "win",
+   "tower_hp": [
+    [
+     4824,
+     458,
+     3052
+    ],
+    [
+     4824,
+     3052,
+     158
+    ]
+   ],
+   "verified_fireball_crown_damage": 159,
+   "disclose_queue": true
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1",
+  "task_id": "08-cycle-to-lethal",
+  "instruction_sha256": "e214d97db8a17bd84d715904e43fd60a7382db6d29b394cc837867b26d936eec",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+   "agent_timeout_s": 3600,
+   "verifier_timeout_s": 600,
+   "cpus": 1,
+   "memory_mb": 2048,
+   "storage_mb": 4096
+  }
+ },
+ "rubric": "scenario-objective-coordinates-v1",
+ "tiebreak_reason": "crowns",
+ "benchmark": "RoyaleBench v3",
+ "task_id": "08-cycle-to-lethal",
+ "scenario": {
+  "start_tick": 5640,
+  "horizon_s": 18,
+  "elixir": 6,
+  "opponent_elixir": 0,
+  "order": [
+   "IceSpirits",
+   "Skeletons",
+   "IceGolemite",
+   "Log",
+   "Cannon",
+   "Fireball",
+   "HogRider",
+   "Musketeer"
+  ],
+  "opponent_order": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "units": [
+   {
+    "card": "Giant",
+    "team": 1,
+    "x": 3.5,
+    "y": 12
+   }
+  ],
+  "grading": "win",
+  "tower_hp": [
+   [
+    4824,
+    458,
+    3052
+   ],
+   [
+    4824,
+    3052,
+    158
+   ]
+  ],
+  "verified_fireball_crown_damage": 159,
+  "disclose_queue": true
+ },
+ "setup_hash": "6e48217ecf601ef43021a699901efe1b77ea98da24367e796310ff0f5b204ec3",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ },
+ "action_mode": "coordinates-v1"
+}

@@ -21,6 +21,7 @@ from ..schemas.evals import (
     LogLine,
     LogsOut,
     QueueInfo,
+    ReplayOut,
     TaskDetail,
     TaskList,
     TaskRow,
@@ -32,10 +33,35 @@ from .common import family_of, logo_url, secret_name
 LOG_LIMIT = 2000
 
 
-def job_row_out(run: dict, now: float | None = None) -> JobRow:
+def job_row_out(run: dict, now: float | None = None, costs: dict | None = None) -> JobRow:
     row = J.job_row(run, now)
     family = family_of(row["model"])
-    return JobRow(**{k: row[k] for k in JobRow.model_fields if k in row}, family=family, logo_url=logo_url(family))
+    return JobRow(**{k: row[k] for k in JobRow.model_fields if k in row}, family=family, logo_url=logo_url(family),
+                  **(costs or {}))
+
+
+def _run_costs(ctx: AppContext, runs: list[dict]) -> dict[str, dict]:
+    """Read cached task costs without downloading agent outputs. Include all billed tasks, even errors."""
+    records = R.load_records(ctx.valkyrie, ctx.cache, runs, fetch_costs=False)
+    out = {}
+    for record in records:
+        costs = [t["cost"] for t in record["tasks"] if t["cost"] is not None]
+        out[record["run_id"]] = dict(cost_usd=sum(costs) if costs else None,
+            cost_per_task=sum(costs) / len(costs) if costs else None, cost_known=len(costs))
+    for run in runs:
+        out.setdefault(str(run["id"]), {})["costs_pending"] = R.uncached_task_count(ctx.cache, [run])
+    return out
+
+
+def start_job_costs(ctx: AppContext, run_ids: list[str]):
+    from .leaderboard import costs_status
+
+    # Resolve only runs in this benchmark; the client supplies the visible rows.
+    wanted = set(run_ids)
+    runs = [r for r in ctx.valkyrie.list_runs(ctx.cfg.benchmark) if str(r["id"]) in wanted]
+    ctx.costs.start(lambda progress: R.load_records(ctx.valkyrie, ctx.cache, runs,
+                                                  fetch_costs=True, on_progress=progress))
+    return costs_status(ctx)
 
 
 def _my_email(ctx: AppContext) -> str | None:
@@ -49,7 +75,9 @@ def _my_email(ctx: AppContext) -> str | None:
 def list_jobs(ctx: AppContext, *, status: list[str] | None = None, dataset: str | None = None, model: str | None = None,
               mine: bool = False) -> JobList:
     now = ctx.now()
-    rows = [job_row_out(r, now) for r in ctx.valkyrie.list_runs(ctx.cfg.benchmark)]
+    runs = ctx.valkyrie.list_runs(ctx.cfg.benchmark)
+    costs = _run_costs(ctx, runs)
+    rows = [job_row_out(r, now, costs.get(str(r["id"]))) for r in runs]
     me = _my_email(ctx)
     shown = [r for r in rows
              if (not status or r.status in status) and (not dataset or r.dataset == dataset)
@@ -73,7 +101,7 @@ def job_detail(ctx: AppContext, run_id: str) -> JobDetail:
         except ValkyrieError:
             queue = None  # the queue is a nicety; never fail the page for it
     return JobDetail(
-        job=job_row_out(run, now), provider=args.get("sandbox_provider") or "modal", concurrency=args.get("concurrency"),
+        job=job_row_out(run, now, _run_costs(ctx, [run]).get(str(run["id"]))), provider=args.get("sandbox_provider") or "modal", concurrency=args.get("concurrency"),
         dataset_version=(args.get("dataset_version") or {}).get("id") or "", task_ids=args.get("task_ids"),
         secrets={env: secret_name(ref) for env, ref in (contract.get("secrets") or {}).items()},
         project=(meta.get("project") or {}).get("handle"), eta_s=J.eta_seconds(run, now), queue=queue, active=active)
@@ -87,9 +115,13 @@ def list_tasks(ctx: AppContext, run_id: str) -> TaskList:
     out = []
     for r in rows:
         reward = R.reward_of((details.get(r["task"]) or {}).get("evaluation_result") or {})
+        # Share the run-total cache; listing tasks must never download agent artifacts.
+        metrics = (R.task_metrics(ctx.valkyrie, ctx.cache, run_id, r["task"], download=False)
+                   if run.get("status") == "FINISHED" else None)
         out.append(TaskRow(task=r["task"], status=r["status"], category=r["category"], error=r["error"],
                            duration_s=r["duration_s"], started_at=r["started_at"], finished_at=r["finished_at"],
-                           reward=reward, solved=reward is not None and reward >= R.SOLVED_AT))
+                           reward=reward, solved=reward is not None and reward >= R.SOLVED_AT,
+                           cost_usd=metrics.get("cost") if metrics else None))
     return TaskList(tasks=out, counts=dict(run.get("task_state_counts") or {}))
 
 
@@ -118,7 +150,27 @@ def task_trace(ctx: AppContext, run_id: str, task_id: str) -> TraceOut:
     m = trace["metrics"] or {}
     return TraceOut(available=True, final_message=trace["final_message"], steps=[TraceStep(**s) for s in trace["steps"]],
                     steps_total=trace["steps_total"], cost_usd=m.get("cost"), input_tokens=m.get("input_tokens"),
-                    output_tokens=m.get("output_tokens"), cache_read_tokens=m.get("cache_read_tokens"))
+                    output_tokens=m.get("output_tokens"), cache_read_tokens=m.get("cache_read_tokens"),
+                    reasoning_tokens=m.get("reasoning_tokens"), api_calls=m.get("api_calls"),
+                    cost_source=m.get("cost_source"), cost_note=m.get("cost_note"),
+                    inference_cost_usd_exact=m.get("inference_cost_usd_exact"),
+                    inference_pricing=m.get("inference_pricing"))
+
+
+def task_replay(ctx: AppContext, run_id: str, task_id: str) -> ReplayOut:
+    from rb_evals.replays import task_replay as load_replay
+
+    # Check identity and state before consulting the disk cache, including unknown task IDs.
+    run = ctx.valkyrie.run(run_id)
+    task = ctx.valkyrie.task(run_id, task_id)
+    if task["status"] not in ("FINISHED", "ERROR", "STOPPED"):
+        return ReplayOut(available=False, message="The game replay is available after this task finishes or stops.")
+    try:
+        return ReplayOut(**load_replay(ctx.valkyrie, ctx.cache, run_id, task_id, final=run["status"] == "FINISHED"))
+    except ValkyrieError:
+        raise
+    except Exception as exc:
+        raise ApiError(502, "bad_gateway", f"Could not render this replay: {type(exc).__name__}: {exc}") from exc
 
 
 def job_logs(ctx: AppContext, run_id: str, *, task_id: str | None, query: str | None, limit: int) -> LogsOut:
@@ -170,10 +222,19 @@ def inspect_spec(ctx: AppContext, body: JobSpecIn) -> tuple[JobSpec, list[str], 
         errors.append(f"Secret {body.secret_name!r} does not exist in this organisation.")
     if body.model.strip() and body.model.strip() not in {m.id for m in cfg.models}:
         warnings.append("This model key is not in evals.toml, so it has not been verified. Start with a one-task job.")
+    preset = next((m for m in cfg.models if m.id == body.model.strip()), None)
+    if preset and preset.agent and body.agent != preset.agent:
+        errors.append(f"This model configuration requires harness {preset.agent!r}.")
+    if preset and secrets:
+        for ref in preset.secrets.values():
+            if ref not in secrets:
+                errors.append(f"Model configuration secret {ref!r} does not exist in this organisation.")
     spec = JobSpec(dataset=body.dataset, revision=revision or body.revision, agent=body.agent, model=body.model.strip(),
                    secret_name=body.secret_name, secret_env=secret_env_for(body.model.strip(), cfg.models),
                    concurrency=body.concurrency, label=body.label.strip(), task_ids=body.task_ids,
-                   benchmark=cfg.benchmark, provider=cfg.provider)
+                   benchmark=cfg.benchmark, provider=cfg.provider,
+                   extra_secrets=dict(preset.secrets) if preset else {},
+                   agent_kwargs=dict(preset.agent_kwargs) if preset else {})
     try:
         spec.validate(cfg, known_tasks=known if known else None)
     except ValueError as exc:

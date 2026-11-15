@@ -1,0 +1,45 @@
+[
+  {
+    "type": "public_message",
+    "text": "I\u2019ll inspect the board, then play through to the match result.\n"
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc cr",
+    "exit_code": 0
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc 'cr play 0 3.5 10'",
+    "exit_code": 0
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc 'cr play 0 7 10'",
+    "exit_code": 0
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc 'cr play 0 3.5 25.5'",
+    "exit_code": 0
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc 'cr play 0 3.5 14.5'",
+    "exit_code": 0
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc 'cr play 1 4.8 9.5'",
+    "exit_code": 0
+  },
+  {
+    "type": "tool",
+    "command": "/bin/bash -lc 'cr play 1 4.5 8'",
+    "exit_code": 0
+  },
+  {
+    "type": "public_message",
+    "text": "The match ended in a loss, 0\u20131. The Giant destroyed our critical-health tower before the Hog Rider connected."
+  }
+]

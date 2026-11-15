@@ -1,0 +1,2473 @@
+{
+  "benchmark": "RoyaleBench Tactics",
+  "version": "2.0.0",
+  "action_mode": "coordinates-v1",
+  "foundation_dataset": "royalebench/royalebench-v3@2",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "tasks": [
+    {
+      "config_sha256": "7e8d331d3a435954da6609b36fd12ed7933af34bb8c62d6981420f22640d9a49",
+      "contrasts": {
+        "rewards": {
+          "immediate_best": 0.0,
+          "late_best": 0.0,
+          "screen_immediate_best": 0,
+          "screen_late_best": 0
+        },
+        "screens": [
+          {
+            "card": "Fireball",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 2205,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "immediate_best-0",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 36000,
+                      "y": 252000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  2927,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "immediate_best-1",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 36000,
+                      "y": 261000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  2927,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "immediate_best-2",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 45000,
+                      "y": 252000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  2927,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "immediate_best-3",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 45000,
+                      "y": 261000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  2927,
+                  3052
+                ],
+                "reward": 0.0
+              }
+            ]
+          },
+          {
+            "card": "Fireball",
+            "delay": 4,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 2205,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "late_best-0",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 36000,
+                      "y": 144000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  2799,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "late_best-1",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 36000,
+                      "y": 153000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  2799,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "late_best-2",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 36000,
+                      "y": 162000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  2799,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "late_best-3",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 63000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 36000,
+                      "y": 171000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  2799,
+                  3052
+                ],
+                "reward": 0.0
+              }
+            ]
+          }
+        ],
+        "trials": []
+      },
+      "deterministic": true,
+      "integrity": 1.0,
+      "negative_rewards": {
+        "empty": 0.0,
+        "malformed": 0.0,
+        "wait": 0.0
+      },
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "df11e1640c721e3bedd6bdd7ca7dd377755fe04aaa0487070f060cff62a96234",
+      "reference_outcome": {
+        "crowns_against": 0,
+        "crowns_for": 0,
+        "elapsed_s": 12.0,
+        "enemy_tower_damage_frac": 0.0,
+        "opponent_plays": [
+          {
+            "card": "Goblins",
+            "tick": 2320,
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "own_tower_damage_frac": 0.0,
+        "plays": [
+          {
+            "card": "Fireball",
+            "cost": 4,
+            "decision": 1,
+            "x": 66492,
+            "y": 201258
+          }
+        ],
+        "rejected_actions": 0,
+        "result": "unfinished",
+        "spent_elixir": 4,
+        "ticks": 2440,
+        "tower_damage": 0
+      },
+      "reward": 1.0,
+      "task": "01-timed-spell-a",
+      "validation_source_sha256": "bf735ddf2a7aed7a43e7f984fa07cd59c15e16d4fecb97b7831ad7be6cb19b78"
+    },
+    {
+      "config_sha256": "a3aa06fe5997ff48124cf277c7d4bb2d98bdfd81a5dafa0fb86c8ebb0a7bdef4",
+      "contrasts": {
+        "rewards": {
+          "immediate_best": 0.0,
+          "late_best": 0.0,
+          "screen_immediate_best": 0,
+          "screen_late_best": 0
+        },
+        "screens": [
+          {
+            "card": "Fireball",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 2205,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "immediate_best-0",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 234000,
+                      "y": 252000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2927
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "immediate_best-1",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 234000,
+                      "y": 261000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2927
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "immediate_best-2",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 243000,
+                      "y": 252000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2927
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "immediate_best-3",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0114,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 243000,
+                      "y": 261000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 125
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2927
+                ],
+                "reward": 0.0
+              }
+            ]
+          },
+          {
+            "card": "Fireball",
+            "delay": 4,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 2205,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "late_best-0",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 234000,
+                      "y": 144000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2799
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "late_best-1",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 234000,
+                      "y": 153000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2799
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "late_best-2",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 234000,
+                      "y": 162000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2799
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "late_best-3",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 12.0,
+                  "enemy_tower_damage_frac": 0.0,
+                  "opponent_plays": [
+                    {
+                      "card": "Goblins",
+                      "tick": 2320,
+                      "x": 261000,
+                      "y": 405000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.0232,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 2,
+                      "x": 234000,
+                      "y": 171000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 4,
+                  "ticks": 2440,
+                  "tower_damage": 253
+                },
+                "own_hp": [
+                  4824,
+                  3052,
+                  2799
+                ],
+                "reward": 0.0
+              }
+            ]
+          }
+        ],
+        "trials": []
+      },
+      "deterministic": true,
+      "integrity": 1.0,
+      "negative_rewards": {
+        "empty": 0.0,
+        "malformed": 0.0,
+        "wait": 0.0
+      },
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "fd9f317e9f15dc3a23272ec6b07609b65016296db03ac50117799bce34840c32",
+      "reference_outcome": {
+        "crowns_against": 0,
+        "crowns_for": 0,
+        "elapsed_s": 12.0,
+        "enemy_tower_damage_frac": 0.0,
+        "opponent_plays": [
+          {
+            "card": "Goblins",
+            "tick": 2320,
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "own_tower_damage_frac": 0.0,
+        "plays": [
+          {
+            "card": "Fireball",
+            "cost": 4,
+            "decision": 1,
+            "x": 264492,
+            "y": 201258
+          }
+        ],
+        "rejected_actions": 0,
+        "result": "unfinished",
+        "spent_elixir": 4,
+        "ticks": 2440,
+        "tower_damage": 0
+      },
+      "reward": 1.0,
+      "task": "01-timed-spell-b",
+      "validation_source_sha256": "bf735ddf2a7aed7a43e7f984fa07cd59c15e16d4fecb97b7831ad7be6cb19b78"
+    },
+    {
+      "config_sha256": "b144f5e80df5afbd7a0fed8d30b5bb3ee7eca22c8aea7d1f34b345776cac90c2",
+      "contrasts": {
+        "rewards": {
+          "spend_then_musketeer": 0.0,
+          "spend_then_recover": 0.0
+        },
+        "screens": [],
+        "trials": [
+          {
+            "integrity": 1,
+            "name": "spend_then_musketeer",
+            "outcome": {
+              "crowns_against": 0,
+              "crowns_for": 0,
+              "elapsed_s": 20.0,
+              "enemy_tower_damage_frac": 0.0,
+              "opponent_plays": [
+                {
+                  "card": "GoblinBarrel",
+                  "tick": 2820,
+                  "x": 63000,
+                  "y": 117000
+                },
+                {
+                  "card": "GoblinGang",
+                  "tick": 2860,
+                  "x": 63000,
+                  "y": 513000
+                },
+                {
+                  "card": "Knight",
+                  "tick": 2940,
+                  "x": 63000,
+                  "y": 315000
+                },
+                {
+                  "card": "Princess",
+                  "tick": 2980,
+                  "x": 63000,
+                  "y": 315000
+                }
+              ],
+              "own_tower_damage_frac": 0.1445,
+              "plays": [
+                {
+                  "card": "Log",
+                  "cost": 2,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 234000
+                },
+                {
+                  "card": "Musketeer",
+                  "cost": 4,
+                  "decision": 2,
+                  "x": 63000,
+                  "y": 189000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "unfinished",
+              "spent_elixir": 6,
+              "ticks": 3100,
+              "tower_damage": 1579
+            },
+            "own_hp": [
+              4824,
+              1473,
+              3052
+            ],
+            "reward": 0.0
+          },
+          {
+            "integrity": 1,
+            "name": "spend_then_recover",
+            "outcome": {
+              "crowns_against": 1,
+              "crowns_for": 0,
+              "elapsed_s": 20.0,
+              "enemy_tower_damage_frac": 0.0794,
+              "opponent_plays": [
+                {
+                  "card": "GoblinBarrel",
+                  "tick": 2820,
+                  "x": 63000,
+                  "y": 117000
+                },
+                {
+                  "card": "GoblinGang",
+                  "tick": 2860,
+                  "x": 63000,
+                  "y": 333000
+                },
+                {
+                  "card": "Princess",
+                  "tick": 2900,
+                  "x": 261000,
+                  "y": 315000
+                },
+                {
+                  "card": "Knight",
+                  "tick": 3020,
+                  "x": 63000,
+                  "y": 405000
+                },
+                {
+                  "card": "IceSpirits",
+                  "tick": 3060,
+                  "x": 63000,
+                  "y": 405000
+                }
+              ],
+              "own_tower_damage_frac": 0.3567,
+              "plays": [
+                {
+                  "card": "Log",
+                  "cost": 2,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 234000
+                },
+                {
+                  "card": "Musketeer",
+                  "cost": 4,
+                  "decision": 1,
+                  "x": 63000,
+                  "y": 261000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "unfinished",
+              "spent_elixir": 6,
+              "ticks": 3100,
+              "tower_damage": 3556
+            },
+            "own_hp": [
+              4824,
+              0,
+              2548
+            ],
+            "reward": 0.0
+          }
+        ]
+      },
+      "deterministic": true,
+      "integrity": 1.0,
+      "negative_rewards": {
+        "empty": 0.0,
+        "malformed": 0.0,
+        "wait": 0.0
+      },
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "b40cd606b0e3f1ed6f58d1d6019444e55cbfafc07229c53422fd834c1d83057e",
+      "reference_outcome": {
+        "crowns_against": 0,
+        "crowns_for": 0,
+        "elapsed_s": 20.0,
+        "enemy_tower_damage_frac": 0.0154,
+        "opponent_plays": [
+          {
+            "card": "GoblinBarrel",
+            "tick": 2820,
+            "x": 63000,
+            "y": 117000
+          },
+          {
+            "card": "GoblinGang",
+            "tick": 2860,
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "card": "Princess",
+            "tick": 2940,
+            "x": 63000,
+            "y": 405000
+          },
+          {
+            "card": "Knight",
+            "tick": 2980,
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "card": "IceSpirits",
+            "tick": 3020,
+            "x": 63000,
+            "y": 513000
+          }
+        ],
+        "own_tower_damage_frac": 0.0228,
+        "plays": [
+          {
+            "card": "IceGolemite",
+            "cost": 2,
+            "decision": 0,
+            "x": 162000,
+            "y": 189000
+          },
+          {
+            "card": "IceSpirits",
+            "cost": 1,
+            "decision": 1,
+            "x": 63000,
+            "y": 189000
+          },
+          {
+            "card": "Log",
+            "cost": 2,
+            "decision": 4,
+            "x": 63000,
+            "y": 63000
+          }
+        ],
+        "rejected_actions": 0,
+        "result": "unfinished",
+        "spent_elixir": 5,
+        "ticks": 3100,
+        "tower_damage": 249
+      },
+      "reward": 1.0,
+      "task": "02-reserve-counter-a",
+      "validation_source_sha256": "bf735ddf2a7aed7a43e7f984fa07cd59c15e16d4fecb97b7831ad7be6cb19b78"
+    },
+    {
+      "config_sha256": "4fb376a4dd09e4b56774cd47300770e833bf01faa9f7744f344d11b16e848f89",
+      "contrasts": {
+        "rewards": {
+          "commit": 1.0,
+          "defend": 0.0,
+          "wrong_strategy_screen_wins": 0,
+          "wrong_strategy_witness_best": 0.0
+        },
+        "screens": [
+          {
+            "card": "Fireball",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 1155,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-0",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 9000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-1",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 18000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-2",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 27000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-3",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 36000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              }
+            ]
+          },
+          {
+            "card": "Minions",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 1884,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Minions-0",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Minions",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 27000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Minions-1",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Minions",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 36000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Minions-2",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Minions",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 45000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Minions-3",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Minions",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 54000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              }
+            ]
+          },
+          {
+            "card": "Knight",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 1884,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Knight-0",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Knight",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 27000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Knight-1",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Knight",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 36000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Knight-2",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Knight",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 45000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Knight-3",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 2.05,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Knight",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 54000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 5881,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              }
+            ]
+          },
+          {
+            "card": "Cannon",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 914,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Cannon-0",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 8.0,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.2747,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 27000,
+                      "y": 252000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 6000,
+                  "tower_damage": 0
+                },
+                "own_hp": [
+                  4824,
+                  50,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Cannon-1",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 8.0,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.2747,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 27000,
+                      "y": 261000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 6000,
+                  "tower_damage": 0
+                },
+                "own_hp": [
+                  4824,
+                  50,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Cannon-2",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 8.0,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.2747,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 36000,
+                      "y": 234000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 6000,
+                  "tower_damage": 0
+                },
+                "own_hp": [
+                  4824,
+                  50,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Cannon-3",
+                "outcome": {
+                  "crowns_against": 0,
+                  "crowns_for": 0,
+                  "elapsed_s": 8.0,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.2747,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 36000,
+                      "y": 243000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 6000,
+                  "tower_damage": 0
+                },
+                "own_hp": [
+                  4824,
+                  50,
+                  3052
+                ],
+                "reward": 0.0
+              }
+            ]
+          }
+        ],
+        "trials": [
+          {
+            "integrity": 1,
+            "name": "commit",
+            "outcome": {
+              "crowns_against": 0,
+              "crowns_for": 1,
+              "elapsed_s": 1.95,
+              "enemy_tower_damage_frac": 0.3127,
+              "opponent_plays": [],
+              "own_tower_damage_frac": 0.2747,
+              "plays": [
+                {
+                  "card": "Fireball",
+                  "cost": 4,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 459000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "win",
+              "spent_elixir": 4,
+              "ticks": 5879,
+              "tower_damage": 0
+            },
+            "own_hp": [
+              4824,
+              50,
+              3052
+            ],
+            "reward": 1.0
+          },
+          {
+            "integrity": 1,
+            "name": "defend",
+            "outcome": {
+              "crowns_against": 1,
+              "crowns_for": 0,
+              "elapsed_s": 4.5,
+              "enemy_tower_damage_frac": 0.2689,
+              "opponent_plays": [],
+              "own_tower_damage_frac": 0.3127,
+              "plays": [
+                {
+                  "card": "Cannon",
+                  "cost": 3,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 171000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "loss",
+              "spent_elixir": 3,
+              "ticks": 5930,
+              "tower_damage": 50
+            },
+            "own_hp": [
+              4824,
+              0,
+              3052
+            ],
+            "reward": 0.0
+          }
+        ]
+      },
+      "deterministic": true,
+      "integrity": 1.0,
+      "negative_rewards": {
+        "empty": 0.0,
+        "malformed": 0.0,
+        "wait": 0.0
+      },
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "c0d5762bf3f95800b4fe9ab8610b038de8baf1b09ba9c4a496ea2872e76c23ec",
+      "reference_outcome": {
+        "crowns_against": 0,
+        "crowns_for": 1,
+        "elapsed_s": 1.95,
+        "enemy_tower_damage_frac": 0.3127,
+        "opponent_plays": [],
+        "own_tower_damage_frac": 0.2747,
+        "plays": [
+          {
+            "card": "Fireball",
+            "cost": 4,
+            "decision": 0,
+            "x": 63000,
+            "y": 459000
+          }
+        ],
+        "rejected_actions": 0,
+        "result": "win",
+        "spent_elixir": 4,
+        "ticks": 5879,
+        "tower_damage": 0
+      },
+      "reward": 1.0,
+      "task": "03-tower-race-a",
+      "validation_source_sha256": "bf735ddf2a7aed7a43e7f984fa07cd59c15e16d4fecb97b7831ad7be6cb19b78"
+    },
+    {
+      "config_sha256": "6337ae0f00977e3b304dbb76d2e32fee3e5fa56d77fd0fb322f05a1293c844a9",
+      "contrasts": {
+        "rewards": {
+          "commit": 0.0,
+          "defend": 1.0,
+          "wrong_strategy_screen_wins": 0,
+          "wrong_strategy_witness_best": 0.0
+        },
+        "screens": [
+          {
+            "card": "Fireball",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 1050,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-0",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 1.4,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 306000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5868,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-1",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 1.4,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 315000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5868,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-2",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 1.4,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 324000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5868,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "wrong-strategy-Fireball-3",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 0,
+                  "elapsed_s": 1.4,
+                  "enemy_tower_damage_frac": 0.2689,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.3127,
+                  "plays": [
+                    {
+                      "card": "Fireball",
+                      "cost": 4,
+                      "decision": 0,
+                      "x": 9000,
+                      "y": 333000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 4,
+                  "ticks": 5868,
+                  "tower_damage": 50
+                },
+                "own_hp": [
+                  4824,
+                  0,
+                  3052
+                ],
+                "reward": 0.0
+              }
+            ]
+          }
+        ],
+        "trials": [
+          {
+            "integrity": 1,
+            "name": "commit",
+            "outcome": {
+              "crowns_against": 1,
+              "crowns_for": 0,
+              "elapsed_s": 1.4,
+              "enemy_tower_damage_frac": 0.2689,
+              "opponent_plays": [],
+              "own_tower_damage_frac": 0.3127,
+              "plays": [
+                {
+                  "card": "Fireball",
+                  "cost": 4,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 459000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "loss",
+              "spent_elixir": 4,
+              "ticks": 5868,
+              "tower_damage": 50
+            },
+            "own_hp": [
+              4824,
+              0,
+              3052
+            ],
+            "reward": 0.0
+          },
+          {
+            "integrity": 1,
+            "name": "defend",
+            "outcome": {
+              "crowns_against": 0,
+              "crowns_for": 1,
+              "elapsed_s": 2.0,
+              "enemy_tower_damage_frac": 0.3127,
+              "opponent_plays": [],
+              "own_tower_damage_frac": 0.2747,
+              "plays": [
+                {
+                  "card": "Cannon",
+                  "cost": 3,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 171000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "win",
+              "spent_elixir": 3,
+              "ticks": 5880,
+              "tower_damage": 0
+            },
+            "own_hp": [
+              4824,
+              50,
+              3052
+            ],
+            "reward": 1.0
+          }
+        ]
+      },
+      "deterministic": true,
+      "integrity": 1.0,
+      "negative_rewards": {
+        "empty": 0.0,
+        "malformed": 0.0,
+        "wait": 0.0
+      },
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "01a96338b74b77bc6455878d732630edf9aee0c5e32a0dceff45e5b8bb7548d8",
+      "reference_outcome": {
+        "crowns_against": 0,
+        "crowns_for": 1,
+        "elapsed_s": 2.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "opponent_plays": [],
+        "own_tower_damage_frac": 0.2747,
+        "plays": [
+          {
+            "card": "Cannon",
+            "cost": 3,
+            "decision": 0,
+            "x": 63000,
+            "y": 171000
+          }
+        ],
+        "rejected_actions": 0,
+        "result": "win",
+        "spent_elixir": 3,
+        "ticks": 5880,
+        "tower_damage": 0
+      },
+      "reward": 1.0,
+      "task": "03-tower-race-b",
+      "validation_source_sha256": "bf735ddf2a7aed7a43e7f984fa07cd59c15e16d4fecb97b7831ad7be6cb19b78"
+    },
+    {
+      "config_sha256": "616989cace6fa5a094dcb9845b60d381a939567719b25bfa054aa15281ca2280",
+      "contrasts": {
+        "rewards": {
+          "commit": 1.0,
+          "defensive_cannon_best": 0.0,
+          "defensive_cannon_screen_wins": 0,
+          "reference_loses_princess": 1,
+          "save_tower": 0.0
+        },
+        "screens": [
+          {
+            "card": "Cannon",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 914,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-0",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.6073,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 27000,
+                      "y": 252000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 305
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  500
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-1",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.6073,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 27000,
+                      "y": 261000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 305
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  500
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-2",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.6073,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 36000,
+                      "y": 234000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 305
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  500
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-3",
+                "outcome": {
+                  "crowns_against": 1,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [],
+                  "own_tower_damage_frac": 0.6073,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 36000,
+                      "y": 243000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "unfinished",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 305
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  500
+                ],
+                "reward": 0.0
+              }
+            ]
+          }
+        ],
+        "trials": [
+          {
+            "integrity": 1,
+            "name": "commit",
+            "outcome": {
+              "crowns_against": 1,
+              "crowns_for": 2,
+              "elapsed_s": 14.0,
+              "enemy_tower_damage_frac": 0.5977,
+              "opponent_plays": [],
+              "own_tower_damage_frac": 0.7749,
+              "plays": [
+                {
+                  "card": "Fireball",
+                  "cost": 4,
+                  "decision": 0,
+                  "x": 261000,
+                  "y": 459000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "win",
+              "spent_elixir": 4,
+              "ticks": 3600,
+              "tower_damage": 2225
+            },
+            "own_hp": [
+              2080,
+              0,
+              500
+            ],
+            "reward": 1.0
+          },
+          {
+            "integrity": 1,
+            "name": "save_tower",
+            "outcome": {
+              "crowns_against": 2,
+              "crowns_for": 1,
+              "elapsed_s": 14.0,
+              "enemy_tower_damage_frac": 0.5692,
+              "opponent_plays": [
+                {
+                  "card": "Minions",
+                  "tick": 3440,
+                  "x": 261000,
+                  "y": 315000
+                }
+              ],
+              "own_tower_damage_frac": 0.7732,
+              "plays": [
+                {
+                  "card": "Cannon",
+                  "cost": 3,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 171000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "loss",
+              "spent_elixir": 3,
+              "ticks": 3600,
+              "tower_damage": 2085
+            },
+            "own_hp": [
+              2720,
+              0,
+              0
+            ],
+            "reward": 0.0
+          }
+        ]
+      },
+      "deterministic": true,
+      "integrity": 1.0,
+      "negative_rewards": {
+        "empty": 0.0,
+        "malformed": 0.0,
+        "wait": 0.0
+      },
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "df5680d91330a392e0761e31a9122b3e47f9a2506c03f6fb8994d04c81391d6f",
+      "reference_outcome": {
+        "crowns_against": 1,
+        "crowns_for": 2,
+        "elapsed_s": 14.0,
+        "enemy_tower_damage_frac": 0.5977,
+        "opponent_plays": [],
+        "own_tower_damage_frac": 0.7749,
+        "plays": [
+          {
+            "card": "Fireball",
+            "cost": 4,
+            "decision": 0,
+            "x": 261000,
+            "y": 459000
+          }
+        ],
+        "rejected_actions": 0,
+        "result": "win",
+        "spent_elixir": 4,
+        "ticks": 3600,
+        "tower_damage": 2225
+      },
+      "reward": 1.0,
+      "task": "04-tower-trade-a",
+      "validation_source_sha256": "bf735ddf2a7aed7a43e7f984fa07cd59c15e16d4fecb97b7831ad7be6cb19b78"
+    },
+    {
+      "config_sha256": "b5a9451fda3b576bd32ef0af61e9ae3266e2ee1cd97085a3c456d9236e0f8a7b",
+      "contrasts": {
+        "rewards": {
+          "commit": 1.0,
+          "defensive_cannon_best": 0.0,
+          "defensive_cannon_screen_wins": 0,
+          "reference_loses_princess": 1,
+          "save_tower": 0.0
+        },
+        "screens": [
+          {
+            "card": "Cannon",
+            "delay": 0,
+            "scope": "one play on a half-tile grid; screening omits future opponent deployments",
+            "screening_wins": 0,
+            "step": 0.5,
+            "tested_points": 914,
+            "witnesses": [
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-0",
+                "outcome": {
+                  "crowns_against": 2,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [
+                    {
+                      "card": "Minions",
+                      "tick": 3440,
+                      "x": 63000,
+                      "y": 315000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.6664,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 126000,
+                      "y": 162000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 805
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  0
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-1",
+                "outcome": {
+                  "crowns_against": 2,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [
+                    {
+                      "card": "Minions",
+                      "tick": 3440,
+                      "x": 63000,
+                      "y": 315000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.6664,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 126000,
+                      "y": 171000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 805
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  0
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-2",
+                "outcome": {
+                  "crowns_against": 2,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [
+                    {
+                      "card": "Minions",
+                      "tick": 3440,
+                      "x": 63000,
+                      "y": 315000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.6664,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 135000,
+                      "y": 162000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 805
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  0
+                ],
+                "reward": 0.0
+              },
+              {
+                "integrity": 1,
+                "name": "defensive-cannon-3",
+                "outcome": {
+                  "crowns_against": 2,
+                  "crowns_for": 1,
+                  "elapsed_s": 14.0,
+                  "enemy_tower_damage_frac": 0.5692,
+                  "opponent_plays": [
+                    {
+                      "card": "Minions",
+                      "tick": 3440,
+                      "x": 63000,
+                      "y": 315000
+                    }
+                  ],
+                  "own_tower_damage_frac": 0.6664,
+                  "plays": [
+                    {
+                      "card": "Cannon",
+                      "cost": 3,
+                      "decision": 0,
+                      "x": 135000,
+                      "y": 171000
+                    }
+                  ],
+                  "rejected_actions": 0,
+                  "result": "loss",
+                  "spent_elixir": 3,
+                  "ticks": 3600,
+                  "tower_damage": 805
+                },
+                "own_hp": [
+                  4000,
+                  0,
+                  0
+                ],
+                "reward": 0.0
+              }
+            ]
+          }
+        ],
+        "trials": [
+          {
+            "integrity": 1,
+            "name": "commit",
+            "outcome": {
+              "crowns_against": 1,
+              "crowns_for": 2,
+              "elapsed_s": 14.0,
+              "enemy_tower_damage_frac": 0.5977,
+              "opponent_plays": [],
+              "own_tower_damage_frac": 0.7749,
+              "plays": [
+                {
+                  "card": "Fireball",
+                  "cost": 4,
+                  "decision": 0,
+                  "x": 63000,
+                  "y": 459000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "win",
+              "spent_elixir": 4,
+              "ticks": 3600,
+              "tower_damage": 2225
+            },
+            "own_hp": [
+              2080,
+              500,
+              0
+            ],
+            "reward": 1.0
+          },
+          {
+            "integrity": 1,
+            "name": "save_tower",
+            "outcome": {
+              "crowns_against": 2,
+              "crowns_for": 1,
+              "elapsed_s": 14.0,
+              "enemy_tower_damage_frac": 0.5692,
+              "opponent_plays": [
+                {
+                  "card": "Minions",
+                  "tick": 3440,
+                  "x": 63000,
+                  "y": 315000
+                }
+              ],
+              "own_tower_damage_frac": 0.7732,
+              "plays": [
+                {
+                  "card": "Cannon",
+                  "cost": 3,
+                  "decision": 0,
+                  "x": 261000,
+                  "y": 171000
+                }
+              ],
+              "rejected_actions": 0,
+              "result": "loss",
+              "spent_elixir": 3,
+              "ticks": 3600,
+              "tower_damage": 2085
+            },
+            "own_hp": [
+              2720,
+              0,
+              0
+            ],
+            "reward": 0.0
+          }
+        ]
+      },
+      "deterministic": true,
+      "integrity": 1.0,
+      "negative_rewards": {
+        "empty": 0.0,
+        "malformed": 0.0,
+        "wait": 0.0
+      },
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "3ff467623c88184081631a68cfd4c5fa52837a86559b27e7eef9e4e56011562e",
+      "reference_outcome": {
+        "crowns_against": 1,
+        "crowns_for": 2,
+        "elapsed_s": 14.0,
+        "enemy_tower_damage_frac": 0.5977,
+        "opponent_plays": [],
+        "own_tower_damage_frac": 0.7749,
+        "plays": [
+          {
+            "card": "Fireball",
+            "cost": 4,
+            "decision": 0,
+            "x": 63000,
+            "y": 459000
+          }
+        ],
+        "rejected_actions": 0,
+        "result": "win",
+        "spent_elixir": 4,
+        "ticks": 3600,
+        "tower_damage": 2225
+      },
+      "reward": 1.0,
+      "task": "04-tower-trade-b",
+      "validation_source_sha256": "bf735ddf2a7aed7a43e7f984fa07cd59c15e16d4fecb97b7831ad7be6cb19b78"
+    }
+  ],
+  "spatial_screen_points": 17535,
+  "verified_contrast_witnesses": 44,
+  "screen_limit": "Half-tile, one-play spatial checks omit future opponent deployments. Selected witnesses use the actual Planner. Not a continuous-placement or full-policy proof."
+}

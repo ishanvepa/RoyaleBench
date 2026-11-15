@@ -1,0 +1,671 @@
+{
+  "created_at": "2026-11-15T09:56:06.938063+00:00",
+  "interpretation": "Development calibration; one attempt per task per listed run; stock native harnesses differ. Do not pool revisions or treat partitioned @1 pilots as one full run.",
+  "runs": [
+    {
+      "name": "opus-pilot",
+      "run_id": "54ac81a4-92dd-4744-8372-f8bdb7e171f5",
+      "dataset": "royalebench/royalebench-win@1",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 1,
+      "started_at": "2026-11-15T09:40:09.955217",
+      "finished_at": "2026-11-15T09:43:04.819829",
+      "score": 100.0,
+      "tasks": [
+        {
+          "task": "01-cycle-and-connect",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2615,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 6.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 16.0,
+            "tower_damage": 506.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": 0.1569008,
+            "wall_clock_duration": 41.642,
+            "input_tokens": 16,
+            "cache_creation_input_tokens": 13478,
+            "cache_read_input_tokens": 174934,
+            "output_tokens": 2723,
+            "output_tokens_details": {
+              "thinking_tokens": 2000
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 13478
+            },
+            "inference_geo": "global",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 276,
+                "cache_read_input_tokens": 26226,
+                "cache_creation_input_tokens": 309,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 309,
+                  "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "sol-pilot",
+      "run_id": "0241a7d0-953f-4c69-8f86-985b42591d31",
+      "dataset": "royalebench/royalebench-win@1",
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "provider": "modal",
+      "concurrency": 1,
+      "started_at": "2026-11-15T09:40:09.573094",
+      "finished_at": "2026-11-15T09:43:11.562584",
+      "score": 100.0,
+      "tasks": [
+        {
+          "task": "01-cycle-and-connect",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2615,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 6.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 14.0,
+            "tower_damage": 506.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": null,
+            "wall_clock_duration": 22.355,
+            "input_tokens": 129166,
+            "cached_input_tokens": 111298,
+            "cache_write_input_tokens": 17844,
+            "output_tokens": 323,
+            "reasoning_output_tokens": 25
+          }
+        }
+      ]
+    },
+    {
+      "name": "opus-remainder",
+      "run_id": "a65b55d0-4e7a-4041-b2f4-39f11aac241b",
+      "dataset": "royalebench/royalebench-win@1",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 2,
+      "started_at": "2026-11-15T09:42:32.501091",
+      "finished_at": "2026-11-15T09:46:01.669805",
+      "score": 100.0,
+      "tasks": [
+        {
+          "task": "02-sustained-tower-race",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2733,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 6.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 15.0,
+            "tower_damage": 240.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": 0.15165420000000002,
+            "wall_clock_duration": 42.167,
+            "input_tokens": 16,
+            "cache_creation_input_tokens": 12386,
+            "cache_read_input_tokens": 178201,
+            "output_tokens": 2701,
+            "output_tokens_details": {
+              "thinking_tokens": 1920
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 12386
+            },
+            "inference_geo": "global",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 340,
+                "cache_read_input_tokens": 26965,
+                "cache_creation_input_tokens": 139,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 139,
+                  "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "task": "03-bait-damage-sequence",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.1816,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 9.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 27.0,
+            "tower_damage": 0.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": 0.1688242,
+            "wall_clock_duration": 51.221,
+            "input_tokens": 21,
+            "cache_creation_input_tokens": 14367,
+            "cache_read_input_tokens": 258326,
+            "output_tokens": 2262,
+            "output_tokens_details": {
+              "thinking_tokens": 1279
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 14367
+            },
+            "inference_geo": "global",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 383,
+                "cache_read_input_tokens": 28943,
+                "cache_creation_input_tokens": 142,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 142,
+                  "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "sol-remainder",
+      "run_id": "f6b9197b-5d0d-40d5-9f81-3effd1949484",
+      "dataset": "royalebench/royalebench-win@1",
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "provider": "modal",
+      "concurrency": 2,
+      "started_at": "2026-11-15T09:42:32.493658",
+      "finished_at": "2026-11-15T09:46:19.728483",
+      "score": 50.0,
+      "tasks": [
+        {
+          "task": "02-sustained-tower-race",
+          "rewards": {
+            "reward": 0.0,
+            "win": 0.0,
+            "crowns_for": 0.0,
+            "crowns_against": 1.0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.3127,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 1.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 3.0,
+            "tower_damage": 305.0,
+            "objective_met": 0.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": null,
+            "wall_clock_duration": 12.492,
+            "input_tokens": 44126,
+            "cached_input_tokens": 29121,
+            "cache_write_input_tokens": 14996,
+            "output_tokens": 136,
+            "reasoning_output_tokens": 22
+          }
+        },
+        {
+          "task": "03-bait-damage-sequence",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2213,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 8.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 23.0,
+            "tower_damage": 434.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": null,
+            "wall_clock_duration": 43.78,
+            "input_tokens": 169567,
+            "cached_input_tokens": 150090,
+            "cache_write_input_tokens": 19447,
+            "output_tokens": 548,
+            "reasoning_output_tokens": 135
+          }
+        }
+      ]
+    },
+    {
+      "name": "opus-full",
+      "run_id": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+      "dataset": "royalebench/royalebench-win@2",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 4,
+      "started_at": "2026-11-15T09:48:41.438981",
+      "finished_at": "2026-11-15T09:51:27.372998",
+      "score": 50.0,
+      "tasks": [
+        {
+          "task": "01-cycle-and-connect",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2384,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 6.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 14.0,
+            "tower_damage": 253.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": 0.1463328,
+            "wall_clock_duration": 41.324,
+            "input_tokens": 16,
+            "cache_creation_input_tokens": 11991,
+            "cache_read_input_tokens": 175869,
+            "output_tokens": 2557,
+            "output_tokens_details": {
+              "thinking_tokens": 1785
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 11991
+            },
+            "inference_geo": "global",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 313,
+                "cache_read_input_tokens": 26386,
+                "cache_creation_input_tokens": 323,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 323,
+                  "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "task": "02-sustained-tower-race",
+          "rewards": {
+            "reward": 0.0,
+            "win": 0.0,
+            "crowns_for": 0.0,
+            "crowns_against": 1.0,
+            "enemy_tower_damage_frac": 0.1059,
+            "own_tower_damage_frac": 0.3127,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 3.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 10.0,
+            "tower_damage": 305.0,
+            "objective_met": 0.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": 0.0759086,
+            "wall_clock_duration": 29.091,
+            "input_tokens": 10,
+            "cache_creation_input_tokens": 2974,
+            "cache_read_input_tokens": 107093,
+            "output_tokens": 1979,
+            "output_tokens_details": {
+              "thinking_tokens": 1338
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 2974
+            },
+            "inference_geo": "global",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 431,
+                "cache_read_input_tokens": 23350,
+                "cache_creation_input_tokens": 314,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 314,
+                  "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "task": "03-bait-damage-sequence",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.1816,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 8.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 20.0,
+            "tower_damage": 0.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": 0.124141,
+            "wall_clock_duration": 43.168,
+            "input_tokens": 19,
+            "cache_creation_input_tokens": 7103,
+            "cache_read_input_tokens": 234450,
+            "output_tokens": 2083,
+            "output_tokens_details": {
+              "thinking_tokens": 1128
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 7103
+            },
+            "inference_geo": "global",
+            "iterations": [
+              {
+                "input_tokens": 1,
+                "output_tokens": 398,
+                "cache_read_input_tokens": 27493,
+                "cache_creation_input_tokens": 249,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 249,
+                  "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        },
+        {
+          "task": "04-critical-cycle-and-connect",
+          "rewards": {
+            "reward": 0.0,
+            "win": 0.0,
+            "crowns_for": 0.0,
+            "crowns_against": 1.0,
+            "enemy_tower_damage_frac": 0.2527,
+            "own_tower_damage_frac": 0.3127,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 5.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 14.0,
+            "tower_damage": 250.0,
+            "objective_met": 0.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": 0.1352132,
+            "wall_clock_duration": 39.057,
+            "input_tokens": 14,
+            "cache_creation_input_tokens": 10813,
+            "cache_read_input_tokens": 149461,
+            "output_tokens": 2560,
+            "output_tokens_details": {
+              "thinking_tokens": 1748
+            },
+            "server_tool_use": {
+              "web_search_requests": 0,
+              "web_fetch_requests": 0
+            },
+            "service_tier": "standard",
+            "cache_creation": {
+              "ephemeral_1h_input_tokens": 0,
+              "ephemeral_5m_input_tokens": 10813
+            },
+            "inference_geo": "global",
+            "iterations": [
+              {
+                "input_tokens": 2,
+                "output_tokens": 393,
+                "cache_read_input_tokens": 25016,
+                "cache_creation_input_tokens": 515,
+                "cache_creation": {
+                  "ephemeral_5m_input_tokens": 515,
+                  "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+              }
+            ],
+            "speed": "standard",
+            "fallback_credit": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "sol-full",
+      "run_id": "b736a4c1-3e6e-463f-bd8b-3e39c106365b",
+      "dataset": "royalebench/royalebench-win@2",
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "provider": "modal",
+      "concurrency": 4,
+      "started_at": "2026-11-15T09:48:41.435802",
+      "finished_at": "2026-11-15T09:52:08.812664",
+      "score": 50.0,
+      "tasks": [
+        {
+          "task": "01-cycle-and-connect",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 1.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2615,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 6.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 14.0,
+            "tower_damage": 506.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": null,
+            "wall_clock_duration": 24.567,
+            "input_tokens": 129951,
+            "cached_input_tokens": 111886,
+            "cache_write_input_tokens": 18041,
+            "output_tokens": 389,
+            "reasoning_output_tokens": 85
+          }
+        },
+        {
+          "task": "02-sustained-tower-race",
+          "rewards": {
+            "reward": 0.0,
+            "win": 0.0,
+            "crowns_for": 0.0,
+            "crowns_against": 1.0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.3127,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 1.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 3.0,
+            "tower_damage": 305.0,
+            "objective_met": 0.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": null,
+            "wall_clock_duration": 13.955,
+            "input_tokens": 44161,
+            "cached_input_tokens": 29122,
+            "cache_write_input_tokens": 15030,
+            "output_tokens": 187,
+            "reasoning_output_tokens": 73
+          }
+        },
+        {
+          "task": "03-bait-damage-sequence",
+          "rewards": {
+            "reward": 1.0,
+            "win": 1.0,
+            "crowns_for": 0.0,
+            "crowns_against": 0.0,
+            "enemy_tower_damage_frac": 0.2732,
+            "own_tower_damage_frac": 0.1816,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 12.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 33.0,
+            "tower_damage": 0.0,
+            "objective_met": 1.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": null,
+            "wall_clock_duration": 54.719,
+            "input_tokens": 257566,
+            "cached_input_tokens": 235051,
+            "cache_write_input_tokens": 22473,
+            "output_tokens": 666,
+            "reasoning_output_tokens": 126
+          }
+        },
+        {
+          "task": "04-critical-cycle-and-connect",
+          "rewards": {
+            "reward": 0.0,
+            "win": 0.0,
+            "crowns_for": 0.0,
+            "crowns_against": 1.0,
+            "enemy_tower_damage_frac": 0.2527,
+            "own_tower_damage_frac": 0.3127,
+            "completed": 1.0,
+            "integrity": 1.0,
+            "decisions": 6.0,
+            "fast_decision_frac": 0.0,
+            "spent_elixir": 14.0,
+            "tower_damage": 250.0,
+            "objective_met": 0.0,
+            "rejected_actions": 0.0
+          },
+          "harness_metrics": {
+            "cost": null,
+            "wall_clock_duration": 24.048,
+            "input_tokens": 129187,
+            "cached_input_tokens": 111297,
+            "cache_write_input_tokens": 17866,
+            "output_tokens": 356,
+            "reasoning_output_tokens": 55
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -63,14 +63,47 @@ class SpellTargets(unittest.TestCase):
 
 class EnemyPlaysAreSeen(unittest.TestCase):
     def test_an_instant_enemy_zap_is_reported_to_the_other_player(self):
+        for viewer in (0, 1):
+            with self.subTest(viewer=viewer):
+                opponent = 1 - viewer
+                game = game_with(["Zap"], ["Zap"], need=(opponent, "Zap"))
+                slot = slot_of(game, opponent, "Zap")
+                zap = next(m for m in game.legal_moves(opponent)
+                           if m.slot == slot and m.target.startswith("enemy king"))
+                chosen = [Move(0, -1, "wait", "WAIT", 0, "-", "-")] * 2
+                chosen[opponent] = zap
+                game.step(chosen)
+                self.assertIn("Zap", game.mem[viewer].enemy_cards_seen)
+                self.assertTrue(any(ev.startswith("enemy cast Zap") for ev in game.mem[viewer].events))
+                text = game.describe(viewer, game.legal_moves(viewer))
+                self.assertIn("Opponent plays: " + ", ".join(game.mem[viewer].opponent_plays), text)
+                self.assertNotIn("SINCE YOUR LAST DECISION", text)
+                self.assertNotIn("enemy cast Zap", text)
+                self.assertNotIn("Opponent plays:", game.describe(opponent, game.legal_moves(opponent)))
+
+    def test_opponent_plays_accumulate_across_waits_until_the_next_action(self):
         game = game_with([], ["Zap"], need=(1, "Zap"))
-        slot = slot_of(game, 1, "Zap")
-        zap = next(m for m in game.legal_moves(1) if m.slot == slot and m.target.startswith("enemy king"))
         wait = Move(0, -1, "wait", "WAIT", 0, "-", "-")
+        zap = next(m for m in game.legal_moves(1) if m.card == "Zap")
         game.step([wait, zap])
+        troop = next(m for m in game.legal_moves(1) if m.kind == "TROOP")
+        game.step([wait, troop])
+        game.step([wait, wait])
+        expected = "Opponent plays: " + ", ".join(game.mem[0].opponent_plays)
+        for _ in range(2):  # Re-reading a state must not consume the opponent's plays.
+            text = game.describe(0, game.legal_moves(0))
+            self.assertEqual([line for line in text.splitlines() if line.startswith("Opponent plays:")], [expected])
+        game.consume_events(0)
+        self.assertNotIn("Opponent plays:", game.describe(0, game.legal_moves(0)))
         self.assertIn("Zap", game.mem[0].enemy_cards_seen)
-        self.assertTrue(any(ev.startswith("enemy cast Zap") for ev in game.mem[0].events), game.mem[0].events)
-        self.assertIn("enemy cast Zap", game.describe(0, game.legal_moves(0)))
+
+    def test_unit_appearances_are_not_reported_as_opponent_card_plays(self):
+        game = game_with([], [], spawns=[(1, "Knight", 3.5, 12.0)])
+        game.mem[0].seen_uids.clear()
+        game._update_memory()
+        self.assertTrue(game.mem[0].events)
+        self.assertIn("Knight", game.mem[0].enemy_cards_seen)
+        self.assertNotIn("Opponent plays:", game.describe(0, game.legal_moves(0)))
 
 
 class TowerNames(unittest.TestCase):

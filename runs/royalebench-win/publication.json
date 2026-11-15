@@ -1,0 +1,55 @@
+{
+  "versions": [
+    {
+      "benchmark": "royalebench",
+      "dataset": "royalebench-win",
+      "revision": 2,
+      "digest": "sha256:c1e42376f700f7cafdce9b34b359c32d81fc223eb7632cded5483937451a10a9",
+      "task_count": 4,
+      "tags": [
+        "latest",
+        "win-v2"
+      ],
+      "created_by_email": "ishanvepa171@gmail.com",
+      "created_at": "2026-11-15T09:48:24.626033+00:00"
+    },
+    {
+      "benchmark": "royalebench",
+      "dataset": "royalebench-win",
+      "revision": 1,
+      "digest": "sha256:a7a11a5acdb24e16f81df163bb8fd9eaaa91b15d411d98b6a22a101e44866f63",
+      "task_count": 3,
+      "tags": [
+        "win-v1"
+      ],
+      "created_by_email": "ishanvepa171@gmail.com",
+      "created_at": "2026-11-15T09:38:45.414996+00:00"
+    }
+  ],
+  "tasks": [
+    {
+      "task_id": "01-cycle-and-connect",
+      "digest": "sha256:baee4010275c5466c4f3c177c7d9d7efc316c2a4e70bd89f842ad9d900f79ff3",
+      "size": 98986,
+      "source_name": null
+    },
+    {
+      "task_id": "02-sustained-tower-race",
+      "digest": "sha256:8d66ff72cff1f4e5e2ef7163093ff520fb6bb48a77e799107059c92d804e6c8c",
+      "size": 99212,
+      "source_name": null
+    },
+    {
+      "task_id": "03-bait-damage-sequence",
+      "digest": "sha256:b3e324c37446b86187517121ab4115341d44813c5a81ceabc8f259f573cfe5af",
+      "size": 99332,
+      "source_name": null
+    },
+    {
+      "task_id": "04-critical-cycle-and-connect",
+      "digest": "sha256:d3db754e52ac464d41811b6877afe65a34f62bb20617d0b32d8b021fccfbafb8",
+      "size": 99102,
+      "source_name": null
+    }
+  ]
+}

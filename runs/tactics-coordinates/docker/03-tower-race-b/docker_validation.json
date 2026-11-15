@@ -1,0 +1,17 @@
+{
+  "task": "03-tower-race-b",
+  "family": 3,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "73898001a54b69300cceaf458a6ca4c4387f7089eee8c470783896742a88633a",
+  "image": "sha256:f4c234db18c28359589120f36e383dee4537de43f60d1370fcb669011fb5c418",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 41,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 10.199
+}

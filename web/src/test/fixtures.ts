@@ -29,8 +29,9 @@ export const environment = (overrides: Partial<Environment> = {}): Environment =
     benchmark: "royalebench",
     provider: "modal",
     default_agent: "claude_code-v1.0.0",
+    default_dataset: "royalebench-v5",
     default_concurrency: 1,
-    max_concurrency: 10,
+    max_concurrency: 50,
     confirm_over_tasks: 5,
     models: [{ id: "anthropic/claude-sonnet-4-6", secret_env: "ANTHROPIC_API_KEY", family: "claude", logo_url: "/api/assets/logos/claude" }],
   },
@@ -38,6 +39,8 @@ export const environment = (overrides: Partial<Environment> = {}): Environment =
 });
 
 export const jobRow = (overrides: Partial<JobRow> = {}): JobRow => ({
+  cost_known: 0,
+  costs_pending: 0,
   id: "run-1",
   job: "smoke-run",
   status: "FINISHED",

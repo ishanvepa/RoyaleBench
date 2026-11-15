@@ -1,0 +1,71 @@
+{
+  "task": "06-unequal-threats",
+  "reward": 1,
+  "integrity": 1.0,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0
+  },
+  "config_sha256": "8cc181ed92b45dcf144fe1fd162f04be7f22be0459582981b3a5a9ba1bb7db24",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "reference_log_sha256": "1cc608b8f23b615924d110d714a601876bfec16d7ab9de668e8104fad044cad2",
+  "reference_outcome": {
+    "result": "unfinished",
+    "crowns_for": 0,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.0,
+    "own_tower_damage_frac": 0.5123,
+    "ticks": 3200,
+    "tower_damage": 2241,
+    "spent_elixir": 6,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Knight",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      },
+      {
+        "decision": 1,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 189000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 2920,
+        "card": "BattleRam",
+        "x": 261000,
+        "y": 405000
+      },
+      {
+        "tick": 3000,
+        "card": "Bats",
+        "x": 171000,
+        "y": 405000
+      },
+      {
+        "tick": 3040,
+        "card": "Zap",
+        "x": 63000,
+        "y": 351000
+      },
+      {
+        "tick": 3160,
+        "card": "MiniPekka",
+        "x": 63000,
+        "y": 315000
+      }
+    ],
+    "elapsed_s": 20.0,
+    "rejected_actions": 0
+  },
+  "decisions": 10,
+  "menu_baseline_reward": 1,
+  "frontier_model_runs": []
+}

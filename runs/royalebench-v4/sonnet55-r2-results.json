@@ -1,0 +1,531 @@
+{
+    "benchmark_id": "538d268f-17dd-411a-a779-d995ff2951f0",
+    "benchmark_name": "royalebench",
+    "started_at": "2026-11-15T09:12:14.953944",
+    "finished_at": "2026-11-15T09:15:22.066829",
+    "status": "FINISHED",
+    "benchmark_arguments": {
+        "contract": {
+            "name": "claude_code-v1.0.0",
+            "model": "anthropic/claude-sonnet-5-5",
+            "install_cmd": "bash setup.sh",
+            "run_cmd": "bash -lc 'set -o pipefail && mkdir -p /logs && AGENT_OUTPUT_ROOT=/logs python3 /bundle/claude_code-v1.0.0/collect_outputs.py {problem_statement_path} --task-id {task_id} --model {model}'",
+            "final_output": "/logs",
+            "output_artifacts": [],
+            "egress_allowlist": [],
+            "allow_provider_tools": false,
+            "isolate_agent_uid": false,
+            "inference_settings_attested": true
+        },
+        "agent_attempts": [],
+        "concurrency": 5,
+        "dataset": "royalebench-v4",
+        "dataset_version": {
+            "id": "royalebench/royalebench-v4@2"
+        },
+        "sandbox_provider": "modal",
+        "sandbox_provider_secret_name": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/modal-credentials",
+        "environment": "aws",
+        "properties": {
+            "region": "us-east-1",
+            "s3_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+            "log_group": "/valkyrie/benchmarks-prod/tenants/49113804-bbae-46cc-82a7-70f78706d1e5",
+            "log_retention_days": 365
+        }
+    },
+    "final_evaluation": {
+        "id": "cf9eea32-dc3d-46b2-acb4-5628ab0dc1a7",
+        "org_id": "49113804-bbae-46cc-82a7-70f78706d1e5",
+        "benchmark": "538d268f-17dd-411a-a779-d995ff2951f0",
+        "final_score": 20.0,
+        "properties": {
+            "total": 5,
+            "n_trials": 5,
+            "n_errors": 0,
+            "metrics": [
+                {
+                    "completed": 1.0,
+                    "crowns_against": 0.4,
+                    "crowns_for": 0.0,
+                    "decisions": 6.2,
+                    "enemy_tower_damage_frac": 0.10511999999999999,
+                    "fast_decision_frac": 0.18,
+                    "integrity": 1.0,
+                    "objective_met": 0.2,
+                    "own_tower_damage_frac": 0.2593,
+                    "rejected_actions": 0.0,
+                    "reward": 0.2,
+                    "spent_elixir": 5.6,
+                    "tower_damage": 967.4,
+                    "win": 0.0
+                }
+            ],
+            "reward_stats": {
+                "reward": {
+                    "0.0": [
+                        "08-cycle-to-lethal-critical",
+                        "02-efficient-defense-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ],
+                    "1.0": [
+                        "04-tank-and-support-mirror"
+                    ]
+                },
+                "win": {
+                    "0.0": [
+                        "08-cycle-to-lethal-critical",
+                        "02-efficient-defense-mirror",
+                        "04-tank-and-support-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "crowns_for": {
+                    "0.0": [
+                        "08-cycle-to-lethal-critical",
+                        "02-efficient-defense-mirror",
+                        "04-tank-and-support-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "crowns_against": {
+                    "1.0": [
+                        "08-cycle-to-lethal-critical",
+                        "08-cycle-to-lethal-plus"
+                    ],
+                    "0.0": [
+                        "02-efficient-defense-mirror",
+                        "04-tank-and-support-mirror",
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "enemy_tower_damage_frac": {
+                    "0.2628": [
+                        "08-cycle-to-lethal-critical",
+                        "08-cycle-to-lethal-plus"
+                    ],
+                    "0.0": [
+                        "02-efficient-defense-mirror",
+                        "04-tank-and-support-mirror",
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "own_tower_damage_frac": {
+                    "0.3127": [
+                        "08-cycle-to-lethal-critical",
+                        "08-cycle-to-lethal-plus"
+                    ],
+                    "0.1697": [
+                        "02-efficient-defense-mirror"
+                    ],
+                    "0.3502": [
+                        "04-tank-and-support-mirror"
+                    ],
+                    "0.1512": [
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "completed": {
+                    "1.0": [
+                        "08-cycle-to-lethal-critical",
+                        "02-efficient-defense-mirror",
+                        "04-tank-and-support-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "integrity": {
+                    "1.0": [
+                        "08-cycle-to-lethal-critical",
+                        "02-efficient-defense-mirror",
+                        "04-tank-and-support-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "decisions": {
+                    "2.0": [
+                        "08-cycle-to-lethal-critical"
+                    ],
+                    "6.0": [
+                        "02-efficient-defense-mirror"
+                    ],
+                    "10.0": [
+                        "04-tank-and-support-mirror",
+                        "05-successive-threats-mirror"
+                    ],
+                    "3.0": [
+                        "08-cycle-to-lethal-plus"
+                    ]
+                },
+                "fast_decision_frac": {
+                    "0.5": [
+                        "08-cycle-to-lethal-critical"
+                    ],
+                    "0.0": [
+                        "02-efficient-defense-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ],
+                    "0.4": [
+                        "04-tank-and-support-mirror"
+                    ]
+                },
+                "spent_elixir": {
+                    "2.0": [
+                        "08-cycle-to-lethal-critical"
+                    ],
+                    "3.0": [
+                        "02-efficient-defense-mirror"
+                    ],
+                    "8.0": [
+                        "04-tank-and-support-mirror",
+                        "05-successive-threats-mirror"
+                    ],
+                    "7.0": [
+                        "08-cycle-to-lethal-plus"
+                    ]
+                },
+                "tower_damage": {
+                    "250.0": [
+                        "08-cycle-to-lethal-critical"
+                    ],
+                    "634.0": [
+                        "02-efficient-defense-mirror"
+                    ],
+                    "1843.0": [
+                        "04-tank-and-support-mirror"
+                    ],
+                    "458.0": [
+                        "08-cycle-to-lethal-plus"
+                    ],
+                    "1652.0": [
+                        "05-successive-threats-mirror"
+                    ]
+                },
+                "objective_met": {
+                    "0.0": [
+                        "08-cycle-to-lethal-critical",
+                        "02-efficient-defense-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ],
+                    "1.0": [
+                        "04-tank-and-support-mirror"
+                    ]
+                },
+                "rejected_actions": {
+                    "0.0": [
+                        "08-cycle-to-lethal-critical",
+                        "02-efficient-defense-mirror",
+                        "04-tank-and-support-mirror",
+                        "08-cycle-to-lethal-plus",
+                        "05-successive-threats-mirror"
+                    ]
+                }
+            },
+            "score_key": "reward",
+            "mean_reward": 0.2
+        }
+    },
+    "average_task_breakdown": {
+        "sandbox_build_duration": 0.5264125014000001,
+        "agent_run_duration": 25.531880485600002,
+        "evaluation_run_duration": 45.62002920079999,
+        "sandbox_run_duration": 85.0879113398
+    },
+    "evaluation_results": {
+        "05-successive-threats-mirror": {
+            "task_id": "05-successive-threats-mirror",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.0,
+                "own_tower_damage_frac": 0.1512,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 10.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 8.0,
+                "tower_damage": 1652.0,
+                "objective_met": 0.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.0,
+                    "own_tower_damage_frac": 0.1512,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 10.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 8.0,
+                    "tower_damage": 1652.0,
+                    "objective_met": 0.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.1512,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 10.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 8.0,\n  \"tower_damage\": 1652.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"unfinished\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.1512,\n  \"ticks\": 3100,\n  \"tower_damage\": 1652,\n  \"spent_elixir\": 8,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Log\",\n    \"x\": 261000,\n    \"y\": 198000,\n    \"cost\": 2\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"IceGolemite\",\n    \"x\": 261000,\n    \"y\": 171000,\n    \"cost\": 2\n   },\n   {\n    \"decision\": 3,\n    \"card\": \"Cannon\",\n    \"x\": 261000,\n    \"y\": 153000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 6,\n    \"card\": \"IceSpirits\",\n    \"x\": 59400,\n    \"y\": 216000,\n    \"cost\": 1\n   }\n  ],\n  \"opponent_plays\": [\n   {\n    \"tick\": 2820,\n    \"card\": \"GoblinBarrel\",\n    \"x\": 261000,\n    \"y\": 117000\n   },\n   {\n    \"tick\": 2860,\n    \"card\": \"GoblinGang\",\n    \"x\": 63000,\n    \"y\": 405000\n   },\n   {\n    \"tick\": 2900,\n    \"card\": \"Princess\",\n    \"x\": 63000,\n    \"y\": 315000\n   },\n   {\n    \"tick\": 2940,\n    \"card\": \"Log\",\n    \"x\": 261000,\n    \"y\": 351000\n   },\n   {\n    \"tick\": 3020,\n    \"card\": \"IceSpirits\",\n    \"x\": 63000,\n    \"y\": 315000\n   },\n   {\n    \"tick\": 3060,\n    \"card\": \"GoblinBarrel\",\n    \"x\": 63000,\n    \"y\": 117000\n   }\n  ],\n  \"elapsed_s\": 20.0,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 10,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 50.692104942,
+                "sandbox_run_duration": 131.537896041,
+                "sandbox_build_duration": 0.556590903,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 60.02596603499998,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 50.692107766999996
+            },
+            "attempts": 1
+        },
+        "04-tank-and-support-mirror": {
+            "task_id": "04-tank-and-support-mirror",
+            "rewards": {
+                "reward": 1.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.0,
+                "own_tower_damage_frac": 0.3502,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 10.0,
+                "fast_decision_frac": 0.4,
+                "spent_elixir": 8.0,
+                "tower_damage": 1843.0,
+                "objective_met": 1.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 1.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.0,
+                    "own_tower_damage_frac": 0.3502,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 10.0,
+                    "fast_decision_frac": 0.4,
+                    "spent_elixir": 8.0,
+                    "tower_damage": 1843.0,
+                    "objective_met": 1.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.3502,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 10.0,\n  \"fast_decision_frac\": 0.4,\n  \"spent_elixir\": 8.0,\n  \"tower_damage\": 1843.0,\n  \"objective_met\": 1.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"unfinished\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.3502,\n  \"ticks\": 2900,\n  \"tower_damage\": 1843,\n  \"spent_elixir\": 8,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"InfernoTower\",\n    \"x\": 261000,\n    \"y\": 189000,\n    \"cost\": 5\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Knight\",\n    \"x\": 261000,\n    \"y\": 207000,\n    \"cost\": 3\n   }\n  ],\n  \"opponent_plays\": [\n   {\n    \"tick\": 2620,\n    \"card\": \"Musketeer\",\n    \"x\": 63000,\n    \"y\": 315000\n   },\n   {\n    \"tick\": 2700,\n    \"card\": \"Knight\",\n    \"x\": 261000,\n    \"y\": 315000\n   },\n   {\n    \"tick\": 2780,\n    \"card\": \"Minions\",\n    \"x\": 63000,\n    \"y\": 315000\n   }\n  ],\n  \"elapsed_s\": 20.0,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 10,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 27.905585970000004,
+                "sandbox_run_duration": 96.468257642,
+                "sandbox_build_duration": 0.4778271740000122,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 56.23314891099999,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 27.905587839999995
+            },
+            "attempts": 1
+        },
+        "08-cycle-to-lethal-plus": {
+            "task_id": "08-cycle-to-lethal-plus",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.2628,
+                "own_tower_damage_frac": 0.3127,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 3.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 7.0,
+                "tower_damage": 458.0,
+                "objective_met": 0.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.2628,
+                    "own_tower_damage_frac": 0.3127,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 3.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 7.0,
+                    "tower_damage": 458.0,
+                    "objective_met": 0.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.2628,\n  \"own_tower_damage_frac\": 0.3127,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 3.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 7.0,\n  \"tower_damage\": 458.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.2628,\n  \"own_tower_damage_frac\": 0.3127,\n  \"ticks\": 5755,\n  \"tower_damage\": 458,\n  \"spent_elixir\": 7,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"IceGolemite\",\n    \"x\": 63000,\n    \"y\": 207000,\n    \"cost\": 2\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"Skeletons\",\n    \"x\": 81000,\n    \"y\": 198000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"Fireball\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 4\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 5.75,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 3,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 20.508924277000006,
+                "sandbox_run_duration": 69.388080285,
+                "sandbox_build_duration": 0.4605589479999992,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 37.19417496299998,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 20.508926282000004
+            },
+            "attempts": 1
+        },
+        "02-efficient-defense-mirror": {
+            "task_id": "02-efficient-defense-mirror",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 0.0,
+                "enemy_tower_damage_frac": 0.0,
+                "own_tower_damage_frac": 0.1697,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 6.0,
+                "fast_decision_frac": 0.0,
+                "spent_elixir": 3.0,
+                "tower_damage": 634.0,
+                "objective_met": 0.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 0.0,
+                    "enemy_tower_damage_frac": 0.0,
+                    "own_tower_damage_frac": 0.1697,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 6.0,
+                    "fast_decision_frac": 0.0,
+                    "spent_elixir": 3.0,
+                    "tower_damage": 634.0,
+                    "objective_met": 0.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.1697,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 6.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 3.0,\n  \"tower_damage\": 634.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"unfinished\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.0,\n  \"own_tower_damage_frac\": 0.1697,\n  \"ticks\": 2240,\n  \"tower_damage\": 634,\n  \"spent_elixir\": 3,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Cannon\",\n    \"x\": 261000,\n    \"y\": 198000,\n    \"cost\": 3\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 12.0,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 6,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 15.231781643999994,
+                "sandbox_run_duration": 66.693150473,
+                "sandbox_build_duration": 0.5425009999999872,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 37.679417404999995,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 15.231784019000003
+            },
+            "attempts": 1
+        },
+        "08-cycle-to-lethal-critical": {
+            "task_id": "08-cycle-to-lethal-critical",
+            "rewards": {
+                "reward": 0.0,
+                "win": 0.0,
+                "crowns_for": 0.0,
+                "crowns_against": 1.0,
+                "enemy_tower_damage_frac": 0.2628,
+                "own_tower_damage_frac": 0.3127,
+                "completed": 1.0,
+                "integrity": 1.0,
+                "decisions": 2.0,
+                "fast_decision_frac": 0.5,
+                "spent_elixir": 2.0,
+                "tower_damage": 250.0,
+                "objective_met": 0.0,
+                "rejected_actions": 0.0
+            },
+            "verifier_result": {
+                "rewards": {
+                    "reward": 0.0,
+                    "win": 0.0,
+                    "crowns_for": 0.0,
+                    "crowns_against": 1.0,
+                    "enemy_tower_damage_frac": 0.2628,
+                    "own_tower_damage_frac": 0.3127,
+                    "completed": 1.0,
+                    "integrity": 1.0,
+                    "decisions": 2.0,
+                    "fast_decision_frac": 0.5,
+                    "spent_elixir": 2.0,
+                    "tower_damage": 250.0,
+                    "objective_met": 0.0,
+                    "rejected_actions": 0.0
+                }
+            },
+            "metadata": {
+                "reward_source": "/logs/verifier/reward.json",
+                "verifier_exit_code": 0,
+                "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 1.0,\n  \"enemy_tower_damage_frac\": 0.2628,\n  \"own_tower_damage_frac\": 0.3127,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 2.0,\n  \"fast_decision_frac\": 0.5,\n  \"spent_elixir\": 2.0,\n  \"tower_damage\": 250.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"loss\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 1,\n  \"enemy_tower_damage_frac\": 0.2628,\n  \"own_tower_damage_frac\": 0.3127,\n  \"ticks\": 5707,\n  \"tower_damage\": 250,\n  \"spent_elixir\": 2,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Skeletons\",\n    \"x\": 63000,\n    \"y\": 270000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"IceSpirits\",\n    \"x\": 63000,\n    \"y\": 270000,\n    \"cost\": 1\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 3.35,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 2,\n \"completed\": true\n}\n",
+                "verifier_environment_mode": "separate"
+            },
+            "agent_caused_exit_reason": null,
+            "task_breakdown": {
+                "agent_run_duration": 13.321005595000003,
+                "sandbox_run_duration": 61.352172257999996,
+                "sandbox_build_duration": 0.5945844820000019,
+                "base_generation_allowance_seconds": 3600.0,
+                "external_service_overhead_seconds": null,
+                "external_service_credit_revision": null,
+                "evaluation_run_duration": 36.967438689999994,
+                "accounting_id": null,
+                "cumulative_time_credit_cap_seconds": null,
+                "external_service_credit_applied_seconds": null,
+                "generation_elapsed_seconds": 13.321007847999994
+            },
+            "attempts": 1
+        }
+    }
+}

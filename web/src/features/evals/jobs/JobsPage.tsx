@@ -15,6 +15,7 @@ import { plural } from "@/lib/format";
 import { useJobs } from "../api/jobs";
 import { useCanStart } from "../useCanStart";
 import { jobColumns } from "./columns";
+import { JobCosts } from "./JobCosts";
 
 const searchSchema = z.object({ status: listParam(), dataset: stringParam(), model: stringParam(), mine: boolParam() });
 
@@ -34,6 +35,8 @@ const COLUMNS = [
   jobColumns.harness,
   jobColumns.progress,
   jobColumns.score,
+  jobColumns.cost,
+  jobColumns.costPerTask,
   jobColumns.startedBy,
   jobColumns.started,
   jobColumns.duration,
@@ -126,6 +129,7 @@ export function Component() {
                   {running ? ` · ${running} running` : ""}
                 </p>
               </div>
+              <JobCosts jobs={data.jobs} />
               <DataTable
                 caption="Jobs"
                 columns={COLUMNS}

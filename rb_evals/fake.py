@@ -75,6 +75,7 @@ class _Run:
     tasks: list[_Task]
     secrets: dict[str, str]
     task_ids: list[str] | None = None
+    agent_kwargs: dict[str, str] = field(default_factory=dict)
     stopped_at: float | None = None
     stop_requested: bool = False
 
@@ -260,7 +261,7 @@ class FakeValkyrie:
         refs = {env: f"valkyrie/tenants/fake/{name}" for env, name in run.secrets.items()}
         return {"benchmark_id": run.id, "benchmark_name": self.benchmark, "started_by_email": run.user,
                 "benchmark_arguments": {
-                    "contract": {"name": run.agent, "model": run.model, "secrets": refs, "kwargs": {"model": run.model}},
+                    "contract": {"name": run.agent, "model": run.model, "secrets": refs, "kwargs": {"model": run.model, **run.agent_kwargs}},
                     "concurrency": run.concurrency, "task_ids": run.task_ids, "slice_str": None, "dataset": run.dataset,
                     "dataset_version": {"id": f"{self.benchmark}/{run.dataset}@{run.revision}", "label": None},
                     "sandbox_provider": "modal"},
@@ -365,7 +366,8 @@ class FakeValkyrie:
         raise ValkyrieError(f"Not found on Valkyrie: version {ref!r} of {dataset} not found", "not_found")
 
     def start_run(self, *, benchmark: str, dataset: str, ref: str, agent: str, model: str, concurrency: int,
-                  task_ids: Sequence[str] | None, label: str, provider: str, secrets: dict[str, str]) -> dict:
+                  task_ids: Sequence[str] | None, label: str, provider: str, secrets: dict[str, str],
+                  agent_kwargs: dict[str, str] | None = None) -> dict:
         version = self._resolve(dataset, ref)
         known = sorted(version.digests)
         chosen = list(task_ids) if task_ids else known
@@ -381,6 +383,7 @@ class FakeValkyrie:
             run = self._make_run(run_id, label, agent, model, dataset, version.revision, chosen, concurrency, self.user, now,
                                  secrets=secrets, selected=list(task_ids) if task_ids else None)
             self._runs[run_id] = run
+            run.agent_kwargs = dict(agent_kwargs or {})
         return {"run_id": run_id, "task_count": len(chosen),
                 "dataset_version": {"id": f"{benchmark}/{dataset}@{version.revision}", "label": None},
                 "warning": None, "started_at": _iso(now)}
@@ -473,6 +476,15 @@ class FakeValkyrie:
         run, now = self._get(run_id), self.clock()
         task_id, _, name = path.partition("/")
         task = next((t for t in run.tasks if t.id == task_id), None)
+        if (task is not None and name == "artifacts/royale.tar.gz" and run.dataset == REMOTE_ONLY
+                and self._status(task, now) == "FINISHED"):
+            # Demo gameplay uses a labelled, deterministic sample; smoke tasks have no game replay.
+            sample = Path(__file__).resolve().parents[1] / "runs/samples/random-bot__vs__heuristic-bot__s2.msgpack"
+            target = Path(dest) / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with tarfile.open(target, "w:gz") as tar:
+                tar.add(sample, arcname="royale/replay.msgpack")
+            return Path(dest)
         if task is None or name != "agent_output.tar.gz" or self._status(task, now) != "FINISHED":
             raise ValkyrieError("FileNotFoundError: No artifacts found at the requested path", "other")
         target = Path(dest) / path

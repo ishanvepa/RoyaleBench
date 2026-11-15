@@ -1,0 +1,53 @@
+{
+  "task": "08-cycle-to-lethal-critical",
+  "source_task": "08-cycle-to-lethal",
+  "transform": "critical",
+  "reward": 1,
+  "integrity": 1,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0
+  },
+  "counterfactual_reward": 0,
+  "config_sha256": "35d1439e6957ac27b2b05a89f5da71476cedad25b16490fc1e1c33bb99f75272",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "reference_log_sha256": "9f12c3c6325c69ff221126c23ad5f3b7755839d838ab48f3c1b7d8916f57455b",
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2564,
+    "ticks": 5759,
+    "tower_damage": 0,
+    "spent_elixir": 9,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Log",
+        "x": 63000,
+        "y": 378000,
+        "cost": 2
+      },
+      {
+        "decision": 1,
+        "card": "Cannon",
+        "x": 117000,
+        "y": 189000,
+        "cost": 3
+      },
+      {
+        "decision": 2,
+        "card": "Fireball",
+        "x": 63000,
+        "y": 459000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 5.95,
+    "rejected_actions": 0
+  }
+}

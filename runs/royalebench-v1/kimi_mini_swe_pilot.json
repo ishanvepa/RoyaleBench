@@ -1,0 +1,96 @@
+{
+  "run_id": "a46a46f4-ebc2-4519-8220-94b73d5e68c8",
+  "dataset": "royalebench/royalebench-v1@6",
+  "task_id": "01-immediate-lethal",
+  "harness": "mini_swe_agent",
+  "model": "openai/kimi-k3.1-pro",
+  "response_models": [
+    "moonshotai/Kimi-K3.1-Pro"
+  ],
+  "endpoint": "https://ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct/v1",
+  "modal_app": "ep-kimi-k3-1-pro",
+  "provider": "modal",
+  "concurrency": 1,
+  "secret_mapping": {
+    "OPENAI_API_BASE": "modal-kimi-base-url",
+    "OPENAI_API_KEY": "modal-qwen-api-key"
+  },
+  "credential_note": "Owner authorized shared Modal proxy credentials. The existing full Qwen token pair authenticated successfully; no credential values were read back or copied into tracked files.",
+  "agent_kwargs": {
+    "cost_tracking": "ignore_errors",
+    "step_limit": "12"
+  },
+  "status": "FINISHED",
+  "evaluation_result": {
+    "task_id": "01-immediate-lethal",
+    "rewards": {
+      "reward": 1.0,
+      "win": 1.0,
+      "crowns_for": 1.0,
+      "crowns_against": 0.0,
+      "enemy_tower_damage_frac": 0.3127,
+      "own_tower_damage_frac": 0.2095,
+      "completed": 1.0,
+      "integrity": 1.0,
+      "decisions": 1.0,
+      "fast_decision_frac": 0.0,
+      "spent_elixir": 4.0,
+      "tower_damage": 0.0,
+      "objective_met": 1.0
+    },
+    "verifier_result": {
+      "rewards": {
+        "reward": 1.0,
+        "win": 1.0,
+        "crowns_for": 1.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 1.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 0.0,
+        "objective_met": 1.0
+      }
+    },
+    "metadata": {
+      "reward_source": "/logs/verifier/reward.json",
+      "verifier_exit_code": 0,
+      "verifier_output": "{\n \"rewards\": {\n  \"reward\": 1.0,\n  \"win\": 1.0,\n  \"crowns_for\": 1.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2095,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 1.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 4.0,\n  \"tower_damage\": 0.0,\n  \"objective_met\": 1.0\n },\n \"outcome\": {\n  \"result\": \"win\",\n  \"crowns_for\": 1,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.3127,\n  \"own_tower_damage_frac\": 0.2095,\n  \"ticks\": 5139,\n  \"tower_damage\": 0,\n  \"spent_elixir\": 4,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"Fireball\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 4\n   }\n  ],\n  \"opponent_plays\": [],\n  \"elapsed_s\": 1.95\n },\n \"decisions_applied\": 1,\n \"completed\": true\n}\n",
+      "verifier_environment_mode": "separate"
+    }
+  },
+  "agent_run_duration_s": 12.306603480999996,
+  "model_api_calls": 3,
+  "usage": {
+    "prompt_tokens": 8187,
+    "completion_tokens": 444,
+    "total_tokens": 8631,
+    "cached_prompt_tokens": 4992,
+    "reasoning_tokens": 162
+  },
+  "actual_cost_usd": null,
+  "cost_note": "Unknown-price fallback reports zero; no billing retrieved.",
+  "action": "cr act 5: winning Fireball at the enemy left princess tower",
+  "upstream": {
+    "repo": "SWE-agent/mini-swe-agent",
+    "tag": "v2.4.6",
+    "commit": "a83fcae82d2a08f0ee0c688f9d137b3566c097f8",
+    "submodule": "mini-swe-agent"
+  },
+  "artifact_sha256": {
+    "mini_swe_agent.zip": "9447aee4bc4fec0898fd5d6ae115df02034d240b6a39b28a6964859fea7605e5",
+    "run_metadata.json": "ccc52cd7c8441f05900cf96ef09ffd8fdb4564546de4b82ac89dfd1bf9b1c9d4",
+    "task_result.json": "44986dd43095a5c9dbf74f3d9b66ca1c229bf619886fc8b8ee4eb9feae2940ab",
+    "01-immediate-lethal/agent_output.tar.gz": "21c33900db248491a9b97532f946aaa4ee39532d3904d54670ca6e5625bcb61e",
+    "01-immediate-lethal/artifacts/royale.tar.gz": "631a01e60e7143b15d172a90930db5b0024ffe66e619b3824d6728957e67d2ce",
+    "01-immediate-lethal/mini_swe_agent/summary.json": "2b8cc7b99d1377e518d2c128f022187e4000ffc2e937f1de84d15ae4c4071ae9",
+    "01-immediate-lethal/mini_swe_agent/trajectory.json": "a9d597e51a48c5c21dd07e697f76050185adef6c156ab0e7b0cdb42120c3f651"
+  },
+  "artifacts_local": "runs/evals/modal-kimi/pilot-output",
+  "artifacts_durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\a46a46f4-ebc2-4519-8220-94b73d5e68c8\\manual-download",
+  "artifact_copy_verified": true,
+  "collection_limitation": "The existing normalized archive collector imports fcntl and cannot run on Windows. Raw outputs, trajectory, launch metadata and verifier result are mirrored with SHA-256 verification."
+}

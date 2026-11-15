@@ -2,7 +2,7 @@ import { act, screen, waitFor, within } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { TaskRow } from "@/api/types";
-import { environment, jobDetail, taskList } from "@/test/fixtures";
+import { benchmarkDetail, environment, jobDetail, taskList } from "@/test/fixtures";
 import { renderApp } from "@/test/render";
 import { server } from "@/test/server";
 
@@ -13,6 +13,61 @@ const task = (status: string, overrides: Partial<TaskRow> = {}): TaskRow => ({
 afterEach(() => vi.useRealTimers());
 
 describe("Job monitor", () => {
+  it("downloads this run's costs and refreshes the metrics when complete", async () => {
+    let downloaded = false;
+    let state = "idle";
+    let requested: unknown;
+    server.use(
+      http.get("*/api/evals/jobs/:runId", () => HttpResponse.json(jobDetail({}, {
+        total: 2, cost_usd: downloaded ? 0.6 : null, cost_per_task: downloaded ? 0.3 : null,
+        cost_known: downloaded ? 2 : 0, costs_pending: downloaded ? 0 : 2,
+      }))),
+      http.get("*/api/evals/jobs/:runId/tasks", () => HttpResponse.json({
+        tasks: [task("FINISHED", { cost_usd: downloaded ? 0.2 : null })], counts: { FINISHED: 1 },
+      })),
+      http.get("*/api/evals/leaderboard/costs", () => {
+        const current = state;
+        if (state === "running") { state = "done"; downloaded = true; }
+        return HttpResponse.json({ state: current, done: downloaded ? 2 : 0, total: 2, error: null });
+      }),
+      http.post("*/api/evals/jobs/costs", async ({ request }) => {
+        requested = await request.json();
+        state = "running";
+        return HttpResponse.json({ state, done: 0, total: 2, error: null });
+      }),
+    );
+    const { user } = renderApp("/evals/jobs/run-1");
+    await user.click(await screen.findByRole("button", { name: "Fetch cost data" }));
+    expect(requested).toEqual(["run-1"]);
+    expect(await screen.findByText("$0.600", {}, { timeout: 4000 })).toBeInTheDocument();
+    expect(screen.getByText("$0.300")).toBeInTheDocument();
+    expect(screen.getByText("Known for 2 of 2 tasks; excludes infrastructure charges")).toBeInTheDocument();
+    expect(await within(screen.getByRole("table", { name: "Tasks in this run" })).findByText("$0.200")).toBeInTheDocument();
+  }, 10_000);
+
+  it("shows and sorts individual task costs, keeping unknown costs last", async () => {
+    server.use(http.get("*/api/evals/jobs/:runId/tasks", () => HttpResponse.json({
+      tasks: [
+        task("FINISHED", { task: "unknown", cost_usd: null }),
+        task("FINISHED", { task: "free", cost_usd: 0 }),
+        task("FINISHED", { task: "expensive", cost_usd: 0.45 }),
+      ], counts: { FINISHED: 3 },
+    })));
+    const { user } = renderApp("/evals/jobs/run-1");
+    const table = await screen.findByRole("table", { name: "Tasks in this run" });
+    expect(await within(table).findByText("$0.450")).toBeInTheDocument();
+    expect(within(within(table).getByRole("row", { name: /free/ })).getByText("$0")).toBeInTheDocument();
+    expect(within(within(table).getByRole("row", { name: /unknown/ })).queryByText(/\$/)).not.toBeInTheDocument();
+    await user.click(within(table).getByRole("button", { name: /API cost/ }));
+    expect(within(table).getAllByRole("row").slice(1).map((r) => r.textContent)).toEqual([
+      expect.stringContaining("expensive"), expect.stringContaining("free"), expect.stringContaining("unknown"),
+    ]);
+    await user.click(within(table).getByRole("button", { name: /API cost/ }));
+    expect(within(table).getAllByRole("row").slice(1).map((r) => r.textContent)).toEqual([
+      expect.stringContaining("free"), expect.stringContaining("expensive"), expect.stringContaining("unknown"),
+    ]);
+  });
+
   it("shows a finished job: status, counts, score and the tasks", async () => {
     renderApp("/evals/jobs/run-1");
     expect(await screen.findByRole("heading", { name: "smoke-run", level: 1 })).toBeInTheDocument();
@@ -131,10 +186,23 @@ describe("Job monitor", () => {
   });
 
   it("opens a task's panel from the table and records the choice in the URL", async () => {
+    let resolutionRequests = 0;
     server.use(
+      http.get("*/api/evals/benchmarks/:name", () => HttpResponse.json({
+        ...benchmarkDetail(), tasks: [{ ...benchmarkDetail().tasks[0], id: "elixir-check" }],
+      })),
       http.get("*/api/evals/jobs/:runId/tasks/:taskId", () =>
         HttpResponse.json({ task: "elixir-check", status: "FINISHED", category: "", error: "", reward: 1, solved: true, rewards: { reward: 1 }, verifier_output: "reward: 1", agent_s: 5, sandbox_s: 20, build_s: 1, eval_s: 1, exit_reason: null }),
       ),
+      http.get("*/api/evals/jobs/:runId/tasks/:taskId/trace", () => HttpResponse.json({
+        available: true, final_message: "", steps: [], steps_total: 0,
+        cost_usd: 0.00123413, cost_source: "modal_token_usage", inference_cost_usd_exact: "0.00123413",
+        cost_note: "Modal inference tokens only; excludes infrastructure.",
+      })),
+      http.get("*/api/evals/benchmarks/:name/tasks/:taskId/resolution", () => {
+        resolutionRequests += 1;
+        return HttpResponse.json({ available: true, html: "<html>reference game</html>", partial: false, message: "" });
+      }),
     );
     const { router, user } = renderApp("/evals/jobs/run-1");
     await user.click(await screen.findByRole("row", { name: /elixir-check/ }));
@@ -142,6 +210,13 @@ describe("Job monitor", () => {
     expect(screen.getByText("1.0 (solved)")).toBeInTheDocument();
     expect(router.state.location.search).toBe("?task=elixir-check");
     expect(screen.getByRole("button", { name: "Load agent trace" })).toBeInTheDocument(); // not downloaded until asked
+    await user.click(screen.getByRole("button", { name: "Load agent trace" }));
+    expect(await screen.findByText("Exact inference cost: $0.00123413")).toBeInTheDocument();
+    const resolution = await screen.findByRole("button", { name: "View resolution" });
+    expect(resolutionRequests).toBe(0);
+    await user.click(resolution);
+    expect(await screen.findByTitle("Resolution of elixir-check")).toHaveAttribute("sandbox", "allow-scripts");
+    expect(resolutionRequests).toBe(1);
     expect(taskList().tasks).toHaveLength(1);
   });
 });

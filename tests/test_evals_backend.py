@@ -51,14 +51,16 @@ class ConfigTests(unittest.TestCase):
         cfg = load_config(Path(tempfile.gettempdir()) / "does-not-exist-evals.toml")
         self.assertEqual((cfg.benchmark, cfg.provider, cfg.default_concurrency), ("royalebench", "modal", 1))
         self.assertEqual(cfg.models, ())
+        self.assertEqual(cfg.default_dataset, "royalebench-v6")
 
     def test_reads_values_and_read_only_flag(self):
         with tempfile.TemporaryDirectory() as d:
-            path = write(Path(d) / "evals.toml", '[valkyrie]\nmax_concurrency = 3\nconfirm_over_tasks = 2\n'
+            path = write(Path(d) / "evals.toml", '[valkyrie]\ndefault_dataset = "custom-coordinates"\nmax_concurrency = 3\nconfirm_over_tasks = 2\n'
                                                 '[[models]]\nid = "openai/gpt-x"\nsecret_env = "MY_KEY"\n')
             with patch.dict(os.environ, {"ROYALEBENCH_EVALS_READONLY": "1"}):
                 cfg = load_config(path)
             self.assertEqual((cfg.max_concurrency, cfg.confirm_over_tasks), (3, 2))
+            self.assertEqual(cfg.default_dataset, "custom-coordinates")
             self.assertEqual(cfg.models, (ModelPreset("openai/gpt-x", "MY_KEY"),))
             self.assertTrue(cfg.read_only)
             with patch.dict(os.environ, {"ROYALEBENCH_EVALS_READONLY": ""}):
@@ -70,6 +72,20 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(secret_env_for("openai/gpt-5"), "OPENAI_API_KEY")
         self.assertEqual(secret_env_for("acme-ai/m"), "ACME_AI_API_KEY")
         self.assertEqual(secret_env_for("anthropic/special", presets), "SPECIAL_KEY")
+
+    def test_reads_endpoint_secret_references_and_stock_agent_options(self):
+        with tempfile.TemporaryDirectory() as d:
+            path = write(Path(d) / "evals.toml", '''[[models]]
+id = "openai/Qwen/example"
+secret_env = "OPENAI_API_KEY"
+agent = "mini_swe_agent"
+secrets = { OPENAI_API_BASE = "endpoint-url" }
+agent_kwargs = { cost_tracking = "ignore_errors", step_limit = "12" }
+''')
+            preset = load_config(path).models[0]
+            self.assertEqual(preset.agent, "mini_swe_agent")
+            self.assertEqual(preset.secrets, {"OPENAI_API_BASE": "endpoint-url"})
+            self.assertEqual(preset.agent_kwargs, {"cost_tracking": "ignore_errors", "step_limit": "12"})
 
     def test_repo_config_targets_modal_and_the_verified_model(self):
         cfg = load_config(ROOT / "evals.toml")
@@ -214,7 +230,8 @@ class JobTests(unittest.TestCase):
         cases = [
             (dict(provider="daytona"), "Modal"), (dict(dataset=""), "benchmark"), (dict(revision=" "), "revision"),
             (dict(agent=""), "harness"), (dict(model="gpt"), "model key"), (dict(model="a/"), "model key"),
-            (dict(secret_name=""), "secret"), (dict(concurrency=0), "Concurrency"), (dict(concurrency=11), "Concurrency"),
+            (dict(secret_name=""), "secret"), (dict(concurrency=0), "Concurrency"),
+            (dict(concurrency=CFG.max_concurrency + 1), "Concurrency"),
             (dict(label="  "), "name"), (dict(task_ids=[]), "at least one"), (dict(task_ids=["a", "a"]), "duplicates"),
             (dict(task_ids=["zzz"]), "Not in this revision"),
         ]
@@ -326,6 +343,24 @@ class ResultsTests(unittest.TestCase):
             for hostile in ("..", ".", "../..", "a/../../b", "..\\..\\x"):  # ids come from URLs: never leave the cache
                 self.assertTrue(cache.task_dir(hostile, hostile).resolve().is_relative_to(root), hostile)
                 self.assertTrue(cache.task_dir("r1", hostile).resolve().is_relative_to(root), hostile)
+
+    def test_concurrent_cache_writers_do_not_share_a_temporary_file(self):
+        import threading
+        from concurrent.futures import ThreadPoolExecutor
+
+        barrier = threading.Barrier(2)
+        replace = os.replace
+
+        def simultaneous_replace(source, target):
+            barrier.wait(timeout=2)
+            replace(source, target)
+
+        with tempfile.TemporaryDirectory() as folder:
+            cache = results.ResultsCache(Path(folder))
+            with patch("rb_evals.results.os.replace", side_effect=simultaneous_replace):
+                with ThreadPoolExecutor(max_workers=2) as pool:
+                    list(pool.map(lambda value: cache.save_results("r1", {"a": value}), [1, 2]))
+            self.assertIn(cache.results("r1"), [{"a": 1}, {"a": 2}])
 
 
 def record(model, agent, tasks, started=None, run_id="r", dataset="smoke"):
@@ -489,9 +524,11 @@ class FacadeTests(unittest.TestCase):
         v._cache.get_or_set("k", 60, lambda: "stale")
         out = v.start_run(benchmark="royalebench", dataset="smoke", ref="1", agent="claude_code-v1.0.0",
                           model="anthropic/claude-sonnet-4-6", concurrency=2, task_ids=["a"], label="L",
-                          provider="modal", secrets={"ANTHROPIC_API_KEY": "s"})
+                          provider="modal", secrets={"ANTHROPIC_API_KEY": "s"},
+                          agent_kwargs={"cost_tracking": "ignore_errors"})
         self.assertEqual(out["run_id"], "11111111-1111-1111-1111-111111111111")
         self.assertEqual(out["task_count"], 3)
+        self.assertEqual(captured["agent_kwargs"], {"cost_tracking": "ignore_errors"})
         self.assertEqual(captured["dataset"], HostedDataset(benchmark="royalebench", dataset="smoke", ref="1"))
         self.assertEqual((captured["provider"], captured["task_ids"], captured["secrets"], captured["concurrency"]),
                          ("modal", ["a"], {"ANTHROPIC_API_KEY": "s"}, 2))

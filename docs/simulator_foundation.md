@@ -42,6 +42,14 @@ By default, decisions occur every 40 engine ticks, described by our current inte
 
 The model's interface hides the opponent's hand and elixir and expresses positions from the player's perspective. It offers a constrained placement menu, including visible spell targets, rather than unrestricted continuous placement. Results therefore measure strategy under this particular observation and action interface.
 
+Newly generated tasks report accepted opponent card plays since the previous decision on one compact
+line, for example `Opponent plays: Fireball@(3.5,6.5), Knight@(14.5,19.5)`. Coordinates use the
+observer's perspective; spells are included even when they leave no unit on the board. The line
+preserves play order and repeated cards across forced waits, and re-reading the state keeps it intact
+until the player's next action. Unit appearances are shown in the board snapshot rather than counted
+as card plays. The interactive UI retains its descriptive event feed. Published dataset revisions
+retain their packaged interface; using this format on Valkyrie requires publishing a new revision.
+
 [RoyaleBench v1](royalebench_v1.md) uses this interface for exact mid-match continuations against Planner. Its scenario referee starts from public engine setup specifications, applies explicit time/spending limits, and replays protected action logs for binary scenario objectives. Locally calibrated tasks and gated proposals are recorded separately; frontier-model validation remains pending.
 
 Search v2 adds deterministic, budgeted root allocation and multi-policy rollouts

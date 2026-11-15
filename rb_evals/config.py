@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,6 +18,10 @@ PROVIDER_KEY_ENV = {"anthropic": "ANTHROPIC_API_KEY", "openai": "OPENAI_API_KEY"
 class ModelPreset:
     id: str  # Valkyrie model key, e.g. anthropic/claude-sonnet-4-6
     secret_env: str = ""  # variable the harness reads the API key from
+    agent: str = ""  # optional harness required by this endpoint configuration
+    secrets: dict[str, str] = field(default_factory=dict)  # extra environment -> secret references
+    agent_kwargs: dict[str, str] = field(default_factory=dict)
+    modal_app: str = ""  # exact Modal serving App name or ap- ID for compute billing
 
 
 @dataclass(frozen=True)
@@ -25,8 +29,9 @@ class EvalsConfig:
     benchmark: str = "royalebench"
     provider: str = "modal"
     default_agent: str = "claude_code-v1.0.0"
+    default_dataset: str = "royalebench-v6"
     default_concurrency: int = 1
-    max_concurrency: int = 10
+    max_concurrency: int = 50
     confirm_over_tasks: int = 5
     models: tuple[ModelPreset, ...] = ()
     benchmarks_dir: Path = ROOT / "benchmarks"
@@ -50,11 +55,14 @@ def load_config(path: Path | str | None = None) -> EvalsConfig:
         data = tomllib.loads(path.read_text(encoding="utf-8"))
     v = data.get("valkyrie", {})
     defaults = EvalsConfig()
-    models = tuple(ModelPreset(m["id"], m.get("secret_env", "")) for m in data.get("models", []) if m.get("id"))
+    models = tuple(ModelPreset(m["id"], m.get("secret_env", ""), m.get("agent", ""),
+                               dict(m.get("secrets", {})), dict(m.get("agent_kwargs", {})), m.get("modal_app", ""))
+                   for m in data.get("models", []) if m.get("id"))
     return EvalsConfig(
         benchmark=v.get("benchmark", defaults.benchmark),
         provider=v.get("provider", defaults.provider),
         default_agent=v.get("default_agent", defaults.default_agent),
+        default_dataset=v.get("default_dataset", defaults.default_dataset),
         default_concurrency=int(v.get("default_concurrency", defaults.default_concurrency)),
         max_concurrency=int(v.get("max_concurrency", defaults.max_concurrency)),
         confirm_over_tasks=int(v.get("confirm_over_tasks", defaults.confirm_over_tasks)),

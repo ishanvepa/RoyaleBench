@@ -6,11 +6,14 @@ import { benchmarkDetail, benchmarkList, environment, jobDetail, jobList, taskLi
 export const handlers = [
   http.get("*/api/health", () => HttpResponse.json({ status: "ok", read_only: false, fake: false })),
   http.get("*/api/evals/environment", () => HttpResponse.json(environment())),
+  http.get("*/api/evals/modal-billing", () => HttpResponse.json({ syncing: false, models: [], cost_usd: null, error: null })),
   http.get("*/api/evals/jobs", () => HttpResponse.json(jobList())),
+  http.get("*/api/evals/leaderboard/costs", () => HttpResponse.json({ state: "idle", done: 0, total: 0, error: null })),
   http.get("*/api/evals/jobs/:runId", () => HttpResponse.json(jobDetail())),
   http.get("*/api/evals/jobs/:runId/tasks", () => HttpResponse.json(taskList())),
   http.get("*/api/evals/benchmarks", () => HttpResponse.json(benchmarkList())),
   http.get("*/api/evals/benchmarks/:name", () => HttpResponse.json(benchmarkDetail())),
+  http.get("*/api/evals/benchmarks/:name/ranking", () => HttpResponse.json({ rows: [], runs_considered: 0, costs_pending: 0 })),
 ];
 
 export const server = setupServer(...handlers);

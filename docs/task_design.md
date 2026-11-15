@@ -38,6 +38,19 @@ These are starting points, not decisions. Pick the ones where the verifier is st
 
 The game engine used by the dashboard is [`royalegym`](../cr_arena/game.py). If a task depends on it, install it in the task's image at build time and pin the version so the verifier's ground truth is reproducible. Check that behavior in the image matches what the dashboard uses.
 
+Record the player action protocol as part of the benchmark version. New win-only continuations use
+[RoyaleBench Win](royalebench_win.md), using `cr play SLOT X Y` and `cr wait` through the stable
+`coordinates-v1` protocol. Frozen v1 retains its numbered placement menu, and the earlier
+[coordinate pilot](coordinate_harness.md) remains separate. Do not mix their scores or infer that menu reference validation proves an arbitrary
+coordinate protocol works. Revalidate submission, rejection, restart and replay for each protocol.
+The default [v6 release](royalebench_v6.md) merges unchanged v5 and win@2 packages;
+retain each source's objective and packaged runtime when reproducing that merge.
+
+For the harder [RoyaleBench Win](royalebench_win.md) cohort, every gameplay objective is
+an actual terminal match win. Do not award success for merely surviving a short window,
+remaining within a spending budget, or leading on HP before the match ends. Require a
+winning reference and failing cheap-policy controls before packaging each new position.
+
 ## Task levers
 
 Every game-based task is a point in a space defined by three levers. Choose them deliberately, state them in `instruction.md`, and record them in the task's `task.toml` description so a result can be traced back to its setup. Vary one lever at a time when comparing tasks, so a difference in model performance has an identifiable cause.
@@ -71,7 +84,7 @@ The state the agent starts from. The levers inside it:
   - Rank is only a rough guide. The decks beat each other in cycles (lavaloon, the weakest, beats hog-2.6-cycle 56.5% of the time), so check the pair. A mirrored match cancels strength, which is why the giant-beatdown match tasks do not vary it.
   - The numbers are real-game win rates for the archetype, not our exact eight cards (golem-beatdown does not even contain its archetype's Night Witch), this engine's ~2018 card balance or a heuristic-bot opponent, so confirm a chosen gap by simulation before relying on it.
 - **Archetype matchup.** Beatdown, cycle, bait, bridge spam, and siege decks create different strategic problems. Choose matchups that create the situation you want to test, and check by simulation that neither deck is hopeless in it.
-- **Board position.** Elixir held by each side, hand and next card, tower HP and crowns, and units on the field with HP and position. This is what the model sees in the game view (`Game.describe`): time left, crowns, elixir, tower HP, hand, enemy cards seen so far, units on the field, recent events, and a numbered legal-move list.
+- **Board position.** Elixir held by each side, hand and next card, tower HP and crowns, and units on the field with HP and position. The v3 view includes time, crowns, elixir, tower HP, indexed hand slots, enemy cards seen, units and recent events. The numbered placement menu belongs to historical menu tasks.
 - **Hidden information.** The model sees only what a real player sees: it does not see the opponent's hand or elixir. The reference bots below are not subject to this limit.
 - **Randomness.** The match seed.
 

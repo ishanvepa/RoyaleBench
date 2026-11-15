@@ -88,6 +88,26 @@ def test_unproven_scenarios_cannot_be_released(configs):
             assert cfg["release_gate"]
 
 
+def test_reference_revalidation_refuses_changed_scenarios_or_logs(configs, tmp_path):
+    import hashlib
+    from cr_arena.validate_v1 import calibrate
+
+    cfg = configs[0]
+    folder = tmp_path / cfg["id"]
+    folder.mkdir()
+    (folder / "reference.jsonl").write_text("{}\n")
+    evidence = dict(config_sha256="old configuration", reference_reward=1,
+                    reference_log_sha256=hashlib.sha256(b"{}\n").hexdigest())
+    (folder / "validation.json").write_text(json.dumps(evidence))
+    with pytest.raises(ValueError, match="unchanged"):
+        calibrate(cfg, tmp_path, reuse_reference=True)
+    evidence["config_sha256"] = hashlib.sha256(json.dumps(cfg, sort_keys=True).encode()).hexdigest()
+    (folder / "validation.json").write_text(json.dumps(evidence))
+    (folder / "reference.jsonl").write_text("different log\n")
+    with pytest.raises(ValueError, match="differs"):
+        calibrate(cfg, tmp_path, reuse_reference=True)
+
+
 def test_built_dataset_is_discoverable_and_has_lf_only():
     from rb_evals.benchmarks import load_benchmark, task_problems
 
@@ -103,8 +123,59 @@ def test_built_dataset_is_discoverable_and_has_lf_only():
         assert task.config["metadata"]["opponent"] == "planner"
         assert task.config["verifier"]["environment_mode"] == "separate"
         assert task.config["agent"]["network_mode"] == "allowlist"
+        assert "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
+        assert "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
+        assert "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
+        assert "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
         assert task.config["environment"]["network_mode"] == "public"
         assert task.config["verifier"]["network_mode"] == "no-network"
+        from cr_arena.telemetry import digest
+        config = json.loads((task.path / "environment/task.json").read_text())
+        assert config == json.loads((task.path / "tests/task.json").read_text())
+        assert config["task_id"] == task.path.name
+        assert config["instruction_sha256"] == digest((task.path / "instruction.md").read_text())
+        assert config["capture_schema_version"] == "1.0"
+        assert config["resources"]["cpus"] == task.config["environment"]["cpus"]
+        assert (task.path / "environment/referee/telemetry.py").is_file()
         for path in task.path.rglob("*"):
             if path.is_file():
                 assert b"\r\n" not in path.read_bytes(), path
+
+
+@pytest.mark.parametrize("family", [1, 2, 10])
+def test_scenario_carried_capture_replays_actual_play(configs, tmp_path, family):
+    import tempfile
+    from royalegym import RustEngine
+    from royalegym.replay import load_trace, verify_trace
+    from cr_arena.royale_task import GameServer
+    from rb_evals.archive import read_jsonl
+
+    cfg = next(c for c in configs if c["family"] == family)
+    ref = make_referee(cfg, record=True)
+    server = GameServer(tempfile.mktemp(dir="/tmp", prefix="rb-"), ref, tmp_path / "actions.jsonl")
+    try:
+        start = ref.tick
+        server.handle_command({"cmd": "observe"})
+        rejected = server.handle_command({"cmd": "act", "move": -1})
+        assert not rejected["ok"]
+        choice = pick(ref, "Fireball", "enemy left princess tower") if family == 1 else (
+            pick(ref, "Cannon", "center (between towers)") if family == 2 else 0)
+        server.handle_command({"cmd": "act", "move": choice})
+        trace = load_trace(tmp_path / "replay.msgpack")
+        assert trace.frames[0].tick == start
+        assert trace.frames[-1].tick == ref.tick
+        assert not verify_trace(trace, RustEngine())
+        assert ref.over == (family != 10)
+        events = list(read_jsonl(tmp_path / "capture/events.jsonl"))
+        assert any(r["data"].get("event") == "invalid_command" for r in events)
+        ticks = [r["data"] for r in events if r["data"].get("event") == "engine_tick"]
+        assert len(ticks) == ref.tick - start
+        assert all(resource["exact"] for tick in ticks for resource in tick["resources"])
+        commands = list(read_jsonl(tmp_path / "capture/commands.jsonl"))
+        if family == 2:
+            assert any(r["data"].get("action_source") == "forced_wait" for r in commands)
+        manifest = json.loads((tmp_path / "capture/manifest.json").read_text())
+        assert not manifest["capture_errors"]
+        assert list(read_jsonl(tmp_path / "capture/observations.jsonl"))
+    finally:
+        server.server_close()

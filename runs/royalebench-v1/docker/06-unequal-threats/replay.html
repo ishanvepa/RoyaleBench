@@ -73,6 +73,11 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
   margin-top:6px; }
 .sw { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:3px;
   vertical-align:-1px; }
+@media (max-width:700px) {
+  main { flex-direction:column; align-items:center; padding:8px; }
+  #boardwrap { order:-1; flex:0 0 auto; min-width:0; width:100%; }
+  .side { width:100%; }
+}
 </style>
 </head>
 <body>
@@ -169,6 +174,8 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
   const KING = 2,
     PRINCESS = 3,
     BUILDING = 1;
+  // Enlarge troop art for phone screens; buildings and towers retain their arena footprints.
+  const TROOP_SCALE = 1.5;
   // One picture per card (system emoji, our own choice of symbols), so a unit can be told apart at a glance.
   const ICON = {
     Knight: "⚔️",
@@ -1468,9 +1475,10 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
     function airLift(air, uid, now) {
       return (AIR[air].height * AIR_LIFT + Math.sin(now / 260 + uid * 1.7) * 0.04) * T;
     }
-    function unitRadius(e, now) {
+    function unitRadius(e, now = Infinity) {
       const pop = Math.min(1, Math.max(0, (now - (firstSeen.get(e[0]) ?? 0)) / 160));
-      return Math.max(T * 0.48, e[8] * T) * (0.6 + 0.4 * pop);
+      const scale = e[2] === BUILDING || e[2] === KING || e[2] === PRINCESS ? 1 : TROOP_SCALE;
+      return Math.max(T * 0.48, e[8] * T) * scale * (0.6 + 0.4 * pop);
     }
     // Shadows sit on the true ground position, under every ground unit and building.
     function drawAirShadow(e, air, x, y, now) {
@@ -1882,13 +1890,11 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
         deploying = flags & 2,
         tower = kind === KING || kind === PRINCESS,
         air = airOf(e);
-      const born = firstSeen.get(uid) ?? 0,
-        pop = Math.min(1, Math.max(0, (now - born) / 160));
       const elapsed = now - (hitAt.get(uid) ?? -1e9);
       const hit = elapsed < 0 ? 0 : Math.max(0, 1 - elapsed / 140);
       const px = X(x),
         py = Y(y) - (air ? airLift(air, uid, now) : flying ? T * 0.5 : 0);
-      let r = Math.max(T * 0.48, rad * T) * (0.6 + 0.4 * pop);
+      let r = unitRadius(e, now);
       ctx.globalAlpha = deploying ? 0.55 : 1;
       if (flying && !air) {
         ctx.fillStyle = "rgba(0,0,0,.22)";
@@ -2217,7 +2223,7 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
         if (named.some((n) => n[0] === e[1] && n[1] === group && Math.abs(n[2] - x) < 2.2 && Math.abs(n[3] - y) < 2.2))
           continue;
         named.push([e[1], group, x, y]);
-        const r = Math.max(T * 0.48, e[8] * T) * (air ? AIR[air].size : 1),
+        const r = unitRadius(e) * (air ? AIR[air].size : 1),
           cy = Y(y) - (air ? airLift(air, e[0], now) : e[9] & 1 ? T * 0.5 : 0),
           label = pretty(air === "LavaPups" ? air : cards[e[3]][0]),
           w = textWidth(label) + 4,
@@ -2408,6 +2414,22 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
         point.cy < grid.height &&
         grid.m[point.cy * grid.width + point.cx] === "1"
       );
+    },
+    // The allowed half-cell closest to point (by centre distance), or null if none.
+    nearest(grid, point) {
+      if (!point) return null;
+      let best = null,
+        bestD = Infinity;
+      for (let cy = 0; cy < grid.height; cy++)
+        for (let cx = 0; cx < grid.width; cx++) {
+          if (grid.m[cy * grid.width + cx] !== "1") continue;
+          const d = (cx - point.cx) ** 2 + (cy - point.cy) ** 2;
+          if (d < bestD) {
+            bestD = d;
+            best = { cx, cy };
+          }
+        }
+      return best && { ...best, x: (best.cx + 0.5) / grid.half, y: (best.cy + 0.5) / grid.half };
     },
     // Shades every blocked half-cell (one fillRect each), outlines where blocked meets
     // allowed, then previews the card at the hovered half-cell's centre.

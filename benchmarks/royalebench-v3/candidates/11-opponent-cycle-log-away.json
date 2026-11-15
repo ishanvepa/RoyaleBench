@@ -1,0 +1,92 @@
+{
+  "id": "11-opponent-cycle-log-away",
+  "family": 11,
+  "title": "Track opponent cycle (log-away)",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 111,
+  "agent_team": 0,
+  "agent_deck": [
+    "GoblinBarrel",
+    "Princess",
+    "GoblinGang",
+    "Knight",
+    "InfernoTower",
+    "Rocket",
+    "Log",
+    "IceSpirits"
+  ],
+  "opponent_deck": [
+    "Xbow",
+    "Tesla",
+    "Archer",
+    "Knight",
+    "IceSpirits",
+    "Skeletons",
+    "Fireball",
+    "Log"
+  ],
+  "player_deck_name": "log-bait",
+  "opponent_deck_name": "xbow-cycle",
+  "csv_win_rate": 49.4,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win the continuation within 30 seconds. Infer the opponent's Log cycle from the visible pre-scenario history.",
+  "scenario": {
+    "start_tick": 5400,
+    "horizon_s": 30,
+    "elixir": 5,
+    "opponent_elixir": 4,
+    "order": [
+      "GoblinBarrel",
+      "Knight",
+      "IceSpirits",
+      "Log",
+      "Princess",
+      "GoblinGang",
+      "InfernoTower",
+      "Rocket"
+    ],
+    "opponent_order": [
+      "Tesla",
+      "Fireball",
+      "Xbow",
+      "Skeletons",
+      "IceSpirits",
+      "Knight",
+      "Archer",
+      "Log"
+    ],
+    "units": [],
+    "grading": "win",
+    "tower_hp": [
+      [
+        4824,
+        916,
+        2442
+      ],
+      [
+        4824,
+        3052,
+        366
+      ]
+    ],
+    "visible_history": [
+      "At -14s: enemy Skeletons; -12s: IceSpirits; -10s: Knight; -8s: Archer; -6s: Log. No subsequent enemy plays."
+    ]
+  },
+  "release_gate": "Both histories require winning reference traces and crossed-policy evidence that different commitments improve results.",
+  "action_mode": "coordinates-v1"
+}

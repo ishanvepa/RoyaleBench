@@ -17,6 +17,7 @@ import { useBenchmark } from "../api/benchmarks";
 import { useCanStart } from "../useCanStart";
 import { BenchmarkStateBadge, DifficultyBadge, SyncBadge } from "./badges";
 import { PublishDialog } from "./PublishDialog";
+import { TaskRanking } from "./TaskRanking";
 
 const taskCol = createColumnHelper<BenchmarkTask>();
 const versionCol = createColumnHelper<BenchmarkVersion>();
@@ -198,6 +199,8 @@ function BenchmarkView({ detail }: { detail: BenchmarkDetail }) {
           empty="This benchmark has no tasks."
         />
       </section>
+
+      <TaskRanking key={b.name} benchmark={b.name} tasks={detail.tasks} />
 
       <section className="mt-10">
         <h2 className="mb-3 text-lg">Published versions</h2>

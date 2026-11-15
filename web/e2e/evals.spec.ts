@@ -15,6 +15,18 @@ test("opens on the Jobs page and lists the seeded runs", async ({ page }) => {
   await expect(page.getByRole("link", { name: "royalebench-connection-smoke" })).toBeVisible();
   await shot(page, "01-jobs");
 
+  await page.getByRole("link", { name: "royalebench-connection-smoke" }).click();
+  await page.getByRole("button", { name: "Fetch cost data" }).click();
+  await expect(page.getByText("Known for 1 of 1 tasks; excludes Modal charges")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Fetch cost data" })).toBeHidden();
+  const tasks = page.getByRole("table", { name: "Tasks in this run" });
+  await expect(tasks.getByRole("columnheader", { name: /API cost/ })).toBeVisible();
+  await expect(tasks.getByRole("row", { name: /elixir-check/ })).toContainText("$");
+  await shot(page, "01-job-costs");
+  await page.getByRole("link", { name: "Jobs", exact: true }).last().click();
+  const costedRun = page.getByRole("row", { name: /royalebench-connection-smoke/ });
+  await expect(costedRun.getByTitle(/API cost known for 1 of 1 tasks/)).toContainText("$");
+
   // A filter lives in the URL, so it survives a reload.
   await page.getByRole("button", { name: "Failed" }).click();
   await expect(page).toHaveURL(/status=ERROR/);

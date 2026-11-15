@@ -1397,6 +1397,10 @@
             "title": "Default Concurrency",
             "type": "integer"
           },
+          "default_dataset": {
+            "title": "Default Dataset",
+            "type": "string"
+          },
           "max_concurrency": {
             "title": "Max Concurrency",
             "type": "integer"
@@ -1417,6 +1421,7 @@
           "benchmark",
           "provider",
           "default_agent",
+          "default_dataset",
           "default_concurrency",
           "max_concurrency",
           "confirm_over_tasks",
@@ -1549,6 +1554,40 @@
           "organization"
         ],
         "title": "Identity",
+        "type": "object"
+      },
+      "InferencePricing": {
+        "properties": {
+          "cost_by_resource_usd": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Cost By Resource Usd",
+            "type": "object"
+          },
+          "rate_source": {
+            "title": "Rate Source",
+            "type": "string"
+          },
+          "rate_version": {
+            "title": "Rate Version",
+            "type": "string"
+          },
+          "rates_usd_per_million": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Rates Usd Per Million",
+            "type": "object"
+          }
+        },
+        "required": [
+          "rate_version",
+          "rate_source",
+          "rates_usd_per_million",
+          "cost_by_resource_usd"
+        ],
+        "title": "InferencePricing",
         "type": "object"
       },
       "JobDetail": {
@@ -1950,6 +1989,38 @@
           "benchmark": {
             "title": "Benchmark",
             "type": "string"
+          },
+          "cost_known": {
+            "default": 0,
+            "title": "Cost Known",
+            "type": "integer"
+          },
+          "cost_per_task": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Task"
+          },
+          "cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Usd"
+          },
+          "costs_pending": {
+            "default": 0,
+            "title": "Costs Pending",
+            "type": "integer"
           },
           "dataset": {
             "title": "Dataset",
@@ -2809,6 +2880,157 @@
           "has_replay"
         ],
         "title": "MatchRow",
+        "type": "object"
+      },
+      "ModalBillingOut": {
+        "properties": {
+          "cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Usd"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/ModalModelCost"
+            },
+            "title": "Models",
+            "type": "array"
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start"
+          },
+          "syncing": {
+            "title": "Syncing",
+            "type": "boolean"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          },
+          "workspace": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Workspace"
+          }
+        },
+        "required": [
+          "syncing",
+          "models"
+        ],
+        "title": "ModalBillingOut",
+        "type": "object"
+      },
+      "ModalModelCost": {
+        "properties": {
+          "app": {
+            "title": "App",
+            "type": "string"
+          },
+          "cost_by_resource": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "default": {},
+            "title": "Cost By Resource",
+            "type": "object"
+          },
+          "cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Usd"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "intervals": {
+            "title": "Intervals",
+            "type": "integer"
+          },
+          "model": {
+            "title": "Model",
+            "type": "string"
+          },
+          "object_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Object Id"
+          }
+        },
+        "required": [
+          "model",
+          "app",
+          "intervals"
+        ],
+        "title": "ModalModelCost",
         "type": "object"
       },
       "ModelPresetOut": {
@@ -3822,6 +4044,34 @@
         "title": "QueueSummary",
         "type": "object"
       },
+      "ReplayOut": {
+        "properties": {
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          },
+          "html": {
+            "default": "",
+            "title": "Html",
+            "type": "string"
+          },
+          "message": {
+            "default": "",
+            "title": "Message",
+            "type": "string"
+          },
+          "partial": {
+            "default": false,
+            "title": "Partial",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "available"
+        ],
+        "title": "ReplayOut",
+        "type": "object"
+      },
       "ResumeIn": {
         "properties": {
           "concurrency": {
@@ -4249,6 +4499,98 @@
         "title": "TaskModelSummary",
         "type": "object"
       },
+      "TaskRankingOut": {
+        "properties": {
+          "costs_pending": {
+            "title": "Costs Pending",
+            "type": "integer"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/TaskRankingRow"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "runs_considered": {
+            "title": "Runs Considered",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "rows",
+          "runs_considered",
+          "costs_pending"
+        ],
+        "title": "TaskRankingOut",
+        "type": "object"
+      },
+      "TaskRankingRow": {
+        "properties": {
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "cost_known": {
+            "title": "Cost Known",
+            "type": "integer"
+          },
+          "cost_per_task": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Per Task"
+          },
+          "infra_errors": {
+            "title": "Infra Errors",
+            "type": "integer"
+          },
+          "pass_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pass Rate"
+          },
+          "rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rank"
+          },
+          "solved": {
+            "title": "Solved",
+            "type": "integer"
+          },
+          "task": {
+            "title": "Task",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task",
+          "attempts",
+          "solved",
+          "cost_known",
+          "infra_errors"
+        ],
+        "title": "TaskRankingRow",
+        "type": "object"
+      },
       "TaskResultRow": {
         "properties": {
           "agent_s": {
@@ -4389,6 +4731,17 @@
             "title": "Category",
             "type": "string"
           },
+          "cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Usd"
+          },
           "duration_s": {
             "anyOf": [
               {
@@ -4463,6 +4816,17 @@
       },
       "TraceOut": {
         "properties": {
+          "api_calls": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Api Calls"
+          },
           "available": {
             "title": "Available",
             "type": "boolean"
@@ -4477,6 +4841,28 @@
               }
             ],
             "title": "Cache Read Tokens"
+          },
+          "cost_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Note"
+          },
+          "cost_source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Source"
           },
           "cost_usd": {
             "anyOf": [
@@ -4493,6 +4879,27 @@
             "default": "",
             "title": "Final Message",
             "type": "string"
+          },
+          "inference_cost_usd_exact": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Inference Cost Usd Exact"
+          },
+          "inference_pricing": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InferencePricing"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "input_tokens": {
             "anyOf": [
@@ -4515,6 +4922,17 @@
               }
             ],
             "title": "Output Tokens"
+          },
+          "reasoning_tokens": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasoning Tokens"
           },
           "steps": {
             "default": [],
@@ -5156,6 +5574,121 @@
         ]
       }
     },
+    "/api/evals/benchmarks/{name}/ranking": {
+      "get": {
+        "operationId": "get_task_ranking_api_evals_benchmarks__name__ranking_get",
+        "parameters": [
+          {
+            "description": "Benchmark folder name",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "description": "Benchmark folder name",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+              "title": "Name",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskRankingOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Rank current tasks by pass rate and average known API cost across finished runs",
+        "tags": [
+          "evals: benchmarks"
+        ]
+      }
+    },
     "/api/evals/benchmarks/{name}/tasks/{task_id}": {
       "get": {
         "operationId": "get_task_api_evals_benchmarks__name__tasks__task_id__get",
@@ -5278,6 +5811,133 @@
           }
         },
         "summary": "Get Task",
+        "tags": [
+          "evals: benchmarks"
+        ]
+      }
+    },
+    "/api/evals/benchmarks/{name}/tasks/{task_id}/resolution": {
+      "get": {
+        "operationId": "get_task_resolution_api_evals_benchmarks__name__tasks__task_id__resolution_get",
+        "parameters": [
+          {
+            "description": "Benchmark folder name",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "description": "Benchmark folder name",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Task id (the task folder name)",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "description": "Task id (the task folder name)",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+              "title": "Task Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplayOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Watch the locally validated reference solution for this task version",
         "tags": [
           "evals: benchmarks"
         ]
@@ -5779,6 +6439,122 @@
           }
         },
         "summary": "Start a job (a Valkyrie run on Modal)",
+        "tags": [
+          "evals: jobs"
+        ]
+      }
+    },
+    "/api/evals/jobs/costs": {
+      "post": {
+        "operationId": "start_job_costs_api_evals_jobs_costs_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "type": "string"
+                },
+                "maxItems": 1000,
+                "title": "Run Ids",
+                "type": "array"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CostsStatus"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Download task costs for selected finished runs",
         "tags": [
           "evals: jobs"
         ]
@@ -7040,6 +7816,133 @@
         ]
       }
     },
+    "/api/evals/jobs/{run_id}/tasks/{task_id}/replay": {
+      "get": {
+        "operationId": "get_replay_api_evals_jobs__run_id__tasks__task_id__replay_get",
+        "parameters": [
+          {
+            "description": "Valkyrie run id",
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "description": "Valkyrie run id",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,63}$",
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Task id (the task folder name)",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "description": "Task id (the task folder name)",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+              "title": "Task Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplayOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Recorded task gameplay, rendered on demand for a sandboxed iframe",
+        "tags": [
+          "evals: jobs"
+        ]
+      }
+    },
     "/api/evals/jobs/{run_id}/tasks/{task_id}/trace": {
       "get": {
         "operationId": "get_trace_api_evals_jobs__run_id__tasks__task_id__trace_get",
@@ -7235,6 +8138,18 @@
             "schema": {
               "default": false,
               "title": "Include Smoke",
+              "type": "boolean"
+            }
+          },
+          {
+            "description": "Only runs covering every task in their published dataset revision",
+            "in": "query",
+            "name": "full_only",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Only runs covering every task in their published dataset revision",
+              "title": "Full Only",
               "type": "boolean"
             }
           }
@@ -7506,6 +8421,18 @@
               "title": "Include Smoke",
               "type": "boolean"
             }
+          },
+          {
+            "description": "Only runs covering every task in their published dataset revision",
+            "in": "query",
+            "name": "full_only",
+            "required": false,
+            "schema": {
+              "default": false,
+              "description": "Only runs covering every task in their published dataset revision",
+              "title": "Full Only",
+              "type": "boolean"
+            }
           }
         ],
         "responses": {
@@ -7601,6 +8528,208 @@
           }
         },
         "summary": "Start downloading agent-reported cost for the runs on screen (idempotent)",
+        "tags": [
+          "evals: leaderboard"
+        ]
+      }
+    },
+    "/api/evals/modal-billing": {
+      "get": {
+        "operationId": "modal_billing_api_evals_modal_billing_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModalBillingOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Persisted Modal endpoint billing",
+        "tags": [
+          "evals: leaderboard"
+        ]
+      }
+    },
+    "/api/evals/modal-billing/sync": {
+      "post": {
+        "operationId": "sync_modal_billing_api_evals_modal_billing_sync_post",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModalBillingOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Refresh actual Modal endpoint billing",
         "tags": [
           "evals: leaderboard"
         ]

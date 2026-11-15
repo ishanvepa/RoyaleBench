@@ -1,0 +1,20 @@
+[
+  {
+    "task": "01-immediate-lethal",
+    "run_id": "d9d59d13-2e91-414e-a1db-bf1f1374b308",
+    "frame_hash_errors": [],
+    "source": "original hosted coordinate referee replay"
+  },
+  {
+    "task": "03-spell-placement",
+    "run_id": "a7b01653-ea26-48f5-9a18-93abdbcfac35",
+    "frame_hash_errors": [],
+    "source": "original hosted coordinate referee replay"
+  },
+  {
+    "task": "08-cycle-to-lethal",
+    "run_id": "a7b01653-ea26-48f5-9a18-93abdbcfac35",
+    "frame_hash_errors": [],
+    "source": "original hosted coordinate referee replay"
+  }
+]

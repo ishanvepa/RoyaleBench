@@ -1,0 +1,346 @@
+{
+  "created_at": "2026-11-15T09:56:06.937063+00:00",
+  "collection_note": "Unchanged collector with a one-off Windows file-lock and POSIX remote-path adapter; all raw archives and durable copies checksum verified. The active dashboard worker updates collection_error.json in the local cache because its existing fcntl lock is unsupported on Windows; evidence is read from frozen, verified durable snapshots.",
+  "runs": [
+    {
+      "name": "opus-pilot",
+      "run_id": "54ac81a4-92dd-4744-8372-f8bdb7e171f5",
+      "local": "C:\\Users\\ishan\\OneDrive - Georgia Institute of Technology\\Vals_AI_Hackathon\\RoyaleBench\\runs\\analysis\\54ac81a4-92dd-4744-8372-f8bdb7e171f5",
+      "durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\54ac81a4-92dd-4744-8372-f8bdb7e171f5-0fda6a286eef",
+      "local_mutable_collector_status_changes": [
+        "collection_error.json"
+      ],
+      "artifacts_manifest_sha256": "0fda6a286eefaa93b648b2b6fa31525e5b2242ec6a2563afd5fc36d9298d4668",
+      "checksum_errors": [],
+      "report": {
+        "artifact_count": 97,
+        "complete": true,
+        "counts": {
+          "commands": 19,
+          "events": 237,
+          "matches": 1,
+          "model_calls": 8,
+          "observations": 7,
+          "states": 14
+        },
+        "gaps": [],
+        "schema_version": "1.0"
+      },
+      "raw_archives": [
+        {
+          "path": "raw/current/01-cycle-and-connect/agent_output.tar.gz",
+          "sha256": "97d6c063ffd406c6f050870d80336559b5ad03738cc99eda2d7ee6a7a51dcc14",
+          "bytes": 32292
+        },
+        {
+          "path": "raw/current/01-cycle-and-connect/artifacts/royale.tar.gz",
+          "sha256": "65ab5eade23485d61c0f09ff2a885fc463b941be83b4f505bf84e2fe1bec4376",
+          "bytes": 126919
+        }
+      ]
+    },
+    {
+      "name": "sol-pilot",
+      "run_id": "0241a7d0-953f-4c69-8f86-985b42591d31",
+      "local": "C:\\Users\\ishan\\OneDrive - Georgia Institute of Technology\\Vals_AI_Hackathon\\RoyaleBench\\runs\\analysis\\0241a7d0-953f-4c69-8f86-985b42591d31",
+      "durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\0241a7d0-953f-4c69-8f86-985b42591d31-a981b0722be3",
+      "local_mutable_collector_status_changes": [
+        "collection_error.json"
+      ],
+      "artifacts_manifest_sha256": "a981b0722be3814d4bffb6e39550e4839e0c97c24c1037c4caebf6c8a98e6156",
+      "checksum_errors": [],
+      "report": {
+        "artifact_count": 97,
+        "complete": false,
+        "counts": {
+          "commands": 19,
+          "events": 237,
+          "matches": 1,
+          "model_calls": 0,
+          "observations": 7,
+          "states": 14
+        },
+        "gaps": [
+          {
+            "raw_path": "raw\\current\\01-cycle-and-connect\\agent_output.tar.gz.extracted\\logs\\trajectory.jsonl",
+            "reason": "no supported message records; full raw trajectory retained",
+            "role": "model_call_adapter"
+          }
+        ],
+        "schema_version": "1.0"
+      },
+      "raw_archives": [
+        {
+          "path": "raw/current/01-cycle-and-connect/agent_output.tar.gz",
+          "sha256": "5073fb8d1bc89afb23655a6e28545e51d4e5de6c47adb38f1d60dea457377d16",
+          "bytes": 4685
+        },
+        {
+          "path": "raw/current/01-cycle-and-connect/artifacts/royale.tar.gz",
+          "sha256": "354722cc4a741802aaa11369696c64e6166e2dca2e8c3d32e199eaebfbb1e5c0",
+          "bytes": 127012
+        }
+      ]
+    },
+    {
+      "name": "opus-remainder",
+      "run_id": "a65b55d0-4e7a-4041-b2f4-39f11aac241b",
+      "local": "C:\\Users\\ishan\\OneDrive - Georgia Institute of Technology\\Vals_AI_Hackathon\\RoyaleBench\\runs\\analysis\\a65b55d0-4e7a-4041-b2f4-39f11aac241b",
+      "durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\a65b55d0-4e7a-4041-b2f4-39f11aac241b-d5813209e4b6",
+      "local_mutable_collector_status_changes": [
+        "collection_error.json"
+      ],
+      "artifacts_manifest_sha256": "d5813209e4b61ea7816a733a3f559890b250721aef80e7ccdb4f9836685d5d3f",
+      "checksum_errors": [],
+      "report": {
+        "artifact_count": 135,
+        "complete": true,
+        "counts": {
+          "commands": 47,
+          "events": 597,
+          "matches": 2,
+          "model_calls": 19,
+          "observations": 17,
+          "states": 34
+        },
+        "gaps": [],
+        "schema_version": "1.0"
+      },
+      "raw_archives": [
+        {
+          "path": "raw/current/02-sustained-tower-race/agent_output.tar.gz",
+          "sha256": "b64fcbbeed359dc646164291e098d4617d53935d23de31035c72e839b6e39d82",
+          "bytes": 33148
+        },
+        {
+          "path": "raw/current/02-sustained-tower-race/artifacts/royale.tar.gz",
+          "sha256": "aef1914a743d63601fff39084d67293c4b84c24bd31c11d03e4234c3ff5c6dbd",
+          "bytes": 132171
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/agent_output.tar.gz",
+          "sha256": "2bd64438d326c0a4f9aa812905a07a18fd1870be4809b4893281a6b7cc929fb4",
+          "bytes": 34919
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/artifacts/royale.tar.gz",
+          "sha256": "adc4d0b6eee4b767fdbca18392074c5b2993984ea857bc8820d7b87d90cdd7f3",
+          "bytes": 150484
+        }
+      ]
+    },
+    {
+      "name": "sol-remainder",
+      "run_id": "f6b9197b-5d0d-40d5-9f81-3effd1949484",
+      "local": "C:\\Users\\ishan\\OneDrive - Georgia Institute of Technology\\Vals_AI_Hackathon\\RoyaleBench\\runs\\analysis\\f6b9197b-5d0d-40d5-9f81-3effd1949484",
+      "durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\f6b9197b-5d0d-40d5-9f81-3effd1949484-675feef9b7bb",
+      "local_mutable_collector_status_changes": [
+        "collection_error.json"
+      ],
+      "artifacts_manifest_sha256": "675feef9b7bb9f196aceefd9d3ed5fcc39eb48c73988143ac31bd5ca9684589b",
+      "checksum_errors": [],
+      "report": {
+        "artifact_count": 135,
+        "complete": false,
+        "counts": {
+          "commands": 29,
+          "events": 352,
+          "matches": 2,
+          "model_calls": 0,
+          "observations": 11,
+          "states": 22
+        },
+        "gaps": [
+          {
+            "raw_path": "raw\\current\\02-sustained-tower-race\\agent_output.tar.gz.extracted\\logs\\trajectory.jsonl",
+            "reason": "no supported message records; full raw trajectory retained",
+            "role": "model_call_adapter"
+          },
+          {
+            "raw_path": "raw\\current\\03-bait-damage-sequence\\agent_output.tar.gz.extracted\\logs\\trajectory.jsonl",
+            "reason": "no supported message records; full raw trajectory retained",
+            "role": "model_call_adapter"
+          }
+        ],
+        "schema_version": "1.0"
+      },
+      "raw_archives": [
+        {
+          "path": "raw/current/02-sustained-tower-race/agent_output.tar.gz",
+          "sha256": "096116259889bb2f0afa8ad34e283d919f9d444435bccfb988c4adb0374c2255",
+          "bytes": 3953
+        },
+        {
+          "path": "raw/current/02-sustained-tower-race/artifacts/royale.tar.gz",
+          "sha256": "6513a59cf53c413dad38596466306dc4cc7308e1950a00d5a1b23a8298a8f3ac",
+          "bytes": 103778
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/agent_output.tar.gz",
+          "sha256": "9ae5f89c29cf894813ce438a0942deb0c29416de2359bbef9086cd97c20a438b",
+          "bytes": 5109
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/artifacts/royale.tar.gz",
+          "sha256": "2b7a426e60a31e2929902dae58ae5506f0b98339e939931f5d54b85ccc3cd0ee",
+          "bytes": 139491
+        }
+      ]
+    },
+    {
+      "name": "opus-full",
+      "run_id": "042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+      "local": "C:\\Users\\ishan\\OneDrive - Georgia Institute of Technology\\Vals_AI_Hackathon\\RoyaleBench\\runs\\analysis\\042e6e32-b1e5-47be-8350-f66ed11c8a6c",
+      "durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\042e6e32-b1e5-47be-8350-f66ed11c8a6c-07e167b8f1fc",
+      "local_mutable_collector_status_changes": [
+        "collection_error.json"
+      ],
+      "artifacts_manifest_sha256": "07e167b8f1fcee40bca2e0cc7a38b42d79888f2ee7c746dc22eff7f61fed5d26",
+      "checksum_errors": [],
+      "report": {
+        "artifact_count": 211,
+        "complete": true,
+        "counts": {
+          "commands": 70,
+          "events": 871,
+          "matches": 4,
+          "model_calls": 30,
+          "observations": 26,
+          "states": 52
+        },
+        "gaps": [],
+        "schema_version": "1.0"
+      },
+      "raw_archives": [
+        {
+          "path": "raw/current/01-cycle-and-connect/agent_output.tar.gz",
+          "sha256": "5e5d66a3ada43ae8e6741f943bfc3202d94eb7f94c561b3d83198f87bbe79312",
+          "bytes": 31902
+        },
+        {
+          "path": "raw/current/01-cycle-and-connect/artifacts/royale.tar.gz",
+          "sha256": "c3e363dcc7279ec59142b5e2df0da9152129643b4f0d4d91e13f747b6a7aabdf",
+          "bytes": 131443
+        },
+        {
+          "path": "raw/current/02-sustained-tower-race/agent_output.tar.gz",
+          "sha256": "6dbff05577c1ef640866933594ebdc60fdc5e797c56c2dda991e3dbba75ef9d8",
+          "bytes": 24502
+        },
+        {
+          "path": "raw/current/02-sustained-tower-race/artifacts/royale.tar.gz",
+          "sha256": "81cb15c2300beaceb1f565a5ad8632bbe352201be6cf1300c3fe38e37699a4a3",
+          "bytes": 113887
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/agent_output.tar.gz",
+          "sha256": "6c693f0f5aebbed0cfbd684629650ca880344ad4b37b8ba0829fbe2d5add4d21",
+          "bytes": 31010
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/artifacts/royale.tar.gz",
+          "sha256": "03069c6fad00309070af9d07c75979d58e3024bf43020189585511627c000084",
+          "bytes": 139823
+        },
+        {
+          "path": "raw/current/04-critical-cycle-and-connect/agent_output.tar.gz",
+          "sha256": "dda87020704cbcafd16d5f0bd1abf2b5442cd8e1bd835af0e05d26f9801ab277",
+          "bytes": 30746
+        },
+        {
+          "path": "raw/current/04-critical-cycle-and-connect/artifacts/royale.tar.gz",
+          "sha256": "f963445b4d43a4143e944e0f87bd1213829f845e9059c5159fc5609395cbf641",
+          "bytes": 121638
+        }
+      ]
+    },
+    {
+      "name": "sol-full",
+      "run_id": "b736a4c1-3e6e-463f-bd8b-3e39c106365b",
+      "local": "C:\\Users\\ishan\\OneDrive - Georgia Institute of Technology\\Vals_AI_Hackathon\\RoyaleBench\\runs\\analysis\\b736a4c1-3e6e-463f-bd8b-3e39c106365b",
+      "durable": "C:\\Users\\ishan\\.local\\share\\royalebench\\archive\\b736a4c1-3e6e-463f-bd8b-3e39c106365b-538b1f6ef1bd",
+      "local_mutable_collector_status_changes": [
+        "collection_error.json"
+      ],
+      "artifacts_manifest_sha256": "538b1f6ef1bde0e2eb9c864a6631f2600c4cf90ca8b839358d7736157b880a05",
+      "checksum_errors": [],
+      "report": {
+        "artifact_count": 211,
+        "complete": false,
+        "counts": {
+          "commands": 79,
+          "events": 998,
+          "matches": 4,
+          "model_calls": 0,
+          "observations": 29,
+          "states": 58
+        },
+        "gaps": [
+          {
+            "raw_path": "raw\\current\\01-cycle-and-connect\\agent_output.tar.gz.extracted\\logs\\trajectory.jsonl",
+            "reason": "no supported message records; full raw trajectory retained",
+            "role": "model_call_adapter"
+          },
+          {
+            "raw_path": "raw\\current\\02-sustained-tower-race\\agent_output.tar.gz.extracted\\logs\\trajectory.jsonl",
+            "reason": "no supported message records; full raw trajectory retained",
+            "role": "model_call_adapter"
+          },
+          {
+            "raw_path": "raw\\current\\03-bait-damage-sequence\\agent_output.tar.gz.extracted\\logs\\trajectory.jsonl",
+            "reason": "no supported message records; full raw trajectory retained",
+            "role": "model_call_adapter"
+          },
+          {
+            "raw_path": "raw\\current\\04-critical-cycle-and-connect\\agent_output.tar.gz.extracted\\logs\\trajectory.jsonl",
+            "reason": "no supported message records; full raw trajectory retained",
+            "role": "model_call_adapter"
+          }
+        ],
+        "schema_version": "1.0"
+      },
+      "raw_archives": [
+        {
+          "path": "raw/current/01-cycle-and-connect/agent_output.tar.gz",
+          "sha256": "5121bbc9d47a676178a832d51d6da719315ed166afd6088441a624829261661a",
+          "bytes": 4716
+        },
+        {
+          "path": "raw/current/01-cycle-and-connect/artifacts/royale.tar.gz",
+          "sha256": "c72f646f81ad07238fc435d200ec55e4569729e751c4e97e7bcb35cf4cb4e6ba",
+          "bytes": 128140
+        },
+        {
+          "path": "raw/current/02-sustained-tower-race/agent_output.tar.gz",
+          "sha256": "630165e7586eb0b89b8e4dd9759f5288dcbd334e171f6187a83e886a07a94baa",
+          "bytes": 3971
+        },
+        {
+          "path": "raw/current/02-sustained-tower-race/artifacts/royale.tar.gz",
+          "sha256": "ed5cd9a62096115c8f4936c44d1b6cbd0440f8a96ce12c0b315b320b5ad9da42",
+          "bytes": 102687
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/agent_output.tar.gz",
+          "sha256": "af98acec7f2f7f4543ee1e0157fa98688c8676e137c3f69ac92cc9e3a1a00acf",
+          "bytes": 5818
+        },
+        {
+          "path": "raw/current/03-bait-damage-sequence/artifacts/royale.tar.gz",
+          "sha256": "4e5183402d006d71bd9538155002ee106a539bc11e222edbde0a6123db1c0e10",
+          "bytes": 169115
+        },
+        {
+          "path": "raw/current/04-critical-cycle-and-connect/agent_output.tar.gz",
+          "sha256": "5fc6f2f2a6e6b810ba39efb74f50e33097cec115995a17c254b2486a510a8d8f",
+          "bytes": 4685
+        },
+        {
+          "path": "raw/current/04-critical-cycle-and-connect/artifacts/royale.tar.gz",
+          "sha256": "8599aabac0ead63fa6919c1aba548b333b840a869b371b980180e6a594f253e2",
+          "bytes": 125590
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+I failed the scenario. The game is over, and my left princess tower fell, so the enemy took the crown.
+
+I played Skeletons, then IceGolemite, then Fireball at (3.5, 25.5). Fireball was meant to destroy the enemy princess tower, which was at 158 HP. It never landed. The enemy's Giant had been hitting my left tower, which started at 458 HP, and the tower fell before the spell resolved.
+
+Two choices cost time. I spent the first two intervals on Skeletons and IceGolemite while waiting for Fireball to enter my hand. I also never put out a Cannon or the Log to slow the Giant.
+
+I spent 7 elixir in total. The reward for this run is 0.

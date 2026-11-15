@@ -1,0 +1,226 @@
+{
+  "seed": 109,
+  "agent_team": 0,
+  "opponent": "planner",
+  "log_entries": 1,
+  "outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2514,
+    "ticks": 5876,
+    "tower_damage": 0,
+    "spent_elixir": 4,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Fireball",
+        "x": 63000,
+        "y": 414000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 1.8
+  },
+  "rewards": {
+    "reward": 1.0,
+    "win": 1.0,
+    "crowns_for": 1.0,
+    "crowns_against": 0.0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2514,
+    "completed": 1.0,
+    "integrity": 1.0,
+    "decisions": 1.0,
+    "fast_decision_frac": 0.0,
+    "spent_elixir": 4.0,
+    "tower_damage": 0.0,
+    "objective_met": 1.0
+  },
+  "decisions_applied": 1,
+  "completed": true,
+  "termination_tick": 5876,
+  "timing_known": 1,
+  "task_config": {
+    "id": "03-tower-race-a",
+    "family": 3,
+    "title": "Resolve an overtime tower race: position A",
+    "difficulty": "hard",
+    "benchmark": "RoyaleBench Tactics",
+    "version": "1.0.0",
+    "seed": 109,
+    "agent_team": 0,
+    "agent_deck": [
+      "Giant",
+      "Musketeer",
+      "Knight",
+      "Archer",
+      "Minions",
+      "Cannon",
+      "Fireball",
+      "Zap"
+    ],
+    "opponent_deck": [
+      "LavaHound",
+      "Balloon",
+      "MegaMinion",
+      "Minions",
+      "Tombstone",
+      "Arrows",
+      "Fireball",
+      "Zap"
+    ],
+    "player_deck_name": "giant-beatdown",
+    "opponent_deck_name": "lavaloon",
+    "csv_win_rate": null,
+    "opponent": "planner",
+    "planner": {
+      "horizon_s": 10.0,
+      "top_k": 4,
+      "margin": 40.0,
+      "two_ply": true,
+      "workers": 0,
+      "elixir_hp": 150.0,
+      "prefilter": true,
+      "three_ply": true,
+      "answer_k": 3
+    },
+    "decision_ticks": 40,
+    "objective": "Win before the remaining 8 seconds of overtime end, spending at most 4 elixir. At the actual overtime deadline, tied crowns use total remaining tower HP, then seed parity.",
+    "scenario": {
+      "start_tick": 5840,
+      "horizon_s": 8,
+      "elixir": 4,
+      "opponent_elixir": 0,
+      "order": [
+        "Minions",
+        "Fireball",
+        "Knight",
+        "Cannon",
+        "Giant",
+        "Musketeer",
+        "Archer",
+        "Zap"
+      ],
+      "opponent_order": [
+        "LavaHound",
+        "Balloon",
+        "MegaMinion",
+        "Minions",
+        "Tombstone",
+        "Arrows",
+        "Fireball",
+        "Zap"
+      ],
+      "units": [
+        {
+          "card": "Giant",
+          "team": 0,
+          "x": 3.5,
+          "y": 23,
+          "hp": 150
+        },
+        {
+          "card": "Balloon",
+          "team": 1,
+          "x": 3.5,
+          "y": 10.25
+        }
+      ],
+      "grading": "win",
+      "tower_hp": [
+        [
+          4824,
+          305,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          366
+        ]
+      ],
+      "spend_budget": 4
+    },
+    "release_gate": "Winning reference and task-specific contrast evidence are required.",
+    "control": false,
+    "calibration_source_sha256": "4b80ddf8857e52316b39dac96f235f20f5b3971f8456856fe3182bf4145aab3f",
+    "validation_requirements": {
+      "commit": 1,
+      "defend": 0
+    }
+  },
+  "rubric": "scenario-objective-v1",
+  "tiebreak_reason": "crowns",
+  "benchmark": "RoyaleBench Tactics",
+  "task_id": "03-tower-race-a",
+  "scenario": {
+    "start_tick": 5840,
+    "horizon_s": 8,
+    "elixir": 4,
+    "opponent_elixir": 0,
+    "order": [
+      "Minions",
+      "Fireball",
+      "Knight",
+      "Cannon",
+      "Giant",
+      "Musketeer",
+      "Archer",
+      "Zap"
+    ],
+    "opponent_order": [
+      "LavaHound",
+      "Balloon",
+      "MegaMinion",
+      "Minions",
+      "Tombstone",
+      "Arrows",
+      "Fireball",
+      "Zap"
+    ],
+    "units": [
+      {
+        "card": "Giant",
+        "team": 0,
+        "x": 3.5,
+        "y": 23,
+        "hp": 150
+      },
+      {
+        "card": "Balloon",
+        "team": 1,
+        "x": 3.5,
+        "y": 10.25
+      }
+    ],
+    "grading": "win",
+    "tower_hp": [
+      [
+        4824,
+        305,
+        3052
+      ],
+      [
+        4824,
+        3052,
+        366
+      ]
+    ],
+    "spend_budget": 4
+  },
+  "setup_hash": "f75af6825c1cb805911d1f83ff7a261fe921a84b3a01a3a2724b8955cf33ce16",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  }
+}

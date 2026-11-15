@@ -1,0 +1,55 @@
+schema_version = "1.4"
+artifacts = [
+    { source = "/var/lib/royale", destination = "royale" },
+]
+
+[task]
+name = "royalebench/tactics-04-tower-trade-b"
+description = "Choose a winning tower trade: position B. Win by the end of the remaining 14 seconds of regulation, spending at most 4 elixir. Entering overtime without a win does not meet the objective. You may lose a princess tower; any match win within the window succeeds. | action_mode=coordinates-v1 | version=2.0.0"
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "hard"
+opponent = "planner"
+deck = "giant-beatdown"
+seed = 109
+seat = "blue"
+decision_ticks = 40
+dataset_version = "2.0.0"
+family = 4
+opponent_deck = "lavaloon"
+control = false
+action_mode = "coordinates-v1"
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = [
+    "api.anthropic.com",
+    "api.openai.com",
+    "openrouter.ai",
+    "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct",
+    "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct",
+    "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct",
+    "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct",
+]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

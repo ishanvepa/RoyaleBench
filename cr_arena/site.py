@@ -25,6 +25,8 @@ LOGOS = {
     "gemini": ("Google", "google-color"), "grok": ("xAI", "xai"),
     "deepseek": ("DeepSeek", "deepseek-color"), "mistral": ("Mistral AI", "mistral-color"),
     "llama": ("Meta", "meta-color"), "qwen": ("Qwen", "qwen-color"),
+    "inkling": ("Thinking Machines", "thinking-machines"),
+    "kimi": ("Kimi", "kimi-color"),
 }
 
 
@@ -61,10 +63,13 @@ def _family(name: str, llm: bool) -> str:
     name = name.lower()
     aliases = {"claude": r"claude|anthropic", "gpt": r"gpt|chatgpt|openai|o[134](?:\b|[-_])",
                "gemini": r"gemini|google", "grok": r"grok|xai", "deepseek": r"deepseek",
-               "mistral": r"mistral|mixtral|codestral|magistral", "llama": r"llama|meta", "qwen": r"qwen|qwq"}
-    for family, pattern in aliases.items():
-        if re.search(r"(?:^|[/\s_-])(?:" + pattern + r")", name):
-            return family
+               "mistral": r"mistral|mixtral|codestral|magistral", "llama": r"llama|meta", "qwen": r"qwen|qwq",
+               "inkling": r"inkling|thinking[-_ ]?machines", "kimi": r"kimi|moonshot(?:ai)?"}
+    # OpenAI-compatible endpoints can serve other model families.
+    for candidate in (name.rsplit("/", 1)[-1], name):
+        for family, pattern in aliases.items():
+            if re.search(r"(?:^|[/\s_-])(?:" + pattern + r")", candidate):
+                return family
     return "other"
 
 
@@ -202,7 +207,7 @@ TEMPLATE = r"""<!doctype html>
 <style>
 :root{--text-1:#4a4d55;--text-2:#6f7279;--text-3:#8a8d93;--border:#e2e0db;--bg:#f4f3f0;--surface:#faf9f7;
 --f-claude:#b5613e;--f-gpt:#2b8a6a;--f-gemini:#3b6dc2;--f-grok:#55555e;--f-deepseek:#6b4fbf;--f-bot:#9a9ca1;--f-other:#55555e;
---f-mistral:#df7834;--f-llama:#3676b7;--f-qwen:#6151bc;
+--f-mistral:#df7834;--f-llama:#3676b7;--f-qwen:#6151bc;--f-inkling:#343a40;--f-kimi:#1783ff;
 --display:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;--body:"Geist",ui-sans-serif,system-ui,sans-serif}
 *{box-sizing:border-box}html,body{margin:0}body{background:var(--bg);color:var(--text-1);font-family:var(--body);font-size:16px}
 a{color:inherit}

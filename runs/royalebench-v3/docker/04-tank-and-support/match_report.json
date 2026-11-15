@@ -1,0 +1,250 @@
+{
+ "seed": 104,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 10,
+ "outcome": {
+  "result": "unfinished",
+  "crowns_for": 0,
+  "crowns_against": 0,
+  "enemy_tower_damage_frac": 0.0,
+  "own_tower_damage_frac": 0.3502,
+  "ticks": 2900,
+  "tower_damage": 1843,
+  "spent_elixir": 8,
+  "plays": [
+   {
+    "decision": 0,
+    "card": "InfernoTower",
+    "x": 63000,
+    "y": 189000,
+    "cost": 5
+   },
+   {
+    "decision": 2,
+    "card": "Knight",
+    "x": 63000,
+    "y": 243000,
+    "cost": 3
+   }
+  ],
+  "opponent_plays": [
+   {
+    "tick": 2620,
+    "card": "Musketeer",
+    "x": 261000,
+    "y": 315000
+   },
+   {
+    "tick": 2700,
+    "card": "Knight",
+    "x": 63000,
+    "y": 315000
+   },
+   {
+    "tick": 2780,
+    "card": "Minions",
+    "x": 261000,
+    "y": 315000
+   }
+  ],
+  "elapsed_s": 20.0,
+  "rejected_actions": 0
+ },
+ "rewards": {
+  "reward": 1.0,
+  "win": 0.0,
+  "crowns_for": 0.0,
+  "crowns_against": 0.0,
+  "enemy_tower_damage_frac": 0.0,
+  "own_tower_damage_frac": 0.3502,
+  "completed": 1.0,
+  "integrity": 1.0,
+  "decisions": 10.0,
+  "fast_decision_frac": 1.0,
+  "spent_elixir": 8.0,
+  "tower_damage": 1843.0,
+  "objective_met": 1.0,
+  "rejected_actions": 0.0
+ },
+ "decisions_applied": 10,
+ "completed": true,
+ "termination_tick": 2900,
+ "timing_known": 10,
+ "task_config": {
+  "id": "04-tank-and-support",
+  "family": 4,
+  "title": "Separate tank and support",
+  "difficulty": "medium",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 104,
+  "agent_team": 0,
+  "agent_deck": [
+   "GoblinBarrel",
+   "Princess",
+   "GoblinGang",
+   "Knight",
+   "InfernoTower",
+   "Rocket",
+   "Log",
+   "IceSpirits"
+  ],
+  "opponent_deck": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "player_deck_name": "log-bait",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": 52.8,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Preserve both princess towers for 20 seconds and spend at most 9 elixir.",
+  "scenario": {
+   "start_tick": 2500,
+   "horizon_s": 20,
+   "elixir": 6,
+   "opponent_elixir": 0,
+   "order": [
+    "InfernoTower",
+    "Knight",
+    "GoblinGang",
+    "Log",
+    "GoblinBarrel",
+    "Princess",
+    "Rocket",
+    "IceSpirits"
+   ],
+   "opponent_order": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+   ],
+   "units": [
+    {
+     "card": "Giant",
+     "team": 1,
+     "x": 3.5,
+     "y": 15.5
+    },
+    {
+     "card": "Musketeer",
+     "team": 1,
+     "x": 3.5,
+     "y": 19.5
+    }
+   ],
+   "grading": "defend",
+   "tower_hp": [
+    [
+     4824,
+     1068,
+     3052
+    ],
+    [
+     4824,
+     3052,
+     3052
+    ]
+   ],
+   "spend_budget": 9,
+   "damage_limit": 10000
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1"
+ },
+ "rubric": "scenario-objective-coordinates-v1",
+ "tiebreak_reason": "tower_hp",
+ "benchmark": "RoyaleBench v3",
+ "task_id": "04-tank-and-support",
+ "scenario": {
+  "start_tick": 2500,
+  "horizon_s": 20,
+  "elixir": 6,
+  "opponent_elixir": 0,
+  "order": [
+   "InfernoTower",
+   "Knight",
+   "GoblinGang",
+   "Log",
+   "GoblinBarrel",
+   "Princess",
+   "Rocket",
+   "IceSpirits"
+  ],
+  "opponent_order": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "units": [
+   {
+    "card": "Giant",
+    "team": 1,
+    "x": 3.5,
+    "y": 15.5
+   },
+   {
+    "card": "Musketeer",
+    "team": 1,
+    "x": 3.5,
+    "y": 19.5
+   }
+  ],
+  "grading": "defend",
+  "tower_hp": [
+   [
+    4824,
+    1068,
+    3052
+   ],
+   [
+    4824,
+    3052,
+    3052
+   ]
+  ],
+  "spend_budget": 9,
+  "damage_limit": 10000
+ },
+ "setup_hash": "4fd37b46de20f1e15f5cc7175e2699646604b391f7cc53603cb8657b033bbb3f",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ },
+ "action_mode": "coordinates-v1"
+}

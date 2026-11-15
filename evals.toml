@@ -5,13 +5,15 @@
 benchmark = "royalebench"        # Valkyrie benchmark namespace: a folder benchmarks/<name> is the dataset royalebench/<name>
 provider = "modal"               # every job runs its sandboxes on Modal
 default_agent = "claude_code-v1.0.0"
+default_dataset = "royalebench-v6"
 default_concurrency = 1
-max_concurrency = 10             # upper bound offered in the New job form
+max_concurrency = 50             # upper bound for starting jobs and changing a run's concurrency
 confirm_over_tasks = 5           # jobs with more tasks than this need an explicit confirmation checkbox
 
 # Model keys exactly as Valkyrie expects them. Any other key can be typed into the New job form.
-# Only anthropic/claude-sonnet-4-6 has been verified end to end (docs/valkyrie_smoke.md); the rest were
-# added from the model names in config.toml / configs/*.toml, so start any of them with a one-task job. secret_env is the variable the harness reads the API key from.
+# Verified pilots are documented in docs/valkyrie_smoke.md and docs/*_modal.md.
+# Other names came from config.toml / configs/*.toml; start with a one-task job.
+# secret_env is the variable the harness reads the API key from.
 [[models]]
 id = "anthropic/claude-sonnet-4-6"
 secret_env = "ANTHROPIC_API_KEY"
@@ -75,3 +77,40 @@ secret_env = "OPENAI_API_KEY"
 [[models]]
 id = "openai/gpt-6.1-terra"
 secret_env = "OPENAI_API_KEY"
+
+# Modal Qwen: use the existing mini_swe_agent and secret modal-qwen-api-key.
+# The openai/ prefix selects the harness's compatible API transport.
+[[models]]
+id = "openai/Qwen/Qwen3.8-2.4T-A95B"
+modal_app = "ep-qwen3-8-2-4t-a95b"
+secret_env = "OPENAI_API_KEY"
+agent = "mini_swe_agent"
+secrets = { OPENAI_API_BASE = "modal-qwen-base-url" }
+agent_kwargs = { cost_tracking = "ignore_errors", step_limit = "12" }
+
+# Modal Inkling: shares the existing workspace proxy credential modal-qwen-api-key.
+[[models]]
+id = "openai/inkling-2-small"
+modal_app = "ep-inkling-2-small"
+secret_env = "OPENAI_API_KEY"
+agent = "mini_swe_agent"
+secrets = { OPENAI_API_BASE = "modal-inkling-base-url" }
+agent_kwargs = { cost_tracking = "ignore_errors", step_limit = "12" }
+
+# Modal DeepSeek: shares the existing workspace proxy credential modal-qwen-api-key.
+[[models]]
+id = "openai/deepseek-v4.1-flash-1017"
+modal_app = "ep-deepseek-v4-1-flash-1017"
+secret_env = "OPENAI_API_KEY"
+agent = "mini_swe_agent"
+secrets = { OPENAI_API_BASE = "modal-deepseek-base-url" }
+agent_kwargs = { cost_tracking = "ignore_errors", step_limit = "12" }
+
+# Modal Kimi: shares the existing workspace proxy credential modal-qwen-api-key.
+[[models]]
+id = "openai/kimi-k3.1-pro"
+modal_app = "ep-kimi-k3-1-pro"
+secret_env = "OPENAI_API_KEY"
+agent = "mini_swe_agent"
+secrets = { OPENAI_API_BASE = "modal-kimi-base-url" }
+agent_kwargs = { cost_tracking = "ignore_errors", step_limit = "12" }

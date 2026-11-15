@@ -1,0 +1,11 @@
+I kept the 1–0 crown lead to the end of regulation, and the game reported **scenario SUCCESS**. It was very close: my left princess tower finished with only 43 of its 549 HP.
+
+The Giant broke the Tesla early, so I spent the rest of the time slowing and damaging it:
+
+1. **Tesla at (5.5, 10):** pulled the Giant away from the tower and was destroyed within about 4 seconds.
+2. **Knight:** tanked the Giant and soaked damage.
+3. **Ice Spirits:** froze the Giant just before it reached the tower.
+4. **Archers, then Skeletons:** added damage. By then the Giant was down to 64 HP.
+5. **Log:** made sure the Giant died before it could land the final hit.
+
+I spent 14 elixir in total, and the towers took 506 damage after the starting state.

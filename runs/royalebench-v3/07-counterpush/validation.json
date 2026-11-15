@@ -1,0 +1,105 @@
+{
+  "task": "07-counterpush",
+  "reward": 1,
+  "integrity": 1.0,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0
+  },
+  "config_sha256": "ef4fbb02abb286302040c9b5531ab267576a4793fc179cb3755e6fc3de8470ba",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "reference_log_sha256": "7a5e4901af0ba26cb41f03158ebbc1ae467aaae1c9bf865c28556d32e2f1166b",
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.4427,
+    "own_tower_damage_frac": 0.4381,
+    "ticks": 3600,
+    "tower_damage": 2499,
+    "spent_elixir": 21,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Giant",
+        "x": 63000,
+        "y": 243000,
+        "cost": 5
+      },
+      {
+        "decision": 2,
+        "card": "Musketeer",
+        "x": 261000,
+        "y": 243000,
+        "cost": 4
+      },
+      {
+        "decision": 4,
+        "card": "Knight",
+        "x": 261000,
+        "y": 243000,
+        "cost": 3
+      },
+      {
+        "decision": 6,
+        "card": "Archer",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      },
+      {
+        "decision": 8,
+        "card": "Minions",
+        "x": 261000,
+        "y": 243000,
+        "cost": 3
+      },
+      {
+        "decision": 10,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 3020,
+        "card": "ElectroWizard",
+        "x": 63000,
+        "y": 369000
+      },
+      {
+        "tick": 3140,
+        "card": "BattleRam",
+        "x": 63000,
+        "y": 387000
+      },
+      {
+        "tick": 3220,
+        "card": "Bats",
+        "x": 279000,
+        "y": 387000
+      },
+      {
+        "tick": 3260,
+        "card": "Zap",
+        "x": 261000,
+        "y": 279000
+      },
+      {
+        "tick": 3380,
+        "card": "MiniPekka",
+        "x": 261000,
+        "y": 315000
+      }
+    ],
+    "elapsed_s": 35.0,
+    "rejected_actions": 0
+  },
+  "decisions": 18,
+  "menu_baseline_reward": 1,
+  "frontier_model_runs": []
+}

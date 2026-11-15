@@ -17,12 +17,22 @@ from importlib.metadata import version
 from pathlib import Path
 
 from .build_tasks import DOCKERFILE, REFEREE_FILES, ROOT, START_SERVER, SUDOERS, TEST_SH, ROYALEGYM, ROYALESIM, task_toml
-from .royalebench_v1 import TITLE, VERSION, catalog, protocol_digest
+from .royalebench_v1 import catalog, protocol_digest
 from .scenario_task import ScenarioReferee
 from .royale_task import verify
+from .telemetry import VERSION as CAPTURE_VERSION, digest
 
 OUT = Path("benchmarks/royalebench-v1")
 EVIDENCE = Path("runs/royalebench-v1")
+
+# Keep model endpoint policy identical across the menu and coordinate builders.
+MODEL_API_HOSTS = (
+    "api.anthropic.com", "api.openai.com", "openrouter.ai",
+    "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct",
+    "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct",
+    "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct",
+    "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct",
+)
 
 SOLUTION_DRIVER = '''"""Replay a protected reference through exactly the agent's cr socket interface."""
 import json
@@ -65,11 +75,16 @@ def instruction(cfg):
     if "verified_fireball_crown_damage" in s:
         extra += f"\nA Fireball deals {s['verified_fireball_crown_damage']} crown-tower damage in this simulator (verified at build time).\n"
     if s.get("scheduled_attack"):
-        extra += ("\nThe scheduled GoblinBarrel is guaranteed, costs the opponent 3 elixir, and is reserved in its hand "
-                  "until elapsed 6.0 seconds. Planner chooses every other opponent play.\n")
+        attack = s["scheduled_attack"]
+        cost = next(c.elixir for c in g.cards if c.name == attack["card"])
+        extra += (f"\nThe scheduled {attack['card']} is guaranteed, costs the opponent {cost} elixir, and is reserved in its hand "
+                  f"until elapsed {attack['after_s']:.1f} seconds, when it targets ({attack['x']}, {attack['y']}) "
+                  "in your coordinates. Planner chooses every other opponent play.\n")
+    if cfg.get("agent_notes"):
+        extra += "\n" + cfg["agent_notes"] + "\n"
     if s.get("visible_history"):
         extra += "\nVisible enemy deployment history (times relative to this start):\n" + "\n".join(s["visible_history"]) + "\n"
-    return f'''# {TITLE}: {cfg['title']}
+    return f'''# {cfg['benchmark']}: {cfg['title']}
 
 ## Objective and score
 
@@ -141,13 +156,41 @@ def release_problem(cfg, evidence):
         return "Negative control failed."
     if cfg["release_gate"] and not evidence.get("release_gate_passed"):
         return cfg["release_gate"]
+    for name, expected in cfg.get("validation_requirements", {}).items():
+        if evidence.get("contrast_rewards", {}).get(name) != expected:
+            return f"Required contrast {name!r} is missing or does not match {expected}."
+    if requirements := cfg.get("opening_audit_requirements"):
+        audit = evidence.get("opening_audit", {})
+        if (audit.get("config_sha256") != digest or audit.get("protocol_sha256") != protocol_digest()
+                or audit.get("source_sha256") != cfg.get("opening_audit_source_sha256")):
+            return "A current exhaustive opening audit is required."
+        trials = audit.get("trials", [])
+        menu_size = len(ScenarioReferee(cfg).moves)
+        if (len(trials) != menu_size or {t.get("move_index") for t in trials} != set(range(menu_size))
+                or any(t.get("integrity") != 1 for t in trials)):
+            return "Opening audit is incomplete or contains an integrity failure."
+        winners = [t for t in trials if t.get("reward") == 1]
+        if not winners:
+            return "Opening audit contains no winning immediate opening."
+        if allowed := requirements.get("winning_cards"):
+            if any(t["card"] not in allowed for t in winners):
+                return "Opening audit found a winning shortcut outside the intended strategy."
     return None
 
 
-def build(out=OUT, evidence_dir=EVIDENCE):
+def build(out=OUT, evidence_dir=EVIDENCE, *, configs=None, guide="royalebench_v1.md",
+          generator="cr_arena.build_v1", description=None, aggregation=None):
     for package, expected in [("royalegym", ROYALEGYM), ("royalesim", ROYALESIM)]:
         if version(package) != expected:
             raise RuntimeError(f"{package} must be {expected} to match the pinned task image")
+    configs = catalog() if configs is None else configs
+    if not configs:
+        raise ValueError("a scenario dataset must contain at least one configuration")
+    title, dataset_version = configs[0]["benchmark"], configs[0]["version"]
+    if any(c["benchmark"] != title or c["version"] != dataset_version for c in configs):
+        raise ValueError("all scenarios must share a benchmark title and version")
+    description = description or ("Mid-match strategic continuations against Planner. Binary scenario objectives, fixed engine state, "
+                                  "isolated referee, replay grading. Locally calibrated; frontier-model calibration pending.")
     out = Path(out).resolve()
     out.mkdir(parents=True, exist_ok=True)
     # Delete only known generated task folders, after checking their absolute parent.
@@ -156,14 +199,13 @@ def build(out=OUT, evidence_dir=EVIDENCE):
             if old.resolve().parent != out or old.is_symlink():
                 raise ValueError(f"refusing to replace unexpected path {old}")
             shutil.rmtree(old)
-    write(out / "benchmark.toml", f'''# Generated by python -m cr_arena.build_v1
+    write(out / "benchmark.toml", f'''# Generated by python -m {generator}
 [benchmark]
-title = "{TITLE}"
-description = "Mid-match strategic continuations against Planner. Binary scenario objectives, fixed engine state, isolated referee, replay grading. Locally calibrated; frontier-model calibration pending."
+title = {json.dumps(title)}
+description = {json.dumps(description)}
 kind = "eval"
 ''')
     entries, names = [], []
-    configs = catalog()
     for cfg in configs:
         evidence_path = evidence_dir / cfg["id"] / "validation.json"
         evidence = json.loads(evidence_path.read_text()) if evidence_path.exists() else None
@@ -198,8 +240,13 @@ kind = "eval"
         for name in REFEREE_FILES + ["scenario_task.py", "bots/planner.py"]:
             # Explicit files only: no tests, solutions, credentials, or calibration results.
             write(env / "referee" / name, (ROOT / name).read_text(encoding="utf-8"))
-        write(env / "task.json", json_text(cfg))
-        write(d / "tests/task.json", json_text(cfg))
+        task_instruction = instruction(cfg)
+        packaged_config = dict(cfg, task_id=cfg["id"], instruction_sha256=digest(task_instruction),
+                               rubric="scenario-objective-v1", capture_schema_version=CAPTURE_VERSION,
+                               resources={"agent_timeout_s": 3600, "verifier_timeout_s": 600,
+                                          "cpus": 1, "memory_mb": 2048, "storage_mb": 4096})
+        write(env / "task.json", json_text(packaged_config))
+        write(d / "tests/task.json", json_text(packaged_config))
         dockerfile = DOCKERFILE.replace("FROM python:3.12-slim-bookworm", "FROM python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df")
         pins = " ".join(f"{p}=={version(p)}" for p in ["numpy", "gymnasium", "pettingzoo", "msgspec", "cloudpickle", "typing-extensions", "farama-notifications"])
         dockerfile = dockerfile.replace("royalesim==0.1.48", "royalesim==0.1.48 " + pins)
@@ -209,11 +256,11 @@ kind = "eval"
         write(env / "royale-start-server", START_SERVER)
         write(env / "sudoers", SUDOERS)
         write(d / "tests/test.sh", TEST_SH)
-        write(d / "instruction.md", instruction(cfg))
+        write(d / "instruction.md", task_instruction)
         toml = task_toml(cfg["id"], cfg["seed"], 0, 0)
         # Reuse the isolation/resource protocol, replacing match-specific metadata.
         lines = toml.splitlines()
-        replacements = {"description =": "description = " + json.dumps(f"{cfg['title']}. {cfg['objective']} | opponent=planner-bot | seed={cfg['seed']} | version={VERSION}"),
+        replacements = {"description =": "description = " + json.dumps(f"{cfg['title']}. {cfg['objective']} | opponent=planner-bot | seed={cfg['seed']} | version={dataset_version}"),
                         "category =": 'category = "clash-royale-continuation"',
                         "difficulty =": f'difficulty = "{cfg["difficulty"]}"',
                         "opponent =": 'opponent = "planner"',
@@ -223,14 +270,14 @@ kind = "eval"
                 if line.startswith(key):
                     lines[i] = value
         toml = "\n".join(lines) + "\n"
-        metadata = (f'dataset_version = "{VERSION}"\nfamily = {cfg["family"]}\n'
+        metadata = (f'dataset_version = "{dataset_version}"\nfamily = {cfg["family"]}\n'
                     f'opponent_deck = "{cfg["opponent_deck_name"]}"\n'
-                    f'control = {str(cfg["family"] == 1).lower()}\n')
+                    f'control = {str(cfg.get("control", cfg["family"] == 1)).lower()}\n')
         toml = toml.replace('[agent]\n', metadata + '\n[agent]\n')
         # Harness installation needs public access during setup; constrain actual play.
         # Harbor's agent policy applies to agent.run(), not agent.setup().
         toml = toml.replace('[environment]\n', '[environment]\nnetwork_mode = "public"\n')
-        toml = toml.replace('[agent]\n', '[agent]\nnetwork_mode = "allowlist"\nallowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai"]\n')
+        toml = toml.replace('[agent]\n', '[agent]\nnetwork_mode = "allowlist"\nallowed_hosts = ' + json.dumps(list(MODEL_API_HOSTS)) + '\n')
         toml = toml.replace('[verifier]\n', '[verifier]\nnetwork_mode = "no-network"\n')
         # A busy Planner continuation is replayed in the verifier; give it measured headroom.
         toml = toml.replace("timeout_sec = 300.0", "timeout_sec = 600.0")
@@ -238,23 +285,24 @@ kind = "eval"
         write(d / "solution/solve.sh", "#!/bin/bash\nset -euo pipefail\npython3 /solution/replay_reference.py\n")
         write(d / "solution/replay_reference.py", SOLUTION_DRIVER)
         write(d / "solution/reference.jsonl", reference_text)
-    manifest = dict(benchmark=TITLE, version=VERSION, opponent="planner", planner=configs[0]["planner"],
+    manifest = dict(benchmark=title, version=dataset_version, capture_schema_version=CAPTURE_VERSION,
+                    opponent="planner", planner=configs[0]["planner"],
                     protocol_sha256=protocol_digest(),
                     dependencies={p: version(p) for p in ["royalegym", "royalesim", "msgspec"]},
                     runnable_tasks=names, tasks=entries,
-                    aggregation="Mean binary reward across runnable tasks. Also report per-family means; paired variants share a family.",
+                    aggregation=aggregation or "Mean binary reward across runnable tasks. Also report per-family means; paired variants share a family.",
                     status="Local validation only; Docker/Modal and frontier-model validation tracked separately.")
     write(out / "manifest.json", json_text(manifest))
-    write(out / "README.md", f'''# {TITLE}
+    write(out / "README.md", f'''# {title}
 
 Generated Harbor dataset: **{len(names)} runnable variants**, all against **planner-bot**.
-Read [the benchmark guide](../../docs/royalebench_v1.md) for scenarios, scores, validation and launch commands.
+Read [the benchmark guide](../../docs/{guide}) for scenarios, scores, validation and launch commands.
 
 The [manifest](manifest.json) records every proposed variant, its validation evidence and release status.
 Candidates without a passing reference and release gate remain in `candidates/`, outside the runnable task list.
-Regenerate with `python -m cr_arena.build_v1`; edit the source specifications, not these task folders.
+Regenerate with `python -m {generator}`; edit the source specifications, not these task folders.
 ''')
-    print(f"Built {TITLE}: {len(names)} runnable tasks, {len(entries)-len(names)} gated variants at {out}")
+    print(f"Built {title}: {len(names)} runnable tasks, {len(entries)-len(names)} gated variants at {out}")
     return manifest
 
 

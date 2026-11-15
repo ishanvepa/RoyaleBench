@@ -1,0 +1,19 @@
+#!/bin/bash
+# Start the game server as the referee user (idempotent: a running server keeps the match;
+# a restarted one resumes it from the action log). Called by the healthcheck and by `cr`.
+set -u
+SOCK=/var/lib/royale-run/cr.sock
+if [ "$(id -un)" != "referee" ]; then
+    echo "royale-start-server must run as referee" >&2
+    exit 1
+fi
+cd /opt/referee/app
+PYTHONPATH=/opt/referee/app setsid nohup /opt/referee/venv/bin/python -m cr_arena.royale_task serve \
+    --config /opt/referee/task.json --state-dir /var/lib/royale --socket "$SOCK" \
+    >>/var/lib/royale/server.log 2>&1 </dev/null &
+for _ in $(seq 1 240); do
+    [ -S "$SOCK" ] && exit 0
+    sleep 0.25
+done
+echo "game server did not start" >&2
+exit 1

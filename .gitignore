@@ -18,6 +18,9 @@ runs/evals/
 runs/evals-fake/
 runs/evals-e2e/
 runs/analysis/
+runs/recent/
+runs/latest-*.json
+runs/royalebench-win/exploration/
 runs/**/analysis/
 runs/e2e-arena/
 

@@ -1,0 +1,64 @@
+{
+  "runs": [
+    {
+      "run_id": "51b52560-b9f5-4bb5-9e21-be52d4336458",
+      "model": "openai/gpt-6.1-sol",
+      "harness": "codex-v1.0.0",
+      "dataset": "royalebench/royalebench-v3@2",
+      "started_at_utc": "2026-11-15T08:46:08.876754",
+      "score": 100.0,
+      "tasks": 11,
+      "wins": 6.0,
+      "mean_decisions": 6.2727272727272725,
+      "evidence": "runs/royalebench-win/saturation/latest-sol-results.json"
+    },
+    {
+      "run_id": "42439ed0-ff88-4ef9-b19d-052f9866e651",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "dataset": "royalebench/royalebench-v3@2",
+      "started_at_utc": "2026-11-15T08:38:24.998731",
+      "score": 100.0,
+      "tasks": 11,
+      "wins": 6.0,
+      "mean_decisions": 6.2727272727272725,
+      "evidence": "runs/royalebench-win/saturation/latest-opus-results.json"
+    },
+    {
+      "run_id": "941173e3-ba01-4cb9-8374-a5dfd8e7ae88",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "dataset": "royalebench/royalebench-v4@2",
+      "started_at_utc": "2026-11-15T09:12:14.981082",
+      "score": 60.0,
+      "tasks": 5,
+      "wins": 1.0,
+      "mean_decisions": 7.0,
+      "evidence": "runs/royalebench-win/saturation/latest-v4-opus-results.json"
+    },
+    {
+      "run_id": "538d268f-17dd-411a-a779-d995ff2951f0",
+      "model": "anthropic/claude-sonnet-5-5",
+      "harness": "claude_code-v1.0.0",
+      "dataset": "royalebench/royalebench-v4@2",
+      "started_at_utc": "2026-11-15T09:12:14.953944",
+      "score": 20.0,
+      "tasks": 5,
+      "wins": 0.0,
+      "mean_decisions": 6.2,
+      "evidence": "runs/royalebench-win/saturation/latest-v4-sonnet-results.json"
+    },
+    {
+      "run_id": "72a98358-fdd7-41d4-9b24-9eb7f7917237",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "dataset": "royalebench/royalebench-tactics@3",
+      "started_at_utc": "2026-11-15T09:11:18.542452",
+      "score": 71.42857142857143,
+      "tasks": 7,
+      "wins": 3.0,
+      "mean_decisions": 4.285714285714286,
+      "evidence": "runs/royalebench-win/saturation/latest-tactics-opus-results.json"
+    }
+  ]
+}

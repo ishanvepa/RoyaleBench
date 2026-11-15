@@ -1,0 +1,45 @@
+schema_version = "1.4"
+artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
+
+[task]
+name = "royalebench/02-reserve-counter-a"
+description = "Allocate a counter across two attacks: position A. Keep both princess towers alive for 20 seconds, take at most 450 additional total crown-tower damage, and spend at most 6 elixir. At elapsed 6.0 seconds the opponent casts its reserved GoblinBarrel on your left princess tower (3.5, 6.5). | opponent=planner-bot | seed=105 | version=1.0.0"
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "hard"
+opponent = "planner"
+deck = "hog-2.6-cycle"
+seed = 105
+seat = "blue"
+decision_ticks = 40
+
+dataset_version = "1.0.0"
+family = 2
+opponent_deck = "log-bait"
+control = false
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai"]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

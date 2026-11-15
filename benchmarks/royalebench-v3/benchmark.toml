@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench v3"
+kind = "eval"
+description = "11 continuation scenarios against Planner with direct coordinate actions and paused text observations. Model calibration tracked separately."

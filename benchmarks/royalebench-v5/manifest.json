@@ -1,0 +1,89 @@
+{
+  "benchmark": "RoyaleBench v5",
+  "version": "5.0.0",
+  "action_mode": "coordinates-v1",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "runnable_tasks": [
+    "01-timed-spell-a",
+    "02-reserve-counter-a",
+    "03-spell-placement",
+    "03-tower-race-b",
+    "05-successive-threats-mirror",
+    "06-unequal-threats",
+    "07-counterpush",
+    "08-cycle-to-lethal-plus",
+    "09-tower-race-defend",
+    "10-protect-the-lead"
+  ],
+  "selection_groups": {
+    "opus_failed": [
+      "02-reserve-counter-a",
+      "03-tower-race-b",
+      "05-successive-threats-mirror",
+      "08-cycle-to-lethal-plus"
+    ],
+    "sonnet_pass_haiku_fail": [
+      "01-timed-spell-a",
+      "03-spell-placement",
+      "06-unequal-threats",
+      "09-tower-race-defend"
+    ],
+    "haiku_passed": [
+      "07-counterpush",
+      "10-protect-the-lead"
+    ]
+  },
+  "source_tasks": [
+    {
+      "task_id": "01-timed-spell-a",
+      "source_dataset": "royalebench/royalebench-tactics@3",
+      "package_sha256": "8ae631aa9caea8f1f5e8681075faf867882939470cb6c32c2e09a6f40179cfc1"
+    },
+    {
+      "task_id": "02-reserve-counter-a",
+      "source_dataset": "royalebench/royalebench-tactics@3",
+      "package_sha256": "18133c507ac3e2a65d20ec63c795bff24cbc399e66e8c3db7d2c7ecc8792e20a"
+    },
+    {
+      "task_id": "03-spell-placement",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "b8a090b765bf96029032cbd5545a86d06e0781fd2d61e9a3bb86aeaf982cdcc0"
+    },
+    {
+      "task_id": "03-tower-race-b",
+      "source_dataset": "royalebench/royalebench-tactics@3",
+      "package_sha256": "732f3fc60b2f905ea382355e3046249f4af014e000335ab122cbdd5138a03d12"
+    },
+    {
+      "task_id": "05-successive-threats-mirror",
+      "source_dataset": "royalebench/royalebench-v4@2",
+      "package_sha256": "cffeba40bd3d2610beec0c340565632f95dc14baf493bb3503a58303eeed5113"
+    },
+    {
+      "task_id": "06-unequal-threats",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "8240bf470e1362cc6ea10125ab786f3878ff7da5674782cf804b700a2caf4276"
+    },
+    {
+      "task_id": "07-counterpush",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "1009826bad0236f56bdce6d87faa82b97cc4549ce41c06ac988c12523121ba65"
+    },
+    {
+      "task_id": "08-cycle-to-lethal-plus",
+      "source_dataset": "royalebench/royalebench-v4@2",
+      "package_sha256": "f421dcc57fd7f1515f19820f1ad732b1ac8ac6c4cc29bdec7addee9c57fdfd9c"
+    },
+    {
+      "task_id": "09-tower-race-defend",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "ef0b24c3ac694745c829932c498a0a8c43e54ae8aaf67355fa72a67dd0e060c2"
+    },
+    {
+      "task_id": "10-protect-the-lead",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "c4bb48e87a95c01a07300dac8dc26056be38a71657cae9f3e377e7498406cc1b"
+    }
+  ],
+  "selection_evidence": "runs/royalebench-v5/selection.json"
+}

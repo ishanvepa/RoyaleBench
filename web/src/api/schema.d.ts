@@ -72,6 +72,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/evals/benchmarks/{name}/ranking": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Rank current tasks by pass rate and average known API cost across finished runs */
+        get: operations["get_task_ranking_api_evals_benchmarks__name__ranking_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/evals/benchmarks/{name}/tasks/{task_id}": {
         parameters: {
             query?: never;
@@ -81,6 +98,23 @@ export interface paths {
         };
         /** Get Task */
         get: operations["get_task_api_evals_benchmarks__name__tasks__task_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/evals/benchmarks/{name}/tasks/{task_id}/resolution": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Watch the locally validated reference solution for this task version */
+        get: operations["get_task_resolution_api_evals_benchmarks__name__tasks__task_id__resolution_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -135,6 +169,23 @@ export interface paths {
         put?: never;
         /** Start a job (a Valkyrie run on Modal) */
         post: operations["start_job_api_evals_jobs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/evals/jobs/costs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Download task costs for selected finished runs */
+        post: operations["start_job_costs_api_evals_jobs_costs_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -295,6 +346,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/evals/jobs/{run_id}/tasks/{task_id}/replay": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Recorded task gameplay, rendered on demand for a sandboxed iframe */
+        get: operations["get_replay_api_evals_jobs__run_id__tasks__task_id__replay_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/evals/jobs/{run_id}/tasks/{task_id}/trace": {
         parameters: {
             query?: never;
@@ -341,6 +409,40 @@ export interface paths {
         put?: never;
         /** Start downloading agent-reported cost for the runs on screen (idempotent) */
         post: operations["start_costs_api_evals_leaderboard_costs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/evals/modal-billing": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Persisted Modal endpoint billing */
+        get: operations["modal_billing_api_evals_modal_billing_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/evals/modal-billing/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Refresh actual Modal endpoint billing */
+        post: operations["sync_modal_billing_api_evals_modal_billing_sync_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1230,6 +1332,8 @@ export interface components {
             default_agent: string;
             /** Default Concurrency */
             default_concurrency: number;
+            /** Default Dataset */
+            default_dataset: string;
             /** Max Concurrency */
             max_concurrency: number;
             /** Models */
@@ -1296,6 +1400,21 @@ export interface components {
             name?: string | null;
             /** Organization */
             organization: string;
+        };
+        /** InferencePricing */
+        InferencePricing: {
+            /** Cost By Resource Usd */
+            cost_by_resource_usd: {
+                [key: string]: string;
+            };
+            /** Rate Source */
+            rate_source: string;
+            /** Rate Version */
+            rate_version: string;
+            /** Rates Usd Per Million */
+            rates_usd_per_million: {
+                [key: string]: string;
+            };
         };
         /** JobDetail */
         JobDetail: {
@@ -1425,6 +1544,20 @@ export interface components {
         JobRow: {
             /** Benchmark */
             benchmark: string;
+            /**
+             * Cost Known
+             * @default 0
+             */
+            cost_known: number;
+            /** Cost Per Task */
+            cost_per_task?: number | null;
+            /** Cost Usd */
+            cost_usd?: number | null;
+            /**
+             * Costs Pending
+             * @default 0
+             */
+            costs_pending: number;
             /** Dataset */
             dataset: string;
             /** Done */
@@ -1684,6 +1817,47 @@ export interface components {
             wall_s?: number | null;
             /** Winner */
             winner?: string | null;
+        };
+        /** ModalBillingOut */
+        ModalBillingOut: {
+            /** Cost Usd */
+            cost_usd?: number | null;
+            /** End */
+            end?: string | null;
+            /** Error */
+            error?: string | null;
+            /** Models */
+            models: components["schemas"]["ModalModelCost"][];
+            /** Start */
+            start?: string | null;
+            /** Syncing */
+            syncing: boolean;
+            /** Updated At */
+            updated_at?: string | null;
+            /** Workspace */
+            workspace?: string | null;
+        };
+        /** ModalModelCost */
+        ModalModelCost: {
+            /** App */
+            app: string;
+            /**
+             * Cost By Resource
+             * @default {}
+             */
+            cost_by_resource: {
+                [key: string]: number;
+            };
+            /** Cost Usd */
+            cost_usd?: number | null;
+            /** Error */
+            error?: string | null;
+            /** Intervals */
+            intervals: number;
+            /** Model */
+            model: string;
+            /** Object Id */
+            object_id?: string | null;
         };
         /** ModelPresetOut */
         ModelPresetOut: {
@@ -2044,6 +2218,26 @@ export interface components {
              */
             waiting: number;
         };
+        /** ReplayOut */
+        ReplayOut: {
+            /** Available */
+            available: boolean;
+            /**
+             * Html
+             * @default
+             */
+            html: string;
+            /**
+             * Message
+             * @default
+             */
+            message: string;
+            /**
+             * Partial
+             * @default false
+             */
+            partial: boolean;
+        };
         /** ResumeIn */
         ResumeIn: {
             /** Concurrency */
@@ -2209,6 +2403,34 @@ export interface components {
             /** Solved */
             solved: number;
         };
+        /** TaskRankingOut */
+        TaskRankingOut: {
+            /** Costs Pending */
+            costs_pending: number;
+            /** Rows */
+            rows: components["schemas"]["TaskRankingRow"][];
+            /** Runs Considered */
+            runs_considered: number;
+        };
+        /** TaskRankingRow */
+        TaskRankingRow: {
+            /** Attempts */
+            attempts: number;
+            /** Cost Known */
+            cost_known: number;
+            /** Cost Per Task */
+            cost_per_task?: number | null;
+            /** Infra Errors */
+            infra_errors: number;
+            /** Pass Rate */
+            pass_rate?: number | null;
+            /** Rank */
+            rank?: number | null;
+            /** Solved */
+            solved: number;
+            /** Task */
+            task: string;
+        };
         /** TaskResultRow */
         TaskResultRow: {
             /** Agent S */
@@ -2260,6 +2482,8 @@ export interface components {
              * @default
              */
             category: string;
+            /** Cost Usd */
+            cost_usd?: number | null;
             /** Duration S */
             duration_s?: number | null;
             /**
@@ -2285,10 +2509,16 @@ export interface components {
         };
         /** TraceOut */
         TraceOut: {
+            /** Api Calls */
+            api_calls?: number | null;
             /** Available */
             available: boolean;
             /** Cache Read Tokens */
             cache_read_tokens?: number | null;
+            /** Cost Note */
+            cost_note?: string | null;
+            /** Cost Source */
+            cost_source?: string | null;
             /** Cost Usd */
             cost_usd?: number | null;
             /**
@@ -2296,10 +2526,15 @@ export interface components {
              * @default
              */
             final_message: string;
+            /** Inference Cost Usd Exact */
+            inference_cost_usd_exact?: string | null;
+            inference_pricing?: components["schemas"]["InferencePricing"] | null;
             /** Input Tokens */
             input_tokens?: number | null;
             /** Output Tokens */
             output_tokens?: number | null;
+            /** Reasoning Tokens */
+            reasoning_tokens?: number | null;
             /**
              * Steps
              * @default []
@@ -2713,6 +2948,101 @@ export interface operations {
             };
         };
     };
+    get_task_ranking_api_evals_benchmarks__name__ranking_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Benchmark folder name */
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TaskRankingOut"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
     get_task_api_evals_benchmarks__name__tasks__task_id__get: {
         parameters: {
             query?: never;
@@ -2734,6 +3064,103 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TaskDetailOut"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    get_task_resolution_api_evals_benchmarks__name__tasks__task_id__resolution_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Benchmark folder name */
+                name: string;
+                /** @description Task id (the task folder name) */
+                task_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReplayOut"];
                 };
             };
             /** @description Rejected */
@@ -3116,6 +3543,102 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["JobStartOut"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    start_job_costs_api_evals_jobs_costs_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": string[];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CostsStatus"];
                 };
             };
             /** @description Rejected */
@@ -4163,6 +4686,103 @@ export interface operations {
             };
         };
     };
+    get_replay_api_evals_jobs__run_id__tasks__task_id__replay_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Valkyrie run id */
+                run_id: string;
+                /** @description Task id (the task folder name) */
+                task_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReplayOut"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
     get_trace_api_evals_jobs__run_id__tasks__task_id__trace_get: {
         parameters: {
             query?: never;
@@ -4270,6 +4890,8 @@ export interface operations {
                 /** @description Only this agent harness */
                 harness?: string | null;
                 include_smoke?: boolean;
+                /** @description Only runs covering every task in their published dataset revision */
+                full_only?: boolean;
             };
             header?: never;
             path?: never;
@@ -4462,6 +5084,8 @@ export interface operations {
                 /** @description Only this agent harness */
                 harness?: string | null;
                 include_smoke?: boolean;
+                /** @description Only runs covering every task in their published dataset revision */
+                full_only?: boolean;
             };
             header?: never;
             path?: never;
@@ -4476,6 +5100,190 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["CostsStatus"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    modal_billing_api_evals_modal_billing_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModalBillingOut"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    sync_modal_billing_api_evals_modal_billing_sync_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ModalBillingOut"];
                 };
             };
             /** @description Rejected */

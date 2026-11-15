@@ -1,0 +1,109 @@
+{
+  "id": "08-cycle-to-lethal",
+  "family": 8,
+  "title": "Cycle while defending",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "seed": 108,
+  "agent_team": 0,
+  "agent_deck": [
+    "HogRider",
+    "Musketeer",
+    "Cannon",
+    "IceGolemite",
+    "IceSpirits",
+    "Skeletons",
+    "Fireball",
+    "Log"
+  ],
+  "opponent_deck": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+  ],
+  "player_deck_name": "hog-2.6-cycle",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": 44.0,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win before your tower falls and before overtime ends in 18 seconds. The full draw order is disclosed below; Fireball enters your hand after two card plays.",
+  "scenario": {
+    "start_tick": 5640,
+    "horizon_s": 18,
+    "elixir": 6,
+    "opponent_elixir": 0,
+    "order": [
+      "IceSpirits",
+      "Skeletons",
+      "IceGolemite",
+      "Log",
+      "Cannon",
+      "Fireball",
+      "HogRider",
+      "Musketeer"
+    ],
+    "opponent_order": [
+      "Giant",
+      "Musketeer",
+      "Knight",
+      "Archer",
+      "Minions",
+      "Cannon",
+      "Fireball",
+      "Zap"
+    ],
+    "units": [
+      {
+        "card": "Giant",
+        "team": 1,
+        "x": 3.5,
+        "y": 12
+      }
+    ],
+    "grading": "win",
+    "tower_hp": [
+      [
+        4824,
+        458,
+        3052
+      ],
+      [
+        4824,
+        3052,
+        158
+      ]
+    ],
+    "verified_fireball_crown_damage": 159,
+    "disclose_queue": true
+  },
+  "release_gate": null,
+  "action_mode": "coordinates-v1",
+  "task_id": "08-cycle-to-lethal",
+  "instruction_sha256": "e214d97db8a17bd84d715904e43fd60a7382db6d29b394cc837867b26d936eec",
+  "rubric": "scenario-objective-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
+}

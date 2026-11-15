@@ -1,0 +1,109 @@
+{
+  "id": "04-tower-trade-b",
+  "family": 4,
+  "title": "Choose a winning tower trade: position B",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench Tactics",
+  "version": "1.0.0",
+  "seed": 109,
+  "agent_team": 0,
+  "agent_deck": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+  ],
+  "opponent_deck": [
+    "LavaHound",
+    "Balloon",
+    "MegaMinion",
+    "Minions",
+    "Tombstone",
+    "Arrows",
+    "Fireball",
+    "Zap"
+  ],
+  "player_deck_name": "giant-beatdown",
+  "opponent_deck_name": "lavaloon",
+  "csv_win_rate": null,
+  "opponent": "planner",
+  "planner": {
+    "horizon_s": 10.0,
+    "top_k": 4,
+    "margin": 40.0,
+    "two_ply": true,
+    "workers": 0,
+    "elixir_hp": 150.0,
+    "prefilter": true,
+    "three_ply": true,
+    "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "objective": "Win by the end of the remaining 14 seconds of regulation, spending at most 4 elixir. Entering overtime without a win does not meet the objective. You may lose a princess tower; any match win within the window succeeds.",
+  "scenario": {
+    "start_tick": 3320,
+    "horizon_s": 14,
+    "elixir": 4,
+    "opponent_elixir": 0,
+    "order": [
+      "Minions",
+      "Fireball",
+      "Knight",
+      "Cannon",
+      "Giant",
+      "Musketeer",
+      "Archer",
+      "Zap"
+    ],
+    "opponent_order": [
+      "LavaHound",
+      "Balloon",
+      "MegaMinion",
+      "Minions",
+      "Tombstone",
+      "Arrows",
+      "Fireball",
+      "Zap"
+    ],
+    "units": [
+      {
+        "card": "Giant",
+        "team": 0,
+        "x": 3.5,
+        "y": 23,
+        "hp": 150
+      },
+      {
+        "card": "Balloon",
+        "team": 1,
+        "x": 14.5,
+        "y": 10
+      }
+    ],
+    "grading": "win",
+    "tower_hp": [
+      [
+        4000,
+        500,
+        305
+      ],
+      [
+        4824,
+        0,
+        366
+      ]
+    ],
+    "spend_budget": 4
+  },
+  "release_gate": "Winning reference and task-specific contrast evidence are required.",
+  "control": false,
+  "calibration_source_sha256": "4b80ddf8857e52316b39dac96f235f20f5b3971f8456856fe3182bf4145aab3f",
+  "validation_requirements": {
+    "save_tower": 0,
+    "reference_loses_princess": 1
+  }
+}

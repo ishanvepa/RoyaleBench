@@ -41,6 +41,8 @@ class JobSpec:
     benchmark: str = "royalebench"
     provider: str = "modal"
     extra: dict = field(default_factory=dict)
+    extra_secrets: dict[str, str] = field(default_factory=dict)
+    agent_kwargs: dict[str, str] = field(default_factory=dict)
 
     def validate(self, cfg: EvalsConfig, known_tasks: Collection[str] | None = None) -> None:
         """Raise ValueError with a message for the form when the job cannot be started."""
@@ -78,10 +80,13 @@ class JobSpec:
 
     def start_kwargs(self) -> dict:
         """Keyword arguments for ``Valkyrie.start_run``."""
-        return {"benchmark": self.benchmark, "dataset": self.dataset, "ref": str(self.revision), "agent": self.agent,
+        result = {"benchmark": self.benchmark, "dataset": self.dataset, "ref": str(self.revision), "agent": self.agent,
                 "model": self.model.strip(), "concurrency": int(self.concurrency),
                 "task_ids": list(self.task_ids) if self.task_ids else None, "label": self.label.strip(),
-                "provider": self.provider, "secrets": {self.secret_env: self.secret_name}}
+                "provider": self.provider, "secrets": {**self.extra_secrets, self.secret_env: self.secret_name}}
+        if self.agent_kwargs:
+            result["agent_kwargs"] = dict(self.agent_kwargs)
+        return result
 
     def cli_command(self) -> str:
         """The equivalent terminal command (secret *names* only), for reproducing or documenting the run."""
@@ -91,6 +96,11 @@ class JobSpec:
                  "--concurrency", str(self.concurrency)]
         if self.task_ids:
             parts += ["--task-ids", ",".join(self.task_ids)]
+        for env, secret in sorted(self.extra_secrets.items()):
+            if env != self.secret_env:
+                parts += ["-s", env, secret]
+        for key, value in sorted(self.agent_kwargs.items()):
+            parts += ["-k", key, value]
         parts += ["--label", self.label.strip()]
         return " ".join(shlex.quote(p) for p in parts)
 

@@ -6,6 +6,19 @@ import { renderApp } from "@/test/render";
 import { apiError, server } from "@/test/server";
 
 describe("Jobs page", () => {
+  it("shows each run's API cost and average, marking partial totals", async () => {
+    server.use(http.get("*/api/evals/jobs", () => HttpResponse.json(jobList([
+      jobRow({ job: "partial-run", total: 4, cost_usd: 0.4, cost_per_task: 0.2, cost_known: 2 }),
+      jobRow({ id: "free", job: "free-run", cost_usd: 0, cost_per_task: 0, cost_known: 1 }),
+    ]))));
+    renderApp("/evals/jobs");
+    const partial = await screen.findByRole("row", { name: /partial-run/ });
+    expect(within(partial).getByText("$0.400")).toBeInTheDocument();
+    expect(within(partial).getByText("$0.200")).toBeInTheDocument();
+    expect(within(partial).getByTitle(/known for 2 of 4/)).toHaveTextContent("*");
+    expect(within(screen.getByRole("row", { name: /free-run/ })).getAllByText("$0")).toHaveLength(2);
+  });
+
   it("lists jobs and sends a status filter to the API and the URL", async () => {
     const requests: URL[] = [];
     server.use(

@@ -1,0 +1,24 @@
+{
+  "task": "02-reserve-counter-a",
+  "family": 2,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "c8519db3abec70101b0b0c59b73fdeaa396686ef073fe0f47f85f2ccc5726e1e",
+  "image": "sha256:717cf37420b92d52d81ca97e1d5effbab963c452427021b6f69401cf5e2eeba2",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 401,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 111.523,
+  "source": "royalebench/royalebench-v5@1",
+  "task_digest": "sha256:de2e93bb3a6483ae81950340b87e7228fdff1f3a081cd5e617220c41c991e9b9",
+  "negative_rewards": {
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0
+  }
+}

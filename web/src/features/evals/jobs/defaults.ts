@@ -18,8 +18,22 @@ export function defaultLabel(dataset: string, model: string, now: Date = new Dat
   return `${dataset || "job"}-${short}-${stamp}`;
 }
 
-/** Stored secrets that can hold a model API key: everything except the Modal credentials. */
-const usableSecrets = (secrets: readonly string[]) => secrets.filter((s) => !/modal/i.test(s));
+/** Model API keys, including the shared Modal proxy key; exclude other Modal configuration. */
+export const usableSecrets = (secrets: readonly string[]) =>
+  secrets.filter((s) => s === "modal-qwen-api-key" || !/modal/i.test(s));
+
+// These configured endpoints share the Modal proxy credential.
+const modalModels = new Set([
+  "openai/Qwen/Qwen3.8-2.4T-A95B",
+  "openai/inkling-2-small",
+  "openai/deepseek-v4.1-flash-1017",
+  "openai/kimi-k3.1-pro",
+]);
+
+export function defaultSecretForModel(secrets: readonly string[], model: string, identity: Environment["identity"]): string {
+  if (modalModels.has(model)) return secrets.includes("modal-qwen-api-key") ? "modal-qwen-api-key" : "";
+  return defaultSecret(secrets, providerOf(model), identity);
+}
 
 /** The stored secrets whose name mentions the provider (``anthropic-api-key-ishan`` for ``anthropic``). */
 export function secretsForProvider(secrets: readonly string[], provider: string): string[] {

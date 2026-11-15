@@ -1,0 +1,7 @@
+The scenario failed, so the reward is 0. Tower damage was 634 against the 400 limit. I spent 3 elixir and neither princess tower fell.
+
+I played Cannon at (14.5, 11.5) to pull the Hog Rider away from the right princess tower (the one starting at 1831 HP). The Cannon only partly worked. The Hog Rider destroyed it, then walked on and hit the tower, taking it from 1831 to 1197 HP. That accounts for 634 damage in total.
+
+I couldn't afford Zap, which would have finished the Hog Rider sooner. It cost 2 elixir and my budget allowed only 1 more after the Cannon.
+
+A cheaper or better-placed answer might have held the damage under 400. I'd try placing the Cannon further back, closer to the tower, so the tower and Cannon both hit the Hog Rider for longer before it reaches the tower. I did not test that.

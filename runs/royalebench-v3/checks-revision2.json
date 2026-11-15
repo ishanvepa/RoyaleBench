@@ -1,0 +1,16 @@
+{
+  "dataset": "royalebench/royalebench-v3@2",
+  "tag": "v3-support",
+  "published_digest": "sha256:bcbd0c2eb0441b6acfa331b14bb9093df9fe7db301f5248a82c23f522fd80bfd",
+  "task_count": 11,
+  "action_mode": "coordinates-v1",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "capture_schema_version": "1.0",
+  "local_calibration": "validation.json",
+  "python_tests": {"passed": 50, "subtests_passed": 2,
+    "files": ["tests/test_royalebench_v3.py", "tests/test_coordinate_task.py", "tests/test_observations.py"]},
+  "docker": {"path": "docker-revision2/validation.json", "passed": 11,
+    "reward": 1, "integrity": 1, "capture_complete": true,
+    "restart_verified": true, "replay_hashes_verified": true},
+  "hosted_pilot": "qwen-support-pilot.json"
+}

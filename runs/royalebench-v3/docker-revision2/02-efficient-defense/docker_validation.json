@@ -1,0 +1,17 @@
+{
+  "task": "02-efficient-defense",
+  "family": 2,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "96f8cf55966391925dba293a3f7fdd81adc8a1fa93470a79e1db1697e478be16",
+  "image": "sha256:eab3f42376629e689795cda5af1e8d311f853c6d9d9b4d2b30e48a021ebc8af6",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 241,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 14.953
+}

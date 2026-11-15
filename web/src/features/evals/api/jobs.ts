@@ -1,4 +1,5 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { api, unwrap } from "@/api/client";
 import { qk } from "@/api/queryKeys";
@@ -41,7 +42,7 @@ export function useJob(runId: string) {
   return useQuery({
     queryKey: qk.evals.job(runId),
     queryFn: () => unwrap(api.GET("/api/evals/jobs/{run_id}", { params: { path: { run_id: runId } } })),
-    refetchInterval: (query) => (query.state.data?.active ? POLL_ACTIVE_MS : false),
+    refetchInterval: (query) => (query.state.data?.active ? POLL_ACTIVE_MS : query.state.data?.job.costs_pending ? 30_000 : false),
   });
 }
 
@@ -52,13 +53,21 @@ const TERMINAL_TASK_STATUSES = ["FINISHED", "ERROR", "STOPPED"];
  * the run can flip to "finished" a moment before the last task poll lands, which would otherwise freeze the
  * table on a task that is still "running".
  */
-export function useJobTasks(runId: string, active: boolean) {
-  return useQuery({
+export function useJobTasks(runId: string, active: boolean, costsPending = false) {
+  const tasks = useQuery({
     queryKey: qk.evals.jobTasks(runId),
     queryFn: () => unwrap(api.GET("/api/evals/jobs/{run_id}/tasks", { params: { path: { run_id: runId } } })),
     refetchInterval: (query) =>
-      active || query.state.data?.tasks.some((t) => !TERMINAL_TASK_STATUSES.includes(t.status)) ? POLL_ACTIVE_MS : false,
+      active || query.state.data?.tasks.some((t) => !TERMINAL_TASK_STATUSES.includes(t.status)) ? POLL_ACTIVE_MS : costsPending ? 30_000 : false,
   });
+  const previousCostsPending = useRef(costsPending);
+  const refetch = tasks.refetch;
+  useEffect(() => {
+    // The job poll may see completed downloads before the last task-table poll.
+    if (previousCostsPending.current && !costsPending) void refetch();
+    previousCostsPending.current = costsPending;
+  }, [costsPending, refetch]);
+  return tasks;
 }
 
 export function useTaskDetail(runId: string, taskId: string | null) {
@@ -78,6 +87,18 @@ export function useTaskTrace(runId: string, taskId: string | null, enabled: bool
       unwrap(api.GET("/api/evals/jobs/{run_id}/tasks/{task_id}/trace", { params: { path: { run_id: runId, task_id: taskId ?? "" } } })),
     enabled: enabled && taskId !== null,
     staleTime: 60_000,
+  });
+}
+
+/** Mount only when opening playback: artifact downloads are always user initiated. */
+export function useTaskReplay(runId: string, taskId: string) {
+  return useQuery({
+    queryKey: qk.evals.jobReplay(runId, taskId),
+    queryFn: () =>
+      unwrap(api.GET("/api/evals/jobs/{run_id}/tasks/{task_id}/replay", { params: { path: { run_id: runId, task_id: taskId } } })),
+    staleTime: 0, // stopped/errored attempts can be resumed/retried
+    gcTime: 0, // discard HTML on close; reopening must not briefly show a previous attempt
+    refetchOnWindowFocus: false, // preserve the viewer's playback position
   });
 }
 

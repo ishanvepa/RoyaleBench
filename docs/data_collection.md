@@ -2,9 +2,20 @@
 
 New local matches and instrumented Valkyrie tasks record the same versioned evidence format. Existing runs are left as they are. The [implementation plan](data_collection_plan.md) describes the design; [the JSON Schema](telemetry.schema.json) specifies the record envelope.
 
-The shared scenario referee also supports telemetry when rebuilding RoyaleBench v1 tasks. Existing
-v1 task snapshots retain their calibrated code; rebuilding and publishing them requires the v1
-validation gates and a new dataset revision, as described in the [v1 guide](royalebench_v1.md).
+RoyaleBench v1 continuation tasks are instrumented in **`royalebench/royalebench-v1@2`**
+(tags `v2` and `telemetry-v1`). This revision carries full replay checkpoints and standardized telemetry
+for all eleven runnable tasks. Revision `@1` retains its original action-log-only game artifacts;
+new runs must select `@2` or its current tag to receive the capture. Scenario configurations,
+instructions, reference actions, opponent and scoring are unchanged. Rebuilding future snapshots
+requires the validation gates in the [v1 guide](royalebench_v1.md).
+
+The default [v6 benchmark](royalebench_v6.md), curated [v5 benchmark](royalebench_v5.md), separate [win-only benchmark](royalebench_win.md), historical [v3 benchmark](royalebench_v3.md), and [coordinate pilot](coordinate_harness.md) record raw coordinate attempts,
+acceptance/rejection metadata and application ticks. Rejected deployments consume an interval
+as `rejected_action`; exports count them as error waits rather than voluntary waits.
+V3 revision `@2` additionally packages the explicit task identity, instruction hash, rubric,
+capture schema and resource limits used by the v1 instrumented releases. Its eleven carried
+captures and replay hashes pass isolated Docker validation; a hosted Qwen smoke run has a complete,
+checksum-verified archive. See the [v3 evidence](royalebench_v3.md#tasks-and-scores).
 
 ## What gets captured
 
@@ -49,6 +60,11 @@ uv run python -m rb_evals.archive collect RUN_ID
 ```
 
 `ROYALEBENCH_ANALYSIS_DIR` controls hosted working bundles (default `runs/analysis`). Global `--root PATH` overrides it for the CLI. Original archives, extracted files, metadata snapshots, all service log pages, and artifact inventories are retained. `.collection.lock` serializes concurrent collectors. Cache deletion does not delete the durable copy.
+
+The hosted collector currently requires Unix `fcntl`; its `collect` command cannot
+run directly in Windows Python. The [Modal Qwen pilot](qwen_modal.md#validation)
+preserves a checksum-verified raw download and durable copy instead; it has no
+normalized analysis exports yet.
 
 ```text
 <analysis_dir>/<run_id>/

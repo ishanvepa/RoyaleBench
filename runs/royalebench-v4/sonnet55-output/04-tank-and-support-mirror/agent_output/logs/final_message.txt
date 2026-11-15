@@ -1,0 +1,7 @@
+The scenario ended in success: neither princess tower was destroyed over the 20 seconds, and I spent 8 of the 9 elixir allowed.
+
+The game reported 0–0 in crowns and 1,843 total tower damage taken. My right princess tower started at 1068 HP. It dropped to 851 near the end, but it survived.
+
+- **Giant:** I put an Inferno Tower at (14.5, 10.5) in the right lane. The Giant targeted it and was killed there. The tower fell to 83 HP in the process.
+- **Knight:** I then played a Knight at (14.5, 12.0) to hold off the units that followed. It was killed too.
+- **The rest:** I waited for the remaining turns. I didn't play the 2-elixir Log, since that would have taken my spend to 10.

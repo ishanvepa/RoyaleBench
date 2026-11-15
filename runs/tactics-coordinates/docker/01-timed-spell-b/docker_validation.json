@@ -1,0 +1,17 @@
+{
+  "task": "01-timed-spell-b",
+  "family": 1,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "eb7a5391fddf2c8759f890b9bf0c4f8a09cf1b4eeeb37ce071a4ea70ebaa77b3",
+  "image": "sha256:f4c234db18c28359589120f36e383dee4537de43f60d1370fcb669011fb5c418",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 241,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 15.17
+}

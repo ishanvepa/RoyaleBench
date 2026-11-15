@@ -1,0 +1,668 @@
+{
+  "benchmark": "RoyaleBench v3",
+  "version": "3.0.0",
+  "action_mode": "coordinates-v1",
+  "capture_schema_version": "1.0",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "runnable_tasks": [
+    "01-immediate-lethal",
+    "02-efficient-defense",
+    "03-spell-placement",
+    "04-tank-and-support",
+    "05-successive-threats",
+    "06-unequal-threats",
+    "07-counterpush",
+    "08-cycle-to-lethal",
+    "09-tower-race-commit",
+    "09-tower-race-defend",
+    "10-protect-the-lead"
+  ],
+  "gated_tasks": [
+    {
+      "id": "11-opponent-cycle-log-away",
+      "family": 11,
+      "reason": "Gated in frozen v1; coordinate release gate is not validated.",
+      "release_gate": "Both histories require winning reference traces and crossed-policy evidence that different commitments improve results."
+    },
+    {
+      "id": "11-opponent-cycle-log-ready",
+      "family": 11,
+      "reason": "Gated in frozen v1; coordinate release gate is not validated.",
+      "release_gate": "Both histories require winning reference traces and crossed-policy evidence that different commitments improve results."
+    },
+    {
+      "id": "12-comeback",
+      "family": 12,
+      "reason": "Gated in frozen v1; coordinate release gate is not validated.",
+      "release_gate": "A winning reference continuation through the same action interface must demonstrate recovery."
+    }
+  ],
+  "source_dataset": "royalebench/royalebench-v1@1",
+  "dependencies": {
+    "royalegym": "0.1.28",
+    "royalesim": "0.1.48",
+    "msgspec": "0.22.0"
+  },
+  "tasks": [
+    {
+      "task": "01-immediate-lethal",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "a94c58db376684f8605da5d13866fbae42017a1414adf2aeaab599351aea1a7c",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "0a82060bd70781e73b1471f7561ad3eefb5fb70827c061ecd72546794c05175e",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "ticks": 5139,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.95,
+        "rejected_actions": 0
+      },
+      "decisions": 1,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "02-efficient-defense",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "385bfca736de262b98f47cf3e97661fd60baa3952b49b6c4398987e8c7680db9",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "dbac1e7d3c9e06308e7a99b2f9459f1b0fd2706551e07cefe1147f3ae91881cb",
+      "reference_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.1117,
+        "ticks": 2240,
+        "tower_damage": 0,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Cannon",
+            "x": 162000,
+            "y": 189000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 12.0,
+        "rejected_actions": 0
+      },
+      "decisions": 6,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "03-spell-placement",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "af5f264bf901b8a55e3a32bf641372a33753b950b9e3528457be34198b5d0cfd",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "f562da3dd8e250dfc0b3e2711431e49f71d7102b20ef1b4e44155a39194f8165",
+      "reference_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0098,
+        "ticks": 2440,
+        "tower_damage": 107,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 180000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 12.0,
+        "rejected_actions": 0
+      },
+      "decisions": 1,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "04-tank-and-support",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "74ee64582a5955b7f7f7d68a00bc2ed862a2b17bbead891fb3e4640399927733",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "0a7696bec6628784ad84755b31d8ef3d2a38d1a85f97e98b25b1ce7c0fbfce85",
+      "reference_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3502,
+        "ticks": 2900,
+        "tower_damage": 1843,
+        "spent_elixir": 8,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "InfernoTower",
+            "x": 63000,
+            "y": 189000,
+            "cost": 5
+          },
+          {
+            "decision": 2,
+            "card": "Knight",
+            "x": 63000,
+            "y": 243000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2620,
+            "card": "Musketeer",
+            "x": 261000,
+            "y": 315000
+          },
+          {
+            "tick": 2700,
+            "card": "Knight",
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "tick": 2780,
+            "card": "Minions",
+            "x": 261000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 20.0,
+        "rejected_actions": 0
+      },
+      "decisions": 10,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "05-successive-threats",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "99b278c4c0ebe90672f86ec80026e715ea0280beda63de8defcfcad79e75780c",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "3205df464b1696ebd1200a4a86abf856c326049c42d3b722d9d93ef87c7709c9",
+      "reference_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0154,
+        "own_tower_damage_frac": 0.0228,
+        "ticks": 3100,
+        "tower_damage": 249,
+        "spent_elixir": 5,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceGolemite",
+            "x": 162000,
+            "y": 189000,
+            "cost": 2
+          },
+          {
+            "decision": 1,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 4,
+            "card": "Log",
+            "x": 63000,
+            "y": 63000,
+            "cost": 2
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2820,
+            "card": "GoblinBarrel",
+            "x": 63000,
+            "y": 117000
+          },
+          {
+            "tick": 2860,
+            "card": "GoblinGang",
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "tick": 2940,
+            "card": "Princess",
+            "x": 63000,
+            "y": 405000
+          },
+          {
+            "tick": 2980,
+            "card": "Knight",
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "tick": 3020,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 513000
+          }
+        ],
+        "elapsed_s": 20.0,
+        "rejected_actions": 0
+      },
+      "decisions": 10,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "06-unequal-threats",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "8cc181ed92b45dcf144fe1fd162f04be7f22be0459582981b3a5a9ba1bb7db24",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "1cc608b8f23b615924d110d714a601876bfec16d7ab9de668e8104fad044cad2",
+      "reference_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.5123,
+        "ticks": 3200,
+        "tower_damage": 2241,
+        "spent_elixir": 6,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Knight",
+            "x": 63000,
+            "y": 243000,
+            "cost": 3
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 63000,
+            "y": 189000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2920,
+            "card": "BattleRam",
+            "x": 261000,
+            "y": 405000
+          },
+          {
+            "tick": 3000,
+            "card": "Bats",
+            "x": 171000,
+            "y": 405000
+          },
+          {
+            "tick": 3040,
+            "card": "Zap",
+            "x": 63000,
+            "y": 351000
+          },
+          {
+            "tick": 3160,
+            "card": "MiniPekka",
+            "x": 63000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 20.0,
+        "rejected_actions": 0
+      },
+      "decisions": 10,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "07-counterpush",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "ef4fbb02abb286302040c9b5531ab267576a4793fc179cb3755e6fc3de8470ba",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "7a5e4901af0ba26cb41f03158ebbc1ae467aaae1c9bf865c28556d32e2f1166b",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.4427,
+        "own_tower_damage_frac": 0.4381,
+        "ticks": 3600,
+        "tower_damage": 2499,
+        "spent_elixir": 21,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Giant",
+            "x": 63000,
+            "y": 243000,
+            "cost": 5
+          },
+          {
+            "decision": 2,
+            "card": "Musketeer",
+            "x": 261000,
+            "y": 243000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Knight",
+            "x": 261000,
+            "y": 243000,
+            "cost": 3
+          },
+          {
+            "decision": 6,
+            "card": "Archer",
+            "x": 63000,
+            "y": 243000,
+            "cost": 3
+          },
+          {
+            "decision": 8,
+            "card": "Minions",
+            "x": 261000,
+            "y": 243000,
+            "cost": 3
+          },
+          {
+            "decision": 10,
+            "card": "Cannon",
+            "x": 63000,
+            "y": 243000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 3020,
+            "card": "ElectroWizard",
+            "x": 63000,
+            "y": 369000
+          },
+          {
+            "tick": 3140,
+            "card": "BattleRam",
+            "x": 63000,
+            "y": 387000
+          },
+          {
+            "tick": 3220,
+            "card": "Bats",
+            "x": 279000,
+            "y": 387000
+          },
+          {
+            "tick": 3260,
+            "card": "Zap",
+            "x": 261000,
+            "y": 279000
+          },
+          {
+            "tick": 3380,
+            "card": "MiniPekka",
+            "x": 261000,
+            "y": 315000
+          }
+        ],
+        "elapsed_s": 35.0,
+        "rejected_actions": 0
+      },
+      "decisions": 18,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "08-cycle-to-lethal",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "35b5e263deb6b0df1777a2069ef441bdef0644d8eb938af324ad09c5af9e8c25",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "34939d0280d980c157625361a7b3946228045ab5bcc1daa16b034aebeea7482e",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2374,
+        "ticks": 5759,
+        "tower_damage": 0,
+        "spent_elixir": 8,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 63000,
+            "y": 189000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 5.95,
+        "rejected_actions": 0
+      },
+      "decisions": 3,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "09-tower-race-commit",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "68430c2ec19db0ae512de907da0fa71fec1f4d0557fc01dd4ad9b953678267e5",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "9a819e134af2cec90a6b5a8a832de70d96ac32c297ba604a61d8f72716bd0869",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2514,
+        "ticks": 5439,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.95,
+        "rejected_actions": 0
+      },
+      "decisions": 1,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "09-tower-race-defend",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "ac1cebaa3f5cd378533a562300926e48cc9c61185764f096c9176c03d14b7db7",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "44be8e64ec1a14a25dd45c58cadbae4e91950950c5325cae107f0a87d542e327",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2514,
+        "ticks": 5442,
+        "tower_damage": 0,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Cannon",
+            "x": 63000,
+            "y": 243000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 2.1,
+        "rejected_actions": 0
+      },
+      "decisions": 2,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    },
+    {
+      "task": "10-protect-the-lead",
+      "reward": 1,
+      "integrity": 1.0,
+      "deterministic": true,
+      "negative_rewards": {
+        "wait": 0.0,
+        "empty": 0.0,
+        "malformed": 0.0
+      },
+      "config_sha256": "9764eba23324c8efaa31776c3e2bd8cea976ab176b5b12c3cfc0f6ec807f5873",
+      "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+      "reference_log_sha256": "0c1dc6082467e9ef3eed4f0e0bf393793c301c38357bbd441a83e01b5c54f22d",
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2753,
+        "ticks": 3600,
+        "tower_damage": 506,
+        "spent_elixir": 7,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Knight",
+            "x": 63000,
+            "y": 333000,
+            "cost": 3
+          },
+          {
+            "decision": 1,
+            "card": "Tesla",
+            "x": 63000,
+            "y": 243000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 12.0,
+        "rejected_actions": 0
+      },
+      "decisions": 6,
+      "menu_baseline_reward": 1,
+      "frontier_model_runs": []
+    }
+  ],
+  "status": "Local reference calibration only; Docker and model runs tracked separately."
+}

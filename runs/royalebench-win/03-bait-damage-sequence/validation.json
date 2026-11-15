@@ -1,0 +1,77 @@
+{
+  "task": "03-bait-damage-sequence",
+  "config_sha256": "3c5e67e5bb9fcf51b4ee2fc03154ee09bfc528e5c0e97632c457e69269c91998",
+  "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+  "reference_log_sha256": "08d0f96ec2ae8279dc86a33293685f3e5010503af0b1462b62b2d4851d43406e",
+  "reward": 1,
+  "integrity": 1,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "spell-rush": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0,
+    "partial": 0.0
+  },
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2808,
+    "ticks": 5901,
+    "tower_damage": 1085,
+    "spent_elixir": 19,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "InfernoTower",
+        "x": 63000,
+        "y": 189000,
+        "cost": 5
+      },
+      {
+        "decision": 1,
+        "card": "Knight",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      },
+      {
+        "decision": 2,
+        "card": "Rocket",
+        "x": 63000,
+        "y": 459000,
+        "cost": 6
+      },
+      {
+        "decision": 3,
+        "card": "Log",
+        "x": 63000,
+        "y": 396000,
+        "cost": 2
+      },
+      {
+        "decision": 5,
+        "card": "Princess",
+        "x": 63000,
+        "y": 261000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 5600,
+        "card": "Musketeer",
+        "x": 261000,
+        "y": 315000
+      }
+    ],
+    "elapsed_s": 19.05,
+    "rejected_actions": 1
+  },
+  "decisions": 10,
+  "frontier_model_runs": [],
+  "reference_policy": "explicit defensive opening followed by privileged Planner; actual log is the solvability proof"
+}

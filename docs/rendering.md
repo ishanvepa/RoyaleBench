@@ -1,5 +1,24 @@
 # Battle graphics
 
+The replay viewer in `cr_arena/replay.html` uses a dark navy background, raised
+panels, light text, and bright team and elixir accents. Playback buttons, the
+speed selector, timeline, checkboxes, warnings, and tooltips share the dark theme,
+including native controls and keyboard focus indicators. This applies to both
+dashboard playback and newly exported standalone replays. Legacy dashboard HTML
+caches include the viewer and renderer content so visual changes appear when
+reopening an existing match.
+
+An **Agent decisions** panel follows the replay clock, showing the latest recorded
+messages and tool calls, with recorded reasoning in expandable sections. Earlier
+decisions are expandable; scrubbing backward removes decisions from the future.
+Valkyrie playback links stock mini-SWE-agent JSON and Claude Code JSONL output to
+exact referee observation text in `royale/capture/observations.jsonl`, using its
+simulation ticks rather than wall-clock timestamps. Unmatched or ambiguous text
+is left unaligned. Trace-download failures leave gameplay available and can be
+retried by reopening. Legacy arena replays use the saved per-decision agent
+responses and action results. Standalone exports show decisions when callers
+supply `decisions` to `patched_html`; otherwise the panel explains their absence.
+
 The shared-play lobby in `cr_arena/live.html` uses the same navy panels, blue
 accents, gold details, and system font as the live game, with a subtle diamond
 background and a raised gold Battle button. Its decorative miniature is original
@@ -312,6 +331,9 @@ Zap at 3:14, The Log at 6:41, Rocket at 11:10, Lightning at 12:33, and Poison at
 To check that other graphics did not change, render the same frames with the old and
 new renderers and compare canvas operations. Non-classic spells, units, towers,
 projectiles, and death or drop effects produce identical operations.
+
+In narrow replay viewers (including dashboard task dialogs), the board and playback controls appear
+before the player stat panels so the game remains easy to reach on phones.
 
 `live.html` handles the WebSocket stream, HUD, and placement controls. `replay.html`
 adapts RoyaleGym's named trace columns into the same drawing contract and handles

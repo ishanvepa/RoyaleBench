@@ -1,14 +1,17 @@
 """Results of finished runs: per-task rewards, agent-reported cost, an on-disk cache, and the leaderboard.
 
 Valkyrie's final results JSON has rewards, durations and errors but no cost. Cost is only in each task's
-agent output (``<task>/agent_output.tar.gz``, whose ``logs/summary.json`` the Claude Code harness fills in),
-so it is downloaded once per task and cached. Cost is the model usage the harness reports; Modal sandbox
-charges are not included. Only FINISHED runs are cached for good: failed or stopped runs can be retried.
+agent output (``<task>/agent_output.tar.gz``, in Claude summaries or mini-SWE-agent trajectories),
+so it is downloaded once per task and cached. Cost is harness-reported spend or Modal inference tokens
+priced at verified rates; infrastructure charges are excluded. Only FINISHED runs are cached for good:
+failed or stopped runs can be retried.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -20,6 +23,7 @@ from pathlib import Path
 from statistics import mean
 
 from .jobs import parse_ts
+from .modal_inference import record_inference_cost
 from .valkyrie import Valkyrie, ValkyrieError
 
 SOLVED_AT = 1.0  # a task counts as solved ("won") at full reward
@@ -72,7 +76,18 @@ def task_results(results: dict) -> list[dict]:
 
 # ---------------------------------------------------------------------- agent output / cost
 def read_agent_metrics(root: Path) -> dict | None:
-    """Cost and token usage from an extracted agent output folder (``summary.json`` or ``metrics_total.json``)."""
+    """Cost and token usage from extracted Claude summaries or mini-SWE-agent trajectories."""
+    # Mini-SWE's trajectory is authoritative, including when a summary has a
+    # fallback zero or a generic transport provider's unrelated price.
+    for path in sorted(set(root.rglob("trajectory.json")) | set(root.rglob("*.traj.json"))):
+        try:
+            raw = path.read_bytes()
+            data = json.loads(raw)
+        except (OSError, ValueError):
+            continue
+        if isinstance(data, dict) and str(data.get("trajectory_format", "")).startswith("mini-swe-agent"):
+            model = (((data.get("info") or {}).get("config") or {}).get("model") or {}).get("model_name", "")
+            return record_inference_cost(root, model, _mini_metrics(data), hashlib.sha256(raw).hexdigest())
     for name in ("summary.json", "metrics_total.json"):
         for path in sorted(root.rglob(name)):
             try:
@@ -80,13 +95,68 @@ def read_agent_metrics(root: Path) -> dict | None:
             except (OSError, ValueError):
                 continue
             metrics = data.get("metrics") if isinstance(data, dict) and isinstance(data.get("metrics"), dict) else data
-            if isinstance(metrics, dict) and isinstance(metrics.get("cost"), (int, float)):
+            if isinstance(metrics, dict) and _number(metrics.get("cost")) is not None:
                 return {"cost": float(metrics["cost"]), "input_tokens": metrics.get("input_tokens"),
                         "output_tokens": metrics.get("output_tokens"),
                         "cache_read_tokens": metrics.get("cache_read_input_tokens"),
                         "cache_write_tokens": metrics.get("cache_creation_input_tokens"),
                         "wall_s": metrics.get("wall_clock_duration")}
     return None
+
+
+def _number(value) -> float | None:
+    return float(value) if (isinstance(value, (int, float)) and not isinstance(value, bool)
+                            and math.isfinite(value) and value >= 0) else None
+
+
+def _mini_metrics(data: dict) -> dict:
+    info = data.get("info") or {}
+    stats = info.get("model_stats") or {}
+    model_config = (info.get("config") or {}).get("model") or {}
+    reported = _number(stats.get("instance_cost"))
+    cost = reported
+    note = None
+    # ignore_errors and off both use zero as an unknown-price fallback. Keeping
+    # this separate from real $0 prevents polluted run/leaderboard totals.
+    if cost == 0 and model_config.get("cost_tracking") in ("ignore_errors", "off"):
+        cost = None
+        note = "The harness reported zero with cost tracking disabled or unknown-price fallback; billing is unknown."
+    totals: dict[str, list[int]] = {k: [] for k in ("input_tokens", "output_tokens", "cache_read_tokens", "reasoning_tokens")}
+    calls = [m for m in data.get("messages", []) if isinstance(m, dict) and m.get("role") == "assistant"]
+    seen = {}
+    call_count = 0
+    usage_valid = True
+    for message in calls:
+        extra = message.get("extra") or {}
+        response = extra.get("response") or {}
+        # Multiple tool calls in a response are one model call, not one each.
+        response_id = response.get("id")
+        if response_id and response_id in seen:
+            usage_valid &= seen[response_id] == response.get("usage")
+            continue
+        if response_id:
+            seen[response_id] = response.get("usage")
+        call_count += 1
+        usage = response.get("usage") or {}
+        values = {"input_tokens": usage.get("prompt_tokens", usage.get("input_tokens")),
+                  "output_tokens": usage.get("completion_tokens", usage.get("output_tokens")),
+                  "cache_read_tokens": (usage.get("prompt_tokens_details") or usage.get("input_tokens_details") or {}).get("cached_tokens"),
+                  "reasoning_tokens": (usage.get("completion_tokens_details") or usage.get("output_tokens_details") or {}).get("reasoning_tokens")}
+        required = (values["input_tokens"], values["cache_read_tokens"], values["output_tokens"])
+        if any(type(v) is not int or v < 0 for v in required):
+            usage_valid = False
+        elif (values["cache_read_tokens"] > values["input_tokens"]
+              or ("total_tokens" in usage and usage["total_tokens"] != values["input_tokens"] + values["output_tokens"])):
+            usage_valid = False
+        for key, value in values.items():
+            if type(value) is int and value >= 0:
+                totals[key].append(value)
+    return {"cost": cost, "reported_cost": reported, "cost_source": "harness" if cost is not None else "unknown",
+            "cost_note": note, "api_calls": stats.get("api_calls"),
+            "usage_complete": usage_valid and type(stats.get("api_calls")) is int and stats["api_calls"] == call_count and call_count > 0,
+            # Never turn missing/partial usage into a complete-looking total.
+            **{k: sum(v) if v and len(v) == call_count else None for k, v in totals.items()},
+            "cache_write_tokens": None, "wall_s": None}
 
 
 def _clip(text: str, limit: int) -> str:
@@ -205,12 +275,22 @@ class ResultsCache:
     def save_results(self, run_id: str, results: dict) -> None:
         folder = self._run(run_id)
         folder.mkdir(parents=True, exist_ok=True)
-        tmp = folder / "results.json.tmp"
-        tmp.write_text(json.dumps(results), encoding="utf-8")
-        os.replace(tmp, folder / "results.json")
+        # A page request and the periodic cost refresh can populate the same run concurrently.
+        handle = tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=folder, suffix=".tmp", delete=False)
+        tmp = Path(handle.name)
+        try:
+            with handle:
+                handle.write(json.dumps(results))
+            os.replace(tmp, folder / "results.json")
+        finally:
+            tmp.unlink(missing_ok=True)
 
     def task_dir(self, run_id: str, task_id: str) -> Path:
         return self._run(run_id) / "tasks" / self._safe(task_id)
+
+    def replay_dir(self, run_id: str, task_id: str) -> Path:
+        # Separate from agent output: trace/cost downloads replace the entire task_dir.
+        return self._run(run_id) / "replays" / self._safe(task_id)
 
     def has_task(self, run_id: str, task_id: str) -> bool:
         return (self.task_dir(run_id, task_id) / ".done").exists()
@@ -229,9 +309,9 @@ def fetch_task_files(valkyrie: Valkyrie, cache: ResultsCache, run_id: str, task_
         try:
             downloaded = valkyrie.download_artifact(run_id, f"{task_id}/agent_output.tar.gz", Path(tmp) / "dl")
         except ValkyrieError as exc:
-            if exc.kind in ("network", "auth"):
-                raise
-            return None  # the task produced no agent output (it errored before the agent ran)
+            if exc.kind == "not_found" or (exc.kind == "other" and "No artifacts found" in str(exc)):
+                return None  # the task errored before producing output
+            raise  # server/rejection errors must remain retryable, never cache them as missing
         tarball = next(iter(Path(downloaded).rglob("agent_output.tar.gz")), None)
         if tarball is None:
             return None
@@ -321,6 +401,35 @@ def uncached_task_count(cache: ResultsCache, runs: Iterable[dict]) -> int:
         else:
             total += sum(1 for t in task_results(results) if not cache.has_task(run_id, t["task"]))
     return total
+
+
+# ---------------------------------------------------------------------- benchmark task ranking
+def task_ranking(records: Iterable[dict], dataset: str, task_ids: Iterable[str]) -> list[dict]:
+    """Hardest tasks first, pooling counted attempts; unknown costs never enter the average."""
+    groups: dict[str, list[dict]] = {task_id: [] for task_id in task_ids}
+    for record in records:
+        if record["dataset"] == dataset:
+            for task in record["tasks"]:
+                if task["task"] in groups:
+                    groups[task["task"]].append(task)
+    rows = []
+    for task_id, tasks in groups.items():
+        counted = [t for t in tasks if t["counted"]]
+        costs = [t["cost"] for t in counted if t["cost"] is not None]
+        solved = sum(t["solved"] for t in counted)
+        rows.append({"task": task_id, "rank": None, "attempts": len(counted), "solved": solved,
+                     "pass_rate": solved / len(counted) if counted else None,
+                     "cost_per_task": sum(costs) / len(costs) if costs else None,
+                     "cost_known": len(costs), "infra_errors": len(tasks) - len(counted)})
+    rows.sort(key=lambda r: (r["pass_rate"] is None, r["pass_rate"] or 0, r["task"]))
+    previous_rate, rank = None, None
+    for index, row in enumerate(rows, 1):
+        if row["pass_rate"] is not None:
+            if row["pass_rate"] != previous_rate:
+                rank = index
+            row["rank"] = rank
+            previous_rate = row["pass_rate"]
+    return rows
 
 
 # ---------------------------------------------------------------------- leaderboard

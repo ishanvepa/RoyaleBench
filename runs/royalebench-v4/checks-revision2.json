@@ -1,0 +1,75 @@
+{
+  "recorded_at_utc": "2026-11-15T09:16:47.959110+00:00",
+  "dataset": {
+    "id": "royalebench/royalebench-v4@2",
+    "digest": "sha256:c952a71885675b32f696745b3e164739ff023cb66ccbc7343d88c36d8e927288",
+    "tag": "v4-corrected",
+    "tasks": [
+      "02-efficient-defense-mirror",
+      "04-tank-and-support-mirror",
+      "05-successive-threats-mirror",
+      "08-cycle-to-lethal-plus",
+      "08-cycle-to-lethal-critical"
+    ]
+  },
+  "source_dataset": "royalebench/royalebench-v3@2",
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "dependencies": {
+    "royalegym": "0.1.28",
+    "royalesim": "0.1.48",
+    "msgspec": "0.22.0"
+  },
+  "validation": {
+    "local_references": 5,
+    "local_counterfactuals_zero": true,
+    "local_negative_controls_zero": true,
+    "docker_image": "sha256:aad9611448230903091cf28ac382280c30ee21afa94331ab469ee99348c2d803",
+    "docker_tasks": 5,
+    "all_docker_reward_and_integrity_one": true,
+    "all_restart_capture_replay_verified": true,
+    "python_tests": "44 passed"
+  },
+  "runs": [
+    {
+      "run_id": "941173e3-ba01-4cb9-8374-a5dfd8e7ae88",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 5,
+      "final_score_percent": 60.0,
+      "model_api_cost_usd": 0.682193,
+      "task_rewards": {
+        "02-efficient-defense-mirror": 1.0,
+        "04-tank-and-support-mirror": 1.0,
+        "05-successive-threats-mirror": 0.0,
+        "08-cycle-to-lethal-critical": 1.0,
+        "08-cycle-to-lethal-plus": 0.0
+      },
+      "all_integrity_one": true,
+      "all_completed": true
+    },
+    {
+      "run_id": "538d268f-17dd-411a-a779-d995ff2951f0",
+      "model": "anthropic/claude-sonnet-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 5,
+      "final_score_percent": 20.0,
+      "model_api_cost_usd": 0.257215,
+      "task_rewards": {
+        "02-efficient-defense-mirror": 0.0,
+        "04-tank-and-support-mirror": 1.0,
+        "05-successive-threats-mirror": 0.0,
+        "08-cycle-to-lethal-critical": 0.0,
+        "08-cycle-to-lethal-plus": 0.0
+      },
+      "all_integrity_one": true,
+      "all_completed": true
+    }
+  ],
+  "superseded_revision": {
+    "id": "royalebench/royalebench-v4@1",
+    "digest": "sha256:67462c0dd8e8cf0bfd3e25792bfc842d9777c0676cf77966343dac837682404b",
+    "reason": "05-successive-threats-mirror objective said right tower (3.5, 6.5) but the attack landed at right tower (14.5, 6.5); aggregate scores are invalid as difficulty evidence"
+  }
+}

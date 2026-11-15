@@ -1,0 +1,455 @@
+{
+  "model": "anthropic/claude-sonnet-4-6",
+  "agent": "claude_code-v1.0.0",
+  "provider": "modal",
+  "trials_per_task_and_mode": 1,
+  "concurrency_per_run": 1,
+  "sampling": "Same harness/model defaults; no sampling overrides. Effective settings not independently attested.",
+  "resources": {
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096,
+    "agent_timeout_sec": 3600
+  },
+  "rows": [
+    {
+      "mode": "coordinates-v1",
+      "run_id": "d9d59d13-2e91-414e-a1db-bf1f1374b308",
+      "dataset_revision": "royalebench/royalebench-coordinates@1",
+      "task": "01-immediate-lethal",
+      "seed": 101,
+      "rewards": {
+        "reward": 1.0,
+        "win": 1.0,
+        "crowns_for": 1.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 1.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 0.0,
+        "objective_met": 1.0,
+        "rejected_actions": 0.0
+      },
+      "model_api_cost_usd": 0.0655254,
+      "agent_cli_version": "2.1.325 (Claude Code)",
+      "agent_wall_s": 17.984,
+      "prompt_sha256": "98d329f66486032e1cf2c39ef6b345fab7e082d35cb8a0d45e1aafbde0d5c4d9",
+      "action_log_sha256": "93f9c04aa3f53e6679726aee2ba5fa8c261121adc750c617ad86ade3368e39c7",
+      "actions": [
+        {
+          "decision": 0,
+          "tick": 5100,
+          "action": {
+            "cmd": "play",
+            "slot": 0,
+            "x": 3.5,
+            "y": 25.5
+          },
+          "accepted": true,
+          "rejection": null,
+          "think_s": 11.615262
+        }
+      ],
+      "result_file": "model-lethal-results.json",
+      "verifier_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "ticks": 5139,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.95,
+        "rejected_actions": 0
+      }
+    },
+    {
+      "mode": "coordinates-v1",
+      "run_id": "a7b01653-ea26-48f5-9a18-93abdbcfac35",
+      "dataset_revision": "royalebench/royalebench-coordinates@1",
+      "task": "03-spell-placement",
+      "seed": 103,
+      "rewards": {
+        "reward": 1.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0098,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 1.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 107.0,
+        "objective_met": 1.0,
+        "rejected_actions": 0.0
+      },
+      "model_api_cost_usd": 0.09534255,
+      "agent_cli_version": "2.1.325 (Claude Code)",
+      "agent_wall_s": 56.59,
+      "prompt_sha256": "c34e3e306b7a3e869f5e15ffd85aeb1a2933cc7e751c75e401f61ba3e03ffa38",
+      "action_log_sha256": "4d585319f77f2e73b0f767984de0101c22ad47873fc4a4f581734ed92766edf3",
+      "actions": [
+        {
+          "decision": 0,
+          "tick": 2200,
+          "action": {
+            "cmd": "play",
+            "slot": 0,
+            "x": 3.5,
+            "y": 12.0
+          },
+          "accepted": true,
+          "rejection": null,
+          "think_s": 48.208005
+        }
+      ],
+      "result_file": "model-coordinate-results.json",
+      "verifier_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0098,
+        "ticks": 2440,
+        "tower_damage": 107,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 216000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 12.0,
+        "rejected_actions": 0
+      }
+    },
+    {
+      "mode": "coordinates-v1",
+      "run_id": "a7b01653-ea26-48f5-9a18-93abdbcfac35",
+      "dataset_revision": "royalebench/royalebench-coordinates@1",
+      "task": "08-cycle-to-lethal",
+      "seed": 108,
+      "rewards": {
+        "reward": 1.0,
+        "win": 1.0,
+        "crowns_for": 1.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2605,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 3.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 7.0,
+        "tower_damage": 253.0,
+        "objective_met": 1.0,
+        "rejected_actions": 0.0
+      },
+      "model_api_cost_usd": 0.2055996,
+      "agent_cli_version": "2.1.325 (Claude Code)",
+      "agent_wall_s": 145.244,
+      "prompt_sha256": "cc2557c5df4e2e2fc054e9b6f756c2660d822e58c3f12fa8b6cb39fcaf3ffd66",
+      "action_log_sha256": "16aeee5e364c5aaa942b28cd0b20d3fa0f239513acadf1c0d2ec76edd68887dc",
+      "actions": [
+        {
+          "decision": 0,
+          "tick": 5640,
+          "action": {
+            "cmd": "play",
+            "slot": 0,
+            "x": 3.5,
+            "y": 13.0
+          },
+          "accepted": true,
+          "rejection": null,
+          "think_s": 108.458815
+        },
+        {
+          "decision": 1,
+          "tick": 5680,
+          "action": {
+            "cmd": "play",
+            "slot": 2,
+            "x": 3.5,
+            "y": 9.0
+          },
+          "accepted": true,
+          "rejection": null,
+          "think_s": 7.251348
+        },
+        {
+          "decision": 2,
+          "tick": 5720,
+          "action": {
+            "cmd": "play",
+            "slot": 2,
+            "x": 3.5,
+            "y": 25.5
+          },
+          "accepted": true,
+          "rejection": null,
+          "think_s": 6.091577
+        }
+      ],
+      "result_file": "model-coordinate-results.json",
+      "verifier_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2605,
+        "ticks": 5759,
+        "tower_damage": 253,
+        "spent_elixir": 7,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 234000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "IceGolemite",
+            "x": 63000,
+            "y": 162000,
+            "cost": 2
+          },
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 5.95,
+        "rejected_actions": 0
+      }
+    },
+    {
+      "mode": "menu-v1",
+      "run_id": "8bbde46b-27eb-4156-a7d0-c8a75e6f7b04",
+      "dataset_revision": "royalebench/royalebench-v1@1",
+      "task": "01-immediate-lethal",
+      "seed": 101,
+      "rewards": {
+        "reward": 1.0,
+        "win": 1.0,
+        "crowns_for": 1.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 1.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 0.0,
+        "objective_met": 1.0
+      },
+      "model_api_cost_usd": 0.049920450000000005,
+      "agent_cli_version": "2.1.325 (Claude Code)",
+      "agent_wall_s": 14.779,
+      "prompt_sha256": "3527f0841208498d8c412ffd0f21d315d10345fbbafbf1011490f021adb11a6a",
+      "action_log_sha256": "2a63221179fe3a47b28956843cb4c2a18cbd507747d87997d6ad04d382dd5294",
+      "actions": [
+        {
+          "decision": 0,
+          "tick": 5100,
+          "label": "5. Fireball (4 elixir, spell) @ enemy left princess tower",
+          "think_s": 8.043
+        }
+      ],
+      "result_file": "model-menu-results.json",
+      "verifier_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2095,
+        "ticks": 5139,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.95
+      }
+    },
+    {
+      "mode": "menu-v1",
+      "run_id": "8bbde46b-27eb-4156-a7d0-c8a75e6f7b04",
+      "dataset_revision": "royalebench/royalebench-v1@1",
+      "task": "03-spell-placement",
+      "seed": 103,
+      "rewards": {
+        "reward": 1.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0098,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 1.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 107.0,
+        "objective_met": 1.0
+      },
+      "model_api_cost_usd": 0.4020363,
+      "agent_cli_version": "2.1.325 (Claude Code)",
+      "agent_wall_s": 339.582,
+      "prompt_sha256": "439125e922b91b3e19b899ea0d23e83e8e161c3262f08dda425be04bac7beb83",
+      "action_log_sha256": "f45a4f32c424367ff89272c120263ccee0ebf4af495aeb2f771da19c3192a9dc",
+      "actions": [
+        {
+          "decision": 0,
+          "tick": 2200,
+          "label": "10. Fireball (4 elixir, spell) @ in front of left tower",
+          "think_s": 329.476
+        }
+      ],
+      "result_file": "model-menu-results.json",
+      "verifier_outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0098,
+        "ticks": 2440,
+        "tower_damage": 107,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 189000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 12.0
+      }
+    },
+    {
+      "mode": "menu-v1",
+      "run_id": "8bbde46b-27eb-4156-a7d0-c8a75e6f7b04",
+      "dataset_revision": "royalebench/royalebench-v1@1",
+      "task": "08-cycle-to-lethal",
+      "seed": 108,
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 1.0,
+        "enemy_tower_damage_frac": 0.2648,
+        "own_tower_damage_frac": 0.3127,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 3.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 6.0,
+        "tower_damage": 458.0,
+        "objective_met": 0.0
+      },
+      "model_api_cost_usd": 0.14186595,
+      "agent_cli_version": "2.1.325 (Claude Code)",
+      "agent_wall_s": 85.595,
+      "prompt_sha256": "c75983c15f47bf38cfecc675fca2b101b2db91879a808a3a06c653adc40becb0",
+      "action_log_sha256": "f8594b7dfd62254f179746d82f8c7199a3a7ae69fe1305093bdc5b2d37075eff",
+      "actions": [
+        {
+          "decision": 0,
+          "tick": 5640,
+          "label": "3. IceSpirits (1 elixir, troop) @ in front of left tower",
+          "think_s": 49.337
+        },
+        {
+          "decision": 1,
+          "tick": 5680,
+          "label": "11. Skeletons (1 elixir, troop) @ in front of left tower",
+          "think_s": 7.12
+        },
+        {
+          "decision": 2,
+          "tick": 5720,
+          "label": "12. Fireball (4 elixir, spell) @ enemy left princess tower",
+          "think_s": 3.523
+        }
+      ],
+      "result_file": "model-menu-results.json",
+      "verifier_outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.2648,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5758,
+        "tower_damage": 458,
+        "spent_elixir": 6,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Skeletons",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 5.9
+      }
+    }
+  ],
+  "model_api_cost_usd": 0.96029025,
+  "modal_compute_cost_usd": null,
+  "interpretation": "Small functional pilot, not a reliable estimate of relative difficulty. Coordinates pass 3/3; menu passes 2/3. Menu cycling failure is a completed strategic/timing loss, not an integrity or infrastructure error.",
+  "capture_note": "Coordinate captures are complete. Frozen menu runtime has no telemetry identity or full online replay; raw transcripts/results/actions are archived and replays are independently reconstructed in menu-model-replays/."
+}

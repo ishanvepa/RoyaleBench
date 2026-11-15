@@ -1,0 +1,7 @@
+The run finished and the referee reported **scenario SUCCESS**. Both princess towers were still standing at the 20-second mark, and I spent 8 of the 9 elixir allowed.
+
+- **Giant:** I placed the Inferno Tower at (11.5, 9.5) to pull it away from the right tower, which started at 1,068 HP. The Giant died before it ever hit that tower.
+- **Right-lane Musketeer:** I deployed the Knight at (14.5, 12.5). It killed the Musketeer, then held the enemy Minions near the river long enough for the clock to run out. The right tower ended on 1,068 HP and took no damage.
+- **Left lane:** After that I had only 1 elixir of budget left, so I waited. A second Musketeer, followed by Archers, came down the left lane. The left tower took 1,085 damage, falling from 3,052 to 1,967 HP, but it survived.
+
+Total tower damage was 1,192. Separately from the left tower, the king tower was never touched, so the other 107 is not shown in the tower readouts I saw. The objective only required both princess towers to survive, so this damage did not affect the result. The Minions reaching the 1,068-HP right tower near the end was the closest risk, and they arrived too late to matter.

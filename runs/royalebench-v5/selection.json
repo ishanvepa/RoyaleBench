@@ -1,0 +1,378 @@
+{
+  "recorded_at_utc": "2026-11-15T09:46:22.124494+00:00",
+  "benchmark": "RoyaleBench v5",
+  "task_count": 10,
+  "selection_groups": {
+    "opus_failed": [
+      "02-reserve-counter-a",
+      "03-tower-race-b",
+      "05-successive-threats-mirror",
+      "08-cycle-to-lethal-plus"
+    ],
+    "sonnet_pass_haiku_fail": [
+      "01-timed-spell-a",
+      "03-spell-placement",
+      "06-unequal-threats",
+      "09-tower-race-defend"
+    ],
+    "haiku_passed": [
+      "07-counterpush",
+      "10-protect-the-lead"
+    ]
+  },
+  "tasks": [
+    {
+      "task_id": "01-timed-spell-a",
+      "group": "sonnet_pass_haiku_fail",
+      "source_dataset": "royalebench/royalebench-tactics@3",
+      "package_sha256": "8ae631aa9caea8f1f5e8681075faf867882939470cb6c32c2e09a6f40179cfc1",
+      "evidence": [
+        {
+          "run_id": "7bf87ee1-d3e7-413d-9615-1c1d36503168",
+          "dataset_version": "royalebench/royalebench-tactics@3",
+          "model": "anthropic/claude-sonnet-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 0.0,
+          "rejected_actions": 0.0
+        },
+        {
+          "run_id": "898ab4c9-52df-40e0-9e7c-ad8a5031ed09",
+          "dataset_version": "royalebench/royalebench-tactics@3",
+          "model": "anthropic/claude-haiku-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 506.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "02-reserve-counter-a",
+      "group": "opus_failed",
+      "source_dataset": "royalebench/royalebench-tactics@3",
+      "package_sha256": "18133c507ac3e2a65d20ec63c795bff24cbc399e66e8c3db7d2c7ecc8792e20a",
+      "evidence": [
+        {
+          "run_id": "72a98358-fdd7-41d4-9b24-9eb7f7917237",
+          "dataset_version": "royalebench/royalebench-tactics@3",
+          "model": "anthropic/claude-opus-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 2027.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "03-spell-placement",
+      "group": "sonnet_pass_haiku_fail",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "b8a090b765bf96029032cbd5545a86d06e0781fd2d61e9a3bb86aeaf982cdcc0",
+      "evidence": [
+        {
+          "run_id": "37a44c9f-870b-40ee-811c-ac4b862114d6",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-sonnet-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 107.0,
+          "rejected_actions": 0.0
+        },
+        {
+          "run_id": "315772c0-ae81-4214-9afa-096d253643bd",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-haiku-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 454.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "03-tower-race-b",
+      "group": "opus_failed",
+      "source_dataset": "royalebench/royalebench-tactics@3",
+      "package_sha256": "732f3fc60b2f905ea382355e3046249f4af014e000335ab122cbdd5138a03d12",
+      "evidence": [
+        {
+          "run_id": "72a98358-fdd7-41d4-9b24-9eb7f7917237",
+          "dataset_version": "royalebench/royalebench-tactics@3",
+          "model": "anthropic/claude-opus-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 50.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "05-successive-threats-mirror",
+      "group": "opus_failed",
+      "source_dataset": "royalebench/royalebench-v4@2",
+      "package_sha256": "cffeba40bd3d2610beec0c340565632f95dc14baf493bb3503a58303eeed5113",
+      "evidence": [
+        {
+          "run_id": "941173e3-ba01-4cb9-8374-a5dfd8e7ae88",
+          "dataset_version": "royalebench/royalebench-v4@2",
+          "model": "anthropic/claude-opus-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 741.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "06-unequal-threats",
+      "group": "sonnet_pass_haiku_fail",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "8240bf470e1362cc6ea10125ab786f3878ff7da5674782cf804b700a2caf4276",
+      "evidence": [
+        {
+          "run_id": "37a44c9f-870b-40ee-811c-ac4b862114d6",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-sonnet-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 1917.0,
+          "rejected_actions": 0.0
+        },
+        {
+          "run_id": "315772c0-ae81-4214-9afa-096d253643bd",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-haiku-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 1978.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "07-counterpush",
+      "group": "haiku_passed",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "1009826bad0236f56bdce6d87faa82b97cc4549ce41c06ac988c12523121ba65",
+      "evidence": [
+        {
+          "run_id": "315772c0-ae81-4214-9afa-096d253643bd",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-haiku-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 1510.0,
+          "rejected_actions": 0.0
+        },
+        {
+          "run_id": "37a44c9f-870b-40ee-811c-ac4b862114d6",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-sonnet-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 0.0,
+          "rejected_actions": 1.0
+        }
+      ]
+    },
+    {
+      "task_id": "08-cycle-to-lethal-plus",
+      "group": "opus_failed",
+      "source_dataset": "royalebench/royalebench-v4@2",
+      "package_sha256": "f421dcc57fd7f1515f19820f1ad732b1ac8ac6c4cc29bdec7addee9c57fdfd9c",
+      "evidence": [
+        {
+          "run_id": "941173e3-ba01-4cb9-8374-a5dfd8e7ae88",
+          "dataset_version": "royalebench/royalebench-v4@2",
+          "model": "anthropic/claude-opus-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 458.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "09-tower-race-defend",
+      "group": "sonnet_pass_haiku_fail",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "ef0b24c3ac694745c829932c498a0a8c43e54ae8aaf67355fa72a67dd0e060c2",
+      "evidence": [
+        {
+          "run_id": "37a44c9f-870b-40ee-811c-ac4b862114d6",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-sonnet-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 0.0,
+          "rejected_actions": 0.0
+        },
+        {
+          "run_id": "315772c0-ae81-4214-9afa-096d253643bd",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-haiku-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 0.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 305.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    },
+    {
+      "task_id": "10-protect-the-lead",
+      "group": "haiku_passed",
+      "source_dataset": "royalebench/royalebench-v3@2",
+      "package_sha256": "c4bb48e87a95c01a07300dac8dc26056be38a71657cae9f3e377e7498406cc1b",
+      "evidence": [
+        {
+          "run_id": "315772c0-ae81-4214-9afa-096d253643bd",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-haiku-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 0.0,
+          "rejected_actions": 0.0
+        },
+        {
+          "run_id": "37a44c9f-870b-40ee-811c-ac4b862114d6",
+          "dataset_version": "royalebench/royalebench-v3@2",
+          "model": "anthropic/claude-sonnet-5-5",
+          "harness": "claude_code-v1.0.0",
+          "provider": "modal",
+          "reward": 1.0,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "tower_damage": 253.0,
+          "rejected_actions": 0.0
+        }
+      ]
+    }
+  ],
+  "note": "Each model reward is one attempt on the listed source revision. Source task folders are copied byte-for-byte; v5 is a curated dataset, not a change to gameplay or grading.",
+  "source_runs": [
+    {
+      "run_id": "72a98358-fdd7-41d4-9b24-9eb7f7917237",
+      "dataset_version": "royalebench/royalebench-tactics@3",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 7,
+      "agent_attempts": [],
+      "status": "FINISHED",
+      "started_at_utc": "2026-11-15T09:11:18.542452",
+      "finished_at_utc": "2026-11-15T09:14:38.058165",
+      "task_count": 7
+    },
+    {
+      "run_id": "941173e3-ba01-4cb9-8374-a5dfd8e7ae88",
+      "dataset_version": "royalebench/royalebench-v4@2",
+      "model": "anthropic/claude-opus-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 5,
+      "agent_attempts": [],
+      "status": "FINISHED",
+      "started_at_utc": "2026-11-15T09:12:14.981082",
+      "finished_at_utc": "2026-11-15T09:15:31.261027",
+      "task_count": 5
+    },
+    {
+      "run_id": "7bf87ee1-d3e7-413d-9615-1c1d36503168",
+      "dataset_version": "royalebench/royalebench-tactics@3",
+      "model": "anthropic/claude-sonnet-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 7,
+      "agent_attempts": [],
+      "status": "FINISHED",
+      "started_at_utc": "2026-11-15T09:07:04.605305",
+      "finished_at_utc": "2026-11-15T09:10:10.323941",
+      "task_count": 7
+    },
+    {
+      "run_id": "37a44c9f-870b-40ee-811c-ac4b862114d6",
+      "dataset_version": "royalebench/royalebench-v3@2",
+      "model": "anthropic/claude-sonnet-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 10,
+      "agent_attempts": [],
+      "status": "FINISHED",
+      "started_at_utc": "2026-11-15T08:33:12.527002",
+      "finished_at_utc": "2026-11-15T08:37:03.760599",
+      "task_count": 11
+    },
+    {
+      "run_id": "898ab4c9-52df-40e0-9e7c-ad8a5031ed09",
+      "dataset_version": "royalebench/royalebench-tactics@3",
+      "model": "anthropic/claude-haiku-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 3,
+      "agent_attempts": [],
+      "status": "FINISHED",
+      "started_at_utc": "2026-11-15T09:42:01.324918",
+      "finished_at_utc": "2026-11-15T09:44:58.268991",
+      "task_count": 3
+    },
+    {
+      "run_id": "315772c0-ae81-4214-9afa-096d253643bd",
+      "dataset_version": "royalebench/royalebench-v3@2",
+      "model": "anthropic/claude-haiku-5-5",
+      "harness": "claude_code-v1.0.0",
+      "provider": "modal",
+      "concurrency": 6,
+      "agent_attempts": [],
+      "status": "FINISHED",
+      "started_at_utc": "2026-11-15T09:35:42.594705",
+      "finished_at_utc": "2026-11-15T09:41:21.354092",
+      "task_count": 11
+    }
+  ]
+}

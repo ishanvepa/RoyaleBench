@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench Win"
+kind = "eval"
+description = "4 strategic overtime continuations. Success requires winning the actual match."

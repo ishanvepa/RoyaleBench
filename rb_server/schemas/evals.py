@@ -33,6 +33,7 @@ class EvalsSettingsOut(BaseModel):
     benchmark: str
     provider: str
     default_agent: str
+    default_dataset: str
     default_concurrency: int
     max_concurrency: int
     confirm_over_tasks: int
@@ -69,6 +70,10 @@ class JobRow(BaseModel):
     total: int
     progress: float
     score: float | None = None
+    cost_usd: float | None = None
+    cost_per_task: float | None = None
+    cost_known: int = 0
+    costs_pending: int = 0
     started_by: str
     started_at: datetime | None = None
     duration_s: float | None = None
@@ -113,6 +118,7 @@ class TaskRow(BaseModel):
     finished_at: datetime | None = None
     reward: float | None = None
     solved: bool = False
+    cost_usd: float | None = None
 
 
 class TaskList(BaseModel):
@@ -144,6 +150,34 @@ class TraceStep(BaseModel):
     tool: str | None = None  # tool name, set on tool_use steps and on the tool_result that answers them
 
 
+class ModalModelCost(BaseModel):
+    model: str
+    app: str
+    object_id: str | None = None
+    cost_usd: float | None = None
+    cost_by_resource: dict[str, float] = {}
+    intervals: int
+    error: str | None = None
+
+
+class ModalBillingOut(BaseModel):
+    workspace: str | None = None
+    start: str | None = None
+    end: str | None = None
+    updated_at: str | None = None
+    error: str | None = None
+    syncing: bool
+    cost_usd: float | None = None
+    models: list[ModalModelCost]
+
+
+class InferencePricing(BaseModel):
+    rate_version: str
+    rate_source: str
+    rates_usd_per_million: dict[str, str]
+    cost_by_resource_usd: dict[str, str]
+
+
 class TraceOut(BaseModel):
     available: bool
     final_message: str = ""
@@ -153,6 +187,19 @@ class TraceOut(BaseModel):
     input_tokens: int | None = None
     output_tokens: int | None = None
     cache_read_tokens: int | None = None
+    reasoning_tokens: int | None = None
+    api_calls: int | None = None
+    cost_source: str | None = None
+    cost_note: str | None = None
+    inference_cost_usd_exact: str | None = None
+    inference_pricing: InferencePricing | None = None
+
+
+class ReplayOut(BaseModel):
+    available: bool
+    html: str = ""
+    partial: bool = False
+    message: str = ""
 
 
 class LogLine(BaseModel):
@@ -266,6 +313,23 @@ class BenchmarkDetail(BaseModel):
     tasks: list[TaskInfo]
     errors: list[str] = []
     valkyrie_error: str | None = None
+
+
+class TaskRankingRow(BaseModel):
+    task: str
+    rank: int | None = None
+    attempts: int
+    solved: int
+    pass_rate: float | None = None
+    cost_per_task: float | None = None
+    cost_known: int
+    infra_errors: int
+
+
+class TaskRankingOut(BaseModel):
+    rows: list[TaskRankingRow]
+    runs_considered: int
+    costs_pending: int
 
 
 class FileInfo(BaseModel):

@@ -1,0 +1,83 @@
+{
+  "task": "02-sustained-tower-race",
+  "config_sha256": "95c91587b7663cdd668633223816acb3af534ae77f4ee7dc60f3901b48890eab",
+  "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+  "reference_log_sha256": "d0c8243a7b5a621d7e71be9e1799f2744d0c439779beafe01049072050e8ac29",
+  "reward": 1,
+  "integrity": 1,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "spell-rush": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0,
+    "partial": 0.0
+  },
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2514,
+    "ticks": 5741,
+    "tower_damage": 0,
+    "spent_elixir": 15,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      },
+      {
+        "decision": 1,
+        "card": "Fireball",
+        "x": 63000,
+        "y": 414000,
+        "cost": 4
+      },
+      {
+        "decision": 2,
+        "card": "Minions",
+        "x": 63000,
+        "y": 189000,
+        "cost": 3
+      },
+      {
+        "decision": 3,
+        "card": "Archer",
+        "x": 63000,
+        "y": 261000,
+        "cost": 3
+      },
+      {
+        "decision": 4,
+        "card": "Zap",
+        "x": 99000,
+        "y": 369000,
+        "cost": 2
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 5480,
+        "card": "Minions",
+        "x": 9000,
+        "y": 333000
+      },
+      {
+        "tick": 5520,
+        "card": "Tombstone",
+        "x": 117000,
+        "y": 405000
+      }
+    ],
+    "elapsed_s": 17.05,
+    "rejected_actions": 0
+  },
+  "decisions": 9,
+  "frontier_model_runs": [],
+  "reference_policy": "explicit defensive opening followed by privileged Planner; actual log is the solvability proof"
+}

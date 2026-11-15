@@ -3,9 +3,10 @@
     uv run --frozen python -m cr_arena.check_live --seconds 30
     uv run --frozen python -m cr_arena.check_live --full-games --output /tmp/live-check.json
 
-Run against a disposable public-mode server: this starts games and saves completed
-matches. It needs five free slots. The scripted human simply cycles affordable
-cards into valid positions; it is a transport/load check, not a bot benchmark.
+Run against a disposable public-mode server: this starts unranked games and saves
+completed replays without changing the leaderboard. It needs five free slots.
+The scripted human simply cycles affordable cards into valid positions; it is a
+transport/load check, not a bot benchmark.
 """
 
 from __future__ import annotations
@@ -125,9 +126,9 @@ async def check(url: str, seconds: float, full_games: bool) -> dict:
             await until(ws, 'hello')
         for i, ws in enumerate(sockets[:5]):
             deck = list(CLASSIC_DECKS)[i]
-            await ws.send(json.dumps({'t': 'start', 'deck': deck, 'seed': i + 11}))
+            await ws.send(json.dumps({'t': 'start', 'deck': deck, 'seed': i + 11, 'ranked': False}))
         initial = await asyncio.gather(*(until(ws, 'init') for ws in sockets[:5]))
-        await sockets[5].send(json.dumps({'t': 'start', 'deck': 'giant-beatdown'}))
+        await sockets[5].send(json.dumps({'t': 'start', 'deck': 'giant-beatdown', 'ranked': False}))
         refused = await until(sockets[5], 'busy')
         if refused['n'] != 5:
             raise RuntimeError(f'Expected five occupied slots: {refused}')
@@ -135,7 +136,7 @@ async def check(url: str, seconds: float, full_games: bool) -> dict:
         # Four sockets remain open. Quit the first and reuse its slot with the sixth.
         await sockets[0].send(json.dumps({'t': 'quit'}))
         for _ in range(50):
-            await sockets[5].send(json.dumps({'t': 'start', 'deck': 'giant-beatdown'}))
+            await sockets[5].send(json.dumps({'t': 'start', 'deck': 'giant-beatdown', 'ranked': False}))
             response = json.loads(await sockets[5].recv())
             if response['t'] == 'init':
                 break

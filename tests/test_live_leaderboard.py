@@ -32,6 +32,12 @@ class LeaderboardTests(unittest.TestCase):
                     for name in ("  Alice,   the Great  ", "New arena name"):
                         with client.websocket_connect("/ws") as ws:
                             self.assertEqual(ws.receive_json()["t"], "hello")
+                            ws.send_json({"t": "start", "deck": "giant-beatdown"})
+                            self.assertEqual(ws.receive_json()["t"], "invalid")
+                            for ranked in (None, "false", 0, []):
+                                ws.send_json({"t": "start", "deck": "giant-beatdown",
+                                              "player_name": name, "ranked": ranked})
+                                self.assertEqual(ws.receive_json()["t"], "invalid")
                             for invalid in (None, "", "a" * 25, [], "A\x00B"):
                                 ws.send_json({"t": "start", "deck": "giant-beatdown", "player_name": invalid})
                                 self.assertEqual(ws.receive_json()["t"], "invalid")
@@ -43,6 +49,7 @@ class LeaderboardTests(unittest.TestCase):
                             session = next(iter(live.ACTIVE))
                             self.assertEqual(session.player_id, identity)
                             self.assertEqual(session.player_name, player_name(name))
+                            self.assertIs(session.leaderboard, client.app.state.leaderboard)
                     # Starting and disconnecting are not leaderboard results.
                     self.assertEqual(client.get("/leaderboard").json()["total"], 0)
 

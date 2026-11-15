@@ -47,8 +47,10 @@ sends it as `player_name` in the WebSocket start message. The server normalizes
 whitespace and Unicode, rejects invalid names before allocating a game, and
 stores the validated name with completed results. **Edit name** returns to the
 lobby; changing a name keeps the same record and updates its displayed name
-after the next completed win or loss. Older clients that omit the name retain
-the generated `Player ABC123` fallback.
+after the next completed win or loss. Ranked starts require a name on the server,
+including for older clients. Scripted checks send `ranked: false`; these may omit
+the name and retain a generated `Player ABC123` label during play, but their
+completed results never enter the leaderboard. Replays still save normally.
 
 A persistent browser cookie identifies each player independently of their name.
 The cookie lasts one year; clearing cookies, changing browsers, or using a
@@ -177,9 +179,9 @@ Reference: [Modal Servers](https://modal.com/docs/guide/servers),
 
 ## Check five-match responsiveness
 
-Use a disposable server with all five slots free. The check starts five scripted
-players using different decks against Planner's fixed Hog Cycle deck, verifies a
-sixth start is refused, deploys cards using the pushed masks, and verifies a freed
+Use a disposable server with all five slots free. The check starts five unranked
+scripted players using different decks against Planner's fixed Hog Cycle deck,
+verifies a sixth start is refused, deploys cards using the pushed masks, and verifies a freed
 slot can be reused. It also requires each bot to make a successful play.
 
 ```bash

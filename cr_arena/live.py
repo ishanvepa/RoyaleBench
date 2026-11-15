@@ -117,10 +117,11 @@ class Session:
 
     def __init__(self, ws: WebSocket, my_deck: str, opp_deck: str, seed: int, bot: str = "heuristic",
                  *, spec: dict | None = None, leaderboard: Leaderboard | None = None,
-                 player_id: str | None = None, player_name: str | None = None):
+                 player_id: str | None = None, player_name: str | None = None, ranked: bool = True):
         self.ws = ws
         self.match_id = uuid.uuid4().hex
-        self.leaderboard = leaderboard
+        # Scripted checks may save replays without contributing public scores.
+        self.leaderboard = leaderboard if ranked and player_name is not None else None
         self.player_id = player_id or uuid.uuid4().hex
         self.player_name = guest_name(self.player_id) if player_name is None else validate_player_name(player_name)
         self.bot_spec = spec if spec is not None else BOT_SPECS[bot]
@@ -534,7 +535,10 @@ async def socket(ws: WebSocket) -> None:
                 continue
             if m.get("t") == "start":
                 try:
-                    name = validate_player_name(m["player_name"]) if "player_name" in m else None
+                    ranked = m.get("ranked", True)
+                    if type(ranked) is not bool:
+                        raise ValueError("ranked must be true or false.")
+                    name = validate_player_name(m.get("player_name")) if ranked or "player_name" in m else None
                 except ValueError as exc:
                     await ws.send_json({"t": "invalid", "message": str(exc)})
                     continue
@@ -554,7 +558,8 @@ async def socket(ws: WebSocket) -> None:
                     continue
                 try:
                     session = Session(ws, mine, theirs, seed, bot, spec=specs[bot] if fixed else None,
-                                      leaderboard=ws.app.state.leaderboard, player_id=player_id, player_name=name)
+                                      leaderboard=ws.app.state.leaderboard, player_id=player_id, player_name=name,
+                                      ranked=ranked)
                 except Exception:
                     log.exception("could not start live game")
                     await ws.send_json({"t": "error", "message": "Could not start a game. Please try again."})

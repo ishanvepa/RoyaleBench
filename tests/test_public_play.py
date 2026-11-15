@@ -17,7 +17,7 @@ from cr_arena.db import DB
 from cr_arena.leaderboard import Leaderboard
 
 
-START = {"t": "start", "deck": "giant-beatdown", "seed": 11}
+START = {"t": "start", "deck": "giant-beatdown", "seed": 11, "ranked": False}
 
 
 def receive(ws, kind):
@@ -109,7 +109,34 @@ class PublicPlayTests(unittest.TestCase):
                 receive(ws, 'invalid')
             self.assertEqual(len(live.ACTIVE), 1)
             self.assertEqual(next(iter(live.ACTIVE)).player_id, player_id)
+            self.assertIsNone(next(iter(live.ACTIVE)).leaderboard)
             receive(ws, 's')
+
+    def test_unranked_completions_save_replays_without_recording_scores(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            db_path = Path(tmp) / 'arena.db'
+            DB(db_path).close()
+            board = Leaderboard(Path(tmp) / 'leaderboard.csv')
+            with patch.object(live, 'OUT_DIR', Path(tmp)), patch.object(live, 'DB', lambda: DB(db_path)):
+                for name in (None, 'Load check'):
+                    session = live.Session(MemorySocket(), 'giant-beatdown', 'giant-beatdown', 11,
+                                           leaderboard=board, player_name=name, ranked=False)
+                    try:
+                        hp = [list(player.tower_hp) for player in session.game.state.players]
+                        hp[0][1] = 1000
+                        setup = msgspec.structs.replace(session.game.setup, tower_hp=hp)
+                        session.game.engine.reset(session.seed, setup)
+                        session.game.recorder.begin(session.game.engine, session.seed, setup)
+                        session.game.engine.step([], 20_000)
+                        self.assertTrue(session.game.over)
+                        result = session.save()
+                        self.assertEqual(result['winner'], 1)
+                        self.assertTrue(result['saved'], result)
+                    finally:
+                        session.close()
+            self.assertEqual(board.standings('test')['total'], 0)
+            self.assertFalse(board.path.exists())
+            self.assertEqual(len(list((Path(tmp) / 'replays').glob('*.msgpack'))), 2)
 
     def test_worker_failure_slow_socket_and_expiry_free_slot(self):
         async def scenario(kind):

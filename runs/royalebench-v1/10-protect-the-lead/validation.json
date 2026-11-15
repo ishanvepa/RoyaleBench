@@ -1,0 +1,44 @@
+{
+  "task": "10-protect-the-lead",
+  "family": 10,
+  "reference_reward": 1.0,
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2753,
+    "ticks": 3600,
+    "tower_damage": 506,
+    "spent_elixir": 7,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Knight",
+        "x": 63000,
+        "y": 333000,
+        "cost": 3
+      },
+      {
+        "decision": 1,
+        "card": "Tesla",
+        "x": 63000,
+        "y": 243000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 12.0
+  },
+  "wait_success": false,
+  "empty_reward": 0.0,
+  "malformed_reward": 0.0,
+  "deterministic": true,
+  "setup_hash": "9563d19d9ffbcf4e1d12f09da48b5d83c101b608b2712818006d7e5bf248b5a1",
+  "config_sha256": "1202771bd5d30cec670897f297411e815c949f5df6820d9d6ba084f5db9be0b9",
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "reference_log_sha256": "628e7319cc286cf645fe1fd656f205ef9f80eea51c7cd2391f96ee0730a837e8",
+  "reference_decisions": 6,
+  "elapsed_s": 73.748,
+  "frontier_model_run": null
+}

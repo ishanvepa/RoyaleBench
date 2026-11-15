@@ -39,6 +39,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/public_play_validation.json`](docs/public_play_validation.json): historical five-match and ten-match measurements (two Planner workers per match; the seven-match eight-worker deployment is not yet measured), latency limits, and deployment status.
 - [`docs/rendering.md`](docs/rendering.md): lobby miniature, card previews and match result dialog, shared live/replay graphics, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
+- [`docs/royalebench_v1.md`](docs/royalebench_v1.md): RoyaleBench v1 continuation scenarios against Planner, scoring, calibration, release gates, and Harbor/Valkyrie packaging.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from the web app and browse the arena.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
 - [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.

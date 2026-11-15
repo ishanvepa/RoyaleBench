@@ -1,0 +1,13 @@
+{
+  "task": "09-tower-race-commit",
+  "family": 9,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "config_sha256": "d5a5796b2e9ab8ae0fefba8512cdc29d62b112f5026a8525a4108a3a53214fa8",
+  "image": "sha256:d9223521eb5bdd0de58285874dcbd3d54176bb94e7390d69b5383b74e1cd839e",
+  "isolated": true,
+  "restart_verified": true,
+  "network": "none",
+  "elapsed_s": 11.709
+}

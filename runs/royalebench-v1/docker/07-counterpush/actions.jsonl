@@ -1,0 +1,16 @@
+{"decision": 0, "tick": 2900, "move": 1, "label": "1. Giant (5 elixir, troop) @ left bridge", "think_s": 0.032, "wall": 1794722076.818}
+{"decision": 1, "tick": 2940, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.028, "wall": 1794722076.871}
+{"decision": 2, "tick": 2980, "move": 2, "label": "2. Musketeer (4 elixir, troop) @ right bridge", "think_s": 0.03, "wall": 1794722076.923}
+{"decision": 3, "tick": 3020, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.031, "wall": 1794722076.979}
+{"decision": 4, "tick": 3060, "move": 2, "label": "2. Knight (3 elixir, troop) @ right bridge", "think_s": 0.03, "wall": 1794722080.519}
+{"decision": 5, "tick": 3100, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.033, "wall": 1794722080.572}
+{"decision": 6, "tick": 3140, "move": 1, "label": "1. Archer (3 elixir, troop) @ left bridge", "think_s": 0.03, "wall": 1794722083.785}
+{"decision": 7, "tick": 3180, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.039, "wall": 1794722090.164}
+{"decision": 8, "tick": 3220, "move": 2, "label": "2. Minions (3 elixir, troop) @ right bridge", "think_s": 0.033, "wall": 1794722093.291}
+{"decision": 9, "tick": 3300, "move": 1, "label": "1. Cannon (3 elixir, building) @ left bridge", "think_s": 0.032, "wall": 1794722099.534}
+{"decision": 10, "tick": 3380, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.028, "wall": 1794722099.595}
+{"decision": 11, "tick": 3420, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.03, "wall": 1794722101.312}
+{"decision": 12, "tick": 3460, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.03, "wall": 1794722101.364}
+{"decision": 13, "tick": 3500, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.029, "wall": 1794722101.521}
+{"decision": 14, "tick": 3540, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.027, "wall": 1794722101.666}
+{"decision": 15, "tick": 3580, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.028, "wall": 1794722101.804}

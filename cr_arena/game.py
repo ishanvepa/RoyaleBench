@@ -110,7 +110,8 @@ class SeatMemory:
 
 class Game:
     def __init__(self, deck_blue: list[str], deck_red: list[str], seed: int,
-                 decision_ticks: int = 40, record: bool = True, command_delay_ticks: int = 0):
+                 decision_ticks: int = 40, record: bool = True, command_delay_ticks: int = 0,
+                 setup: MatchSetup | None = None):
         self.engine = RustEngine()
         if command_delay_ticks:
             # A play lands this many ticks after it is made, as on the real client (about 21). Live play only:
@@ -125,7 +126,7 @@ class Game:
         self.decision_ticks = decision_ticks
         self.seed = seed
         decks = [deck_ids(deck_blue, self.cards), deck_ids(deck_red, self.cards)]
-        self.setup = MatchSetup(decks=decks)
+        self.setup = setup if setup is not None else MatchSetup(decks=decks)
         self.engine.reset(seed, self.setup)
         self.recorder = ReplayRecorder(frame_every_tick=True) if record else None
         if self.recorder:

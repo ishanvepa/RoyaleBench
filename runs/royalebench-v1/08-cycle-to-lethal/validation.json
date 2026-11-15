@@ -1,0 +1,51 @@
+{
+  "task": "08-cycle-to-lethal",
+  "family": 8,
+  "reference_reward": 1.0,
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2374,
+    "ticks": 5759,
+    "tower_damage": 0,
+    "spent_elixir": 8,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "IceSpirits",
+        "x": 63000,
+        "y": 189000,
+        "cost": 1
+      },
+      {
+        "decision": 1,
+        "card": "Cannon",
+        "x": 63000,
+        "y": 189000,
+        "cost": 3
+      },
+      {
+        "decision": 2,
+        "card": "Fireball",
+        "x": 63000,
+        "y": 459000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 5.95
+  },
+  "wait_success": false,
+  "empty_reward": 0.0,
+  "malformed_reward": 0.0,
+  "deterministic": true,
+  "setup_hash": "6e48217ecf601ef43021a699901efe1b77ea98da24367e796310ff0f5b204ec3",
+  "config_sha256": "15fe9a77ea859506102f67e85b25275d9c11499d59aee99471e009823858556c",
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "reference_log_sha256": "fbecbebc45cfaeb737aaa1b9096c82a30eebc9c19ea5d1038454b4986ac6b7c0",
+  "reference_decisions": 3,
+  "elapsed_s": 6.386,
+  "frontier_model_run": null
+}

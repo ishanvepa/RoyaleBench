@@ -6,7 +6,7 @@ Working submission draft. Bracketed items are unfinished; measured results below
 
 ## Background
 
-Clash Royale asks a player to manage a regenerating resource, choose where and when to deploy units, and balance defense against pressure on the opponent's towers. RoyaleBench tests those decisions through full matches in a simulator.
+Clash Royale asks a player to manage a regenerating resource, choose where and when to deploy units, and balance defense against pressure on the opponent's towers. RoyaleBench tests those decisions through full matches and exact mid-match continuations in a simulator.
 
 - **Resource management:** When should the agent spend elixir or save it?
 - **Spatial reasoning:** Which placement changes an engagement?
@@ -14,7 +14,11 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 [TODO: State the specific capability gap supported by the final results.]
 
-## Results
+## RoyaleBench v1
+
+The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands. Frontier-model results for this dataset are pending; the full-match results below use the earlier benchmark and opponent.
+
+## Preliminary full-match results
 
 The initial full evaluation used Claude Sonnet 4.6 against a fixed rule-based opponent on `royalebench/clash-royale@2`.
 
@@ -70,6 +74,7 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 
 ## Quick guides
 
+- [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from a web app, and browse the original arena (`uv run python -m rb_server`).
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.
 - [Bot setup](docs/bots.md): bot presets, human-play choices, and implementation registry.

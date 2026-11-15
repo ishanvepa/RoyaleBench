@@ -1,0 +1,63 @@
+{
+  "task": "04-tank-and-support",
+  "family": 4,
+  "reference_reward": 1.0,
+  "reference_outcome": {
+    "result": "unfinished",
+    "crowns_for": 0,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.0,
+    "own_tower_damage_frac": 0.3502,
+    "ticks": 2900,
+    "tower_damage": 1843,
+    "spent_elixir": 8,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "InfernoTower",
+        "x": 63000,
+        "y": 189000,
+        "cost": 5
+      },
+      {
+        "decision": 2,
+        "card": "Knight",
+        "x": 63000,
+        "y": 243000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 2620,
+        "card": "Musketeer",
+        "x": 261000,
+        "y": 315000
+      },
+      {
+        "tick": 2700,
+        "card": "Knight",
+        "x": 63000,
+        "y": 315000
+      },
+      {
+        "tick": 2780,
+        "card": "Minions",
+        "x": 261000,
+        "y": 315000
+      }
+    ],
+    "elapsed_s": 20.0
+  },
+  "wait_success": false,
+  "empty_reward": 0.0,
+  "malformed_reward": 0.0,
+  "deterministic": true,
+  "setup_hash": "4fd37b46de20f1e15f5cc7175e2699646604b391f7cc53603cb8657b033bbb3f",
+  "config_sha256": "e7f02e4e782db24c553fae10f356a6a62e3e017e12338226e9d33bce66bbf22b",
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "reference_log_sha256": "95d15b086720e0fd7eb42cccbc097264094988131ce043b1c0e688173489fb2d",
+  "reference_decisions": 3,
+  "elapsed_s": 116.313,
+  "frontier_model_run": null
+}

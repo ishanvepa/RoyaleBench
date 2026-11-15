@@ -1,0 +1,46 @@
+{
+  "benchmark": "RoyaleBench v1",
+  "date": "2026-11-14",
+  "windows_pytest": {
+    "command": "python -m pytest -q tests/test_royalebench_v1.py tests/test_royale_task.py -k 'not server'",
+    "passed": 18,
+    "deselected": 1
+  },
+  "linux_pytest": {
+    "command": "python -m pytest -q -p no:cacheprovider tests/test_royale_task.py tests/test_planner.py",
+    "passed": 15,
+    "note": "Includes the real Unix socket server and Planner pool tests; overlaps Windows coverage."
+  },
+  "docker_reference_validation": "docker/validation.json",
+  "replay_frame_hash_validation": "docker/trace_validation.json",
+  "git_diff_check": "passed",
+  "frontier_model_runs": [],
+  "valkyrie_publication": null,
+  "upstream_planner_commit": "6cc1875",
+  "windows_planner_registry_pytest": {
+    "command": "python -m pytest -q tests/test_planner.py tests/test_bot_registry.py tests/test_royale_task.py -k 'not server'",
+    "passed": 21,
+    "deselected": 1
+  },
+  "public_play_pytest": {
+    "command": "python -m pytest -q tests/test_public_play.py",
+    "passed": 9,
+    "subtests_passed": 5,
+    "note": "Completed successfully. Cleaned 54 orphaned Windows pool workers after this run; validation jobs interrupted by memory pressure were rerun."
+  },
+  "web": {
+    "api_types": "passed",
+    "typecheck": "passed",
+    "lint": "passed",
+    "tests": {
+      "command": "npm run test -- --maxWorkers=1",
+      "passed": 205,
+      "note": "Initial default-worker run had one loading timeout in an unchanged legacy match test; complete rerun passed."
+    },
+    "production_build": "passed"
+  },
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "packaged_sources_match": true,
+  "docker_runnable_tasks_passed": 11,
+  "replay_traces_passed": 11
+}

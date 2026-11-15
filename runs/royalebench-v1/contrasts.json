@@ -1,0 +1,65 @@
+[
+  {
+    "task": "03-spell-placement",
+    "opening": "minions",
+    "objective_met": true,
+    "damage": 107,
+    "elapsed_s": 12.0
+  },
+  {
+    "task": "03-spell-placement",
+    "opening": "balloon",
+    "objective_met": false,
+    "damage": 214,
+    "elapsed_s": 12.0
+  },
+  {
+    "task": "03-spell-placement",
+    "opening": "unrelated-tower",
+    "objective_met": false,
+    "damage": 1094,
+    "elapsed_s": 12.0
+  },
+  {
+    "task": "09-tower-race-commit",
+    "opening": "commit-fireball",
+    "objective_met": true,
+    "damage": 0,
+    "elapsed_s": 1.95
+  },
+  {
+    "task": "09-tower-race-commit",
+    "opening": "defend-cannon",
+    "objective_met": true,
+    "damage": 0,
+    "elapsed_s": 2.1
+  },
+  {
+    "task": "09-tower-race-commit",
+    "opening": "wait",
+    "objective_met": false,
+    "damage": 305,
+    "elapsed_s": 2.05
+  },
+  {
+    "task": "09-tower-race-defend",
+    "opening": "commit-fireball",
+    "objective_met": false,
+    "damage": 305,
+    "elapsed_s": 1.85
+  },
+  {
+    "task": "09-tower-race-defend",
+    "opening": "defend-cannon",
+    "objective_met": true,
+    "damage": 0,
+    "elapsed_s": 2.1
+  },
+  {
+    "task": "09-tower-race-defend",
+    "opening": "wait",
+    "objective_met": false,
+    "damage": 305,
+    "elapsed_s": 1.85
+  }
+]

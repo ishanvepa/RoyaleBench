@@ -28,7 +28,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 ## Documentation index
 
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
-- [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
+- [`README.md`](README.md): links to the deployed writeup, benchmark tasks, results, validation, run guide, playable site, and demo.
 - [`demo/README.md`](demo/README.md): active 67-second Remotion demo, local export, media layout, and production status.
 - [`demo/remotion/README.md`](demo/remotion/README.md): editable video project, official Remotion skills used, asset preparation, preview, and export commands.
 - [`demo/storyboard.md`](demo/storyboard.md): timed headliner sequence and model/reference comparison.

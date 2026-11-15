@@ -2,9 +2,12 @@
 
 New local matches and instrumented Valkyrie tasks record the same versioned evidence format. Existing runs are left as they are. The [implementation plan](data_collection_plan.md) describes the design; [the JSON Schema](telemetry.schema.json) specifies the record envelope.
 
-The shared scenario referee also supports telemetry when rebuilding RoyaleBench v1 tasks. Existing
-v1 task snapshots retain their calibrated code; rebuilding and publishing them requires the v1
-validation gates and a new dataset revision, as described in the [v1 guide](royalebench_v1.md).
+RoyaleBench v1 continuation tasks are instrumented in **`royalebench/royalebench-v1@2`**
+(tags `v2` and `telemetry-v1`). This revision carries full replay checkpoints and standardized telemetry
+for all eleven runnable tasks. Revision `@1` retains its original action-log-only game artifacts;
+new runs must select `@2` or its current tag to receive the capture. Scenario configurations,
+instructions, reference actions, opponent and scoring are unchanged. Rebuilding future snapshots
+requires the validation gates in the [v1 guide](royalebench_v1.md).
 
 ## What gets captured
 

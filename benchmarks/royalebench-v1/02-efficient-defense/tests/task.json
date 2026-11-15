@@ -93,5 +93,16 @@
     "spend_budget": 4,
     "damage_limit": 400
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "02-efficient-defense",
+  "instruction_sha256": "226fd658fbed5f916fd5eadfb21a01199ff28596a419ebcf2a4a9be004d48487",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

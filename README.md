@@ -16,7 +16,7 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 ## RoyaleBench v1
 
-The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands. Frontier-model results for this dataset are pending; the full-match results below use the earlier benchmark and opponent.
+The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. Use `royalebench/royalebench-v1@2` for automatic replay and telemetry capture. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands. The full-match results below use the earlier benchmark and opponent.
 
 ## Preliminary full-match results
 
@@ -76,7 +76,7 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
 - [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).
-- [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from a web app, and browse the original arena (`uv run python -m rb_server`).
+- [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch task replays and agent traces, and browse the original arena (`uv run python -m rb_server`).
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.
 - [Bot setup](docs/bots.md): bot presets, human-play choices, and implementation registry.
 - [Search v2](docs/search_v2.md): CPU search implementation and head-to-head evaluation against the original bot.

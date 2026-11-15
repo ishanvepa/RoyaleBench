@@ -218,6 +218,10 @@ class ResultsCache:
     def task_dir(self, run_id: str, task_id: str) -> Path:
         return self._run(run_id) / "tasks" / self._safe(task_id)
 
+    def replay_dir(self, run_id: str, task_id: str) -> Path:
+        # Separate from agent output: trace/cost downloads replace the entire task_dir.
+        return self._run(run_id) / "replays" / self._safe(task_id)
+
     def has_task(self, run_id: str, task_id: str) -> bool:
         return (self.task_dir(run_id, task_id) / ".done").exists()
 

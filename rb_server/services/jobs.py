@@ -21,6 +21,7 @@ from ..schemas.evals import (
     LogLine,
     LogsOut,
     QueueInfo,
+    ReplayOut,
     TaskDetail,
     TaskList,
     TaskRow,
@@ -146,6 +147,22 @@ def task_trace(ctx: AppContext, run_id: str, task_id: str) -> TraceOut:
     return TraceOut(available=True, final_message=trace["final_message"], steps=[TraceStep(**s) for s in trace["steps"]],
                     steps_total=trace["steps_total"], cost_usd=m.get("cost"), input_tokens=m.get("input_tokens"),
                     output_tokens=m.get("output_tokens"), cache_read_tokens=m.get("cache_read_tokens"))
+
+
+def task_replay(ctx: AppContext, run_id: str, task_id: str) -> ReplayOut:
+    from rb_evals.replays import task_replay as load_replay
+
+    # Check identity and state before consulting the disk cache, including unknown task IDs.
+    run = ctx.valkyrie.run(run_id)
+    task = ctx.valkyrie.task(run_id, task_id)
+    if task["status"] not in ("FINISHED", "ERROR", "STOPPED"):
+        return ReplayOut(available=False, message="The game replay is available after this task finishes or stops.")
+    try:
+        return ReplayOut(**load_replay(ctx.valkyrie, ctx.cache, run_id, task_id, final=run["status"] == "FINISHED"))
+    except ValkyrieError:
+        raise
+    except Exception as exc:
+        raise ApiError(502, "bad_gateway", f"Could not render this replay: {type(exc).__name__}: {exc}") from exc
 
 
 def job_logs(ctx: AppContext, run_id: str, *, task_id: str | None, query: str | None, limit: int) -> LogsOut:

@@ -99,5 +99,16 @@
       "y": 6.5
     }
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "05-successive-threats",
+  "instruction_sha256": "a6819ce880bc84c90f031621b019b957a7c6ad65ede7afec566b6f9dd15e934a",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

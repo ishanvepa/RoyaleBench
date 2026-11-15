@@ -98,13 +98,25 @@ def play(cfg, path, chooser=None):
     return ref
 
 
-def calibrate(cfg, out):
+def calibrate(cfg, out, *, reuse_reference=False):
     t0 = time.perf_counter()
     d = out / cfg["id"]
     log = d / "reference.jsonl"
-    ref = play(cfg, log)
+    previous = None
+    if reuse_reference:
+        previous = json.loads((d / "validation.json").read_text())
+        config_hash = hashlib.sha256(json.dumps(cfg, sort_keys=True).encode()).hexdigest()
+        if previous["config_sha256"] != config_hash or previous["reference_reward"] != 1:
+            raise ValueError(f"{cfg['id']}: only unchanged, previously winning scenarios may reuse references")
+        if hashlib.sha256(log.read_bytes()).hexdigest() != previous["reference_log_sha256"]:
+            raise ValueError(f"{cfg['id']}: reference log differs from prior validation")
+        ref = make_referee(cfg)
+    else:
+        ref = play(cfg, log)
     first = verify(cfg, log, None)
     second = verify(cfg, log, None)
+    if previous and first["outcome"] != previous["reference_outcome"]:
+        raise ValueError(f"{cfg['id']}: instrumentation changed the reference outcome")
     idle = play(cfg, d / "wait.jsonl", lambda r: 0)
     # A zero-length log differs from explicitly playing wait to completion.
     empty = d / "empty.jsonl"
@@ -155,6 +167,7 @@ def main():
     ap.add_argument("--tasks", type=int, nargs="*")
     ap.add_argument("--out", type=Path, default=Path("runs/royalebench-v1"))
     ap.add_argument("--contrasts", action="store_true", help="compare fixed spell and tower-race openings instead of full calibration")
+    ap.add_argument("--reuse-reference", action="store_true", help="revalidate existing winning logs for unchanged scenarios, including fresh negative controls")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     cs = [c for c in catalog() if not args.tasks or c["family"] in args.tasks]
@@ -162,8 +175,9 @@ def main():
         contrasts(cs, args.out)
         return
     for c in cs:
-        calibrate(c, args.out)
-    results = [json.loads(p.read_text()) for p in sorted(args.out.glob("*/validation.json"))]
+        calibrate(c, args.out, reuse_reference=args.reuse_reference)
+    results = [json.loads(p.read_text()) for c in catalog()
+               if (p := args.out / c["id"] / "validation.json").is_file()]
     summary = dict(benchmark=TITLE, version=VERSION,
                    commit=subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
                    python=platform.python_version(), platform=platform.platform(),

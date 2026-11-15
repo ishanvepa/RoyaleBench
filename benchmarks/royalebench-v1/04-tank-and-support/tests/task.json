@@ -99,5 +99,16 @@
     "spend_budget": 9,
     "damage_limit": 10000
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "04-tank-and-support",
+  "instruction_sha256": "0ee3ab8855ec685a9341ed2717dc515c350dc11ff1566a4fd95b87ff87173999",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

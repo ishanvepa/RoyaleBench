@@ -10,9 +10,13 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import shutil
 import subprocess
 import time
 from pathlib import Path
+
+from royalegym import RustEngine
+from royalegym.replay import load_trace, verify_trace
 
 from .royalebench_v1 import protocol_digest
 
@@ -34,6 +38,8 @@ def validate(task, image, out):
     name = f"royale-v1-{task.name}"
     dest = (out / task.name).resolve()
     dest.mkdir(parents=True, exist_ok=True)
+    # docker cp nests into an existing directory; replace only this generated export.
+    shutil.rmtree(dest / "carried", ignore_errors=True)
     private_cfg = mount(task / "environment/task.json", "/opt/referee/task.json")
     docker("run", "-d", "--name", name, "--network", "none", "--mount", private_cfg,
            "--mount", mount(task / "solution", "/solution"), image, "sleep", "infinity")
@@ -45,13 +51,18 @@ def validate(task, image, out):
         text = docker("exec", "-u", "player", name, "bash", "/solution/solve.sh")
         if "GAME OVER: scenario SUCCESS" not in text:
             raise RuntimeError(text)
-        docker("exec", "-u", "player", name, "bash", "-c", "test ! -r /var/lib/royale/actions.jsonl")
+        docker("exec", "-u", "player", name, "bash", "-c",
+               "test ! -r /var/lib/royale/actions.jsonl && "
+               "test ! -r /var/lib/royale/capture/observations.jsonl && "
+               "test ! -r /var/lib/royale/replay.msgpack")
+        docker("cp", f"{name}:/var/lib/royale/replay.msgpack", dest / "before_restart.msgpack")
         # A restart must retain the completed scenario and replay its authenticated log.
         docker("exec", name, "pkill", "-u", "referee", "-f", "cr_arena.royale_task")
         resumed = docker("exec", "-u", "player", name, "cr")
         if "GAME OVER: scenario SUCCESS" not in resumed:
             raise RuntimeError("restart lost the scenario: " + resumed)
         docker("cp", f"{name}:/var/lib/royale/actions.jsonl", dest / "actions.jsonl")
+        docker("cp", f"{name}:/var/lib/royale", dest / "carried")
     finally:
         docker("rm", "-f", name)
     output = docker("run", "--rm", "--network", "none", "--mount", private_cfg,
@@ -62,11 +73,30 @@ def validate(task, image, out):
     report = json.loads((dest / "match_report.json").read_text())
     if report["rewards"]["reward"] != 1 or report["rewards"]["integrity"] != 1:
         raise RuntimeError(json.dumps(report))
+    before = load_trace(dest / "before_restart.msgpack")
+    carried = load_trace(dest / "carried/replay.msgpack")
+    verified = load_trace(dest / "replay.msgpack")
+    hashes = lambda trace: [(f.tick, f.state_hash) for f in trace.frames]
+    if hashes(before) != hashes(carried) or hashes(carried) != hashes(verified):
+        raise RuntimeError("carried, restarted and independently verified frames differ")
+    for trace in (carried, verified):
+        problems = verify_trace(trace, RustEngine())
+        if problems:
+            raise RuntimeError(str(problems[:3]))
+    capture = json.loads((dest / "carried/capture/manifest.json").read_text())
+    if capture["capture_errors"] or capture["status"] != "completed":
+        raise RuntimeError("incomplete carried capture: " + json.dumps(capture))
+    for table in ("observations", "commands", "states", "events", "matches"):
+        if not (dest / f"carried/capture/{table}.jsonl").stat().st_size:
+            raise RuntimeError(f"empty carried {table}")
     result = dict(task=task.name, family=cfg["family"], reward=1, integrity=1,
                   protocol_sha256=protocol_digest(),
                   config_sha256=hashlib.sha256(json.dumps(cfg, sort_keys=True).encode()).hexdigest(),
                   image=docker("image", "inspect", image, "--format", "{{.Id}}").strip(),
-                  isolated=True, restart_verified=True, network="none", elapsed_s=round(time.perf_counter()-started, 3))
+                  isolated=True, restart_verified=True, capture_complete=True,
+                  trace_frames=len(carried.frames), replay_hashes_verified=True,
+                  capture_schema_version=capture["schema_version"],
+                  network="none", elapsed_s=round(time.perf_counter()-started, 3))
     (dest / "docker_validation.json").write_text(json.dumps(result, indent=2)+"\n")
     print(json.dumps(result), flush=True)
     return result

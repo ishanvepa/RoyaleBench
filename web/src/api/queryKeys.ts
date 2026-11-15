@@ -10,6 +10,7 @@ export const qk = {
     jobTasks: (runId: string) => ["evals", "job", runId, "tasks"] as const,
     jobTask: (runId: string, taskId: string) => ["evals", "job", runId, "task", taskId] as const,
     jobTrace: (runId: string, taskId: string) => ["evals", "job", runId, "trace", taskId] as const,
+    jobReplay: (runId: string, taskId: string) => ["evals", "job", runId, "replay", taskId] as const,
     jobLogs: (runId: string, params: object) => ["evals", "job", runId, "logs", params] as const,
     jobErrors: (runId: string) => ["evals", "job", runId, "errors"] as const,
     preview: (body: object) => ["evals", "preview", body] as const,

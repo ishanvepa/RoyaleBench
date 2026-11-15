@@ -3854,6 +3854,34 @@
         "title": "QueueSummary",
         "type": "object"
       },
+      "ReplayOut": {
+        "properties": {
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          },
+          "html": {
+            "default": "",
+            "title": "Html",
+            "type": "string"
+          },
+          "message": {
+            "default": "",
+            "title": "Message",
+            "type": "string"
+          },
+          "partial": {
+            "default": false,
+            "title": "Partial",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "available"
+        ],
+        "title": "ReplayOut",
+        "type": "object"
+      },
       "ResumeIn": {
         "properties": {
           "concurrency": {
@@ -7183,6 +7211,133 @@
           }
         },
         "summary": "Get Task",
+        "tags": [
+          "evals: jobs"
+        ]
+      }
+    },
+    "/api/evals/jobs/{run_id}/tasks/{task_id}/replay": {
+      "get": {
+        "operationId": "get_replay_api_evals_jobs__run_id__tasks__task_id__replay_get",
+        "parameters": [
+          {
+            "description": "Valkyrie run id",
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "description": "Valkyrie run id",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9-]{0,63}$",
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Task id (the task folder name)",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "description": "Task id (the task folder name)",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+              "title": "Task Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplayOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Recorded task gameplay, rendered on demand for a sandboxed iframe",
         "tags": [
           "evals: jobs"
         ]

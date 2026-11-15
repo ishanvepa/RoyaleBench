@@ -126,6 +126,22 @@ def test_capture_resumes_ids_and_config_is_checked(tmp_path):
         Capture(tmp_path, source="referee", config={"seed": 2})
 
 
+def test_archived_export_accepts_symlinked_source_paths(tmp_path, monkeypatch):
+    import rb_evals.archive as archive
+
+    alias = tmp_path / "collector-alias"
+    try:
+        alias.symlink_to(Path(archive.__file__).resolve().parent, target_is_directory=True)
+    except OSError:
+        pytest.skip("directory symlinks unavailable")
+    monkeypatch.setattr(archive, "__file__", str(alias / "archive.py"))
+    bundle = archive.enroll("symlink-export", root=tmp_path / "bundles")
+    archive.seal_bundle(bundle)
+    assert not archive.verify_bundle(bundle)
+    metadata = json.loads((bundle / "collector_manifest.json").read_text())
+    assert "rb_evals/archive.py" in metadata["source_sha256"]
+
+
 def make_tar(path):
     buf = io.BytesIO()
     with tarfile.open(fileobj=buf, mode="w:gz") as tar:

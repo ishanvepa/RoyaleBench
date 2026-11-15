@@ -473,6 +473,15 @@ class FakeValkyrie:
         run, now = self._get(run_id), self.clock()
         task_id, _, name = path.partition("/")
         task = next((t for t in run.tasks if t.id == task_id), None)
+        if (task is not None and name == "artifacts/royale.tar.gz" and run.dataset == REMOTE_ONLY
+                and self._status(task, now) == "FINISHED"):
+            # Demo gameplay uses a labelled, deterministic sample; smoke tasks have no game replay.
+            sample = Path(__file__).resolve().parents[1] / "runs/samples/random-bot__vs__heuristic-bot__s2.msgpack"
+            target = Path(dest) / path
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with tarfile.open(target, "w:gz") as tar:
+                tar.add(sample, arcname="royale/replay.msgpack")
+            return Path(dest)
         if task is None or name != "agent_output.tar.gz" or self._status(task, now) != "FINISHED":
             raise ValkyrieError("FileNotFoundError: No artifacts found at the requested path", "other")
         target = Path(dest) / path

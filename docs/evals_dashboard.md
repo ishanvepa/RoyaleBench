@@ -36,9 +36,9 @@ The page tells you which of these is missing.
 | --- | --- |
 | Jobs | Every Valkyrie run, filterable by status, model and benchmark, with sortable API cost and average cost per task for each run. Fetch missing costs for the visible runs here. Filters live in the URL. |
 | New job | Pick a published benchmark and revision, run **all of it or selected tasks**, choose harness, model and API-key secret, set concurrency. A live review shows the task count, any problems, and the equivalent `valkyrie run start` command. Sandboxes are always Modal. |
-| Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, API cost and average cost per task, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Fetch missing costs for this run here. Task rows show difficulty badges (easy green, medium amber, hard red) from current local benchmark metadata, with a dash when unavailable, and open the agent's trace. |
+| Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, API cost and average cost per task, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Fetch missing costs for this run here. Task rows show difficulty badges (easy green, medium amber, hard red) from current local benchmark metadata, with a dash when unavailable; rows open details with **Watch replay** and the agent's trace. |
 | Benchmarks | The folders under `benchmarks/`, marked draft, published or modified, with their published versions. **Publish** pushes the folder to Valkyrie as a new revision (nothing changes if the content is unchanged). |
-| Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), difficulty badges (easy green, medium amber, hard red), and for each task its instruction, files and results across runs. |
+| Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), difficulty badges (easy green, medium amber, hard red), and for each task its instruction, files and results across runs. Each result offers **Watch replay** alongside its agent trace. |
 | Leaderboard | Models by harness with solved, pass rate, score, agent failures, infrastructure errors, time and cost. Click any column to sort. |
 | Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
 | Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
@@ -62,6 +62,18 @@ hover and on the monitor. Cost per task averages only tasks with known costs. Ru
 with reported costs, including infrastructure failures; the leaderboard excludes infrastructure failures
 from its model-scoring pool and associated cost totals. Failed, stopped, and active runs have no run-level
 cost metrics yet. Downloading costs does not launch evaluations.
+
+To watch a task, select its row in a job's **Tasks** tab, then **Watch replay**. The same button is on
+each row of a task definition's **Results** tab. Playback opens in a wide dialog with play/pause,
+frame stepping, a timeline, speed selection and side switching. The first opening downloads
+`<task>/artifacts/royale.tar.gz` and renders `royale/replay.msgpack` with the shared battle graphics.
+This uses the current carried referee artifact format; tasks without it show an explanation.
+Recorded frames show the actual attempt, which can end before the independently graded continuation.
+Stopped or failed tasks can expose a **Partial replay**. Active tasks become watchable after finishing
+or stopping. Finished-run replay files are cached separately from agent traces; stopped/failed runs are
+fetched again on opening so a retry or resume does not reuse an earlier attempt. Missing files and
+transfer failures can be retried. Playback never starts a model or sandbox. Fake mode's `arena-lite`
+tasks show explicitly labelled sample gameplay; its smoke tasks have no replay.
 
 New real runs are enrolled in [data collection](data_collection.md). A server-side worker archives
 their raw artifacts, normalizes telemetry, exports analysis tables, and verifies a durable copy outside

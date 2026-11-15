@@ -21,7 +21,7 @@ def protocol_digest() -> str:
     root = Path(__file__).parent
     digest = hashlib.sha256()
     for name in ["game.py", "decks.py", "player_types.py", "royale_task.py",
-                 "scenario_task.py", "bots/planner.py", "cr_client.py"]:
+                 "scenario_task.py", "bots/planner.py", "cr_client.py", "telemetry.py"]:
         digest.update(name.encode())
         digest.update((root / name).read_bytes().replace(b"\r\n", b"\n"))
     return digest.hexdigest()

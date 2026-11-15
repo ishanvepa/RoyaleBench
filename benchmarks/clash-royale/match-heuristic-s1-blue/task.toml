@@ -3,7 +3,7 @@ artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
 
 [task]
 name = "royalebench/match-heuristic-s1-blue"
-description = "Full-match play through the cr CLI, graded by replaying the agent's moves. time_left=3:00 (full match) | player=giant-beatdown (avg 3.38) | opponent_deck=giant-beatdown (avg 3.38) | opponent=heuristic-bot | seed=1 | seat=blue | scoring=win 1, draw 0.5, loss 0"
+description = "Full-match play through the cr CLI, graded by replaying the agent's moves. time_left=3:00 (full match) | player=giant-beatdown (avg 3.38) | opponent_deck=giant-beatdown (avg 3.38) | opponent=heuristic-bot | seed=1 | seat=blue | scoring=win 1, loss 0"
 
 [metadata]
 category = "clash-royale-match"

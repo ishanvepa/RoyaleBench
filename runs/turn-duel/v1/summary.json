@@ -1,0 +1,81 @@
+{
+  "games": 35,
+  "ranking": [
+    "planner",
+    "search",
+    "search-v2"
+  ],
+  "overall": {
+    "planner": {
+      "games": 34,
+      "points": 30.0,
+      "wins": 30,
+      "draws": 0,
+      "losses": 4,
+      "crowns_for": 34,
+      "crowns_against": 7,
+      "score": 0.882,
+      "mean_think_s": 0.963,
+      "mean_play_think_s": 0.963,
+      "discarded_share": 0.0
+    },
+    "search": {
+      "games": 19,
+      "points": 4.0,
+      "wins": 4,
+      "draws": 0,
+      "losses": 15,
+      "crowns_for": 6,
+      "crowns_against": 17,
+      "score": 0.211,
+      "mean_think_s": 1.807,
+      "mean_play_think_s": 1.807,
+      "discarded_share": 0.0
+    },
+    "search-v2": {
+      "games": 17,
+      "points": 1.0,
+      "wins": 1,
+      "draws": 0,
+      "losses": 16,
+      "crowns_for": 2,
+      "crowns_against": 18,
+      "score": 0.059,
+      "mean_think_s": 4.182,
+      "mean_play_think_s": 4.182,
+      "discarded_share": 0.0
+    }
+  },
+  "head_to_head": {
+    "planner vs search": {
+      "games": 18,
+      "planner": 15.0,
+      "search": 3.0,
+      "complete_pairs": 9,
+      "pairs_won_planner": 6,
+      "pairs_won_search": 0,
+      "pairs_split": 3,
+      "sign_test_two_sided_p": 0.03125
+    },
+    "planner vs search-v2": {
+      "games": 16,
+      "planner": 15.0,
+      "search-v2": 1.0,
+      "complete_pairs": 8,
+      "pairs_won_planner": 7,
+      "pairs_won_search-v2": 0,
+      "pairs_split": 1,
+      "sign_test_two_sided_p": 0.015625
+    },
+    "search vs search-v2": {
+      "games": 1,
+      "search": 1.0,
+      "search-v2": 0.0,
+      "complete_pairs": 0,
+      "pairs_won_search": 0,
+      "pairs_won_search-v2": 0,
+      "pairs_split": 0,
+      "sign_test_two_sided_p": 1.0
+    }
+  }
+}

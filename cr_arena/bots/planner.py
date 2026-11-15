@@ -10,7 +10,9 @@ How it decides, several times a second:
 3. THE OPPONENT ANSWERS. For the best few candidates (and for waiting) the opponent's own
    candidates are tried as a reply, and the candidate is worth what is left after the reply that
    hurts most.
-4. It plays the best candidate only if that beats waiting by a margin; otherwise it keeps its elixir.
+4. WE ANSWER BACK. Against the few replies that hurt most, its own candidates are tried as an answer
+   once the reply has landed, so a push is not judged as if its counter could never be defended.
+5. It plays the best candidate only if that beats waiting by a margin; otherwise it keeps its elixir.
 
 The position score is in tower hit points: damage dealt minus damage taken, fallen towers, and
 elixir (in the bank and standing on the board as units) converted at ELIXIR_HP per elixir.
@@ -31,6 +33,7 @@ from multiprocessing import get_context
 from royalegym.protocol import DeployCommand, DeployStatus, EntityKind
 
 from ..game import Game
+from ..player_types import Decision, Player
 
 WIN = 1_000_000.0
 ELIXIR_HP = 150.0  # what one elixir is worth, in tower hit points
@@ -49,9 +52,15 @@ def _center(v: float) -> float:
 class Planner:
     def __init__(self, decks: list[list[str]], seed: int, team: int, delay: int = 0, horizon_s: float = 10.0,
                  top_k: int = 4, margin: float = 40.0, two_ply: bool = True, workers: int = 0,
-                 elixir_hp: float = ELIXIR_HP):
+                 elixir_hp: float = ELIXIR_HP, prefilter: bool = True, three_ply: bool = True, answer_k: int = 3):
         self.args = dict(decks=decks, seed=seed, team=team, delay=delay, horizon_s=horizon_s, top_k=top_k,
-                         margin=margin, two_ply=two_ply, elixir_hp=elixir_hp)
+                         margin=margin, two_ply=two_ply, elixir_hp=elixir_hp, prefilter=prefilter,
+                         three_ply=three_ply, answer_k=answer_k)
+        # three_ply: after the opponent's reply we answer it, for the `answer_k` replies that hurt most.
+        self.three_ply, self.answer_k = three_ply, answer_k
+        # prefilter=True is the original rule: only plays that already beat waiting by `margin` without
+        # any reply are checked against the opponent's reply. False checks a shortlist instead (see shortlist).
+        self.prefilter = prefilter
         self.g = Game(decks[0], decks[1], seed=seed, record=False, command_delay_ticks=delay)
         self.e = self.g.engine
         self.team = team
@@ -63,6 +72,21 @@ class Planner:
             self.pool = ProcessPoolExecutor(workers, mp_context=get_context("spawn"), initializer=_pool_init,
                                             initargs=(self.args, os.getpid()))
             self.workers = workers
+
+    def warm(self, timeout_s: float = 60.0) -> None:
+        """Start every search worker now rather than on the first decision.
+
+        The pool otherwise starts lazily, so the first decision of a match pays for spawning and
+        initialising every worker (about a second locally, several seconds when many matches start at
+        once on a shared host). Each submitted job starts one process; short sleeps spread the jobs so
+        every worker reports its pid once its initialiser has finished.
+        """
+        if not self.pool:
+            return
+        seen: set[int] = set()
+        deadline = time.monotonic() + timeout_s
+        while len(seen) < self.workers and time.monotonic() < deadline:
+            seen.update(self.pool.map(_pool_pid, [0.05] * self.workers))
 
     def close(self) -> None:
         if self.pool:
@@ -109,7 +133,10 @@ class Planner:
             return []
         p = s.players[team]
         avail = p.elixir_milli - p.pending_cost * 1000
-        waiting = {q[0] for q in p.pending}
+        # Pending rows are [kind, card, x, y, ticks left, cost], kind 0 for a play: they name the card,
+        # not its hand slot. A card stays in its slot until it lands, and a deck holds each card once.
+        on_the_way = {q[1] for q in p.pending if q[0] == 0}
+        waiting = {slot for slot, cid in enumerate(p.hand) if cid in on_the_way}
         foes, towers = [], []
         for u in s.entities:
             if u.team == team or u.hp <= 0:
@@ -191,12 +218,33 @@ class Planner:
         mid = e.save_state()
         rest = self.horizon - self.react
         replies = self.candidates(1 - self.team, compact=True)
-        worst = self.rollout(mid, None, rest)
+        scored = [(self.rollout(mid, None, rest), None)]
         for r in replies:
             v = self.rollout(mid, r, rest)
-            if v is not None and v < worst:
-                worst = v
-        return worst
+            if v is not None:
+                scored.append((v, r))
+        if not self.three_ply:
+            return min(v for v, _r in scored)
+        # Third ply: against the replies that hurt most, we answer too. Every other reply keeps its
+        # unanswered score, which is a lower bound on its answered one, so the result stays conservative.
+        scored.sort(key=lambda t: t[0])
+        answered = [self.answer(mid, r, rest) for _v, r in scored[: self.answer_k]]
+        return min(answered + [v for v, _r in scored[self.answer_k:]])
+
+    def answer(self, mid: bytes, reply: Play | None, rest: int) -> float:
+        """Best we can do in `mid` after the opponent plays `reply` (None = waits) and we answer it."""
+        e = self.e
+        e.load_state(mid)
+        e.step([DeployCommand(*reply)] if reply else [], 1)
+        e.step([], self.react - 1)
+        mid2 = e.save_state()
+        rest -= self.react
+        best = self.rollout(mid2, None, rest)
+        for a in self.candidates(self.team, compact=True):
+            v = self.rollout(mid2, a, rest)
+            if v is not None and v > best:
+                best = v
+        return best
 
     def _map(self, fn: str, root: bytes, items: list) -> list:
         if not self.pool or len(items) < 4:
@@ -210,18 +258,36 @@ class Planner:
         return out
 
     # ------------------------------------------------------------------ the decision
-    def act(self, root: bytes) -> tuple[Play | None, str]:
-        """The play to make now in `root` (None = wait), and a short note for the log."""
+    def shortlist(self, scored: list[tuple[float, Play]]) -> list[tuple[float, Play]]:
+        """Candidates that go on to face the opponent's reply: the best `top_k` by quiet score, plus the
+        best spot of every other card in hand. None is dropped for failing to beat waiting yet: a
+        defensive play (a building before a Hog arrives) is only worth something once the opponent
+        moves, so judging it on the quiet rollout alone would throw it away before that is checked."""
+        top = scored[: self.top_k]
+        slots = {c[1] for _v, c in top}
+        for v, c in scored[self.top_k:]:
+            if c[1] not in slots:
+                slots.add(c[1])
+                top.append((v, c))
+        return top
+
+    def act(self, root: bytes, cands: list[Play] | None = None) -> tuple[Play | None, str]:
+        """The play to make now in `root` (None = wait), and a short note for the log.
+        `cands` restricts the choice to given plays (the numbered menu); by default the planner's own."""
         g = self.g
         self.e.load_state(root)
-        cands = self.candidates(self.team)
+        if cands is None:
+            cands = self.candidates(self.team)
         if not cands:
             return None, ""
         t0 = time.perf_counter()
         quiet = self._map("rollout", root, [None] + cands)
         wait_q = quiet[0]
         scored = sorted(((v, c) for v, c in zip(quiet[1:], cands) if v is not None), key=lambda t: -t[0])
-        top = [(v, c) for v, c in scored if v - wait_q > self.margin][: self.top_k]
+        if self.prefilter or not self.two_ply:
+            top = [(v, c) for v, c in scored if v - wait_q > self.margin][: self.top_k]
+        else:
+            top = self.shortlist(scored)
         if not top:
             return None, f"wait (best alternative {scored[0][0] - wait_q:+.0f})" if scored else ""
         if self.two_ply:
@@ -243,6 +309,46 @@ class Planner:
         return (best if gain > self.margin else None), note
 
 
+class PlannerPlayer(Player):
+    """The planner on the benchmark's numbered move list, for turn-based play.
+
+    The game waits for every decision, so thinking time is free. The planner scores each numbered
+    move with its usual look-ahead and opponent reply, and waits unless a move beats waiting by its
+    margin. Only its choice of plays changes: the menu's named spots replace its own placements.
+    """
+
+    def __init__(self, name: str = "planner-bot", horizon_s: float = 10.0, top_k: int = 4, margin: float = 40.0,
+                 two_ply: bool = True, workers: int = 0, elixir_hp: float = ELIXIR_HP, prefilter: bool = True,
+                 three_ply: bool = True, answer_k: int = 3):
+        self.name = name
+        self.opts = dict(horizon_s=horizon_s, top_k=top_k, margin=margin, two_ply=two_ply, workers=workers,
+                         elixir_hp=elixir_hp, prefilter=prefilter, three_ply=three_ply, answer_k=answer_k)
+        self.planner: Planner | None = None
+
+    def start(self, game: Game, team: int) -> None:
+        self.close()
+        self.planner = Planner(game.decks, game.seed, team, delay=game.command_delay_ticks, **self.opts)
+
+    def decide(self, game: Game, team: int, text: str, moves: list) -> Decision:
+        if len(moves) == 1:
+            return Decision(0)
+        if self.planner is None:
+            self.start(game, team)
+        plays = {(team, m.slot, m.x, m.y): m.index for m in moves if m.slot >= 0}
+        play, note = self.planner.act(game.engine.save_state(), list(plays))
+        if play is None:
+            return Decision(0, raw="planner: " + (note or "wait"))
+        return Decision(plays[play], raw="planner: " + note)
+
+    def close(self) -> None:
+        if self.planner:
+            self.planner.close()
+            self.planner = None
+
+    def __del__(self):
+        self.close()
+
+
 # ---------------------------------------------------------------- worker processes (one engine each)
 _P: Planner | None = None
 
@@ -257,6 +363,11 @@ def _pool_init(args: dict, parent: int) -> None:
         os._exit(0)
 
     threading.Thread(target=watch, daemon=True).start()
+
+
+def _pool_pid(pause_s: float) -> int:
+    time.sleep(pause_s)  # long enough that each idle worker takes one job
+    return os.getpid()
 
 
 def _pool_run(job: tuple) -> list:

@@ -50,7 +50,7 @@ def frozen_search_v2_spec() -> dict:
 
 
 def build_bot(spec: dict):
-    """Construct a numbered-move player; planner construction lives in bots.live."""
+    """Construct a numbered-move player. The live planner, with its own placements, lives in bots.live."""
     kind = spec.get("type")
     if kind == "mock":
         from ..players import MockLLM
@@ -79,10 +79,7 @@ def build_bot(spec: dict):
 
         return LavaloonBot(spec["name"])
     if kind == "planner":
-        from .planner_player import PlannerPlayer
+        from .planner import PlannerPlayer
 
-        opts = {k: v for k, v in spec.items() if k in ("horizon_s", "top_k", "margin", "two_ply", "elixir_hp")}
-        if "two_ply" in opts:
-            opts["two_ply"] = bool(opts["two_ply"])
-        return PlannerPlayer(spec["name"], workers=spec.get("workers", 0), **opts)
+        return PlannerPlayer(spec["name"], **{k: v for k, v in spec.items() if k not in ("name", "type", "enabled", "deck")})
     raise ValueError(f"unknown bot type: {kind!r}")

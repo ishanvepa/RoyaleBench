@@ -13,6 +13,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+import msgspec
 from royalegym import MatchSetup, RustEngine, deck_ids
 from royalegym.protocol import (
     STATUS_ABILITY_ACTIVE,
@@ -84,6 +85,18 @@ class Move:
         return f"{self.index}. {self.card} ({self.cost} elixir, {self.kind.lower()}) @ {self.target}"
 
 
+def tiebreak_winner(state, seed: int) -> int:
+    """Who wins a match that is still level on crowns when overtime ends (0 blue, 1 red).
+
+    The side with more tower HP left, all its towers added up. If that is exactly equal too, the
+    seed's parity decides, so a match is never a draw.
+    """
+    blue, red = (sum(p.tower_hp) for p in state.players)
+    if blue != red:
+        return 0 if blue > red else 1
+    return seed % 2
+
+
 @dataclass
 class SeatMemory:
     """What one player has learned so far (only things visible on their screen)."""
@@ -97,7 +110,8 @@ class SeatMemory:
 
 class Game:
     def __init__(self, deck_blue: list[str], deck_red: list[str], seed: int,
-                 decision_ticks: int = 40, record: bool = True, command_delay_ticks: int = 0):
+                 decision_ticks: int = 40, record: bool = True, command_delay_ticks: int = 0,
+                 setup: MatchSetup | None = None):
         self.engine = RustEngine()
         if command_delay_ticks:
             # A play lands this many ticks after it is made, as on the real client (about 21). Live play only:
@@ -110,9 +124,10 @@ class Game:
         self.sub = self.arena.subtile
         self.rules = self.engine.rules()
         self.decision_ticks = decision_ticks
+        self.telemetry = None  # trusted diagnostic observer; never used by a player
         self.seed = seed
         decks = [deck_ids(deck_blue, self.cards), deck_ids(deck_red, self.cards)]
-        self.setup = MatchSetup(decks=decks)
+        self.setup = setup if setup is not None else MatchSetup(decks=decks)
         self.engine.reset(seed, self.setup)
         self.recorder = ReplayRecorder(frame_every_tick=True) if record else None
         if self.recorder:
@@ -144,7 +159,12 @@ class Game:
     # ------------------------------------------------------------------ state
     @property
     def state(self):
-        return self.engine.state()
+        s = self.engine.state()
+        if s.overtime and s.tick >= s.regular_ticks + s.overtime_ticks and (not s.game_over or s.winner == 2):
+            # The engine would now drain the towers until a crown falls, or call a draw. The match
+            # ends here instead, on tower HP, so every loop that reads the state sees it over.
+            return msgspec.structs.replace(s, game_over=True, winner=tiebreak_winner(s, self.seed))
+        return s
 
     @property
     def over(self) -> bool:
@@ -152,15 +172,11 @@ class Game:
 
     def time_left_s(self) -> tuple[float, bool]:
         """Seconds left in regulation or overtime, never below 0 (a level overtime that has run
-        out is decided by the tower-HP tiebreak, see ``in_tiebreak``)."""
+        out ends the match on tower HP, see ``tiebreak_winner``)."""
         s = self.state
         if s.tick < s.regular_ticks:
             return (s.regular_ticks - s.tick) * s.tick_ms / 1000, False
         return max(0, s.regular_ticks + s.overtime_ticks - s.tick) * s.tick_ms / 1000, True
-
-    def in_tiebreak(self) -> bool:
-        """A level overtime has run out and the tower drain decides the match: no play lands."""
-        return self.rules.plays_stopped(self.state)
 
     def card_name(self, card_id: int) -> str:
         c = self.card_by_id.get(card_id)
@@ -212,7 +228,7 @@ class Game:
     def legal_moves(self, team: int) -> list[Move]:
         s = self.state
         moves = [Move(0, -1, "wait", "WAIT", 0, "-", "-")]
-        if s.game_over or self.in_tiebreak():
+        if s.game_over:
             return moves
         p = s.players[team]
         enemy = s.players[1 - team]
@@ -305,10 +321,8 @@ class Game:
         left, ot = self.time_left_s()
         mins, secs = divmod(int(left), 60)
         mult = f", elixir x{s.elixir_rate}" if s.elixir_rate > 1 else ""
-        if self.in_tiebreak():
-            phase = " (TIEBREAK - no more plays; towers drain, the side whose weakest tower has less HP loses)"
-        elif ot:
-            phase = " (OVERTIME - next tower destroyed wins)"
+        if ot:
+            phase = " (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins)"
         else:
             phase = ""
         enemy_slots = [ENEMY_SLOT_FOR_VIEW[i] for i in range(3)]
@@ -399,11 +413,18 @@ class Game:
         results_text = ["wait", "wait"]
         first = True
         for _ in range(self.decision_ticks):
-            if self.engine.state().game_over:
+            s = self.state
+            if s.game_over:
                 break
-            tick = self.engine.state().tick
+            tick = s.tick
             send = cmds if first else []
             res = self.engine.step(send, 1)
+            if self.telemetry is not None:
+                try:
+                    self.telemetry.tick(s, self.state, list(send), res)
+                except Exception as exc:
+                    self.telemetry.capture.manifest["capture_errors"].append(f"engine_tick: {exc}")
+                    self.telemetry = None
             if self.recorder:
                 self.recorder.record_step(tick, 1, list(send), res)
                 self.recorder.record_frame(self.engine)
@@ -443,4 +464,6 @@ class Game:
     def finish(self):
         trace = self.recorder.end(self.engine) if self.recorder else None
         s = self.state
+        if trace is not None and trace.result is not None:
+            trace.result.winner = s.winner  # the engine never saw the tiebreak, so its own result is stale
         return s.winner, [p.crowns for p in s.players], [list(p.tower_hp) for p in s.players], s.tick, trace

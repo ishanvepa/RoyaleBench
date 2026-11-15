@@ -42,6 +42,8 @@ By default, decisions occur every 40 engine ticks, described by our current inte
 
 The model's interface hides the opponent's hand and elixir and expresses positions from the player's perspective. It offers a constrained placement menu, including visible spell targets, rather than unrestricted continuous placement. Results therefore measure strategy under this particular observation and action interface.
 
+[RoyaleBench v1](royalebench_v1.md) uses this interface for exact mid-match continuations against Planner. Its scenario referee starts from public engine setup specifications, applies explicit time/spending limits, and replays protected action logs for binary scenario objectives. Locally calibrated tasks and gated proposals are recorded separately; frontier-model validation remains pending.
+
 Search v2 adds deterministic, budgeted root allocation and multi-policy rollouts
 through the same numbered benchmark interface. Its evaluator is shared with v1;
 both remain omniscient. It is a separately registered player and is available in
@@ -63,6 +65,10 @@ for configurations, recorded comparisons, and remaining limitations.
 | `royaleimitate` | `0.2.15` |
 
 The `[all]` extra brings all these components into the dependency graph. Their presence in the lockfile does not mean our benchmark actively uses their training or desktop-viewer features. Reproduce this snapshot with the committed lockfile, for example using `uv sync --locked`, and retain that file with published results.
+
+The [public game](public_play.md) installs the separate `play` dependency
+group from that same lockfile. It uses RoyaleGym and RoyaleSim without the model
+SDKs, training, GPU, or desktop-viewer packages needed by other project modes.
 
 ## What the foundation gives us—and what we must establish
 

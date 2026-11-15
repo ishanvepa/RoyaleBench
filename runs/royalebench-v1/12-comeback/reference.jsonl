@@ -1,0 +1,23 @@
+{"decision": 0, "tick": 2600, "move": 1, "label": "1. Knight (3 elixir, troop) @ left bridge", "think_s": 5.0}
+{"decision": 1, "tick": 2640, "move": 2, "label": "2. Xbow (6 elixir, building) @ right bridge", "think_s": 5.0}
+{"decision": 2, "tick": 2680, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 3, "tick": 2720, "move": 9, "label": "9. Skeletons (1 elixir, troop) @ left bridge", "think_s": 5.0}
+{"decision": 4, "tick": 2760, "move": 9, "label": "9. Archer (3 elixir, troop) @ left bridge", "think_s": 5.0}
+{"decision": 5, "tick": 2800, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 6, "tick": 2840, "move": 3, "label": "3. IceSpirits (1 elixir, troop) @ in front of left tower", "think_s": 5.0}
+{"decision": 7, "tick": 2880, "move": 34, "label": "34. Fireball (4 elixir, spell) @ enemy right princess tower", "think_s": 5.0}
+{"decision": 8, "tick": 2960, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 9, "tick": 3000, "move": 4, "label": "4. Tesla (4 elixir, building) @ in front of right tower", "think_s": 5.0}
+{"decision": 10, "tick": 3040, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 11, "tick": 3080, "move": 9, "label": "9. Knight (3 elixir, troop) @ left bridge", "think_s": 5.0}
+{"decision": 12, "tick": 3120, "move": 3, "label": "3. Skeletons (1 elixir, troop) @ in front of left tower", "think_s": 5.0}
+{"decision": 13, "tick": 3160, "move": 6, "label": "6. IceSpirits (1 elixir, troop) @ behind right tower", "think_s": 5.0}
+{"decision": 14, "tick": 3200, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 15, "tick": 3240, "move": 5, "label": "5. Archer (3 elixir, troop) @ behind left tower", "think_s": 5.0}
+{"decision": 16, "tick": 3280, "move": 1, "label": "1. Log (2 elixir, spell) @ on enemy MegaMinion at (5.5, 18.9)", "think_s": 5.0}
+{"decision": 17, "tick": 3360, "move": 3, "label": "3. Knight (3 elixir, troop) @ in front of left tower", "think_s": 5.0}
+{"decision": 18, "tick": 3400, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 19, "tick": 3440, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 20, "tick": 3480, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 21, "tick": 3520, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
+{"decision": 22, "tick": 3560, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}

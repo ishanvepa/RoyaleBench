@@ -10,7 +10,9 @@ class LiveBot:
         if spec["type"] == "planner":
             from .planner import Planner
 
-            self.planner = Planner(decks, seed, team, delay=delay, workers=spec.get("workers", 0))
+            opts = {k: spec[k] for k in ("horizon_s", "top_k", "margin", "two_ply", "elixir_hp", "prefilter", "three_ply", "answer_k") if k in spec}
+            self.planner = Planner(decks, seed, team, delay=delay, workers=spec.get("workers", 0), **opts)
+            self.planner.warm()  # before the worker reports ready, so the match clock waits for the pool
         elif spec["type"] == "search-v2":
             from .live_search_v2 import LiveSearchGame, LiveSearchV2
 

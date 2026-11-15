@@ -2,6 +2,11 @@
 
 Each task in [`benchmarks/clash-royale/`](../benchmarks/clash-royale) asks an agent to play one complete Clash Royale match, decision by decision, through a `cr` command-line tool. The opponent is the fixed rule-based `heuristic-bot`. The task set covers seeds 1–3 from both seats (blue and red), with the `giant-beatdown` deck on both sides.
 
+New task bundles also include [standardized telemetry](data_collection.md): private observations and
+request diagnostics, both players' structured moves, trusted state/resource traces, full replay artifacts,
+and durable collection/analysis exports. Re-reading the state does not reset decision timing. Published
+telemetry revisions are distinct from the historical result revisions below.
+
 ## How a run works
 
 ```text
@@ -21,7 +26,7 @@ These guarantees were checked locally in Docker: permission probes, a crash and 
 
 ## Reward
 
-`reward` is 1 for a win, 0.5 for a draw and 0 for a loss. Valkyrie's score is the mean `reward` across tasks. The verifier also reports these diagnostics in `reward.json`:
+`reward` is 1 for a win and 0 for a loss; there are no fractional rewards. There are no draws. A match still level on crowns when overtime ends stops there, and the side with more tower HP left (all its towers added up) wins; an exact tie is settled by the parity of the match seed. Valkyrie's score is the mean `reward` across tasks. The verifier also reports these diagnostics in `reward.json`:
 
 | Key | Meaning |
 | --- | --- |
@@ -65,16 +70,16 @@ The play step waits at every decision, so it checks the plumbing and is expected
 
 These tasks deliberately ship without a `solution/` folder, although the [task design](task_design.md) checklist asks for a reference solution with full reward. Valkyrie and the dashboard don't require one. The checklist's goals are met by recorded runs instead: Valkyrie runs have won `s1-blue`, `s1-red` and `s3-red`, and those wins scored 1.0 through the full grading path. No recorded run has won `s2-blue`, `s2-red` or `s3-blue`, so it is not yet shown that those three can be won.
 
-The tasks follow the upstream layout in `benchmarks/clash-royale/`, and `benchmark.toml` is generated with `kind = "eval"`. Datasets `@1` and `@2` were published from the earlier top-level `tasks/` folder. Their task contents are the same apart from the `task.toml` description and the referee's module layout, and match behaviour is unchanged. Revision `royalebench/clash-royale@3` (tag `v3`, digest `45658a99ce95`) was published from `benchmarks/clash-royale` on November 14, 2026. Use it for the next runs. It has not been run yet.
+The tasks follow the upstream layout in `benchmarks/clash-royale/`, and `benchmark.toml` is generated with `kind = "eval"`. Datasets `@1` and `@2` were published from the earlier top-level `tasks/` folder. Revision `@3` moved packaging into `benchmarks/clash-royale` without changing match behavior. Revisions `@4`–`@6` introduced telemetry and provenance. Revision `@7` (tag `telemetry-v4`) additionally checkpoints full traces in carried referee artifacts because Valkyrie does not expose separate verifier output files. Use `royalebench/clash-royale@7` for new instrumented runs. Scores below remain attributed to `@2`.
 
 Publish and run one task first (see the [Valkyrie guide](valkyrie_guide.md) for secrets):
 
 ```bash
-valkyrie dataset push royalebench/clash-royale ./benchmarks/clash-royale --tag v3
+valkyrie dataset push royalebench/clash-royale ./benchmarks/clash-royale --tag NEXT_UNUSED_TAG
 ```
 
 ```bash
-valkyrie run start --agent claude_code-v1.0.0 --dataset royalebench/clash-royale@3 --model anthropic/claude-sonnet-4-6 --provider modal -s ANTHROPIC_API_KEY "${VALKYRIE_ANTHROPIC_SECRET:?}" --slice 0:1 --concurrency 1 --label royalebench-match-pilot --connect
+valkyrie run start --agent claude_code-v1.0.0 --dataset royalebench/clash-royale@7 --model anthropic/claude-sonnet-4-6 --provider modal -s ANTHROPIC_API_KEY "${VALKYRIE_ANTHROPIC_SECRET:?}" --slice 0:1 --concurrency 1 --label royalebench-match-pilot --connect
 ```
 
 ## Pilot run

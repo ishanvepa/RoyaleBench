@@ -1,9 +1,15 @@
 # Play against the bots on your phone
 
-The live browser game supports `planner-bot`, `search-bot`, and `search-v2`, with independent
+The live browser game supports `heuristic-bot`, `planner-bot`, `search-bot`, and `search-v2`, with independent
 choices of player and opponent decks. No model API credentials are needed.
 The shared [bot catalog](../configs/bots.toml) controls these choices; see
 [bot setup](bots.md) to change presets or add an opponent.
+
+For public play against Planner's fixed Hog Cycle deck, use `uv run --frozen python -m cr_arena.share --public`.
+It allows ten active matches and shows “Server at
+capacity” on an eleventh start. See [public play](public_play.md) for permanent hosting
+on Modal and the ten-match load check. The hosted instance reserves 32 CPU cores;
+a temporary link uses the capacity of the local computer.
 
 ## One-time setup
 
@@ -36,15 +42,25 @@ then starts a Cloudflare Quick Tunnel. Open the printed
 Your devices can stay on their existing Wi-Fi; they only need internet access.
 
 Choose **search-v2** in the opponent selector to play the selected Search v2
-preset, or choose either existing bot. Search v2 thinks in a separate process,
+preset, or choose another bot. Search v2 thinks in a separate process,
 uses the same command delay as you, and discards outdated card choices. It uses
 a soft 1.2-second search deadline at completed comparison rounds; a round can
 finish after that target. Its live results are separate from the paused benchmark.
 
-Choose an opponent and decks, then press **Start game**. Tap a card and then
-tap a legal location on the arena to deploy it. Use **Change deck** to return
-to setup and switch opponents. Finished games save to `runs/arena.db`, with
+Enter your **arena name** and press **Battle** in the lobby to open deck selection.
+Your name is remembered in this browser and used for completed leaderboard
+results. Use **Edit name** in deck selection to change it. Choose your deck,
+and, in local mode, an opponent and its deck, then press **Enter battle**. Each
+preset shows its playstyle and an eight-card preview. Tap a card and then
+tap a legal location on the arena to deploy it. Matches run continuously with no
+pause control. Use **Change deck** to return to setup and switch opponents. Finished games save to `runs/arena.db`, with
 replays under `runs/round_robin/human-play/replays/`.
+
+The play page disables page-zoom gestures, including double taps and pinches,
+while keeping normal scrolling. Browser accessibility settings can override this.
+The setup screen includes a persistent wins/losses leaderboard backed by
+`runs/round_robin/human-play/leaderboard.csv`, with a placeholder name per browser
+until name entry is added. See [leaderboard behavior and storage](public_play.md#persistent-leaderboard).
 
 Keep your Mac awake and the command running. Press **Ctrl+C** to stop the
 tunnel, game server, and bot workers. If either service exits, the launcher

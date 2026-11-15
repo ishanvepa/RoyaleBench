@@ -21,7 +21,7 @@ import { enumParam, useSearchState } from "@/hooks/useSearchState";
 import { formatBytes, formatDuration, formatPercent, formatReward, harnessName } from "@/lib/format";
 import { useBenchmarkTask, useTaskResults } from "../api/benchmarks";
 import { TraceView } from "../shared/TraceView";
-import { SyncBadge } from "./badges";
+import { DifficultyBadge, SyncBadge } from "./badges";
 
 const TABS = ["overview", "files", "results"] as const;
 const searchSchema = z.object({ tab: enumParam(TABS, "overview") });
@@ -52,7 +52,7 @@ function TaskView({ detail }: { detail: BenchmarkTaskDetail }) {
           <>
             <SyncBadge sync={task.sync} />
             {task.category ? <Badge tone="outline">{task.category}</Badge> : null}
-            {task.difficulty ? <Badge tone="outline">{task.difficulty}</Badge> : null}
+            {task.difficulty ? <DifficultyBadge difficulty={task.difficulty} /> : null}
           </>
         }
         description={task.description || undefined}

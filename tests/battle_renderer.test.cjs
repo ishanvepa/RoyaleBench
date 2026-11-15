@@ -397,24 +397,24 @@ test('classic ground troops stand upright and mirror instead of rotating', () =>
     'IceSpirits', 'Knight', 'MiniPekka', 'Musketeer', 'Pekka', 'Princess', 'Wizard']) {
     const right = troopScene(card, card, [1, 0]), left = troopScene(card, card, [-1, 0]);
     assert.ok(!right.operations.some(op => op[0] === 'rotate'), card);
-    assert.ok(right.operations.some(op => op[0] === 'scale' && op[1] === 10 && op[2] === 10), card);
-    assert.ok(left.operations.some(op => op[0] === 'scale' && op[1] === -10 && op[2] === 10), card);
+    assert.ok(right.operations.some(op => op[0] === 'scale' && op[1] === 15 && op[2] === 15), card);
+    assert.ok(left.operations.some(op => op[0] === 'scale' && op[1] === -15 && op[2] === 15), card);
   }
 });
 
 test('flipping the board mirrors a ground troop with its screen motion', () => {
   const plain = troopScene('Knight', 'Knight', [1, 0]), flipped = troopScene('Knight', 'Knight', [1, 0], {flip: true});
-  assert.ok(plain.operations.some(op => op[0] === 'scale' && op[1] === 10));
-  assert.ok(flipped.operations.some(op => op[0] === 'scale' && op[1] === -10));
+  assert.ok(plain.operations.some(op => op[0] === 'scale' && op[1] === 15));
+  assert.ok(flipped.operations.some(op => op[0] === 'scale' && op[1] === -15));
   // walking up the screen shows the back; the same motion seen from the other side shows the face
   assert.notEqual(troopScene('Knight', 'Knight', [0, 1]).ops, troopScene('Knight', 'Knight', [0, -1]).ops);
 });
 
-test('ground troop poses keep the entity position and hit target', () => {
+test('ground troop poses keep the entity position with a larger visual hit target', () => {
   for (const facing of [[1, 0], [-1, 0], [0, 1], [0, -1], [0, 0]]) {
     const hit = troopScene('Pekka', 'Pekka', facing, {radius: .75}).hits[0];
     assert.deepEqual([...hit.p], [120, 460]);
-    assert.equal(hit.rad, 15);
+    assert.equal(hit.rad, 22.5);
   }
 });
 
@@ -529,4 +529,14 @@ test('other spells and effect objects keep the generic drawing', () => {
   operations.length = 0;
   renderer.draw(a, b, .4, 30, {scale: 20, cards: generic});
   assert.ok(!operations.some(op => op[0] === 'fillStyle' && ['#9a6434', '#7a4a22', '#e2b43c'].includes(op[1])));
+});
+
+test('nearest snaps a blocked opponent-side tap to the closest allowed cell', () => {
+  const p = window.BattleRenderer.placement;
+  // Only the bottom half (cy < 32) is allowed.
+  const grid = {half: 2, width: 36, height: 64, m: Array.from({length: 36 * 64}, (_, i) => i < 36 * 32 ? '1' : '0').join('')};
+  const hit = p.nearest(grid, p.at(4.2, 25, grid));
+  assert.deepEqual([hit.cx, hit.cy, hit.x, hit.y], [8, 31, 4.25, 15.75]);
+  assert.equal(p.allowed(grid, hit), true);
+  assert.equal(p.nearest({...grid, m: '0'.repeat(36 * 64)}, p.at(4, 25, grid)), null);
 });

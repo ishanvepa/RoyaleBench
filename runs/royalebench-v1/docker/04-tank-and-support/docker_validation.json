@@ -1,0 +1,13 @@
+{
+  "task": "04-tank-and-support",
+  "family": 4,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "config_sha256": "e7f02e4e782db24c553fae10f356a6a62e3e017e12338226e9d33bce66bbf22b",
+  "image": "sha256:d9223521eb5bdd0de58285874dcbd3d54176bb94e7390d69b5383b74e1cd839e",
+  "isolated": true,
+  "restart_verified": true,
+  "network": "none",
+  "elapsed_s": 40.711
+}

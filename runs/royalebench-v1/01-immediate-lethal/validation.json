@@ -1,0 +1,37 @@
+{
+  "task": "01-immediate-lethal",
+  "family": 1,
+  "reference_reward": 1.0,
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2095,
+    "ticks": 5139,
+    "tower_damage": 0,
+    "spent_elixir": 4,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Fireball",
+        "x": 63000,
+        "y": 459000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 1.95
+  },
+  "wait_success": false,
+  "empty_reward": 0.0,
+  "malformed_reward": 0.0,
+  "deterministic": true,
+  "setup_hash": "78a243e833de87c30c8f40c7516a55db4ad01862b3b31ff578f965e1099ed814",
+  "config_sha256": "2c758fe74a132f8f3fd38ac8e65443a930948a0ded01502476b853fbb03cab99",
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "reference_log_sha256": "2d9dd3b3925ce4fbd325ac7a1afac1300a50fdaea71d0879cb834d0fc545115c",
+  "reference_decisions": 1,
+  "elapsed_s": 5.141,
+  "frontier_model_run": null
+}

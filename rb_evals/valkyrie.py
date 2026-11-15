@@ -284,7 +284,16 @@ class Valkyrie:
                     "dataset_version": _dump(response.dataset_version),
                     "warning": response.dataset_version_warning, "started_at": response.started_at.isoformat()}
 
-        return self._mutate(op)
+        result = self._mutate(op)
+        if self._custom_factory is None:
+            from .archive import enroll
+            try:
+                enroll(result["run_id"], config={"benchmark": benchmark, "dataset": dataset, "revision": ref,
+                    "agent": agent, "model": model, "concurrency": concurrency, "task_ids": task_ids,
+                    "provider": provider, "label": label, "resolved_dataset": result.get("dataset_version")})
+            except OSError as exc:
+                result["warning"] = f"Run started but archive enrollment failed: {exc}"
+        return result
 
     def stop_run(self, run_id: str, *, force: bool = False) -> str:
         rid = _uuid(run_id)
@@ -355,6 +364,39 @@ class Valkyrie:
         return self._mutate(op, timeout=PUSH_TIMEOUT_S)
 
     # ------------------------------------------------------------------ artifacts
+    def artifacts(self, run_id: str, *, attempts: bool = False) -> list[dict]:
+        """Every artifact page, including replaced attempts when requested."""
+        rid = _uuid(run_id)
+
+        async def op(c):
+            found, cursor, seen = [], None, set()
+            while True:
+                page = await c.artifacts.list(rid, cursor=cursor, limit=1000, attempts=attempts)
+                found.extend(_dump(a) for a in page.artifacts)
+                cursor = page.next_cursor
+                if cursor is None:
+                    return found
+                if cursor in seen:
+                    raise RuntimeError("repeated artifact cursor")
+                seen.add(cursor)
+        return self._call(op, timeout=PUSH_TIMEOUT_S)
+
+    def all_run_logs(self, run_id: str) -> list[dict]:
+        rid = _uuid(run_id)
+
+        async def op(c):
+            return [_dump(e) for e in await c.logs.fetch_run(rid)]
+        return self._call(op, timeout=PUSH_TIMEOUT_S)
+
+    def download_artifact_attempt(self, run_id: str, path: str, dest: Path | str, *, attempts: bool = False) -> Path:
+        rid = _uuid(run_id)
+        dest = Path(dest)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+
+        async def op(c):
+            return await c.artifacts.download(rid, dest, path=path, attempts=attempts)
+        return self._call(op, timeout=PUSH_TIMEOUT_S)
+
     def download_artifact(self, run_id: str, path: str, dest: Path | str) -> Path:
         """Download a run artifact (a file or a folder) to ``dest/<path>``. ``dest`` must not exist yet."""
         rid = _uuid(run_id)

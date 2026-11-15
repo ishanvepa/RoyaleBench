@@ -32,7 +32,7 @@ export const environment = (overrides: Partial<Environment> = {}): Environment =
     default_concurrency: 1,
     max_concurrency: 10,
     confirm_over_tasks: 5,
-    models: [{ id: "anthropic/claude-sonnet-4-6", secret_env: "ANTHROPIC_API_KEY" }],
+    models: [{ id: "anthropic/claude-sonnet-4-6", secret_env: "ANTHROPIC_API_KEY", family: "claude", logo_url: "/api/assets/logos/claude" }],
   },
   ...overrides,
 });

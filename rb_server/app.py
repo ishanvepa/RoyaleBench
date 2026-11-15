@@ -52,8 +52,21 @@ class SPAStaticFiles(StaticFiles):
 def create_app(settings: Settings | None = None, *, ctx: AppContext | None = None) -> FastAPI:
     settings = settings or Settings.from_env()
     ctx = ctx or build_context(settings)
+    from contextlib import asynccontextmanager
+    from rb_evals.archive import ArchiveWorker
+    from rb_evals.valkyrie import Valkyrie
+
+    @asynccontextmanager
+    async def lifespan(app):
+        worker = ArchiveWorker(ctx.valkyrie).start() if isinstance(ctx.valkyrie, Valkyrie) and not ctx.fake else None
+        try:
+            yield
+        finally:
+            if worker:
+                worker.close()
+
     app = FastAPI(title="RoyaleBench API", version="1.0.0", docs_url="/api/docs", redoc_url=None,
-                  openapi_url="/api/openapi.json")
+                  openapi_url="/api/openapi.json", lifespan=lifespan)
     app.state.ctx = ctx
     register_error_handlers(app)
 

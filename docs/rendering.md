@@ -1,11 +1,35 @@
 # Battle graphics
 
+The shared-play lobby in `cr_arena/live.html` uses the same navy panels, blue
+accents, gold details, and system font as the live game, with a subtle diamond
+background and a raised gold Battle button. Its decorative miniature is original
+vector artwork in `cr_arena/lobby_arena.svg`, inlined by `embed_renderer` so it
+needs no separate asset request. It illustrates the arena rather than displaying
+an active simulation. Deck selection reuses `cr_arena/card_art.js` for all eight
+portraits and the preset thumbnails. The lobby and deck picker do not allocate a
+game; only Enter battle sends the start message.
+The lobby includes a remembered arena-name field; deck selection and the live
+HUD show the selected name. The header opens the CSV leaderboard as a separate
+screen, keeping the lobby's arena centerpiece and deck picker intact.
+
+The match result dialog continues this style with a fine gold border, an original
+crown-and-shield emblem, blue and coral crown scores, and the lobby's raised gold
+action button. Defeat and draw use a quieter emblem color. It shows player names
+and decks in aligned score columns, with the record, replay status, and secondary
+actions below. A native modal dialog dims and blurs the finished arena, contains
+keyboard focus, and scrolls within the viewport on small or short screens.
+
 Live play and saved HTML replays use `cr_arena/battle_renderer.js` for the arena,
 units, names, health bars, projectiles, spells, and animation effects. Change those
 graphics there so both views stay consistent. The renderer takes positions and
 radii in tiles, with Blue at the bottom; its file header documents the row layout.
 Both views supply the arena grid from the simulation or trace, rather than
 guessing bridge positions.
+
+Troop miniatures use a shared 1.5× visual scale to make ground and flying units
+easier to see on phones. Their shadows, health bars, status rings, labels, and
+tooltip targets follow the larger artwork. Simulator positions, collision radii,
+building and tower footprints, and spell areas are unchanged.
 
 The terrain follows Arena 1: a two-tone grass checker, worn lanes from each
 bridge towards the princess towers, a turquoise river with a shaded upper bank

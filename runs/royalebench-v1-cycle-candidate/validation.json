@@ -1,0 +1,90 @@
+{
+  "benchmark": "RoyaleBench v1",
+  "version": "1.0.0",
+  "commit": "0fc46694ef44274b9b0019eef2f7e3f0a7c04758",
+  "python": "3.12.16",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "dependencies": {
+    "royalegym": "0.1.28",
+    "royalesim": "0.1.48",
+    "msgspec": "0.22.0"
+  },
+  "protocol_sha256": "0e490efad22ce9c65aca986b9d32688a9a46d446bf315fe0592f0b9a99e962db",
+  "tasks": [
+    {
+      "task": "11-opponent-cycle-log-away",
+      "family": 11,
+      "reference_reward": 1.0,
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2513,
+        "ticks": 5488,
+        "tower_damage": 0,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "GoblinBarrel",
+            "x": 63000,
+            "y": 459000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 4.4
+      },
+      "wait_success": false,
+      "empty_reward": 0.0,
+      "malformed_reward": 0.0,
+      "deterministic": true,
+      "setup_hash": "7600725dbcd3bb56bd3c39a50c7ccda38363910bbd6976a915645aa90612c9ac",
+      "config_sha256": "6a4f7fe1ca227ad1a57874a4bc313ecda5d011878878f19470b08942e2faeaf7",
+      "protocol_sha256": "0e490efad22ce9c65aca986b9d32688a9a46d446bf315fe0592f0b9a99e962db",
+      "reference_log_sha256": "7881c190ebf0ca79bf4de61f22a93bf23000f6de962c5ee92fe2e28adae68811",
+      "reference_decisions": 3,
+      "elapsed_s": 41.965,
+      "frontier_model_run": null
+    },
+    {
+      "task": "11-opponent-cycle-log-ready",
+      "family": 11,
+      "reference_reward": 1.0,
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2513,
+        "ticks": 5488,
+        "tower_damage": 0,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "GoblinBarrel",
+            "x": 63000,
+            "y": 459000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 4.4
+      },
+      "wait_success": false,
+      "empty_reward": 0.0,
+      "malformed_reward": 0.0,
+      "deterministic": true,
+      "setup_hash": "77ef005b2c403873dd03d531f267cdf6d5ca14f46acb4a0a82cab021e98335bb",
+      "config_sha256": "ad77998afb9844599f81ee345c4fe1efc6df38e2d457566da0495cba03356d87",
+      "protocol_sha256": "0e490efad22ce9c65aca986b9d32688a9a46d446bf315fe0592f0b9a99e962db",
+      "reference_log_sha256": "7881c190ebf0ca79bf4de61f22a93bf23000f6de962c5ee92fe2e28adae68811",
+      "reference_decisions": 3,
+      "elapsed_s": 39.262,
+      "frontier_model_run": null
+    }
+  ],
+  "status": "local calibration; no frontier-model or Modal validation claimed"
+}

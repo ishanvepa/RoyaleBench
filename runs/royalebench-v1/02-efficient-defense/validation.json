@@ -1,0 +1,37 @@
+{
+  "task": "02-efficient-defense",
+  "family": 2,
+  "reference_reward": 1.0,
+  "reference_outcome": {
+    "result": "unfinished",
+    "crowns_for": 0,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.0,
+    "own_tower_damage_frac": 0.1117,
+    "ticks": 2240,
+    "tower_damage": 0,
+    "spent_elixir": 3,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Cannon",
+        "x": 162000,
+        "y": 189000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 12.0
+  },
+  "wait_success": false,
+  "empty_reward": 0.0,
+  "malformed_reward": 0.0,
+  "deterministic": true,
+  "setup_hash": "dd9b0be3306d75326df209c3ef824079bb575b019cf8a28664ff7712d51112eb",
+  "config_sha256": "469c31f555375c3c201c9f0cb6fd1068ff9ff75a752c315a3dba1262956c6acc",
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "reference_log_sha256": "33e7728a5e2a5f00fe1868716f4df5b2652f1377c279cc2990f9cb1d55e37c95",
+  "reference_decisions": 1,
+  "elapsed_s": 6.291,
+  "frontier_model_run": null
+}

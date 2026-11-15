@@ -38,13 +38,19 @@ The page tells you which of these is missing.
 | New job | Pick a published benchmark and revision, run **all of it or selected tasks**, choose harness, model and API-key secret, set concurrency. A live review shows the task count, any problems, and the equivalent `valkyrie run start` command. Sandboxes are always Modal. |
 | Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Task rows open the agent's trace. |
 | Benchmarks | The folders under `benchmarks/`, marked draft, published or modified, with their published versions. **Publish** pushes the folder to Valkyrie as a new revision (nothing changes if the content is unchanged). |
-| Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), and for each task its instruction, files and results across runs. |
+| Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), difficulty badges (easy green, medium amber, hard red), and for each task its instruction, files and results across runs. |
 | Leaderboard | Models by harness with solved, pass rate, score, agent failures, infrastructure errors, time and cost. Click any column to sort. |
+| Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
+| Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
 
 One job is one Valkyrie run: one model on a whole benchmark or a subset. To compare models, start one job
 per model. Valkyrie stays the source of truth; finished runs and downloaded costs are cached under
 `runs/evals/` (git-ignored). Cost comes from the harness's own summary in each task's output (Claude Code
 writes one) and does not include Modal's sandbox charges.
+
+New real runs are enrolled in [data collection](data_collection.md). A server-side worker archives
+their raw artifacts, normalizes telemetry, exports analysis tables, and verifies a durable copy outside
+the dashboard cache. The standalone collector works when this server is closed. Existing runs are not backfilled.
 
 Settings (default harness, model presets, concurrency limits, the task count above which a job needs an
 explicit confirmation) are in [`evals.toml`](../evals.toml). Benchmarks are authored as in

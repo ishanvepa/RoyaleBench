@@ -15,7 +15,7 @@ import { Tooltip } from "@/components/ui/tooltip";
 import { formatDuration, plural, shortId } from "@/lib/format";
 import { useBenchmark } from "../api/benchmarks";
 import { useCanStart } from "../useCanStart";
-import { BenchmarkStateBadge, SyncBadge } from "./badges";
+import { BenchmarkStateBadge, DifficultyBadge, SyncBadge } from "./badges";
 import { PublishDialog } from "./PublishDialog";
 
 const taskCol = createColumnHelper<BenchmarkTask>();
@@ -36,7 +36,7 @@ function useTaskColumns(benchmark: string) {
           ),
       }),
       taskCol.accessor("category", { header: "Category", cell: (c) => <span className="text-subtle">{c.getValue() || "–"}</span> }),
-      taskCol.accessor("difficulty", { header: "Difficulty", cell: (c) => <span className="text-subtle">{c.getValue() || "–"}</span> }),
+      taskCol.accessor("difficulty", { header: "Difficulty", cell: (c) => <DifficultyBadge difficulty={c.getValue()} /> }),
       taskCol.accessor((r) => r.agent_timeout_s ?? undefined, {
         id: "agent",
         header: "Agent limit",

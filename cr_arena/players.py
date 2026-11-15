@@ -16,8 +16,8 @@ SYSTEM_PROMPT = """You are playing a real-time lane-battle card game (Clash Roya
 RULES IN BRIEF
 - Each side has a king tower and two princess towers (left and right). Destroying a princess tower = 1 crown, the king tower = 3 crowns (instant win).
 - Most crowns when time runs out wins. If tied, overtime starts and the next crown wins. If crowns are still tied when
-  overtime ends, no more cards can be played and every tower drains: the side whose weakest standing tower has LESS hp
-  loses (exactly equal = draw). So tower damage matters even when it takes no crown.
+  overtime ends, the match ends there and the side with more tower HP left, all its towers added up, wins (if even that
+  is exactly equal, a fixed coin flip decides). There are no draws. So tower damage matters even when it takes no crown.
 - You spend elixir (max 10, regenerates over time; faster in the last minute and overtime) to play cards from a 4-card hand. A played card goes to the back of your 8-card deck queue.
 - Troops walk down their lane toward enemy buildings and fight what they meet. Buildings stay put and defend. Spells hit an area once.
 - Good play: defend efficiently (spend less elixir than the enemy push costs), counter-attack with surviving troops, don't sit at full elixir (wasted regeneration), punish the lane where the enemy just spent elixir.
@@ -141,6 +141,53 @@ class LLMPlayer(Player):
         return Decision(idx, raw=raw, latency_s=dt, usage=usage)
 
     def _call(self, text: str, system: str | None = None) -> tuple[str, dict]:
+        from .telemetry import public_settings, utc, usage_metrics
+        ctx = getattr(self, "telemetry_context", None)
+        self._last_response = None
+        self._last_request = None
+        started, mono = utc(), time.monotonic_ns()
+        import uuid
+        call_id = uuid.uuid4().hex
+        if ctx:
+            ctx["capture"].emit("events", {"event": "model_call_started", "model_call_id": call_id,
+                "decision_id": ctx["decision_id"], "observation_id": ctx["observation_id"], "team": ctx["team"],
+                "model": self.model, "provider": self.provider, "system": system or self.system, "text": text})
+        raw, usage, error = None, {}, None
+        try:
+            raw, usage = self._call_impl(text, system)
+            return raw, usage
+        except BaseException as exc:
+            error = f"{type(exc).__name__}: {exc}"
+            raise
+        finally:
+            if not isinstance(self._last_response, dict):
+                self._last_response = None
+            response = self._last_response or {}
+            evidence = {
+                    "model_call_id": call_id,
+                    "decision_id": ctx["decision_id"] if ctx else None,
+                    "observation_id": ctx["observation_id"] if ctx else None,
+                    "team": ctx["team"] if ctx else None, "provider": self.provider, "requested_model": self.model,
+                    "resolved_model": response.get("model"), "request_id": response.get("id"),
+                    "started_at": started, "duration_s": (time.monotonic_ns() - mono) / 1e9,
+                    "status": "error" if error else "success", "error": error,
+                    "settings": {"effort": self.effort, "max_tokens": self.max_tokens,
+                                 "timeout_s": self.timeout_s, "effective": None},
+                    "request": public_settings(self._last_request or {"system": system or self.system, "text": text}),
+                    "response": response or raw, "usage": usage_metrics(response.get("usage") or usage,
+                                                                          provider=self.provider),
+                    "raw_usage": usage, "reported_cost_usd": usage.get("cost"),
+                    "stop_reason": response.get("stop_reason", response.get("choices", [{}])[0].get("finish_reason")
+                                                if response.get("choices") else None),
+                    "retry_visibility": "CLI attempt events" if self.provider == "claude_cli" else "SDK retries internal"}
+            if ctx:
+                ctx["capture"].emit("model_calls", evidence)
+            else:
+                if not hasattr(self, "pending_evidence"):
+                    self.pending_evidence = []
+                self.pending_evidence.append(evidence)
+
+    def _call_impl(self, text: str, system: str | None = None) -> tuple[str, dict]:
         system = system or self.system
         if self.provider == "claude_cli":
             return self._call_cli(text, system)
@@ -165,7 +212,10 @@ class LLMPlayer(Player):
             if self.effort:
                 kwargs["output_config"] = {"effort": self.effort}
             kwargs.update(self.extra)
+            self._last_request = kwargs
             r = self.client.messages.create(**kwargs)
+            if hasattr(r, "model_dump"):
+                self._last_response = r.model_dump(mode="json")
             if r.stop_reason == "refusal":
                 raise RuntimeError(f"refusal: {getattr(r.stop_details, 'category', None)}")
             out = "".join(b.text for b in r.content if b.type == "text")
@@ -188,7 +238,10 @@ class LLMPlayer(Player):
                 kwargs["extra_body"] = {"reasoning": {"effort": self.effort}}
             if self.extra:
                 kwargs.setdefault("extra_body", {}).update(self.extra)
+        self._last_request = kwargs
         r = self.client.chat.completions.create(**kwargs)
+        if hasattr(r, "model_dump"):
+            self._last_response = r.model_dump(mode="json")
         message = r.choices[0].message
         if getattr(message, "refusal", None):
             raise RuntimeError(f"refusal: {message.refusal}")
@@ -208,8 +261,13 @@ class LLMPlayer(Player):
             cmd += ["--effort", self.effort]
         last = "?"
         # Rate limits / CLI hiccups: back off and retry for ~4 minutes, then abort the match (InfraError).
-        for wait in (0, 5, 15, 30, 60, 120):
+        for attempt, wait in enumerate((0, 5, 15, 30, 60, 120)):
             time.sleep(wait)
+            ctx = getattr(self, "telemetry_context", None)
+            if ctx:
+                ctx["capture"].emit("events", {"event": "provider_attempt", "provider": self.provider,
+                    "decision_id": ctx["decision_id"], "team": ctx["team"], "attempt": attempt,
+                    "backoff_s": wait, "previous_error": last if attempt else None})
             try:
                 p = subprocess.run(cmd, input=text, capture_output=True, text=True, timeout=self.timeout_s, cwd=self.cwd,
                                    env=self.env)
@@ -223,7 +281,14 @@ class LLMPlayer(Player):
                 d = json.loads(p.stdout)
             except json.JSONDecodeError:
                 last = f"claude CLI exit {p.returncode}: {(p.stderr or p.stdout)[:300]}"
+                if ctx:
+                    ctx["capture"].emit("events", {"event": "provider_invalid_response", "attempt": attempt,
+                        "stdout": p.stdout, "stderr": p.stderr, "decision_id": ctx["decision_id"]})
                 continue
+            self._last_response = d
+            if ctx:
+                ctx["capture"].emit("events", {"event": "provider_attempt_response", "attempt": attempt,
+                    "decision_id": ctx["decision_id"], "team": ctx["team"], "response": d})
             if d.get("is_error"):
                 last = f"claude CLI error: {str(d.get('result'))[:300]}"
                 continue

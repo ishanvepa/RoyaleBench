@@ -1,0 +1,13 @@
+{
+  "task": "03-spell-placement",
+  "family": 3,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "config_sha256": "a6a2a61e85467130861e69ca1e9301c251dd242bc1f73c7ab67ffcdb966c5adc",
+  "image": "sha256:d9223521eb5bdd0de58285874dcbd3d54176bb94e7390d69b5383b74e1cd839e",
+  "isolated": true,
+  "restart_verified": true,
+  "network": "none",
+  "elapsed_s": 15.871
+}

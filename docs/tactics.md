@@ -1,12 +1,21 @@
 # RoyaleBench Tactics on the v3 foundation
 
-Tactics version **2.0.0** uses the same **`coordinates-v1`** action protocol and runtime files as
+The current release is **`royalebench/royalebench-tactics@5`**, tagged `tactics-v5` and
+`one-hit-hog`, with **eight tasks**. Version 2.2.0 gives the Hog defense's threatened tower
+**1 HP**, with exactly **three starting elixir and a three-elixir total spending limit**.
+All seven `@3` task packages remain byte-identical, including their 2.0.0 metadata.
+The revision digest is `sha256:c16e4c4b4a9a52c674542b67310c9880e5570ca49cf26ad08917fb1434fd5fe0`.
+See [one-hit revision checks](../runs/tactics-hog-one-hit/checks.json) for the reference,
+controls, 85 passing focused checks, container validation, and hosted pilot status. Historical
+seven-task comparisons refer to `@3`; the single-task `@4` and `@5` pilots are separate.
+
+The original coordinate Tactics version **2.0.0** uses the same **`coordinates-v1`** action protocol and runtime files as
 **`royalebench/royalebench-v3@2`**. The current main changes were integrated through commit
 `4eb50d4`. Tactics retains its own scenario set and scoring objectives; it does not change the
 11 v3 foundation scenarios. Publication and validation evidence is recorded under
 [`runs/tactics-coordinates`](../runs/tactics-coordinates).
 
-The published coordinate release is **`royalebench/royalebench-tactics@3`**, tagged
+The seven-task coordinate release is **`royalebench/royalebench-tactics@3`**, tagged
 `v3-foundation` and `coordinates-v1`. Revisions `@1` and `@2` retain the old numbered menu.
 
 ## Player interface
@@ -31,6 +40,39 @@ separate no-network verifier and resource limits come from the shared v3 package
 runtime hash must equal the published v3 foundation's hash before packaging.
 
 ## Task families
+
+The `05-hog-body-block` task adds a fifth family: **precise timing and body-block placement**.
+It starts with a full-health, active Hog Rider at (2.5, 18.5), no friendly units, three starting
+elixir, and level-11 crown towers. Version 2.2.0 lowers the threatened left princess tower to
+**1 HP**; the king and right princess retain 4824 and 3052 HP. The objective is zero damage across all three towers
+for 16 seconds while spending at most three elixir. Unlike the older tasks, decisions advance
+0.5 seconds. Eight decisions are available, then the referee automatically resolves waits.
+The reference uses Ice Golem and Skeletons; the verifier accepts any legal defense meeting the
+same objective. The instruction does not disclose the defensive placement or timing.
+
+This is inspired by the [reference clip and local recreation](hog_body_block.md), with a
+continuation state calibrated independently through the actual coordinate referee. The Hog
+starts already active, so its task timings and defensive coordinates differ from the experiment
+that starts with an enemy deployment timer. The opponent has no affordable plays during the
+window; its frozen Planner remains unchanged. New task configuration, reference, controls,
+container verification, and publication evidence for the full-health `@4` task live in
+[`runs/tactics-hog`](../runs/tactics-hog). The one-HP revision has separate evidence under
+[`runs/tactics-hog-one-hit`](../runs/tactics-hog-one-hit).
+
+The player starts with exactly three elixir and may spend only three over the entire defense.
+Normal engine regeneration remains visible; spending more than three fails even if an extra
+play is affordable and accepted. Thus regenerated elixir cannot provide a successful rescue.
+A single Hog hit now visibly destroys the threatened tower. This makes the consequences concrete;
+the original objective already required zero damage, so the HP change does not itself establish
+greater model difficulty. The calibrated defense still preserves the tower at exactly 1 HP.
+
+The intended failure is treating the defense as a card-cost calculation and missing the spatial
+and timing interaction. The reference spends three and takes zero damage. Waiting, either card
+alone, placing Skeletons one tile lower, and issuing both commands half a second earlier all
+fail. These named controls do not prove uniqueness over arbitrary coordinates or action sequences.
+Malformed, empty, wrong-schema and rejected-placement logs also fail; affordable overspending is
+accepted and scores zero. The Docker reference passes the player CLI, protected-file checks,
+server restart, fresh no-network grading, full capture, and independent replay of all 321 frames.
 
 Seven previously released positions are eligible for coordinate calibration. Each needs fresh
 winning references and contrast evidence; menu-era scores cannot release a coordinate task.
@@ -90,6 +132,25 @@ mean separately. Mirrors are consistency checks rather than independent strategi
 
 ## Build and verify
 
+The expanded eight-task dataset adds `05-hog-body-block` while preserving every byte of the
+seven published `@3` packages. Rebuild it with:
+
+```bash
+uv run python -m cr_arena.build_tactics_hog
+uv run --with pytest python -m pytest -q tests/test_tactics_hog.py tests/test_tactics.py
+uv run python -m cr_arena.validate_v1_docker --benchmark benchmarks/royalebench-tactics --out runs/tactics-hog/docker --tasks 5
+```
+
+The historical seven-task builder below requires a checkout with the original foundation
+runtime and a separate `--out`. It refuses
+to replace an expanded dataset. The Hog builder pins all seven source task content digests,
+uses the exact frozen `@3` referee/client/viewer, and rejects local gameplay drift. It never
+rebuilds the seven source tasks using the newer workspace replay viewer.
+
+The following commands document the original seven-task release workflow. Use the expanded
+builder above for the current eight-task release; the workspace's newer replay viewer is not
+part of the original frozen runtime.
+
 ```bash
 uv run python -m cr_arena.validate_tactics --jobs 2
 uv run python -m cr_arena.build_tactics
@@ -112,6 +173,14 @@ configuration, with no reference policies or source snapshot.
 
 ## Historical releases
 
+- **Tactics `@5` (version 2.2.0):** same eight task IDs. The Hog defense starts its threatened
+  tower at 1 HP, retains three starting elixir and the three-elixir total budget, and discloses
+  that any Hog hit loses the tower and fails the task. A legal engine play beyond the total
+  budget still fails grading; normal regeneration does not increase the allowance. The old
+  seven packages and the shared runtime remain unchanged. Tags `tactics-v5` and `one-hit-hog`.
+- **Tactics `@4` (version 2.1.0):** eight tasks. Adds `05-hog-body-block` and retains the
+  seven `@3` packages unchanged. Tags `tactics-v4` and `hog-body-block`; new task content digest
+  `sha256:b1301894b8a73544c242ef89080826765ddfb8294906e36f616f3654ed213d08`.
 - **Tactics `@1` / `@2`:** numbered-move interface, version 1.0.0. The original race shortcut and
   correction remain documented under [`runs/tactics`](../runs/tactics). Its 80-opening audit
   applies only to the old menu, not free-coordinate placement.
@@ -184,3 +253,54 @@ success-rate estimates.
 
 See the [per-task scores, outcomes and costs](../runs/tactics-coordinates/opus55-summary.json).
 Raw model traces and replays remain in the ignored local and durable archive paths recorded there.
+
+## Hog defense pilot on @4
+
+Run **`ee02edf8-63d6-4608-9bdc-98b2ee6dd187`** completed the new task on
+`royalebench/royalebench-tactics@4`, using Opus 5.5 (`anthropic/claude-opus-5-5`),
+`claude_code-v1.0.0`, Modal, and concurrency 1. It scored **0**, with completion and integrity
+both 1, exactly three elixir spent, and no rejected actions. The Hog dealt three hits,
+**951 crown-tower damage**. Agent time was 60.0 seconds; harness-reported API cost was **$0.21**,
+excluding sandbox compute.
+
+The model chose the intended Ice Golem / Skeletons combination but deployed the Ice Golem
+immediately at (3.5, 12.0), followed by Skeletons at elapsed 1.0 seconds at (3.5, 13.0). The Hog
+slipped around the block. The passing reference waits 0.5 seconds, places Ice Golem outside
+the lane at (1.5, 11.5), then places Skeletons at elapsed 1.0 seconds at (3.5, 13.5). The model
+acknowledged its failed defense in its final response. This is a placement/timing failure,
+with no evidence of an instruction, command-rejection, or verifier defect in this attempt.
+
+The accepted action log independently reproduces the service rewards, and all 321 carried
+replay frames verify. Capture is complete (one match, nine observations, eleven model calls,
+no gaps), and durable archive checksum verification passes. This is one attempt on one task;
+it does not establish a model success rate or an eight-task `@4` benchmark score.
+
+Evidence: [pilot summary](../runs/tactics-hog/model-pilot.json),
+[service results](../runs/tactics-hog/model-pilot-results.json),
+[accepted action log](../runs/tactics-hog/model-pilot-actions.jsonl), and
+[all revision checks](../runs/tactics-hog/checks.json). Generated local replays are
+`runs/tactics-hog/replays/reference.html` and `runs/tactics-hog/replays/opus55-pilot.html`.
+
+## One-HP Hog defense pilot on @5
+
+Run **`f186e6ff-11df-4612-be6a-205298ba1b8a`** completed the revised task on
+`royalebench/royalebench-tactics@5` with Opus 5.5, `claude_code-v1.0.0`, Modal, and concurrency 1.
+It scored **0**: the Hog destroyed the one-HP left princess tower, then dealt additional damage
+to the king, for 635 total damage. Completion and integrity were 1, with eight decisions, exactly
+three elixir spent, and no rejected actions. Agent time was 40.4 seconds; API cost was **$0.19**,
+excluding sandbox compute.
+
+The model played Ice Golem immediately at (3.5, 13.0), waited, then played Skeletons at elapsed
+1.0 seconds at (3.5, 12.5). It correctly identified that cycling to Cannon would exceed the budget
+but failed to form the body-block. Its final response acknowledged losing the tower. This is
+a placement/timing failure in one attempt, not evidence that the task is impossible or a model
+success-rate estimate. The reference still succeeds with three elixir and leaves the tower at 1 HP.
+
+The independent action-log replay matches the service rewards; all 321 replay frames verify.
+Capture is complete with no gaps, and archive checksum verification passes. Evidence:
+[pilot summary](../runs/tactics-hog-one-hit/model-pilot.json),
+[service results](../runs/tactics-hog-one-hit/model-pilot-results.json),
+[accepted actions](../runs/tactics-hog-one-hit/model-pilot-actions.jsonl), and
+[revision checks](../runs/tactics-hog-one-hit/checks.json). The same 85 focused checks pass;
+seven local socket tests required a rerun outside the restricted sandbox. The container check
+independently verifies the player CLI, restart, isolated no-network grading, and reference capture.

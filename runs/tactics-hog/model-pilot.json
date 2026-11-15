@@ -1,0 +1,78 @@
+{
+  "run_id": "ee02edf8-63d6-4608-9bdc-98b2ee6dd187",
+  "dataset": "royalebench/royalebench-tactics@4",
+  "task": "05-hog-body-block",
+  "model": "anthropic/claude-opus-5-5",
+  "harness": "claude_code-v1.0.0",
+  "provider": "modal",
+  "concurrency": 1,
+  "status": "FINISHED",
+  "rewards": {
+    "reward": 0.0,
+    "win": 0.0,
+    "crowns_for": 0.0,
+    "crowns_against": 0.0,
+    "enemy_tower_damage_frac": 0.0154,
+    "own_tower_damage_frac": 0.087,
+    "completed": 1.0,
+    "integrity": 1.0,
+    "decisions": 8.0,
+    "fast_decision_frac": 0.0,
+    "spent_elixir": 3.0,
+    "tower_damage": 951.0,
+    "objective_met": 0.0,
+    "rejected_actions": 0.0
+  },
+  "outcome": {
+    "result": "unfinished",
+    "crowns_for": 0,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.0154,
+    "own_tower_damage_frac": 0.087,
+    "ticks": 520,
+    "tower_damage": 951,
+    "spent_elixir": 3,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "IceGolemite",
+        "x": 63000,
+        "y": 216000,
+        "cost": 2
+      },
+      {
+        "decision": 2,
+        "card": "Skeletons",
+        "x": 63000,
+        "y": 234000,
+        "cost": 1
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 16.0,
+    "rejected_actions": 0
+  },
+  "agent_time_s": 60.04660779599999,
+  "api_cost_usd": 0.2081308,
+  "api_cost_excludes_sandbox": true,
+  "capture": {
+    "artifact_count": 98,
+    "complete": true,
+    "counts": {
+      "commands": 73,
+      "events": 331,
+      "matches": 1,
+      "model_calls": 11,
+      "observations": 9,
+      "states": 66
+    },
+    "gaps": [],
+    "schema_version": "1.0"
+  },
+  "independent_replay_verified": true,
+  "replay_frames": 321,
+  "archive_checksum_errors": [],
+  "raw_artifacts": "runs/analysis/ee02edf8-63d6-4608-9bdc-98b2ee6dd187",
+  "durable_archive": "local durable archive; host-specific path omitted",
+  "failure_classification": "Model placement/timing error; completed all eight decisions, no rejected actions, integrity 1. Ice Golem at elapsed 0s (3.5,12.0), Skeletons at elapsed 1s (3.5,13.0); Hog dealt three hits (951 damage). Reference waits 0.5s, deploys Ice Golem at (1.5,11.5), then Skeletons at elapsed 1s (3.5,13.5), taking zero damage. Single attempt; no success-rate estimate."
+}

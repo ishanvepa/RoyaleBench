@@ -28,6 +28,8 @@ def build(out=OUT,evidence=EVIDENCE):
         if out==protected or protected in out.parents:raise ValueError('Cannot overwrite a frozen or foundation dataset')
     if out.is_symlink():raise ValueError('Cannot replace a symlink')
     if out.exists() and not (out/'manifest.json').is_file():raise ValueError('Refusing to replace an unrecognized dataset directory')
+    if out.exists() and json.loads((out/'manifest.json').read_text()).get('version') != VERSION:
+        raise ValueError('Use cr_arena.build_tactics_hog to preserve the expanded Tactics dataset; use a separate --out for historical regeneration')
     foundation=json.loads((FOUNDATION/'manifest.json').read_text())
     runtime=protocol_digest()
     if runtime!=FOUNDATION_PROTOCOL or runtime!=foundation['protocol_sha256'] or runtime!=packaged_protocol_digest(FOUNDATION/foundation['runnable_tasks'][0]):

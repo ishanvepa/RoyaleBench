@@ -88,6 +88,12 @@ Opponent information access also matters. The existing [`bots/search.py`](../cr_
 
 Validate the card interactions used by our chosen tasks before making claims about Clash Royale strategy. Simulator mistakes, ambiguous instructions, and interface restrictions can all produce apparent model failures. Inspect representative replays and verify the grader before expanding expensive runs.
 
+The [Hog Rider body-block recreation](hog_body_block.md) is a standalone example:
+an Ice Golem and Skeletons can hold a Hog below the bridge long enough to prevent
+tower damage. The script saves verified replays and runs placement/timing controls.
+It reproduces the qualitative interaction from a reference clip, with estimated
+inputs; it is not a published benchmark task or exact live-game physics validation.
+
 ## Priorities
 
 1. Keep RoyaleGym and RoyaleSim as the current foundation while validating the interactions our tasks depend on.

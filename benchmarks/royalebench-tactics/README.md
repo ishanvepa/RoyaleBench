@@ -1,5 +1,4 @@
 # RoyaleBench Tactics
 
-7 coordinate-action scenarios on the RoyaleBench v3 foundation.
-See [the guide](../../docs/tactics.md) for validation and historical menu results.
-Regenerate with `python -m cr_arena.build_tactics`.
+Eight coordinate tasks: the seven unchanged @3 packages plus a one-HP-tower Hog defense with three starting elixir and a three-elixir total spending limit.
+See [the guide](../../docs/tactics.md). Rebuild with `python -m cr_arena.build_tactics_hog`.

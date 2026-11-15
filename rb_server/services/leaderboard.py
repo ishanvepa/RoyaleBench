@@ -8,7 +8,7 @@ from rb_evals import results as R
 from rb_evals.benchmarks import discover_local
 
 from ..context import AppContext
-from ..schemas.evals import CostsStatus, LeaderboardFilters, LeaderboardOut, LeaderboardRow
+from ..schemas.evals import CostsStatus, LeaderboardFilters, LeaderboardJob, LeaderboardOut, LeaderboardRow
 from .common import family_of, logo_url
 
 
@@ -71,8 +71,14 @@ def leaderboard(ctx: AppContext, dataset: str | None, revision: str | None, harn
     sel = select(ctx, dataset, revision, harness, include_smoke, full_only)
     rows = []
     for row in R.leaderboard(sel.records):
+        jobs = [
+            LeaderboardJob(id=record["run_id"], job=record["label"], started_at=record["started_at"])
+            for record in sel.records
+            if record["model"] == row["model"] and record["agent"] == row["harness"]
+        ]
+        jobs.sort(key=lambda job: job.started_at.timestamp() if job.started_at else 0, reverse=True)
         family = family_of(row["model"])
-        rows.append(LeaderboardRow(**row, family=family, logo_url=logo_url(family)))
+        rows.append(LeaderboardRow(**row, jobs=jobs, family=family, logo_url=logo_url(family)))
     return LeaderboardOut(
         rows=rows, filters=sel.filters, runs_considered=len(sel.records),
         tasks_considered=sum(len(r["tasks"]) for r in sel.records),

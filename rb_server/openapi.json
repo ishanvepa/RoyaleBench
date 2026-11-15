@@ -2315,6 +2315,37 @@
         "title": "LeaderboardFilters",
         "type": "object"
       },
+      "LeaderboardJob": {
+        "description": "A finished run contributing to one pooled leaderboard row.",
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "job": {
+            "title": "Job",
+            "type": "string"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Started At"
+          }
+        },
+        "required": [
+          "id",
+          "job"
+        ],
+        "title": "LeaderboardJob",
+        "type": "object"
+      },
       "LeaderboardOut": {
         "properties": {
           "costs_pending": {
@@ -2413,6 +2444,13 @@
             "title": "Infra Errors",
             "type": "integer"
           },
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/LeaderboardJob"
+            },
+            "title": "Jobs",
+            "type": "array"
+          },
           "last_run": {
             "anyOf": [
               {
@@ -2485,6 +2523,7 @@
           "family",
           "harness",
           "runs",
+          "jobs",
           "tasks_run",
           "solved",
           "agent_failures",

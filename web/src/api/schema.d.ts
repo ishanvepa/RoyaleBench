@@ -1665,6 +1665,18 @@ export interface components {
             /** Revisions */
             revisions: string[];
         };
+        /**
+         * LeaderboardJob
+         * @description A finished run contributing to one pooled leaderboard row.
+         */
+        LeaderboardJob: {
+            /** Id */
+            id: string;
+            /** Job */
+            job: string;
+            /** Started At */
+            started_at?: string | null;
+        };
         /** LeaderboardOut */
         LeaderboardOut: {
             /** Costs Pending */
@@ -1697,6 +1709,8 @@ export interface components {
             harness: string;
             /** Infra Errors */
             infra_errors: number;
+            /** Jobs */
+            jobs: components["schemas"]["LeaderboardJob"][];
             /** Last Run */
             last_run?: string | null;
             /** Logo Url */

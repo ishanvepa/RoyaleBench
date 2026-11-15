@@ -1,6 +1,7 @@
 import { createColumnHelper, type OnChangeFn, type SortingState } from "@tanstack/react-table";
 import { ArrowDownWideNarrow, ArrowUpNarrowWide, Trophy } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Link } from "react-router";
 import { z } from "zod";
 import type { Leaderboard, LeaderboardRow } from "@/api/types";
 import { ModelLabel } from "@/components/domain/ModelLabel";
@@ -9,6 +10,7 @@ import { Duration, Money, RelativeTime, Score } from "@/components/domain/values
 import { Banner } from "@/components/ui/banner";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHeader } from "@/components/ui/page-header";
 import { ALL, Select } from "@/components/ui/select";
@@ -34,13 +36,27 @@ const head = (label: string, explanation: string) => () => <span title={explanat
 
 const numeric = { align: "right" as const };
 
-function useColumns() {
+function useColumns(onShowJobs: (row: LeaderboardRow) => void) {
   return useMemo(
     () => [
       col.accessor("rank", { header: head("#", "Rank by score"), meta: numeric, cell: (c) => <span className="text-muted">{c.getValue()}</span> }),
       col.accessor("model", { header: "Model", cell: (c) => <ModelLabel model={c.getValue()} logoUrl={c.row.original.logo_url} /> }),
       col.accessor((r) => harnessName(r.harness), { id: "harness", header: "Harness", cell: (c) => <span className="text-subtle">{c.getValue()}</span> }),
-      col.accessor("runs", { header: head("Runs", "Finished runs pooled into this row"), meta: numeric, sortDescFirst: true }),
+      col.accessor("runs", {
+        header: head("Runs", "Finished runs pooled into this row. Click to inspect them."),
+        meta: numeric,
+        sortDescFirst: true,
+        cell: (c) => (
+          <button
+            type="button"
+            className="font-medium text-info underline-offset-4 hover:underline"
+            onClick={() => onShowJobs(c.row.original)}
+            aria-label={`View ${c.getValue()} ${c.getValue() === 1 ? "job" : "jobs"} for ${c.row.original.model}`}
+          >
+            {c.getValue()}
+          </button>
+        ),
+      }),
       col.accessor("tasks_run", { header: head("Tasks run", "Tasks attempted across those runs (matches played)"), meta: numeric, sortDescFirst: true }),
       col.accessor("solved", { header: head("Solved", "Tasks that earned full reward (wins)"), meta: numeric, sortDescFirst: true }),
       col.accessor((r) => r.score ?? undefined, {
@@ -91,7 +107,7 @@ function useColumns() {
         cell: (c) => <RelativeTime value={c.row.original.last_run} />,
       }),
     ],
-    [],
+    [onShowJobs],
   );
 }
 
@@ -117,10 +133,11 @@ const DESC_FIRST = new Set(["runs", "tasks_run", "solved", "score", "last_run", 
 
 export function Component() {
   const [state, setState] = useSearchState(searchSchema);
+  const [selectedRow, setSelectedRow] = useState<LeaderboardRow | null>(null);
   const filters: LeaderboardFilters = { dataset: state.dataset, revision: state.revision, harness: state.harness, includeSmoke: state.smoke, fullOnly: state.full_only };
   const leaderboard = useLeaderboard(filters);
   const costs = useCostsDownload(filters);
-  const columns = useColumns();
+  const columns = useColumns(setSelectedRow);
 
   const sorting: SortingState = [{ id: state.sort, desc: state.dir === "desc" }];
   const onSortingChange: OnChangeFn<SortingState> = (updater) => {
@@ -132,7 +149,7 @@ export function Component() {
     <div>
       <PageHeader
         title="Leaderboard"
-        description="How each model does, pooled over every finished run on the selected benchmark. Click a column to sort, or use the sort control."
+        description="How each model does, pooled over every finished run on the selected benchmark. Click a Runs count to inspect its jobs; click a column to sort."
       />
       <QueryBoundary query={leaderboard} errorTitle="Couldn't load the leaderboard">
         {(data) => (
@@ -193,7 +210,31 @@ export function Component() {
           </>
         )}
       </QueryBoundary>
+      <RunJobsDialog row={selectedRow} onOpenChange={(open) => !open && setSelectedRow(null)} />
     </div>
+  );
+}
+
+function RunJobsDialog({ row, onOpenChange }: { row: LeaderboardRow | null; onOpenChange: (open: boolean) => void }) {
+  return (
+    <Dialog open={row !== null} onOpenChange={onOpenChange}>
+      <DialogContent
+        title={`${row?.runs ?? 0} ${(row?.runs ?? 0) === 1 ? "job" : "jobs"}`}
+        description={row ? `${row.model} with ${harnessName(row.harness)}. Only finished jobs included in this leaderboard row are shown.` : undefined}
+      >
+        <ul className="divide-y divide-line">
+          {row?.jobs.map((job) => (
+            <li key={job.id} className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <Link to={`/evals/jobs/${job.id}`} className="min-w-0 font-medium underline-offset-4 hover:underline">
+                <span className="block truncate">{job.job}</span>
+                <span className="mt-0.5 block text-xs font-normal text-muted">{job.id}</span>
+              </Link>
+              <span className="shrink-0 text-xs text-muted"><RelativeTime value={job.started_at} /></span>
+            </li>
+          ))}
+        </ul>
+      </DialogContent>
+    </Dialog>
   );
 }
 

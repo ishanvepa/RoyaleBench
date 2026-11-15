@@ -395,6 +395,13 @@ class PublishOut(BaseModel):
 
 
 # ---------------------------------------------------------------------- leaderboard
+class LeaderboardJob(BaseModel):
+    """A finished run contributing to one pooled leaderboard row."""
+    id: str
+    job: str
+    started_at: datetime | None = None
+
+
 class LeaderboardRow(BaseModel):
     rank: int
     model: str
@@ -402,6 +409,7 @@ class LeaderboardRow(BaseModel):
     logo_url: str | None = None
     harness: str
     runs: int
+    jobs: list[LeaderboardJob]
     tasks_run: int
     solved: int
     pass_rate: float | None = None

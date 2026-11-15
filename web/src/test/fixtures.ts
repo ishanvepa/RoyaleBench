@@ -141,6 +141,7 @@ export const leaderboardRow = (overrides: Partial<LeaderboardRow> = {}): Leaderb
   logo_url: "/api/assets/logos/claude",
   harness: "claude_code-v1.0.0",
   runs: 1,
+  jobs: [{ id: "r1", job: "opus-run", started_at: "2026-11-14T10:00:00Z" }],
   tasks_run: 4,
   solved: 3,
   pass_rate: 0.75,

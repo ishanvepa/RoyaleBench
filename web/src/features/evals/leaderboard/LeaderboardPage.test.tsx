@@ -32,6 +32,24 @@ describe("Leaderboard page", () => {
     expect(screen.getByText(/3 rows from 3 finished runs/)).toBeInTheDocument();
   });
 
+  it("shows the contributing jobs and links each one to its monitor", async () => {
+    stubLeaderboard(leaderboard([
+      leaderboardRow({
+        model: "anthropic/claude-opus-5-5",
+        runs: 2,
+        jobs: [
+          { id: "newest", job: "opus-newest", started_at: "2026-11-14T12:00:00Z" },
+          { id: "older", job: "opus-older", started_at: "2026-11-14T10:00:00Z" },
+        ],
+      }),
+    ]));
+    const { user } = renderApp("/evals/leaderboard");
+    await user.click(await screen.findByRole("button", { name: "View 2 jobs for anthropic/claude-opus-5-5" }));
+    expect(screen.getByRole("dialog", { name: "2 jobs" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /opus-newest/ })).toHaveAttribute("href", "/evals/jobs/newest");
+    expect(screen.getByRole("link", { name: /opus-older/ })).toHaveAttribute("href", "/evals/jobs/older");
+  });
+
   it("sorts by the Sort by control and keeps the choice in the URL", async () => {
     stubLeaderboard();
     const { router, user } = renderApp("/evals/leaderboard");

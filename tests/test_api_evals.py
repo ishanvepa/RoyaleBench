@@ -527,6 +527,8 @@ class LeaderboardTests(ApiCase):
         scores = [r["score"] for r in rows]
         self.assertEqual(scores, sorted(scores, reverse=True))
         self.assertTrue(all(r["tasks_run"] == 4 and r["infra_errors"] == 0 for r in rows))
+        self.assertTrue(all(r["runs"] == len(r["jobs"]) for r in rows))
+        self.assertTrue(all(job["id"] and job["job"] for row in rows for job in row["jobs"]))
 
     def test_include_smoke_pools_smoke_runs_in(self):
         rows = {(r["model"], r["harness"]): r for r in self.client.get(self.URL, params={"include_smoke": True}).json()["rows"]}

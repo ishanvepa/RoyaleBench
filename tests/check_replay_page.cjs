@@ -4,6 +4,7 @@ const {readFileSync} = require('node:fs');
 const assert = require('node:assert/strict');
 const {createHash} = require('node:crypto');
 const scripts = JSON.parse(readFileSync(0, 'utf8'));
+const payload = JSON.parse(scripts.find(([attrs]) => attrs.type === 'application/json')[1]);
 let operations = [];
 const ctx = new Proxy({}, {
   get: (_, key) => (...args) => {
@@ -21,8 +22,9 @@ function element(id) {
   });
   return elements.get(id);
 }
+let animationFrame;
 const sandbox = {document: {getElementById: element}, innerHeight: 900, devicePixelRatio: 2,
-  addEventListener() {}, requestAnimationFrame() {}};
+  addEventListener() {}, requestAnimationFrame(fn) { animationFrame = fn; }};
 sandbox.window = sandbox;
 for (const [attrs, body] of scripts) {
   if (attrs.type === 'application/json') element(attrs.id).textContent = body;
@@ -44,10 +46,10 @@ element('interp').checked = true;
 element('flip').checked = true;
 seek(max - 1);
 seek(max);
-assert.match(element('result').textContent, /final hash/);
+if (payload.scenario_result) assert.equal(element('result').textContent, payload.scenario_result);
+else assert.match(element('result').textContent, payload.result ? /final hash/ : /state hash/);
 
 // Seeking backward must remove future decisions, including previously revealed history.
-const payload = JSON.parse(scripts.find(([attrs]) => attrs.type === 'application/json')[1]);
 const tickField = payload.frame_fields.indexOf('tick');
 for (const i of [max, 0, Math.floor(max / 2), 1, max]) {
   seek(i);
@@ -58,3 +60,21 @@ for (const i of [max, 0, Math.floor(max / 2), 1, max]) {
       `decision at ${decision.tick} must follow replay tick ${tick}`);
   }
 }
+
+// Playback must finish the result animation after the final simulation tick.
+// Its slider, hash, and decision clock stay on the recorded final state.
+seek(max - 1);
+element('play').listeners.click();
+animationFrame(0);
+operations = [];
+animationFrame(1000);
+assert.equal(slider.value, String(max));
+assert.equal(element('play').innerHTML, '&#10074;&#10074;', 'presentation tail is still playing');
+const ending = payload.scenario_outcome || ({0: 'win', 1: 'loss', 2: 'draw'}[payload.result?.winner]) || 'complete';
+const title = !payload.result && !payload.scenario_outcome ? 'REPLAY ENDED' :
+  {win: 'VICTORY', loss: 'DEFEAT', draw: 'DRAW', success: 'CASE PASSED', failure: 'CASE FAILED', complete: 'CASE COMPLETE'}[ending];
+assert.ok(operations.some(op => op[0] === 'fillText' && op[1] === title), 'result banner is visible');
+animationFrame(3000);
+assert.equal(element('play').innerHTML, '&#9654;', 'tail stops after settling');
+seek(0);
+assert.ok(!operations.some(op => op[0] === 'fillText' && op[1] === title), 'backward seek clears future result');

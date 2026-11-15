@@ -540,3 +540,70 @@ test('nearest snaps a blocked opponent-side tap to the closest allowed cell', ()
   assert.equal(p.allowed(grid, hit), true);
   assert.equal(p.nearest({...grid, m: '0'.repeat(36 * 64)}, p.at(4, 25, grid)), null);
 });
+
+test('a fallen tower gets a deterministic crown burst, without announcing a match result', () => {
+  for (const flip of [false, true]) {
+    const {renderer, a, operations} = fixture();
+    a.en = [[2, 0, 3, -1, 3.5, 6.5, 10, 3052, 1, 0, 1, 0, 0]];
+    const gone = {en: [], sp: [], pr: []};
+    const burst = () => {
+      renderer.observe(a, 0); renderer.observe(gone, 100);
+      operations.length = 0;
+      const hits = renderer.draw(gone, gone, 0, 700, {scale: 20, cards, flip});
+      assert.equal(hits.length, 0);
+      assert.ok(operations.filter(op => op[0] === 'rotate').length >= 18, 'masonry scatters after the old death ring would end');
+      assert.ok(!operations.some(op => op[0] === 'fillText'), 'a tower alone must not announce victory');
+      return JSON.stringify(operations);
+    };
+    const first = burst();
+    renderer.reset();
+    assert.equal(burst(), first, 'seeking rebuilds the same burst');
+    operations.length = 0;
+    renderer.draw(gone, gone, 0, 1400, {scale: 20, cards, flip});
+    assert.equal(operations.filter(op => op[0] === 'rotate').length, 0, 'burst settles to ruins');
+  }
+});
+
+test('tower health reaching zero triggers the burst even before its row disappears', () => {
+  const {renderer, a, operations} = fixture();
+  a.en = [[2, 1, 2, -1, 9, 29, 10, 4824, 1, 0, 0, 0, 0]];
+  const dead = {en: [a.en[0].map((v, i) => i === 6 ? 0 : v)], sp: [], pr: []};
+  renderer.observe(a, 0); renderer.observe(dead, 100); renderer.observe(dead, 200);
+  operations.length = 0;
+  assert.equal(renderer.draw(dead, dead, 0, 700, {scale: 20, cards}).length, 0);
+  assert.equal(operations.filter(op => op[0] === 'rotate').length, 18, 'one burst, not one per dead snapshot');
+});
+
+test('explicit match and case endings reveal distinct results without changing the board or hit targets', () => {
+  for (const [outcome, title] of Object.entries({win: 'VICTORY', loss: 'DEFEAT', draw: 'DRAW', success: 'CASE PASSED', failure: 'CASE FAILED', complete: 'CASE COMPLETE'})) {
+    for (const flip of [false, true]) {
+      const {renderer, a, operations} = fixture();
+      renderer.observe(a, 0);
+      const original = JSON.stringify(a);
+      const draw = (elapsed) => {
+        operations.length = 0;
+        return renderer.draw(a, a, 0, 1000, {scale: 20, cards, flip, ending: {outcome, elapsed, crowns: [1, 0]}});
+      };
+      draw(100);
+      assert.ok(!operations.some(op => op[0] === 'fillText' && op[1] === title), 'let the tower impact land first');
+      assert.equal(draw(900).length, 1, 'the overlay adds no hit targets');
+      assert.ok(operations.some(op => op[0] === 'fillText' && op[1] === title));
+      assert.ok(operations.some(op => op[0] === 'fillText' && op[1] === '1  —  0  CROWNS'));
+      assert.equal(JSON.stringify(a), original);
+    }
+  }
+});
+
+test('reduced-motion endings are immediately settled and late partial recordings stay neutral', () => {
+  const {renderer, a, operations} = fixture(); renderer.observe(a, 0);
+  const draw = (elapsed) => {
+    operations.length = 0;
+    renderer.draw(a, a, 0, 1000, {scale: 20, cards, ending: {outcome: 'win', elapsed, reducedMotion: true}});
+    return JSON.stringify(operations);
+  };
+  assert.equal(draw(0), draw(1800));
+  operations.length = 0;
+  renderer.draw(a, a, 0, 1000, {scale: 20, cards, ending: {outcome: 'complete', title: 'REPLAY ENDED', subtitle: 'Partial recording', elapsed: 1800}});
+  assert.ok(operations.some(op => op[0] === 'fillText' && op[1] === 'REPLAY ENDED'));
+  assert.ok(!operations.some(op => op[0] === 'fillText' && /VICTORY|DEFEAT/.test(op[1])));
+});

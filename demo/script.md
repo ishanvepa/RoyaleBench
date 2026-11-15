@@ -1,40 +1,25 @@
-# Optional narration draft — previous 90-second cut
+# Optional human narration — 72-second edit
 
-The active [76-second Remotion edit](remotion/README.md) is silent and uses short on-screen annotations. The computer voice from v01 has been removed. This older script is source material for a human recording; it is not timed to the new edit.
+The [v03 Remotion preview](remotion/README.md) is silent. This script is ready for a human timed read, with room to watch the gameplay. Record and measure the take before adding audio or captions. The earlier Samantha scratch voice is not used.
 
-Approximately 190 words. Read aloud and time before recording the final take. Segment timings match [the storyboard](storyboard.md).
+| Time | Narration |
+| --- | --- |
+| 0–4s | Claude Opus lost this. Could the same cards have won? |
+| 4–9s | Eighteen seconds of overtime. Your tower: 250 health. Next tower down wins. |
+| 9–21s | Opus freezes the Giant, places a Cannon, and cycles into Fireball and Hog Rider. Then it sends Log at the enemy tower. The Giant gets through first. |
+| 21–25s | That Log went on offense. The defense still needed help. |
+| 25–38s | Here's the validated reference. Same position. Same six cards, in the same order, at the same times. Different placements. This time, Log hits the Giant, and the Hog gets through. |
+| 38–43s | Compare the Cannon placements. The reference places it higher, closer to the left lane. |
+| 43–48s | Then compare the Log targets: the enemy tower, or the incoming Giant. |
+| 48–56s | RoyaleBench gives models text observations. They choose a card and coordinates. The simulation pauses while they think. |
+| 56–64s | In this run, Opus completed ten of fourteen task objectives. Tasks run on Valkyrie and Modal, with independent replay verification. |
+| 64–72s | The right cards are only the beginning. This is RoyaleBench. |
 
-## 0–10s — Hook
+## Recording and editorial notes
 
-Eighteen seconds left. Your tower has 250 health. The opponent's has 450. Can a frontier model find the win?
-
-## 10–25s — Model attempt
-
-Claude Opus freezes the Giant, pulls it with a Cannon, and sends a Hog Rider toward the enemy tower.
-
-## 25–35s — Failure
-
-But it spends its Log attacking. The Giant gets through first, before the Hog can connect.
-
-## 35–53s — Winning comparison
-
-This position is winnable. Our validated reference plays exactly the same cards, in exactly the same order. Different placements and a defensive Log keep the Giant occupied long enough for the Hog to finish the game.
-
-## 53–68s — Benchmark
-
-RoyaleBench tests resource management, spatial reasoning, and planning through reproducible Clash Royale scenarios. Models read the battle state and choose card coordinates. The game pauses while they think.
-
-## 68–82s — Evidence
-
-Tasks run on Valkyrie using Modal, with independent replay verification. In this fourteen-task run, Opus completed ten objectives and failed this one. Every task has an explicit objective and a validated reference solution.
-
-## 82–90s — Close
-
-The right cards are only part of the answer. Where you play them can decide the game.
-
-## Editorial notes
-
-- Say “objectives” for the 10/14 aggregate: v6 includes objectives besides match wins.
-- Keep this attributed to one recorded run. It is not a repeated-run model ranking.
-- Describe the visible decisions. The trace does not record the model's private reasoning.
-- Do not use the model's post-match suggestion to play Hog immediately as the reference explanation: Hog is not in the starting hand, and the verified reference uses the same card order.
+- Timing is an allocation, not a measured voice duration. Leave the final title readable after the last word; adjust the edit after the human take if needed.
+- Say “task objectives” for 10/14: v6 includes objectives besides match wins.
+- Attribute the result to one recorded run; it is not a repeated-run model ranking.
+- Describe visible decisions. The trace does not record private reasoning.
+- Cannon and Log are visible examples of placement differences across the full sequences; avoid claiming either is the sole cause.
+- The reference uses the same card order. Hog is not in the starting hand.

@@ -3,12 +3,16 @@
 async (page) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
   const source = new URL(page.url());
-  const name = source.pathname.includes('reference-capture') ? 'reference' : 'opus';
+  const base = source.pathname.includes('reference') ? 'reference' : 'opus';
+  const marker = page.locator('meta[name="demo-capture-variant"]');
+  const variant = await marker.count() ? await marker.getAttribute('content') : null;
+  const name = variant ? `${base}-${variant}` : base;
   const directory = await page.locator('meta[name="demo-capture-directory"]').getAttribute('content');
   const info = await page.evaluate(() => {
     const d = JSON.parse(document.getElementById('replay-data').textContent);
     const tick = d.frame_fields.indexOf('tick');
-    return { duration: (d.frames.at(-1)[tick] - d.frames[0][tick]) * d.source.tick_ms / 1000 };
+    const tail = Number(document.querySelector('meta[name="demo-presentation-tail"]')?.content || 0);
+    return { duration: (d.frames.at(-1)[tick] - d.frames[0][tick]) * d.source.tick_ms / 1000 + tail };
   });
   const fps = 20;
   const count = Math.ceil(info.duration * fps) + 1;

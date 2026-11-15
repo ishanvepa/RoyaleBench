@@ -1,10 +1,11 @@
 # RoyaleBench hackathon demo
 
-Current edit: **76 seconds**, within the **1–2 minute** target. The active version is rebuilt in Remotion with larger gameplay, close-ups, brief annotations, and hard cuts. The earlier slide-like v01 is superseded. The new preview is silent; final human narration/audio and publication are pending.
+Current edit: **72 seconds**, within the **1–2 minute** target. The active v03 Remotion edit uses gameplay close-ups, matched six-play progress strips, precise comparison annotations, short eased entrances, animated tower destruction and match endings, and hard cuts. The earlier slide-like v01 is superseded. The new preview is silent; final human narration/audio and publication are pending.
 
-- [Open the editable preview](http://localhost:3008/RoyaleBench) while Studio is running.
+- [Open the editable preview](http://localhost:3010/RoyaleBench) while Studio is running.
 - [Remotion project and commands](remotion/README.md).
-- [Current scene contact sheet](exports/v02-contact-sheet.jpg).
+- [Current scene contact sheet](exports/v03-contact-sheet.jpg).
+- [Animated renderer ending comparison](exports/renderer-endings.gif): recorded defeat and validated victory.
 
 Historical v01 assets:
 
@@ -20,11 +21,12 @@ Core story: **Same cards. Same order. Different placements. Opposite result.** T
 ## Working files
 
 - [Storyboard](storyboard.md): timing, visuals, and on-screen text.
-- [Narration](script.md): first voiceover draft, ready for a timed read.
+- [Narration](script.md): optional 72-second human narration draft, ready for a timed read.
 - [Shot list](shot-list.md): capture plan and production checklist.
 - [Evidence](evidence.json): selected run metadata, outcomes, action sequences, trace excerpt, and reference provenance.
 - `prepare_capture.py`: retrieve the model replay and prepare copies of the existing replay renderer for capture.
 - `capture.js`: capture the board at 20 frames per second through Playwright.
+- `prepare_ending_capture.py`: rebuild archived payloads with current shared graphics, plus a presentation-only result tail; see the [ending capture workflow](remotion/README.md#refresh-the-ending-footage).
 - `assemble.py`: compose the scenes, generate temporary narration and captions, and export the MP4.
 
 ## Media layout
@@ -49,8 +51,8 @@ Media and editor files in those folders are ignored by Git. The linked review cu
 ## Next steps
 
 1. Review the current Remotion edit for pacing and whether the comparison is clear.
-2. Record human narration if desired and time it to the new edit; the old Samantha voice is not used.
-3. Refine placement annotations and transitions as needed.
+2. Record the updated optional human narration if desired; the old Samantha voice is not used.
+3. Review the v03 comparison annotations and restrained motion in Studio.
 4. Export the submission cut, review audio and readability, and publish it.
 5. Add the public video link to the root README.
 

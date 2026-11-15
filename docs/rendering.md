@@ -38,6 +38,45 @@ and decks in aligned score columns, with the record, replay status, and secondar
 actions below. A native modal dialog dims and blurs the finished arena, contains
 keyboard focus, and scrolls within the viewport on small or short screens.
 
+## Tower destruction and endings
+
+A tower reaching zero HP or disappearing from the observed state produces a
+1.2-second shockwave, deterministic masonry fragments, and a rising crown before
+settling into ruins. A mid-match tower fall does not announce a match winner.
+
+The shared renderer accepts `options.ending` with an explicit `outcome`,
+`elapsed` presentation milliseconds, and optional `crowns`, `title`, `subtitle`,
+and `reducedMotion`. Outcomes are `win`, `loss`, `draw`, `success`, `failure`, or
+`complete`. The result ribbon begins 220 ms after completion and settles by
+640 ms. Victory uses gold and a short, small confetti burst; defeat uses coral.
+Case outcomes say **CASE PASSED / CASE FAILED**. Without an explicit case result
+or engine winner, a completed case stays neutral; partial recordings say
+**REPLAY ENDED**. Replay match results use Blue's perspective, with Blue's crown
+score first, regardless of board flipping.
+
+Saved replays continue presentation for 1.8 seconds after the final recorded
+tick while the simulation state, clock, score, and decision history remain at
+that tick. Seeking to the end shows the settled result; seeking backward or
+restarting rebuilds effects and clears the future result. Live play disables
+actions immediately and opens the existing result dialog after this reveal.
+Starting another match clears any pending dialog. Reduced-motion users get a
+settled ribbon without confetti and without the live dialog delay.
+
+The demo re-renders its checksum-verified archived payloads with these graphics,
+using a separate 1.8-second presentation tail. The full arena includes the result
+banner; close-ups use a second capture with the banner suppressed so a cropped
+ribbon cannot obscure the tower. Source replay HTML, frames, commands, timestamps,
+and benchmark evidence remain unchanged. See [demo capture instructions](../demo/remotion/README.md#refresh-the-ending-footage).
+
+Validation: 37 renderer tests, 9 portable replay/embedding tests (including
+continued end playback, seeks, flips, partials, and explicit case outcomes),
+the live benchmark reference test, and browser checks for win, loss, draw, case
+pass/fail, interrupted endings, and reduced-motion dialogs. Demo lint/typecheck
+and seven ending review frames also pass. Browser checks use recorded replays
+and a local live-state fixture; they do not make model calls.
+
+## Shared battle graphics
+
 Live play and saved HTML replays use `cr_arena/battle_renderer.js` for the arena,
 units, names, health bars, projectiles, spells, and animation effects. Change those
 graphics there so both views stay consistent. The renderer takes positions and
@@ -634,7 +673,8 @@ The exported page was also checked in Chromium with no JavaScript console errors
 - These are small original canvas miniatures. The reference uses textured 3D
   meshes, soft lighting, irregular stones and smoother shadows; this pass uses
   flat layered shapes and simplified bevels. Occupant faces, bows and crowns
-  remain stylized, with no aiming, recoil, idle or collapse animation.
+remain stylized, with no aiming, recoil, or idle animation. Destruction uses the
+shared fragment burst and ruins rather than a fully articulated tower collapse.
 - The existing orthographic arena and tower bounds constrain the reference's
   perspective and vertical proportions. Tower bodies are inset within those
   bounds to distinguish the wider King from the slimmer Princess. Shadows are

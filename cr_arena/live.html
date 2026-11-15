@@ -700,6 +700,8 @@
   let handMasks = new Map();
   let snaps = [], clock0 = null, sel = -1, mask = null, maskSlot = -1, hover = null, dragging = false, dragMoved = false;
   let over = false, handKey = "", T = 16;
+  let ending = null;
+  const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let delayTicks = 0;
   const NAME_KEY = "royalebench.playerName";
   let nameEdited = false;
@@ -986,6 +988,7 @@
     mode = m.mode || "battle";
     cards = m.cards; snaps = []; clock0 = null; sel = -1; mask = null; handMasks = new Map(); over = false; handKey = "";
     renderer = BattleRenderer.create(cv, m.arena); delayTicks = m.delay || 0;
+    ending = null;
     TX = m.arena.tiles_x; TY = m.arena.tiles_y; HALF = m.arena.half;
     $("opp-name").textContent = m.opp === "planner-bot" ? "Planner bot" : m.opp; $("log").textContent = "";
     $("me-name").textContent = m.player_name || "You";
@@ -1126,7 +1129,12 @@
     $("log").prepend(row);
   }
   function onOver(m) {
+    if (over) return;
     over = true; select(-1);
+    ending = {at: performance.now() + DELAY_MS, shown: false,
+      outcome: m.mode === "benchmark" ? (m.success ? "success" : "failure") :
+        m.winner === 0 ? "win" : m.winner === 1 ? "loss" : "draw",
+      crowns: m.mode === "benchmark" ? null : m.crowns};
     if (m.mode === "benchmark") {
       $("banner").dataset.outcome = m.success ? "win" : "loss";
       $("banner-title").textContent = m.success ? "Hog stopped!" : m.outcome === "tower" ? "Tower lost" : "Challenge failed";
@@ -1136,7 +1144,6 @@
       $("benchmark-result").textContent = "Tower damage " + m.tower_damage + " · Elixir spent " + m.spent + " / " + m.budget;
       $("banner-record").textContent = "Practice attempt · Leaderboard unchanged";
       $("banner-replay").textContent = m.saved ? "Practice replay saved on the game server." : "Practice replay unavailable.";
-      if (!$("banner").open) $("banner").showModal();
       return;
     }
     const [a, b] = m.crowns;
@@ -1152,7 +1159,6 @@
       : "Your replay couldn't be saved.";
     $("banner-record").dataset.error = String(!!m.leaderboard_error);
     $("banner-record").textContent = m.leaderboard_error ? "Your leaderboard result couldn't be saved." : "Updating your record…";
-    if (!$("banner").open) $("banner").showModal();
     if (!m.leaderboard_error) loadLeaderboard();
   }
   let toastTimer = 0;
@@ -1232,7 +1238,13 @@
     if (rt <= snaps[0].k) b = a;
     const span = b.k - a.k, t = span > 0 ? Math.max(0, Math.min(1, (rt - a.k) / span)) : 1;
 
-    renderer.draw(a, b, t, now, {scale: T, cards, delayTicks, overlay: drawMask});
+    renderer.draw(a, b, t, now, {scale: T, cards, delayTicks, overlay: drawMask,
+      ending: ending && {...ending, elapsed: now - ending.at, reducedMotion}});
+    // State and controls finish immediately; the modal follows the arena reveal.
+    if (ending && !ending.shown && now - ending.at >= (reducedMotion ? 0 : 1800)) {
+      ending.shown = true;
+      if (!$("banner").open) $("banner").showModal();
+    }
     const el = lerp(a.me.e, b.me.e, t) / 1000;
     $("elx-fill").style.width = Math.min(100, el * 10) + "%";
     const whole = Math.floor(el);

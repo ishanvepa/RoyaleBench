@@ -29,7 +29,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
 - [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
-- [`demo/README.md`](demo/README.md): active 76-second Remotion demo, media layout, production status, and historical v01 cut.
+- [`demo/README.md`](demo/README.md): active 72-second Remotion demo, media layout, production status, and historical v01 cut.
 - [`demo/remotion/README.md`](demo/remotion/README.md): editable video project, official Remotion skills used, asset preparation, preview, and export commands.
 - [`demo/storyboard.md`](demo/storyboard.md): timed headliner sequence and model/reference comparison.
 - [`demo/script.md`](demo/script.md): draft voiceover and evidence-based editorial notes.
@@ -45,7 +45,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/public_play.md`](docs/public_play.md): arena lobby, player names and deck selection, seven-match public Planner play at local-play strength without pausing, Tactics @5 Try Benchmark challenge and reference resolution, persistent CSV leaderboard, fixed Hog Cycle opponent, preloaded masks, permanent RoyaleBench share link, results before worker cleanup, and unranked hosting checks.
 - [`docs/public_play_plan.md`](docs/public_play_plan.md): implementation scope, checklist, and validation for public play.
 - [`docs/public_play_validation.json`](docs/public_play_validation.json): historical five-match and ten-match measurements (two Planner workers per match; the seven-match eight-worker deployment is not yet measured), latency limits, and deployment status.
-- [`docs/rendering.md`](docs/rendering.md): dark replay viewer and synchronized agent decisions, lobby miniature, card previews and match result dialog, shared live/replay graphics, mobile troop sizing, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
+- [`docs/rendering.md`](docs/rendering.md): dark replay viewer and synchronized agent decisions, lobby miniature, card previews and match result dialog, tower destruction and animated match/case endings, shared live/replay graphics, mobile troop sizing, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
 - [`docs/royalebench_v3.md`](docs/royalebench_v3.md): historical coordinate-action benchmark, all 11 released scenarios, scoring, validation, and Harbor/Valkyrie workflow.
 - [`docs/royalebench_win.md`](docs/royalebench_win.md): separate win-only continuation tasks, v3 saturation audit, calibration controls, and container/hosted validation.

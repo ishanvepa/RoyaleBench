@@ -114,6 +114,12 @@ class RenderingTests(unittest.TestCase):
         self.assertEqual(view['unit_types'], list(load_trace(SAMPLE).header.unit_types))
         self.assertIn('unit_type', view['entity_fields'])
 
+    def test_scenario_outcome_is_explicit_and_separate_from_match_winner(self):
+        for success, expected in ((True, 'success'), (False, 'failure'), (None, None)):
+            view = extract_view(patched_html(SAMPLE, stride=100, scenario_success=success))
+            self.assertEqual(view['scenario_outcome'], expected)
+            self.assertEqual(view['result']['winner'], load_trace(SAMPLE).result.winner)
+
     def test_invalid_stride_and_missing_renderer_marker_fail_explicitly(self):
         with self.assertRaises(ValueError):
             patched_html(SAMPLE, stride=0)
@@ -127,6 +133,17 @@ class RenderingTests(unittest.TestCase):
             {'kind': 'text', 'title': 'Agent', 'text': f'Recorded decision at tick {frame.tick}'}]}
             for frame in (trace.frames[4], trace.frames[len(trace.frames) // 2], trace.frames[-1])]
         scripts = parse_page(patched_html(SAMPLE, stride=2, decisions=decisions)).scripts
+        subprocess.run(['node', str(ROOT / 'tests/check_replay_page.cjs')],
+                       input=json.dumps(scripts), text=True, check=True, capture_output=True)
+
+    @unittest.skipUnless(shutil.which('node'), 'Node is required to execute the replay scripts')
+    def test_partial_replay_finishes_neutrally_without_inventing_a_winner(self):
+        trace = load_trace(SAMPLE)
+        trace.result = None
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'partial.msgpack'
+            save_trace(trace, path)
+            scripts = parse_page(patched_html(path, stride=2)).scripts
         subprocess.run(['node', str(ROOT / 'tests/check_replay_page.cjs')],
                        input=json.dumps(scripts), text=True, check=True, capture_output=True)
 

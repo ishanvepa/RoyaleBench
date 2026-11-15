@@ -197,7 +197,9 @@
       if (prev) {
         for (const [uid, e] of prev.by) {
           const n = s.by.get(uid);
-          if (!n)
+          if ((e[2] === KING || e[2] === PRINCESS) && e[6] > 0 && (!n || n[6] <= 0))
+            fx.push({kind: "tower", x: e[4], y: e[5], team: e[1], uid, at: now});
+          else if (!n)
             fx.push({
               kind: "die",
               x: e[4],
@@ -1911,12 +1913,33 @@
         }
     }
     function drawFx(now) {
-      fx = fx.filter((f) => now - f.at < 450);
+      fx = fx.filter((f) => now - f.at < (f.kind === "tower" ? 1200 : 450));
       for (const f of fx) {
-        const t = (now - f.at) / 450;
+        const t = (now - f.at) / (f.kind === "tower" ? 1200 : 450);
         if (t < 0) continue;
         const art = (f.kind === "boom" || f.kind === "land") && f.card !== undefined ? artOf(f.card) : null;
-        if (art) {
+        if (f.kind === "tower") {
+          const px = X(f.x), py = Y(f.y), fade = Math.max(0, 1 - t);
+          ctx.strokeStyle = "#fff2bd";
+          ctx.lineWidth = Math.max(1, T * .16 * fade);
+          ctx.globalAlpha = fade * .85;
+          ctx.beginPath();
+          ctx.ellipse(px, py, T * (1.5 + t * 4), T * (.7 + t * 1.8), 0, 0, 7);
+          ctx.stroke();
+          // A small fixed set of masonry fragments; no random state or new hit targets.
+          for (let i = 0; i < 18; i++) {
+            const angle = hash(f.uid * 31 + i) * Math.PI * 2,
+              travel = (1.5 + hash(i + f.uid) * 2.6) * T * t,
+              x = px + Math.cos(angle) * travel,
+              y = py + Math.sin(angle) * travel * .4 - Math.sin(t * Math.PI) * T * (1 + hash(i) * 2);
+            ctx.globalAlpha = fade * .9;
+            ctx.fillStyle = i % 4 === 0 ? (f.team === 0 ? C.blue : C.red) : i % 2 ? "#ede4cc" : "#8f918b";
+            ctx.save(); ctx.translate(x, y); ctx.rotate(angle + t * 4);
+            ctx.fillRect(-T * .14, -T * .1, T * .28, T * .2); ctx.restore();
+          }
+          ctx.globalAlpha = Math.min(1, t * 8) * fade;
+          resultCrown(px, py - T * (1.3 + t * 3.4), T * .8, "#f6d77c");
+        } else if (art) {
           drawImpactArt(art, f, t);
         } else if (f.kind === "land") {
           // a volley landing has no generic picture
@@ -1953,6 +1976,62 @@
       }
     }
 
+    function resultCrown(x, y, size, color) {
+      ctx.save(); ctx.translate(x, y); ctx.scale(size, size);
+      polygon([[-1,-.55],[-.5,-.08],[0,-.85],[.5,-.08],[1,-.55],[.77,.55],[-.77,.55]],
+        color, "#65471e", .1);
+      ctx.fillStyle = "#fff3bf"; ctx.fillRect(-.65, .25, 1.3, .12);
+      ctx.restore();
+    }
+
+    // Presentation time is supplied by the caller, independent of the frozen simulation.
+    // The banner is screen-aligned even when the arena is flipped. No outcome is inferred
+    // from a tower falling: a mid-match crown is not necessarily a match win.
+    function drawEnding(ending) {
+      if (!ending || !Number.isFinite(ending.elapsed) || ending.elapsed < 0) return;
+      const age = ending.reducedMotion ? 1800 : ending.elapsed,
+        enter = Math.max(0, Math.min(1, (age - 220) / 420)),
+        ease = 1 - Math.pow(1 - enter, 3),
+        won = ending.outcome === "win" || ending.outcome === "success",
+        lost = ending.outcome === "loss" || ending.outcome === "failure",
+        color = won ? "#f6d77c" : lost ? "#f39b89" : "#c4d6ec",
+        titles = {win: "VICTORY", loss: "DEFEAT", draw: "DRAW", success: "CASE PASSED", failure: "CASE FAILED", complete: "CASE COMPLETE"},
+        title = ending.title || titles[ending.outcome] || titles.complete,
+        W = TX * T, H = TY * T, cx = W / 2, cy = H / 2 + (1 - ease) * T * .7;
+      if (!enter) return;
+      ctx.save();
+      ctx.globalAlpha = enter * .38; ctx.fillStyle = "#07111f"; ctx.fillRect(0, 0, W, H);
+      // Brief gold flecks celebrate a win; defeat gets a restrained coral accent.
+      if (won && age >= 380 && age < 1600 && !ending.reducedMotion) {
+        const p = Math.max(0, (age - 380) / 1200);
+        for (let i = 0; i < 24; i++) {
+          const x = cx + (hash(i + 81) - .5) * W * .95 * p,
+            y = H * .38 - Math.sin(p * Math.PI) * T * (2 + hash(i + 9) * 4) + p * T * 7;
+          ctx.globalAlpha = enter * (1 - p);
+          ctx.fillStyle = i % 3 ? color : "#a8d5ff";
+          ctx.save(); ctx.translate(x, y); ctx.rotate(i + p * 5);
+          ctx.fillRect(-T * .08, -T * .16, T * .16, T * .32); ctx.restore();
+        }
+      }
+      ctx.globalAlpha = enter;
+      ctx.translate(cx, cy);
+      ctx.fillStyle = "rgba(7,17,31,.94)";
+      ctx.fillRect(-W * .46, -T * 2.4, W * .92, T * 5.4);
+      ctx.fillStyle = color;
+      ctx.fillRect(-W * .46, -T * 2.4, W * .92, T * .07);
+      ctx.fillRect(-W * .46, T * 2.93, W * .92, T * .07);
+      resultCrown(0, -T * 2.45, T * .9 * (1 + Math.sin(enter * Math.PI) * .1), color);
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.font = "900 " + (T * (title.length > 10 ? 1.35 : 1.85)) + "px system-ui, sans-serif";
+      ctx.fillStyle = color; ctx.fillText(title, 0, -T * .55, W * .84);
+      ctx.font = "600 " + (T * .58) + "px system-ui, sans-serif";
+      ctx.fillStyle = "#eef3fb";
+      const score = ending.crowns;
+      const subtitle = ending.subtitle || (score ? score[0] + "  —  " + score[1] + "  CROWNS" : "EVALUATION FINISHED");
+      ctx.fillText(subtitle, 0, T * 1.15, W * .84);
+      ctx.restore();
+    }
+
     function draw(a, b, t, now, options = {}) {
       drawn = [];
       bars = [];
@@ -1973,7 +2052,7 @@
       // Remember only observed tower sites. Ruins have no collision or tooltip
       // entry, and reset/seek rebuilds them from the same snapshot history.
       for (const [uid, e] of towerSites) {
-        if (b.by.has(uid)) continue;
+        if (b.by.get(uid)?.[6] > 0) continue;
         drawTower(e, X(e[4]), Y(e[5]), (e[2] === KING ? 1.55 : 1.5) * T, 0, true);
       }
       for (const sp of b.sp.filter(isFlight)) {
@@ -2007,6 +2086,7 @@
       }
       const list = [];
       for (const e of b.en) {
+        if ((e[2] === KING || e[2] === PRINCESS) && e[6] <= 0) continue;
         const p = a.by.get(e[0]);
         list.push([
           e,
@@ -2248,6 +2328,7 @@
         drawn.push({ p: [X(x), Y(y) - lift], rad: r, spell: sp });
       }
       drawFx(now);
+      drawEnding(options.ending);
       return drawn;
     }
     return { reset, observe, draw, addEffect: (f) => fx.push(f) };

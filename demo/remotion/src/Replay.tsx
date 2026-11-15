@@ -31,9 +31,11 @@ export const Replay = ({
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const duration = source === "opus" ? 10.35 : 11.2;
+  // Preserve the recorded game clock, but let the shared renderer's ending play
+  // for another 1.8 seconds before holding its settled result frame.
+  const duration = (source === "opus" ? 10.35 : 11.2) + 1.8;
   const ended = (frame / fps) * speed + start >= duration;
-  const still = freeze ?? (ended ? (source === "opus" ? 207 : 224) : undefined);
+  const still = freeze;
   // Full source is 486x866. Defense shows the lower half; attack the upper half.
   const sizing: React.CSSProperties = { width: "100%", height: "100%" };
   const cameraStyle: React.CSSProperties =
@@ -56,10 +58,12 @@ export const Replay = ({
       }}
     >
       <div style={cameraStyle}>
-        {still === undefined ? (
+        {still === undefined && !ended ? (
           <Video
             name="Recorded gameplay"
-            src={staticFile(`media/${source}.mp4`)}
+            src={staticFile(
+              `media/${source}-${camera === "full" ? "ending" : "impact"}.mp4`,
+            )}
             trimBefore={Math.round(start * fps)}
             playbackRate={speed}
             muted
@@ -70,7 +74,9 @@ export const Replay = ({
           <CanvasImage
             name="Recorded freeze frame"
             src={staticFile(
-              `media/${source}-${String(still).padStart(4, "0")}.png`,
+              still === undefined
+                ? `media/${source}-${camera === "full" ? "ending" : "impact"}-final.png`
+                : `media/${source}-${String(still).padStart(4, "0")}.png`,
             )}
             style={sizing}
           />

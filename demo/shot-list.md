@@ -1,6 +1,6 @@
 # Capture and edit checklist
 
-The active edit is the [76-second Remotion composition](remotion/README.md). Original footage is reused with larger crops. Its preview is silent and does not use the v01 computer voice. This checklist also preserves the original capture history.
+The active v03 edit is the [72-second Remotion composition](remotion/README.md). Original footage is reused with larger crops. Its preview is silent and does not use the v01 computer voice. This checklist also preserves the original capture history.
 
 ## Sources
 
@@ -15,14 +15,14 @@ These localhost links require the dashboard on port 8000. During capture the v6 
 | ID | Asset | Capture notes | Status |
 | --- | --- | --- | --- |
 | 01 | Opening replay still | Both vulnerable tower health values and Giant visible. This is the first recorded frame, including the first deployment cue. | Captured |
-| 02 | Full model attempt | All six plays and terminal state; canvas capture with editorial loss label. | Captured |
-| 03 | Full reference continuation | Same framing and simulation-time alignment; include winning connection. | Captured |
+| 02 | Full model attempt | All six plays and terminal state; shared destruction/defeat animation, with a banner-free close-up. | Captured |
+| 03 | Full reference continuation | Same framing and simulation-time alignment; winning connection and shared victory animation. | Captured |
 | 04 | Observation and action insert | Selected initial observation fields and the actual first command, typeset for readability. | Composed |
 | 05 | Run results insert | Actual run overview screenshot; no personal account details shown. | Captured |
-| 06 | Comparison graphics | Cannon placement markers; defensive versus offensive Log; side labels. | First pass |
-| 07 | Results card | 10/14 objectives, 71.4%, one attempt per task, v6@1. | Composed |
+| 06 | Comparison graphics | Cannon and Log target markers; explicit freeze clocks; matched labels and outcomes. | Reviewed v03 |
+| 07 | Results card | 10/14 task objectives; 10 completed / 4 missed; one attempt per task, v6@1. | Composed |
 | 08 | End card | Project name and configured repository origin. | Composed |
-| 09 | Voiceover | macOS Samantha scratch narration; final voice pending. | Temporary |
+| 09 | Voiceover | Updated optional 72-second human script; no voice in current preview. | Script ready |
 
 ## Assembly
 

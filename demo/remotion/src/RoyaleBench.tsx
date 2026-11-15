@@ -53,28 +53,28 @@ export const RoyaleBench = () => {
         <Sequence
           name="Placement comparison"
           from={38 * fps}
-          durationInFrames={11 * fps}
+          durationInFrames={10 * fps}
         >
           <Placements />
         </Sequence>
         <Sequence
           name="Agent interface"
-          from={49 * fps}
-          durationInFrames={9 * fps}
+          from={48 * fps}
+          durationInFrames={8 * fps}
           style={{ backgroundColor: ink }}
         >
           <Method />
         </Sequence>
         <Sequence
           name="Measured result"
-          from={58 * fps}
-          durationInFrames={10 * fps}
+          from={56 * fps}
+          durationInFrames={8 * fps}
         >
           <Results />
         </Sequence>
         <Sequence
           name="Winning connection and end card"
-          from={68 * fps}
+          from={64 * fps}
           durationInFrames={8 * fps}
           style={{ backgroundColor: ink }}
         >

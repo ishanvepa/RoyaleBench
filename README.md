@@ -179,7 +179,7 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 
 ## Quick guides
 
-- [Demo video](demo/README.md): editable 76-second Remotion cut, captured gameplay, storyboard, and evidence.
+- [Demo video](demo/README.md): editable 72-second Remotion cut, captured gameplay, storyboard, and evidence.
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
 - [RoyaleBench v8](docs/royalebench_v8.md): default 18-task merge of v6@1 and v7@1, exact source provenance, grading and validation.
 - [RoyaleBench v7](docs/royalebench_v7.md): separate harder tower-winning continuations, latest v6 audit, validation and frontier calibration.

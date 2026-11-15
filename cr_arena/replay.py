@@ -22,7 +22,7 @@ _PLACEHOLDER = re.compile(r"__(TITLE|DATA_ID|DATA)__")
 
 def patched_html(replay: str | Path, *, title: str | None = None, stride: int = 1,
                  decisions: list[dict] | None = None, decisions_note: str = "",
-                 scenario_result: str = "") -> str:
+                 scenario_result: str = "", scenario_success: bool | None = None) -> str:
     """Keep the existing public entry point; playback controls are now owned locally."""
     trace = load_trace(replay)
     payload = build_view(trace, stride=stride)
@@ -32,6 +32,7 @@ def patched_html(replay: str | Path, *, title: str | None = None, stride: int = 
     payload["agent_decisions"] = decisions or []
     payload["decisions_note"] = decisions_note
     payload["scenario_result"] = scenario_result
+    payload["scenario_outcome"] = ("success" if scenario_success else "failure") if scenario_success is not None else None
     # A trace's card names and caller-supplied title must never become script markup.
     data = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
     data = data.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")

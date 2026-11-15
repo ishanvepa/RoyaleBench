@@ -744,7 +744,7 @@ def benchmark_resolution_html() -> str:
                             decisions_note="Live Share Play challenge based on Tactics @5. The Hog enters after "
                                            "a half-second prelude; play continues until the Hog or tower falls.",
                             scenario_result="Challenge cleared: Hog defeated, zero tower damage, "
-                                            "three elixir spent, left tower survives at 1 HP.")
+                                            "three elixir spent, left tower survives at 1 HP.", scenario_success=True)
 
 
 async def benchmark_resolution(_request) -> HTMLResponse:

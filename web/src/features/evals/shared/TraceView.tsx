@@ -83,7 +83,10 @@ function TraceBody({ trace }: { trace: Trace }) {
         <span>Input tokens {formatNumber(trace.input_tokens)}</span>
         <span>Output tokens {formatNumber(trace.output_tokens)}</span>
         <span>Cached tokens read {formatNumber(trace.cache_read_tokens)}</span>
+        {trace.api_calls != null && <span>Model calls {formatNumber(trace.api_calls)}</span>}
+        {trace.reasoning_tokens != null && <span>Reasoning tokens {formatNumber(trace.reasoning_tokens)} (included in output)</span>}
       </p>
+      {trace.cost_note && <p className="text-[13px] text-muted">{trace.cost_note}</p>}
       {trace.steps.length === 0 ? (
         <p className="text-[13px] text-muted">The agent left no step-by-step trajectory.</p>
       ) : (

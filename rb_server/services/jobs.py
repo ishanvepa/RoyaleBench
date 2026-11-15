@@ -146,7 +146,9 @@ def task_trace(ctx: AppContext, run_id: str, task_id: str) -> TraceOut:
     m = trace["metrics"] or {}
     return TraceOut(available=True, final_message=trace["final_message"], steps=[TraceStep(**s) for s in trace["steps"]],
                     steps_total=trace["steps_total"], cost_usd=m.get("cost"), input_tokens=m.get("input_tokens"),
-                    output_tokens=m.get("output_tokens"), cache_read_tokens=m.get("cache_read_tokens"))
+                    output_tokens=m.get("output_tokens"), cache_read_tokens=m.get("cache_read_tokens"),
+                    reasoning_tokens=m.get("reasoning_tokens"), api_calls=m.get("api_calls"),
+                    cost_source=m.get("cost_source"), cost_note=m.get("cost_note"))
 
 
 def task_replay(ctx: AppContext, run_id: str, task_id: str) -> ReplayOut:

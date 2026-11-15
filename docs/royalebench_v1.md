@@ -127,5 +127,18 @@ The README's required opening overview remains human-authored; this implementati
 Revision `@4` (tag `modal-inkling`) adds the exact Inkling Modal endpoint hostname
 to all eleven agent allowlists. It retains the Qwen hostname from `@3`; scenario
 inputs, scoring, resource limits and verifier isolation are unchanged. Dataset
-discovery/configuration/LF checks passed. Inkling authentication and a model pilot
-are pending its matching proxy secret; see [Inkling setup](inkling_modal.md).
+discovery/configuration/LF checks passed. Inkling accepts the existing Qwen
+credential with stock mini-SWE-agent and model `openai/inkling-2-small`; see
+[Inkling setup](inkling_modal.md) for the live pilot evidence and configuration.
+
+Revision `@5` (tag `modal-deepseek`) adds the exact DeepSeek Modal endpoint
+hostname to all eleven agent allowlists, retaining prior hosts. Scenario inputs,
+scoring, resources and verifier isolation are unchanged from `@4`. Dataset
+discovery/configuration/LF checks passed; see [DeepSeek setup](deepseek_modal.md)
+for the stock mini-SWE-agent configuration and pilot evidence.
+
+Revision `@6` (tag `modal-kimi`) adds the exact Kimi Modal endpoint hostname
+to all eleven agent allowlists, retaining existing model hosts. Instructions,
+scenario inputs, scoring, resources and verifier isolation are unchanged from
+`@5`. Dataset discovery/configuration/LF checks passed; see [Kimi setup](kimi_modal.md)
+for the stock mini-SWE-agent configuration and pilot evidence.

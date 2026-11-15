@@ -31,15 +31,38 @@ as the sandbox provider, and a Valkyrie secret holding the model's API key (such
 The page tells you which of these is missing.
 
 For the Modal-hosted Qwen endpoint, follow [Qwen on Modal](qwen_modal.md).
-For the Inkling endpoint, see [Inkling on Modal](inkling_modal.md): revision `@4`
-includes its network allowlist, and authentication/model discovery requires the
-matching proxy secret before its model preset can be activated.
 Select the existing `mini_swe_agent`, the Qwen model preset and secret
 `modal-qwen-api-key`; use dataset revision `@3`, which allows the endpoint hostname.
 The preset adds the endpoint URL's `OPENAI_API_BASE` secret mapping and the
 standard harness options to both dashboard launches and their preview commands.
 
+For [Inkling on Modal](inkling_modal.md), select `mini_swe_agent`, model
+`openai/inkling-2-small`, existing secret `modal-qwen-api-key` and dataset revision
+`@4`. Its preset injects `modal-inkling-base-url` as `OPENAI_API_BASE` and uses
+the same stock harness options. Credential reuse and the model ID were accepted
+by the endpoint in the live pilot.
+
+For [DeepSeek on Modal](deepseek_modal.md), select `mini_swe_agent`, model
+`openai/deepseek-v4.1-flash-1017`, existing secret `modal-qwen-api-key` and dataset
+revision `@5`. Its preset supplies `modal-deepseek-base-url` as `OPENAI_API_BASE`
+and the same stock harness options. Restart the dashboard after preset changes.
+
+For [Kimi on Modal](kimi_modal.md), select `mini_swe_agent`, model
+`openai/kimi-k3.1-pro`, existing secret `modal-qwen-api-key` and dataset revision
+`@6`. The preset injects `modal-kimi-base-url` as `OPENAI_API_BASE`, applies the
+same stock harness options, and identifies serving app `ep-kimi-k3-1-pro` for
+the dashboard's Modal billing lookup.
+
 ## Evals
+
+The Overview also shows [actual Modal endpoint compute billing](modal_billing.md)
+for configured hosted models, including Qwen, Inkling and DeepSeek. This separate
+table uses the workspace billing API and persists metered charges across restarts;
+it includes idle serving compute and all traffic to each App, before invoice
+credits/discounts. It refreshes every five minutes and displays the queried UTC
+window, last successful sync, and billing-access errors. Run the server with
+`uv run --extra hosting python -m rb_server` in an authenticated Modal environment.
+Workspace billing access is separate from the Valkyrie sandbox provider connection.
 
 | Page | What it does |
 | --- | --- |
@@ -51,6 +74,8 @@ standard harness options to both dashboard launches and their preview commands.
 | Leaderboard | Models by harness with solved, pass rate, score, agent failures, infrastructure errors, time and cost. Click any column to sort. |
 | Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
 | Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
+
+Model labels use family logos, including Qwen, Inkling (Thinking Machines), DeepSeek, and Kimi. Family detection checks the model name before the provider prefix, so OpenAI-compatible Modal endpoints retain the correct family logo. Kimi and Moonshot model names share the Kimi logo.
 
 One job is one Valkyrie run: one model on a whole benchmark or a subset. To compare models, start one job
 per model. Valkyrie stays the source of truth; finished runs and downloaded costs are cached under
@@ -66,7 +91,9 @@ This runs while the server is running; simulated Valkyrie mode keeps manual down
 Open pages check download status and pending run costs every 30 seconds, polling faster during a download.
 The Jobs and Job monitor pages offer **Fetch cost data**, show background download progress, and refresh
 the figures when it completes. The Overview's recent jobs also show each run's API cost. Unknown cost is
-shown as a dash; a reported zero is `$0`. An asterisk marks a partial total, with task coverage shown on
+shown as a dash; a reported zero is `$0` unless mini-SWE-agent used an unknown-price
+fallback or disabled cost tracking. Its token usage is recovered from `trajectory.json`,
+including for previously cached tasks. An asterisk marks a partial total, with task coverage shown on
 hover and on the monitor. Cost per task averages only tasks with known costs. Run totals include all tasks
 with reported costs, including infrastructure failures; the leaderboard excludes infrastructure failures
 from its model-scoring pool and associated cost totals. Failed, stopped, and active runs have no run-level

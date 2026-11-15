@@ -561,9 +561,12 @@ class LeaderboardTests(ApiCase):
 
 class AssetTests(ApiCase):
     def test_logos(self):
-        r = self.client.get("/api/assets/logos/claude")
-        self.assertEqual((r.status_code, r.headers["content-type"]), (200, "image/svg+xml"))
-        self.assertIn("max-age", r.headers["cache-control"])
+        for family in ("claude", "qwen", "inkling", "deepseek", "kimi"):
+            with self.subTest(family=family):
+                r = self.client.get(f"/api/assets/logos/{family}")
+                self.assertEqual((r.status_code, r.headers["content-type"]), (200, "image/svg+xml"))
+                self.assertIn("max-age", r.headers["cache-control"])
+                self.assertIn("<svg", r.text)
         self.assertEqual(self.client.get("/api/assets/logos/other").status_code, 404)
 
 

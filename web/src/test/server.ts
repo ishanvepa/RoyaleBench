@@ -6,6 +6,7 @@ import { benchmarkDetail, benchmarkList, environment, jobDetail, jobList, taskLi
 export const handlers = [
   http.get("*/api/health", () => HttpResponse.json({ status: "ok", read_only: false, fake: false })),
   http.get("*/api/evals/environment", () => HttpResponse.json(environment())),
+  http.get("*/api/evals/modal-billing", () => HttpResponse.json({ syncing: false, models: [], cost_usd: null, error: null })),
   http.get("*/api/evals/jobs", () => HttpResponse.json(jobList())),
   http.get("*/api/evals/leaderboard/costs", () => HttpResponse.json({ state: "idle", done: 0, total: 0, error: null })),
   http.get("*/api/evals/jobs/:runId", () => HttpResponse.json(jobDetail())),

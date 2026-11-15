@@ -125,6 +125,8 @@ def test_built_dataset_is_discoverable_and_has_lf_only():
         assert task.config["agent"]["network_mode"] == "allowlist"
         assert "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
         assert "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
+        assert "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
+        assert "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct" in task.config["agent"]["allowed_hosts"]
         assert task.config["environment"]["network_mode"] == "public"
         assert task.config["verifier"]["network_mode"] == "no-network"
         from cr_arena.telemetry import digest

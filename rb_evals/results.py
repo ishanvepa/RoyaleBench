@@ -1,7 +1,7 @@
 """Results of finished runs: per-task rewards, agent-reported cost, an on-disk cache, and the leaderboard.
 
 Valkyrie's final results JSON has rewards, durations and errors but no cost. Cost is only in each task's
-agent output (``<task>/agent_output.tar.gz``, whose ``logs/summary.json`` the Claude Code harness fills in),
+agent output (``<task>/agent_output.tar.gz``, in Claude summaries or mini-SWE-agent trajectories),
 so it is downloaded once per task and cached. Cost is the model usage the harness reports; Modal sandbox
 charges are not included. Only FINISHED runs are cached for good: failed or stopped runs can be retried.
 """
@@ -9,6 +9,7 @@ charges are not included. Only FINISHED runs are cached for good: failed or stop
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import shutil
@@ -72,7 +73,7 @@ def task_results(results: dict) -> list[dict]:
 
 # ---------------------------------------------------------------------- agent output / cost
 def read_agent_metrics(root: Path) -> dict | None:
-    """Cost and token usage from an extracted agent output folder (``summary.json`` or ``metrics_total.json``)."""
+    """Cost and token usage from extracted Claude summaries or mini-SWE-agent trajectories."""
     for name in ("summary.json", "metrics_total.json"):
         for path in sorted(root.rglob(name)):
             try:
@@ -80,13 +81,68 @@ def read_agent_metrics(root: Path) -> dict | None:
             except (OSError, ValueError):
                 continue
             metrics = data.get("metrics") if isinstance(data, dict) and isinstance(data.get("metrics"), dict) else data
-            if isinstance(metrics, dict) and isinstance(metrics.get("cost"), (int, float)):
+            if isinstance(metrics, dict) and _number(metrics.get("cost")) is not None:
                 return {"cost": float(metrics["cost"]), "input_tokens": metrics.get("input_tokens"),
                         "output_tokens": metrics.get("output_tokens"),
                         "cache_read_tokens": metrics.get("cache_read_input_tokens"),
                         "cache_write_tokens": metrics.get("cache_creation_input_tokens"),
                         "wall_s": metrics.get("wall_clock_duration")}
+    # Stock mini-SWE-agent writes a metadata-only summary and keeps billing/usage
+    # in trajectory.json. Parse existing cached artifacts too (no redownload needed).
+    for path in sorted(set(root.rglob("trajectory.json")) | set(root.rglob("*.traj.json"))):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if isinstance(data, dict) and str(data.get("trajectory_format", "")).startswith("mini-swe-agent"):
+            return _mini_metrics(data)
     return None
+
+
+def _number(value) -> float | None:
+    return float(value) if (isinstance(value, (int, float)) and not isinstance(value, bool)
+                            and math.isfinite(value) and value >= 0) else None
+
+
+def _mini_metrics(data: dict) -> dict:
+    info = data.get("info") or {}
+    stats = info.get("model_stats") or {}
+    model_config = (info.get("config") or {}).get("model") or {}
+    reported = _number(stats.get("instance_cost"))
+    cost = reported
+    note = None
+    # ignore_errors and off both use zero as an unknown-price fallback. Keeping
+    # this separate from real $0 prevents polluted run/leaderboard totals.
+    if cost == 0 and model_config.get("cost_tracking") in ("ignore_errors", "off"):
+        cost = None
+        note = "The harness reported zero with cost tracking disabled or unknown-price fallback; billing is unknown."
+    totals: dict[str, list[int]] = {k: [] for k in ("input_tokens", "output_tokens", "cache_read_tokens", "reasoning_tokens")}
+    calls = [m for m in data.get("messages", []) if isinstance(m, dict) and m.get("role") == "assistant"]
+    seen = set()
+    call_count = 0
+    for message in calls:
+        extra = message.get("extra") or {}
+        response = extra.get("response") or {}
+        # Multiple tool calls in a response are one model call, not one each.
+        response_id = response.get("id")
+        if response_id and response_id in seen:
+            continue
+        if response_id:
+            seen.add(response_id)
+        call_count += 1
+        usage = response.get("usage") or {}
+        values = {"input_tokens": usage.get("prompt_tokens", usage.get("input_tokens")),
+                  "output_tokens": usage.get("completion_tokens", usage.get("output_tokens")),
+                  "cache_read_tokens": (usage.get("prompt_tokens_details") or usage.get("input_tokens_details") or {}).get("cached_tokens"),
+                  "reasoning_tokens": (usage.get("completion_tokens_details") or usage.get("output_tokens_details") or {}).get("reasoning_tokens")}
+        for key, value in values.items():
+            if _number(value) is not None:
+                totals[key].append(int(value))
+    return {"cost": cost, "reported_cost": reported, "cost_source": "harness" if cost is not None else "unknown",
+            "cost_note": note, "api_calls": stats.get("api_calls"),
+            # Never turn missing/partial usage into a complete-looking total.
+            **{k: sum(v) if v and len(v) == call_count else None for k, v in totals.items()},
+            "cache_write_tokens": None, "wall_s": None}
 
 
 def _clip(text: str, limit: int) -> str:
@@ -239,9 +295,9 @@ def fetch_task_files(valkyrie: Valkyrie, cache: ResultsCache, run_id: str, task_
         try:
             downloaded = valkyrie.download_artifact(run_id, f"{task_id}/agent_output.tar.gz", Path(tmp) / "dl")
         except ValkyrieError as exc:
-            if exc.kind in ("network", "auth"):
-                raise
-            return None  # the task produced no agent output (it errored before the agent ran)
+            if exc.kind == "not_found" or (exc.kind == "other" and "No artifacts found" in str(exc)):
+                return None  # the task errored before producing output
+            raise  # server/rejection errors must remain retryable, never cache them as missing
         tarball = next(iter(Path(downloaded).rglob("agent_output.tar.gz")), None)
         if tarball is None:
             return None

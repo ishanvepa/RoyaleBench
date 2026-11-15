@@ -21,6 +21,7 @@ class ModelPreset:
     agent: str = ""  # optional harness required by this endpoint configuration
     secrets: dict[str, str] = field(default_factory=dict)  # extra environment -> secret references
     agent_kwargs: dict[str, str] = field(default_factory=dict)
+    modal_app: str = ""  # exact Modal serving App name or ap- ID for compute billing
 
 
 @dataclass(frozen=True)
@@ -54,7 +55,7 @@ def load_config(path: Path | str | None = None) -> EvalsConfig:
     v = data.get("valkyrie", {})
     defaults = EvalsConfig()
     models = tuple(ModelPreset(m["id"], m.get("secret_env", ""), m.get("agent", ""),
-                               dict(m.get("secrets", {})), dict(m.get("agent_kwargs", {})))
+                               dict(m.get("secrets", {})), dict(m.get("agent_kwargs", {})), m.get("modal_app", ""))
                    for m in data.get("models", []) if m.get("id"))
     return EvalsConfig(
         benchmark=v.get("benchmark", defaults.benchmark),

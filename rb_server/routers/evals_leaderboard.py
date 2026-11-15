@@ -6,10 +6,22 @@ from fastapi import APIRouter, Query
 
 from ..deps import Ctx
 from ..errors import COMMON_ERRORS
-from ..schemas.evals import CostsStatus, LeaderboardOut
+from ..schemas.evals import CostsStatus, LeaderboardOut, ModalBillingOut
 from ..services import leaderboard as service
 
 router = APIRouter(tags=["evals: leaderboard"], responses=COMMON_ERRORS)
+
+
+@router.get("/modal-billing", response_model=ModalBillingOut, summary="Persisted Modal endpoint compute billing")
+def modal_billing(ctx: Ctx):
+    return ctx.billing.view()
+
+
+@router.post("/modal-billing/sync", response_model=ModalBillingOut, summary="Refresh actual Modal endpoint billing")
+def sync_modal_billing(ctx: Ctx):
+    if not ctx.fake:
+        ctx.billing.trigger()
+    return ctx.billing.view()
 
 Dataset = Query(default=None, max_length=64, description="Only this benchmark (default: all except smoke tests)")
 Revision = Query(default=None, max_length=64, description="Only this published revision")

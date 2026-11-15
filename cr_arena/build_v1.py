@@ -236,7 +236,7 @@ kind = "eval"
         # Harness installation needs public access during setup; constrain actual play.
         # Harbor's agent policy applies to agent.run(), not agent.setup().
         toml = toml.replace('[environment]\n', '[environment]\nnetwork_mode = "public"\n')
-        toml = toml.replace('[agent]\n', '[agent]\nnetwork_mode = "allowlist"\nallowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai", "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct", "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct"]\n')
+        toml = toml.replace('[agent]\n', '[agent]\nnetwork_mode = "allowlist"\nallowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai", "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct", "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct", "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct", "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct"]\n')
         toml = toml.replace('[verifier]\n', '[verifier]\nnetwork_mode = "no-network"\n')
         # A busy Planner continuation is replayed in the verifier; give it measured headroom.
         toml = toml.replace("timeout_sec = 300.0", "timeout_sec = 600.0")

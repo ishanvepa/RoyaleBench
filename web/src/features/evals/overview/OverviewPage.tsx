@@ -12,6 +12,7 @@ import { DASH, formatNumber, formatPercent, plural } from "@/lib/format";
 import { ALL_JOBS, useJobs } from "../api/jobs";
 import { ALL_RESULTS, useLeaderboard } from "../api/leaderboard";
 import { jobColumns } from "../jobs/columns";
+import { ModalBilling } from "./ModalBilling";
 
 /** How many jobs the table below the totals shows; the Jobs page has the rest. */
 const RECENT = 10;
@@ -82,6 +83,7 @@ function Body({ jobs, results }: { jobs: JobRow[]; results: ReturnType<typeof us
         <Metric label="Tasks solved" value={totals ? `${formatNumber(totals.solved)} / ${formatNumber(totals.tasks)}` : DASH} hint={solvedHint} />
         <Metric label="Est. API spend" value={<Money usd={totals?.cost} />} hint={costHint} />
       </dl>
+      <ModalBilling />
       <section aria-labelledby="recent-jobs" className="space-y-3">
         <div className="flex items-baseline justify-between gap-4">
           <h2 id="recent-jobs" className="text-base">

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import dataclasses
+import os
 import threading
 import time
 from collections.abc import Callable
@@ -14,6 +15,7 @@ from cr_arena.db import DB
 from rb_evals.config import EvalsConfig, load_config
 from rb_evals.protocol import ValkyrieAPI
 from rb_evals.results import ResultsCache
+from rb_evals.modal_billing import ModalBilling
 from rb_evals.valkyrie import TTLCache, Valkyrie
 
 from .errors import ApiError
@@ -135,6 +137,10 @@ class AppContext:
     processes: ProcessRegistry = field(default_factory=ProcessRegistry)
     plays: PlaySessions = field(default_factory=PlaySessions)
     memo: TTLCache = field(default_factory=TTLCache)  # short-lived memo for read endpoints that polling pages hit often
+    billing: ModalBilling = field(init=False)
+
+    def __post_init__(self):
+        self.billing = ModalBilling(Path(os.environ.get("ROYALEBENCH_BILLING_DIR", self.cfg.cache_dir / "modal-billing")), self.cfg.models)
 
     def db(self) -> DB:
         return self.arena.get()

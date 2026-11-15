@@ -61,9 +61,12 @@ def create_app(settings: Settings | None = None, *, ctx: AppContext | None = Non
     async def lifespan(app):
         worker = ArchiveWorker(ctx.valkyrie).start() if isinstance(ctx.valkyrie, Valkyrie) and not ctx.fake else None
         costs = CostRefresher(ctx).start() if isinstance(ctx.valkyrie, Valkyrie) and not ctx.fake else None
+        billing = ctx.billing.start() if isinstance(ctx.valkyrie, Valkyrie) and not ctx.fake else None
         try:
             yield
         finally:
+            if billing:
+                billing.close()
             if costs:
                 costs.close()
             if worker:

@@ -148,6 +148,26 @@ class TraceStep(BaseModel):
     tool: str | None = None  # tool name, set on tool_use steps and on the tool_result that answers them
 
 
+class ModalModelCost(BaseModel):
+    model: str
+    app: str
+    object_id: str | None = None
+    cost_usd: float | None = None
+    intervals: int
+    error: str | None = None
+
+
+class ModalBillingOut(BaseModel):
+    workspace: str | None = None
+    start: str | None = None
+    end: str | None = None
+    updated_at: str | None = None
+    error: str | None = None
+    syncing: bool
+    cost_usd: float | None = None
+    models: list[ModalModelCost]
+
+
 class TraceOut(BaseModel):
     available: bool
     final_message: str = ""
@@ -157,6 +177,10 @@ class TraceOut(BaseModel):
     input_tokens: int | None = None
     output_tokens: int | None = None
     cache_read_tokens: int | None = None
+    reasoning_tokens: int | None = None
+    api_calls: int | None = None
+    cost_source: str | None = None
+    cost_note: str | None = None
 
 
 class ReplayOut(BaseModel):

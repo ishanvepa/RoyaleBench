@@ -6,10 +6,27 @@ import unittest
 from pathlib import Path
 
 from cr_arena.db import DB
-from cr_arena.site import build, result_runs
+from cr_arena.site import _family, build, result_runs
 
 
 class ResultsTests(unittest.TestCase):
+    def test_model_family_takes_priority_over_compatible_provider(self):
+        for model, family in (
+            ("openai/Qwen3.8-2.4T-A95B", "qwen"),
+            ("openai/inkling-2-small", "inkling"),
+            ("openai/deepseek-v4.1-flash-1017", "deepseek"),
+            ("openai/kimi-k3.1-pro", "kimi"),
+            ("moonshotai/Kimi-K2", "kimi"),
+            ("moonshot-v1-8k", "kimi"),
+            ("thinkingmachines/inkling-2-small", "inkling"),
+            ("QwQ-32B", "qwen"),
+            ("openai/gpt-5", "gpt"),
+            ("anthropic/custom-model", "claude"),
+        ):
+            with self.subTest(model=model):
+                self.assertEqual(_family(model, True), family)
+        self.assertEqual(_family("inkling-bot", False), "bot")
+
     def setUp(self):
         self.directory = tempfile.TemporaryDirectory()
         self.addCleanup(self.directory.cleanup)

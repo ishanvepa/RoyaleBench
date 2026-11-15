@@ -40,7 +40,12 @@
     "production_build": "passed"
   },
   "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
-  "packaged_sources_match": true,
   "docker_runnable_tasks_passed": 11,
-  "replay_traces_passed": 11
+  "replay_traces_passed": 11,
+  "packaged_protocol_sources_match": true,
+  "packaged_sources_snapshot_commit": "cb90aa5194c18d112e7b0aadf07129647d981816",
+  "renderer_node_tests": {
+    "command": "node --test tests/battle_renderer.test.cjs",
+    "passed": 33
+  }
 }

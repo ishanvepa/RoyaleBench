@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RoyaleBench Leaderboard and Methodology</title>
-<meta name="description" content="Can language models win at Clash Royale? A benchmark of replay-graded mid-match positions against a search-based opponent.">
+<meta name="description" content="Can language models win at Clash Royale? A benchmark of replay-graded mid-match positions against a search-based opponent, and the patterns models miss.">
 <style>
   :root {
     --bg: #ffffff; --text: #191917; --ink: #211e0f; --muted: #514825; --line: #c7c4c1; --line-soft: #e4e2de;
@@ -15,117 +15,140 @@
     --sans: "Söhne", -apple-system, "system-ui", "Segoe UI", Roboto, sans-serif;
     --mono: "Berkeley Mono", ui-monospace, "SF Mono", Menlo, monospace;
   }
-  @media not all {
-    :root:not([data-theme="light"]) {
-      --bg: #0f1511; --text: #e8ece8; --ink: #f2f0e4; --muted: #c9c39a; --line: #34413a; --line-soft: #243029;
-      --green: #7fc293; --green-text: #dfeee3; --tint: rgba(127,194,147,.12);
-      --head: #1b2a20; --row1: #28463a; --row2: #213b30; --row3: #1b2a20; --row-odd: #131c16; --row-even: #172119;
-      --bar: #6fb184; --bar2: #35574a; --red: #ef8a82; --panel: #131c16;
-    }
-  }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--sans); }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--sans); overflow-x: hidden; }
   a { color: inherit; }
-  .mono { font-family: var(--mono); text-transform: uppercase; letter-spacing: .01em; }
+  section[id], h2[id] { scroll-margin-top: 16px; }
 
   /* top bars */
-  .top { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; gap: 16px; flex-wrap: wrap; }
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 12px 24px; flex-wrap: wrap; }
   .logo { font-family: var(--serif); font-size: 24px; color: var(--green); letter-spacing: -.01em; text-decoration: none; }
-  .top nav { display: flex; gap: 24px; font-size: 15px; flex-wrap: wrap; }
-  .top nav a { text-decoration: none; }
+  .top nav { display: flex; gap: 6px 22px; font-size: 15px; flex-wrap: wrap; }
+  .top nav a { text-decoration: none; } .top nav a:hover { color: var(--green); text-decoration: underline; }
   .crumbbar { display: flex; border: 1px solid var(--line); border-radius: 14px 14px 0 0; margin: 0 8px; background: var(--bg); overflow: hidden; }
-  .crumbbar div { padding: 14px 18px; font-family: var(--mono); font-size: 13px; text-transform: uppercase; background: var(--tint); border-right: 1px solid var(--line); }
-  .crumbbar div + div { background: var(--tint); }
+  .crumbbar div { padding: 12px 18px; font: 13px var(--mono); text-transform: uppercase; background: var(--tint); border-right: 1px solid var(--line); white-space: nowrap; }
   .crumbbar .fill { flex: 1; background: transparent; border-right: 0; }
 
   /* hero */
-  .hero { max-width: 760px; margin: 0 auto; padding: 72px 16px 56px; }
+  .hero { max-width: 760px; margin: 0 auto; padding: 56px 16px 44px; }
   .crumbs { font: 11px var(--mono); text-transform: uppercase; letter-spacing: .11px; color: var(--muted); }
-  .tagpill { display: inline-flex; align-items: center; gap: 8px; margin: 18px 0 6px; border: 1px solid var(--line-soft); background: var(--panel); padding: 3px 10px; font: 12px var(--mono); text-transform: uppercase; color: var(--green-text); }
+  .tagpill { display: inline-flex; align-items: center; gap: 8px; margin: 16px 0 4px; border: 1px solid var(--line-soft); background: var(--panel); padding: 3px 10px; font: 12px var(--mono); text-transform: uppercase; color: var(--green-text); }
   .tagpill i { width: 10px; height: 10px; background: var(--red); display: inline-block; }
-  h1 { font: 400 clamp(36px, 7vw, 40px)/1.1 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 6px 0 14px; }
-  .updated { font: 15px var(--mono); text-transform: uppercase; color: var(--muted); }
-  .q { font: 400 24px/1.35 var(--serif); color: var(--ink); margin: 40px 0 14px; letter-spacing: -.01em; }
+  h1 { font: 400 clamp(36px, 8vw, 40px)/1.1 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 6px 0 12px; }
+  .updated { font: 14px var(--mono); text-transform: uppercase; color: var(--muted); }
+  .q { font: 400 24px/1.35 var(--serif); color: var(--ink); margin: 36px 0 14px; letter-spacing: -.01em; }
   .lede { font: 400 18px/1.7 var(--serif); color: var(--muted); margin: 0; }
   .lede a { text-decoration: underline; }
 
   /* leaderboard */
   .board { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .board-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 24px; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap; }
+  .board-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap; }
   .board-head b { font: 400 20px var(--serif); color: var(--ink); }
   .board-head span { color: var(--green); margin-left: 14px; font-size: 16px; }
-  .filters { display: flex; gap: 28px; padding: 14px 24px; border-bottom: 1px solid var(--line); font: 13px var(--mono); text-transform: uppercase; color: var(--green); flex-wrap: wrap; align-items: center; }
-  .filters label { display: flex; align-items: center; gap: 8px; }
-  .filters select { font: 13px var(--mono); text-transform: uppercase; background: transparent; color: var(--green-text); border: 0; border-bottom: 1px solid var(--line); padding: 2px 4px; cursor: pointer; }
+  .filters { display: flex; gap: 12px 28px; padding: 12px 24px; border-bottom: 1px solid var(--line); font: 13px var(--mono); text-transform: uppercase; color: var(--green); flex-wrap: wrap; align-items: center; }
+  .filters label { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .filters select { font: 13px var(--mono); text-transform: uppercase; background: transparent; color: var(--green-text); border: 0; border-bottom: 1px solid var(--line); padding: 2px 4px; cursor: pointer; max-width: 100%; }
   .scroll { overflow-x: auto; }
-  table.lb { width: 100%; border-collapse: collapse; min-width: 640px; }
-  .lb th { background: var(--head); font-weight: 700; font-size: 14px; text-align: right; padding: 16px 20px; white-space: nowrap; }
+  table.lb { width: 100%; border-collapse: collapse; min-width: 620px; }
+  .lb th { background: var(--head); font-weight: 700; font-size: 14px; text-align: right; padding: 14px 20px; white-space: nowrap; }
   .lb th:nth-child(1) { width: 64px; text-align: center; } .lb th:nth-child(2) { text-align: left; }
-  .lb td { padding: 20px 20px; font-size: 17px; text-align: right; border-top: 1px solid var(--line); }
+  .lb td { padding: 18px 20px; font-size: 17px; text-align: right; border-top: 1px solid var(--line); }
   .lb td:nth-child(1) { text-align: center; font: 14px var(--mono); color: var(--green); border-right: 1px solid var(--line); }
   .lb td:nth-child(2) { text-align: left; }
   .lb td.n { font-family: var(--mono); font-size: 16px; }
-  .lb td .pm { font-size: 12px; color: var(--green); margin-left: 8px; }
   .lb tbody tr:nth-child(1) { background: var(--row1); } .lb tbody tr:nth-child(2) { background: var(--row2); } .lb tbody tr:nth-child(3) { background: var(--row3); }
   .lb tbody tr:nth-child(n+4):nth-child(odd) { background: var(--row-odd); } .lb tbody tr:nth-child(n+4):nth-child(even) { background: var(--row-even); }
   .lb .dim { color: var(--muted); }
-  .lb-empty td { text-align: center !important; font: 14px var(--mono); text-transform: uppercase; color: var(--muted); padding: 36px 20px; border-right: 0 !important; background: var(--row-odd); }
-  .board-foot { padding: 14px 24px; font: 12px var(--mono); text-transform: uppercase; color: var(--muted); background: var(--panel); }
+  .lb-empty td { text-align: center !important; font: 14px var(--mono); text-transform: uppercase; color: var(--muted); padding: 32px 20px; border-right: 0 !important; background: var(--row-odd); }
+  .board-foot { padding: 12px 24px; font: 12px/1.5 var(--mono); text-transform: uppercase; color: var(--muted); background: var(--panel); }
 
   /* article column */
   .col { max-width: 760px; margin: 0 auto; padding: 0 16px; }
-  .quote { border-left: 2px solid rgba(81,72,37,.5); padding: 4px 0 4px 36px; margin: 72px 0 40px; font: 400 20px/1.7 var(--serif); color: var(--ink); }
-  h2 { font: 400 32px/1.2 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 72px 0 16px; }
-  h3 { font: 400 24px/1.3 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 40px 0 10px; }
+  .quote { border-left: 2px solid rgba(81,72,37,.5); padding: 4px 0 4px 32px; margin: 56px 0 8px; font: 400 20px/1.7 var(--serif); color: var(--ink); }
+  h2 { font: 400 32px/1.2 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 64px 0 14px; }
+  h3 { font: 400 24px/1.3 var(--serif); letter-spacing: -.01em; color: var(--ink); margin: 36px 0 8px; }
   p, li { font: 400 17px/1.75 var(--serif); color: var(--muted); }
-  p { margin: 0 0 18px; } ul { padding-left: 22px; margin: 0 0 18px; } li { margin: 6px 0; }
+  p { margin: 0 0 16px; } ul { padding-left: 22px; margin: 0 0 16px; } li { margin: 5px 0; }
   b { color: var(--ink); font-weight: 600; }
-  code { font: 14px var(--mono); background: var(--tint); padding: 1px 5px; }
-  .label { font: 13px var(--mono); text-transform: uppercase; color: var(--ink); margin: 32px 0 10px; display: block; }
-  hr { border: 0; border-top: 1px solid var(--line); margin: 72px 0 0; }
+  code { font: 13.5px var(--mono); background: var(--tint); padding: 1px 5px; overflow-wrap: anywhere; }
+  .label { font: 13px var(--mono); text-transform: uppercase; color: var(--ink); margin: 28px 0 8px; display: block; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 64px 0 0; }
+  .src { font: 12px/1.5 var(--mono); color: var(--muted); }
+  .src a { color: var(--green); }
 
-  .three { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0; border: 1px solid var(--line); margin: 20px 0 24px; }
-  .three > div { padding: 16px 18px; border-right: 1px solid var(--line); background: var(--panel); }
+  .three { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); border: 1px solid var(--line); margin: 18px 0 22px; }
+  .three > div { padding: 14px 18px; border-right: 1px solid var(--line); background: var(--panel); }
   .three > div:last-child { border-right: 0; }
   .three b { display: block; font: 400 18px var(--serif); margin-bottom: 4px; }
   .three span { font: 400 15px/1.5 var(--serif); color: var(--muted); }
 
-  .todo { border: 1px dashed var(--muted); background: var(--panel); padding: 14px 18px; margin: 24px 0; }
+  .todo { border: 1px dashed var(--muted); background: var(--panel); padding: 12px 16px; margin: 22px 0; }
   .todo, .todo p, .todo li { font: 400 15px/1.6 var(--sans); color: var(--muted); }
   .todo b { color: var(--ink); }
+  .good { border-left: 2px solid var(--bar); background: var(--panel); padding: 10px 16px; margin: 20px 0; font: 400 16px/1.65 var(--serif); color: var(--ink); }
 
-  .tw { overflow-x: auto; border: 1px solid var(--line); margin: 16px 0 24px; }
-  table.t { width: 100%; border-collapse: collapse; min-width: 600px; }
+  .tw { overflow-x: auto; border: 1px solid var(--line); margin: 14px 0 22px; }
+  table.t { width: 100%; border-collapse: collapse; min-width: 560px; }
   .t th { background: var(--head); text-align: left; font: 700 13px var(--sans); padding: 10px 14px; white-space: nowrap; }
-  .t td { padding: 10px 14px; border-top: 1px solid var(--line-soft); font: 14px/1.45 var(--sans); color: var(--text); vertical-align: top; }
+  .t td { padding: 10px 14px; border-top: 1px solid var(--line-soft); font: 14px/1.5 var(--sans); color: var(--text); vertical-align: top; }
   .t tbody tr:nth-child(even) { background: var(--row-odd); }
+  .t td .src { display: block; margin-top: 4px; }
+  .t td.k { font: 600 14px/1.4 var(--sans); color: var(--ink); min-width: 170px; }
+  .t td.num { font-family: var(--mono); white-space: nowrap; }
+  table.pat { min-width: 0; table-layout: fixed; }
+  table.pat th:nth-child(1) { width: 17%; } table.pat th:nth-child(2) { width: 15%; } table.pat th:nth-child(3) { width: 11%; } table.pat th:nth-child(4) { width: 44%; } table.pat th:nth-child(5) { width: 13%; }
+  table.pat td.num { font: 12px/1.45 var(--mono); white-space: normal; }
+  table.pat td { overflow-wrap: anywhere; }
 
-  .panel { border: 1px solid var(--line); margin: 28px 0; }
-  .panel-h { display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; border-bottom: 1px solid var(--line); }
-  .panel-h b { font: 400 20px var(--serif); } .panel-h span { font: 12px var(--mono); text-transform: uppercase; color: var(--muted); }
-  .panel-b { padding: 18px 22px; }
-  .tabs { display: flex; gap: 0; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
-  .tabs button { font: 12px var(--mono); text-transform: uppercase; background: transparent; color: var(--muted); border: 0; border-right: 1px solid var(--line); padding: 10px 16px; cursor: pointer; }
+  .panel { border: 1px solid var(--line); margin: 26px 0; }
+  .panel-h { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid var(--line); gap: 12px; flex-wrap: wrap; }
+  .panel-h b { font: 400 20px var(--serif); color: var(--ink); } .panel-h span { font: 12px var(--mono); text-transform: uppercase; color: var(--muted); }
+  .panel-b { padding: 16px 20px 6px; }
+  .panel-b p { font: 400 15px/1.65 var(--sans); color: var(--text); margin: 0 0 12px; }
+  .tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--line); }
+  .tabs button { font: 12px var(--mono); text-transform: uppercase; background: transparent; color: var(--muted); border: 0; border-right: 1px solid var(--line); padding: 10px 14px; cursor: pointer; }
   .tabs button[aria-selected="true"] { background: var(--tint); color: var(--green-text); }
+  .tabs button:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+  .tabpane[hidden] { display: none; }
+  .kv { display: grid; grid-template-columns: 110px 1fr; gap: 6px 14px; margin: 0 0 12px; font: 14px/1.55 var(--sans); color: var(--text); }
+  .kv dt { font: 12px var(--mono); text-transform: uppercase; color: var(--muted); padding-top: 2px; } .kv dd { margin: 0; overflow-wrap: anywhere; }
+  .note { font: 13px/1.5 var(--sans); color: var(--muted); border-top: 1px solid var(--line-soft); padding: 10px 0 12px; margin: 0; }
+  blockquote.m { margin: 0 0 12px; padding: 2px 0 2px 14px; border-left: 2px solid rgba(81,72,37,.5); font: 400 15px/1.6 var(--serif); color: var(--ink); }
+
   pre { background: var(--panel); border: 1px solid var(--line); padding: 14px 16px; overflow-x: auto; font: 13px/1.55 var(--mono); color: var(--text); margin: 0 0 18px; }
   .bib { position: relative; } .bib button { position: absolute; top: 8px; right: 8px; font: 12px var(--mono); text-transform: uppercase; background: var(--bg); color: var(--green-text); border: 1px solid var(--line); padding: 3px 10px; cursor: pointer; }
 
-  figure { margin: 24px 0; } figcaption { font: 13px/1.5 var(--sans); color: var(--muted); margin-top: 10px; }
+  figure { margin: 22px 0; } figcaption { font: 13px/1.5 var(--sans); color: var(--muted); margin-top: 10px; }
+  svg { max-width: 100%; height: auto; }
   svg text { font: 12px var(--mono); fill: var(--text); } svg .m { fill: var(--muted); } svg .box { fill: var(--panel); stroke: var(--line); } svg .arr { stroke: var(--muted); fill: none; }
 
-  .related { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 12px; }
-  .related a { display: block; border: 1px solid var(--line); padding: 14px 16px; text-decoration: none; background: var(--panel); }
-  .related a b { font: 400 18px var(--serif); display: block; } .related a span { font: 14px/1.4 var(--sans); color: var(--muted); }
-  footer { border-top: 1px solid var(--line); margin-top: 96px; padding: 24px; font: 12px var(--mono); text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-  @media (max-width: 640px) { .top, .board-head, .filters { padding-left: 16px; padding-right: 16px; } .hero { padding-top: 48px; } .quote { padding-left: 20px; } }
+  footer { border-top: 1px solid var(--line); margin-top: 88px; padding: 22px 24px; font: 12px/1.5 var(--mono); text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+  @media (max-width: 640px) {
+    .top, .board-head, .filters, .board-foot { padding-left: 16px; padding-right: 16px; }
+    .hero { padding-top: 40px; padding-bottom: 32px; }
+    .quote { padding-left: 18px; font-size: 18px; }
+    h2 { font-size: 28px; margin-top: 52px; }
+    .crumbbar { margin: 0; border-radius: 0; border-left: 0; border-right: 0; }
+    .crumbbar div { padding: 10px 12px; font-size: 12px; }
+    .kv { grid-template-columns: 1fr; gap: 2px; } .kv dd { margin-bottom: 8px; }
+    .panel-b { padding: 14px 14px 4px; } .panel-h { padding: 12px 14px; }
+    /* pattern table becomes stacked cards */
+    table.pat, table.pat tbody, table.pat tr, table.pat td { display: block; width: 100%; table-layout: auto; }
+    table.pat thead { display: none; }
+    table.pat tr { border-top: 1px solid var(--line); padding: 8px 0; }
+    table.pat td { border: 0; padding: 4px 14px; }
+    table.pat td::before { content: attr(data-l); display: block; font: 11px var(--mono); text-transform: uppercase; color: var(--muted); margin-bottom: 1px; }
+    table.pat td.k::before { content: none; } table.pat td.k { min-width: 0; font-size: 15px; }
+  }
 </style>
 </head>
 <body>
 
 <header class="top">
   <a class="logo" href="#">RoyaleBench</a>
-  <nav><a href="#leaderboard">Leaderboard</a><a href="#tasks">Tasks</a><a href="#failures">Failure analysis</a><a href="#methodology">Methodology</a><a href="#limits">Limitations</a><a href="https://github.com/ishanvepa/RoyaleBench">GitHub</a></nav>
+  <nav><a href="#leaderboard">Leaderboard</a><a href="#patterns">Failure patterns</a><a href="#tasks">Tasks</a><a href="#methodology">Methodology</a><a href="#limits">Limitations</a><a href="https://github.com/ishanvepa/RoyaleBench">GitHub</a></nav>
 </header>
 <div class="crumbbar"><div>Games ▾</div><div>RoyaleBench ▾</div><div class="fill"></div></div>
 
@@ -139,14 +162,14 @@
   <div class="todo" id="overview">
     <b>[TO BE WRITTEN BY THE TEAM]</b> The submission requires an entirely human-written overview paragraph here. Nothing on this page was drafted for that slot.
   </div>
-  <p class="lede">As of November 15, 2026, no model has been scored on the current default dataset, <a href="royalebench_v6.md">RoyaleBench v6</a> (14 tasks). The table below shows the earlier development runs per task set, one attempt per task.</p>
+  <p class="lede">As of November 15, 2026, no model has been scored on the current default dataset, <a href="royalebench_v6.md">RoyaleBench v6</a> (14 tasks). The table below shows the earlier development runs per task set, one attempt per task. <a href="#patterns">The failure patterns</a> in those runs are the main finding so far.</p>
 </section>
 
 <section class="board" id="leaderboard">
-  <div class="board-head"><div><b>RoyaleBench</b><span>LLMs playing Clash Royale</span></div><div class="mono" style="font-size:12px;color:var(--green)">Draft</div></div>
+  <div class="board-head"><div><b>RoyaleBench</b><span>LLMs playing Clash Royale</span></div><div style="font:12px var(--mono);text-transform:uppercase;color:var(--green)">Draft</div></div>
   <div class="filters">
-    <label>View: <select id="view"><option>All models</option></select></label>
-    <label>Task set: <select id="taskset"></select></label>
+    <label>View: <select id="view" aria-label="View"><option>All models</option></select></label>
+    <label>Task set: <select id="taskset" aria-label="Task set"></select></label>
   </div>
   <div class="scroll"><table class="lb">
     <thead><tr><th></th><th>Models</th><th>Tasks passed</th><th>Pass rate</th><th>Attempts / task</th><th>Cost / task</th></tr></thead>
@@ -158,6 +181,183 @@
 <div class="col">
   <div class="quote">Single attempts are noisy, and v5 and the Win cohort were chosen partly because of how these models did on them. Treat these rows as development evidence, not a ranking. Rows from different task sets cannot be compared with each other.</div>
 
+  <!-- ===================== FAILURE PATTERNS ===================== -->
+  <h2 id="patterns">What the models miss</h2>
+  <p>Across the saved development runs the models rarely fail because they misread the board or break the rules. All 8 attempts in the Win cohort finished with replay integrity 1 and zero rejected actions. They fail on <b>where and when</b> a card goes: a defense that buys too little time, offense sent before the defense holds, a spell timed against the wrong moment, an elixir budget spent on the first threat.</p>
+  <p>Every row below comes from a saved trace or result file in this repository and says how many attempts it rests on. Where a pattern rests on one attempt, it says so. We name only what the trace shows; where a cause is not visible, the row says that too. Most attempts are single runs, so the counts describe what was seen, not how often it happens.</p>
+
+  <div class="tw"><table class="t pat">
+    <thead><tr><th>Pattern</th><th>Tasks</th><th>Models</th><th>Evidence</th><th>Attempts</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="k" data-l="Pattern">1. One defensive building that does not buy enough time</td>
+        <td data-l="Tasks">Win 02 (Balloon, 305-HP tower); Win 04 (Giant, 250-HP tower); v3 02 efficient defense</td>
+        <td data-l="Models">Opus 5.5, GPT-6.1 Sol, Sonnet 5.5</td>
+        <td data-l="Evidence">Win 02: Opus Cannon (3.5, 11.5), tower falls at 5.3 s; Sol Cannon (7, 10), tower falls at 1.85 s. Win 04: Opus Cannon (6.5, 10.5) loses at 8.95 s; Sol Cannon (7, 10) loses at 10.1 s; the reference Cannon (7, 11.5) plus later Log and Ice Spirits wins with no tower damage. v3 02: Sonnet Cannon (3.5, 11.5) let 634 damage through. The trace review notes that single-coordinate attribution is not established.
+          <span class="src"><a href="../runs/royalebench-win/trace-review.json">win/trace-review.json</a> · <a href="royalebench_v4.md">docs/royalebench_v4.md</a></span></td>
+        <td data-l="Attempts" class="num">5 attempts, 5 failed</td>
+      </tr>
+      <tr>
+        <td class="k" data-l="Pattern">2. Offense sent while the defense is unresolved</td>
+        <td data-l="Tasks">Win 04; Tactics tower race B; v3 08 cycle to lethal; v4 08 pilot</td>
+        <td data-l="Models">Opus 5.5, GPT-6.1 Sol, Sonnet 5.5</td>
+        <td data-l="Evidence">Win 04: Opus sent Log toward the enemy tower while the Giant approached its 250-HP tower; Sol's final message says the Giant destroyed the tower before the Hog connected. Tactics race B: Opus reused the offensive Fireball that won race A and its own tower fell first (the reference defends with an immediate Cannon). v3 08: Sonnet cycled Skeletons and Ice Golemite and lost before its Fireball resolved. v4 08 pilot: Sonnet Ice Golemite (3.5, 8.5), tower fell before the Fireball landed.
+          <span class="src"><a href="../runs/royalebench-win/trace-review.json">win/trace-review.json</a> · <a href="tactics.md">docs/tactics.md</a> · <a href="royalebench_v4.md">docs/royalebench_v4.md</a></span></td>
+        <td data-l="Attempts" class="num">5 attempts, 5 failed</td>
+      </tr>
+      <tr>
+        <td class="k" data-l="Pattern">3. Finishing damage held back too long</td>
+        <td data-l="Tasks">v4 08 cycle to lethal, extra enemy HP</td>
+        <td data-l="Models">Opus 5.5</td>
+        <td data-l="Evidence">In the full @2 run Opus cycled to Fireball, leaving the enemy tower on 21 HP, but waited for a Hog Rider before casting the finishing Log; the Giant took its own tower first. The same task was won by Opus in its earlier pilot and in the superseded @1 full run.
+          <span class="src"><a href="royalebench_v4.md">docs/royalebench_v4.md</a> · <a href="../runs/royalebench-v4/opus55-r2-results.json">v4/opus55-r2-results.json</a></span></td>
+        <td data-l="Attempts" class="num">1 attempt (single)</td>
+      </tr>
+      <tr>
+        <td class="k" data-l="Pattern">4. A spell cast before the threat lands</td>
+        <td data-l="Tasks">Tactics 02 reserve counter</td>
+        <td data-l="Models">Opus 5.5</td>
+        <td data-l="Evidence">Opus cast Log at 6 s, before the Barrel goblins landed, and took 2,027 damage against a limit of 450. The reference casts Log at 8 s.
+          <span class="src"><a href="tactics.md">docs/tactics.md</a> · <a href="../runs/tactics-coordinates/opus55-summary.json">tactics-coordinates/opus55-summary.json</a></span></td>
+        <td data-l="Attempts" class="num">1 attempt (single)</td>
+      </tr>
+      <tr>
+        <td class="k" data-l="Pattern">5. Budget spent on the first threat</td>
+        <td data-l="Tasks">v4 05 successive threats (mirrored, corrected @2); v3 05</td>
+        <td data-l="Models">Opus 5.5, Sonnet 5.5</td>
+        <td data-l="Evidence">v4 @2 pilots: Opus took 1,593 damage and Sonnet 905 against a 450 limit. Full run: Opus took 741 after spending 4 elixir on Musketeer, 2 on Log and 2 on Ice Golemite; Sonnet also scored 0. v3 05: Sonnet allowed 1,515 damage, while Opus passed by 32 HP. The earlier @1 failure came from a wrong coordinate in the task text and is excluded.
+          <span class="src"><a href="royalebench_v4.md">docs/royalebench_v4.md</a> · <a href="../runs/royalebench-v4/opus55-r2-results.json">v4/opus55-r2-results.json</a></span></td>
+        <td data-l="Attempts" class="num">5 failed, 1 passed (Opus v3)</td>
+      </tr>
+      <tr>
+        <td class="k" data-l="Pattern">6. Body-blocking a Hog</td>
+        <td data-l="Tasks">Tactics hog defense (@4, then revised @5)</td>
+        <td data-l="Models">Opus 5.5</td>
+        <td data-l="Evidence">Opus placed Ice Golem at once at (3.5, 12.0) or (3.5, 13.0) and Skeletons about a second later; the Hog slipped around the block (951 and 635 damage). The reference waits 0.5 s, places Ice Golem at (1.5, 11.5), then Skeletons at (3.5, 13.5). On @5 the model correctly saw that cycling to Cannon would exceed the budget.
+          <span class="src"><a href="tactics.md">docs/tactics.md</a> · <a href="../runs/tactics-hog/model-pilot.json">tactics-hog/model-pilot.json</a></span></td>
+        <td data-l="Attempts" class="num">2 attempts, 2 failed (same model)</td>
+      </tr>
+      <tr>
+        <td class="k" data-l="Pattern">7. The same position flips between attempts</td>
+        <td data-l="Tasks">Win 02; v4 08 extra HP; full match s1-blue</td>
+        <td data-l="Models">Opus 5.5; Sonnet 4.6</td>
+        <td data-l="Evidence">Opus won the Win 02 position in its @1 pilot and lost it in @2. Opus won v4 08 extra-HP twice and lost it in the @2 full run. Sonnet 4.6 won s1-blue 3–0 in the pilot and lost it in the full run. Single attempts cannot rank models.
+          <span class="src"><a href="royalebench_win.md">docs/royalebench_win.md</a> · <a href="royalebench_v4.md">docs/royalebench_v4.md</a> · <a href="match_tasks.md">docs/match_tasks.md</a></span></td>
+        <td data-l="Attempts" class="num">3 positions</td>
+      </tr>
+      <tr>
+        <td class="k" data-l="Pattern">8. Full matches: losses on the tower race, cause not analyzed</td>
+        <td data-l="Tasks">6 full matches against the older rule-based opponent</td>
+        <td data-l="Models">Sonnet 4.6</td>
+        <td data-l="Evidence">2 of 6 won. Blue seat 0 of 3, red seat 2 of 3. Every loss was 0–1 on crowns, with 34% to 65% of the model's own tower damaged. Some single decisions took 6 to 10 minutes, and s1-blue used 3,187 of its 3,600 s. The docs do not analyze why these were lost, so we do not state a cause.
+          <span class="src"><a href="match_tasks.md">docs/match_tasks.md</a> · <a href="../runs/valkyrie-match-sonnet46-v2-results.json">valkyrie-match-sonnet46-v2-results.json</a></span></td>
+        <td data-l="Attempts" class="num">6 attempts, 4 failed</td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <div class="good"><b>What the models do right.</b> They read the board and follow the protocol. In the v4 08 pilot both Opus and Sonnet recognized that 180 enemy HP exceeds Fireball's 159 crown damage and cast Log first. Opus and GPT-6.1 Sol both won Win 01 (cycle and connect) and Win 03 (bait sequence); Sol's Win 03 was an overtime HP-tiebreak win with no tower taken.</div>
+
+  <h3>Case studies</h3>
+  <p>Each panel shows the saved plays and the model's own final message. The model's notes are its own statements and were not checked by us; the evidence is the plays and the result. Coordinates are tiles in the player's own frame, with y increasing toward the enemy.</p>
+
+  <!-- Case 1 -->
+  <div class="panel" data-tabs>
+    <div class="panel-h"><b>Case 1: Balloon tower race (Win 02)</b><span>Both models lost</span></div>
+    <div class="tabs" role="tablist" aria-label="Case 1 models">
+      <button role="tab" aria-selected="true" data-pane="c1-opus">Opus 5.5</button><button role="tab" aria-selected="false" data-pane="c1-sol">GPT-6.1 Sol</button>
+    </div>
+    <div class="panel-b">
+      <div class="tabpane" id="c1-opus">
+        <dl class="kv">
+          <dt>Position</dt><dd>Giant deck against LavaLoon, 30 s of overtime. Own left princess tower at 305 HP with the enemy Balloon incoming, enemy tower at full HP, and a win required.</dd>
+          <dt>Plays</dt><dd>Cannon (3.5, 11.5) after 11.6 s of thinking; Fireball (3.4, 10.0) after 4.2 s; Minions (3.2, 8.5) after 3.7 s.</dd>
+          <dt>Outcome</dt><dd>Loss, 0–1. Own tower fell at 5.3 s of game time. 10 elixir spent, 0 rejected actions.</dd>
+        </dl>
+        <blockquote class="m">“The mistake was opening with the Cannon instead of hitting the Balloon right away. It bought only about one Balloon hit of delay.” — Opus's own final message</blockquote>
+        <p class="note">The earlier @1 Opus attempt won this same position with a different defense, so the position is solvable by the model. Sources: <a href="../runs/royalebench-win/hosted/opus/02-sustained-tower-race/trajectory-summary.json">trajectory-summary.json</a>, <a href="../runs/royalebench-win/hosted/opus/02-sustained-tower-race/actions.jsonl">actions.jsonl</a>.</p>
+      </div>
+      <div class="tabpane" id="c1-sol" hidden>
+        <dl class="kv">
+          <dt>Position</dt><dd>Same position, same task.</dd>
+          <dt>Plays</dt><dd>One play: Cannon (7.0, 10.0) after 2.9 s of thinking.</dd>
+          <dt>Outcome</dt><dd>Loss, 0–1. The Balloon took the tower at 1.85 s, before another decision. 3 elixir spent, 0 rejected actions.</dd>
+        </dl>
+        <blockquote class="m">“Lost: the engine ended the match with enemy winning 1–0 after my Cannon placement.” — Sol's final message</blockquote>
+        <p class="note">Sol's reasoning is not in the saved summary: the telemetry normalizer does not support Codex model-call events, so only the actions and final messages are available. Sources: <a href="../runs/royalebench-win/hosted/sol/02-sustained-tower-race/trajectory-summary.json">trajectory-summary.json</a>, <a href="../runs/royalebench-win/trace-review.json">trace-review.json</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 2 -->
+  <div class="panel" data-tabs>
+    <div class="panel-h"><b>Case 2: Critical-health cycle (Win 04)</b><span>Both models lost</span></div>
+    <div class="tabs" role="tablist" aria-label="Case 2 models">
+      <button role="tab" aria-selected="true" data-pane="c2-opus">Opus 5.5</button><button role="tab" aria-selected="false" data-pane="c2-sol">GPT-6.1 Sol</button><button role="tab" aria-selected="false" data-pane="c2-pair">Paired contrast</button>
+    </div>
+    <div class="panel-b">
+      <div class="tabpane" id="c2-opus">
+        <dl class="kv">
+          <dt>Position</dt><dd>Hog Cycle against Giant, 18 s of overtime, own left princess tower at 250 HP. The same state as Win 01 except for that tower's HP.</dd>
+          <dt>Plays</dt><dd>Ice Spirits (3.5, 11.5); Cannon (6.5, 10.5); Fireball (3.5, 25.5); Hog Rider (3.5, 15.0); Log (3.5, 24.0).</dd>
+          <dt>Outcome</dt><dd>Loss, 0–1. Own tower fell at 8.95 s. 14 elixir spent, 0 rejected actions.</dd>
+        </dl>
+        <blockquote class="m">“Cannon alone held the Giant only about 4 seconds, which wasn't long enough for the Hog to connect.” — Opus's own final message</blockquote>
+        <p class="note">Sources: <a href="../runs/royalebench-win/hosted/opus/04-critical-cycle-and-connect/trajectory-summary.json">trajectory-summary.json</a>, <a href="../runs/royalebench-win/trace-review.json">trace-review.json</a>.</p>
+      </div>
+      <div class="tabpane" id="c2-sol" hidden>
+        <dl class="kv">
+          <dt>Plays</dt><dd>Ice Spirits (3.5, 10.0); Cannon (7.0, 10.0); Fireball (3.5, 25.5); Hog Rider (3.5, 14.5); Skeletons (4.8, 9.5); Ice Spirits (4.5, 8.0). Thinking time was 1.4 to 3.0 s per decision.</dd>
+          <dt>Outcome</dt><dd>Loss, 0–1. Own tower fell at 10.1 s. 14 elixir spent, 0 rejected actions.</dd>
+        </dl>
+        <blockquote class="m">“The Giant destroyed our critical-health tower before the Hog Rider connected.” — Sol's final message</blockquote>
+        <p class="note">Same limitation as case 1: no model reasoning is stored for Sol. Source: <a href="../runs/royalebench-win/hosted/sol/04-critical-cycle-and-connect/trajectory-summary.json">trajectory-summary.json</a>.</p>
+      </div>
+      <div class="tabpane" id="c2-pair" hidden>
+        <dl class="kv">
+          <dt>Reference</dt><dd>Cannon (7, 11.5), then a defensive Log and Ice Spirits. It wins with no additional tower damage.</dd>
+          <dt>Paired test</dt><dd>Win 01 and Win 04 differ only in own tower HP (700 against 250). The two pilot models' action lists from Win 01, replayed unchanged on Win 04, lost at 7.6 s (Opus plays) and 8.75 s (Sol plays).</dd>
+        </dl>
+        <p class="note">This is a counterfactual fixed-action replay, not a model run: the models were not shown the changed HP. It shows the position punishes the earlier lines. The trace review states that comparisons vary several decisions, so no single coordinate is proven to have caused a loss. Sources: <a href="../runs/royalebench-win/contrasts/critical-hp.json">contrasts/critical-hp.json</a>, <a href="royalebench_win.md">docs/royalebench_win.md</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case 3 -->
+  <div class="panel" data-tabs>
+    <div class="panel-h"><b>Case 3: Two-hit lethal timing (v4 08, extra enemy HP)</b><span>Mixed results</span></div>
+    <div class="tabs" role="tablist" aria-label="Case 3 runs">
+      <button role="tab" aria-selected="true" data-pane="c3-opus">Opus pilot</button><button role="tab" aria-selected="false" data-pane="c3-sonnet">Sonnet pilot</button><button role="tab" aria-selected="false" data-pane="c3-full">Opus, full @2 run</button>
+    </div>
+    <div class="panel-b">
+      <div class="tabpane" id="c3-opus">
+        <dl class="kv">
+          <dt>Position</dt><dd>Enemy tower raised to 180 HP, beyond Fireball's 159 crown damage, with 18 s of overtime left and a Giant incoming. A win needs defense, a cycle and a follow-up.</dd>
+          <dt>Plays</dt><dd>Recognized that 180 exceeds 159 and cast Log first. Delayed the Giant with Ice Spirits at (3.7, 9.5). Its Fireball then reached the tower in time.</dd>
+          <dt>Outcome</dt><dd>Win (reward 1), integrity 1, run <code>530134ed-a357-4260-93ec-f71feb2e09f4</code>.</dd>
+        </dl>
+        <p class="note">Source: <a href="royalebench_v4.md">docs/royalebench_v4.md</a>, <a href="../runs/royalebench-v4/opus-cycle-pilot-results.json">opus-cycle-pilot-results.json</a>.</p>
+      </div>
+      <div class="tabpane" id="c3-sonnet" hidden>
+        <dl class="kv">
+          <dt>Plays</dt><dd>Also recognized that 180 exceeds 159 and cast Log first. Then placed Ice Golemite at (3.5, 8.5).</dd>
+          <dt>Outcome</dt><dd>Loss (reward 0), integrity 1: its own tower fell before the Fireball landed. Run <code>9fe690f8-0190-4420-82a5-f0f9444cd227</code>.</dd>
+        </dl>
+        <p class="note">Source: <a href="royalebench_v4.md">docs/royalebench_v4.md</a>, <a href="../runs/royalebench-v4/sonnet-cycle-pilot-results.json">sonnet-cycle-pilot-results.json</a>.</p>
+      </div>
+      <div class="tabpane" id="c3-full" hidden>
+        <dl class="kv">
+          <dt>Plays</dt><dd>Cycled to Fireball, leaving the enemy tower on 21 HP, then waited for a Hog Rider before casting the finishing Log.</dd>
+          <dt>Outcome</dt><dd>Loss (reward 0): the Giant took its own tower first. Run <code>941173e3-ba01-4cb9-8374-a5dfd8e7ae88</code>.</dd>
+        </dl>
+        <p class="note">The same model won this task twice earlier (pilot and the superseded @1 full run), so the loss is a decision difference, not a task defect. Source: <a href="royalebench_v4.md">docs/royalebench_v4.md</a>, <a href="../runs/royalebench-v4/opus55-r2-results.json">opus55-r2-results.json</a>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="todo"><b>Not yet shown:</b> a capability-gap statement, a confidence interval on any pattern, and any pattern on v6 or v7 tasks. Patterns 3, 4 and 6 rest on one or two attempts of a single model. The Crown tasks are built to test patterns 1, 2 and 3, but no model has run on them. A baseline ladder (wait only, random legal moves, a cheap scripted policy) can be run locally and is not yet on this page.</div>
+
+  <hr>
   <h2 id="background">Background</h2>
   <p>Clash Royale asks a player to manage a regenerating resource, choose where and when to deploy units, and balance defense against pressure on the opponent's towers. RoyaleBench tests those decisions through exact mid-match continuations in a deterministic simulator, graded by an independent replay.</p>
   <div class="three">
@@ -165,7 +365,6 @@
     <div><b>Spatial reasoning</b><span>Which placement changes an engagement? Coordinates are never snapped to a legal tile.</span></div>
     <div><b>Planning and adaptation</b><span>Can it defend a push and turn the surviving units into a counterattack?</span></div>
   </div>
-  <div class="todo"><b>TODO:</b> state the specific capability gap once the failure analysis supports it. Do not write it before the traces are read.</div>
 
   <h2 id="results">Results</h2>
   <span class="label">Pass rate by task set</span>
@@ -177,7 +376,6 @@
         </g>
         <g stroke="var(--line-soft)"><line x1="110" y1="0" x2="110" y2="280"/><line x1="220" y1="0" x2="220" y2="280"/><line x1="330" y1="0" x2="330" y2="280"/><line x1="440" y1="0" x2="440" y2="280"/></g>
         <line x1="0" y1="0" x2="0" y2="280" stroke="var(--text)"/><line x1="0" y1="280" x2="440" y2="280" stroke="var(--text)"/>
-        <!-- width = rate*4.4 -->
         <g text-anchor="end">
           <text x="-8" y="22">Win · Opus 5.5</text><text x="-8" y="48">Win · GPT-6.1 Sol</text>
           <text x="-8" y="82">v4 · Opus 5.5</text><text x="-8" y="108">v4 · Sonnet 5.5</text>
@@ -193,9 +391,9 @@
         <text x="220" y="322" text-anchor="middle">Pass rate (%), one attempt per task</text>
       </g>
     </svg>
-    <figcaption>One attempt per task; task sets differ in size and difficulty, so compare within a set only. Dark green: Opus 5.5. Light green: other models. Source files are linked under the leaderboard.</figcaption>
+    <figcaption>One attempt per task; task sets differ in size and difficulty, so compare within a set only. Dark green: Opus 5.5. Light green: other models. v3 was saturated: only 6 of its 11 objectives ended in an actual match win. Sources are linked under the leaderboard and in the <a href="royalebench_win.md">Win</a>, <a href="royalebench_v4.md">v4</a> and <a href="match_tasks.md">full-match</a> docs.</figcaption>
   </figure>
-  <div class="todo"><b>TODO (needs real runs):</b> the Pareto chart of cost per task against score, a baseline ladder next to the models (wait only, random legal moves, a cheap scripted policy), and 95% intervals once there are repeated attempts.</div>
+  <div class="todo"><b>TODO (needs real runs):</b> a cost-against-score chart, and 95% intervals once there are repeated attempts.</div>
 
   <h2 id="tasks">Tasks</h2>
   <p>Each task fixes a starting position (decks, elixir, tower health and units on the board) and an objective. The model plays on against one opponent, the <b>Planner</b> (see <a href="#methodology">Methodology</a>), using <code>cr play SLOT X Y</code> and <code>cr wait</code>.</p>
@@ -235,26 +433,6 @@
   </table></div>
   <p>"Reference passes" means the privileged Planner found a winning move log that replays identically twice, and six cheap controls score zero. It does not mean any model fails the task; that has not been measured. Two more tasks are needed to reach 20. See <a href="handoff_v7_crown.md">the v7 handoff</a>.</p>
 
-  <h2 id="failures">Failure analysis</h2>
-  <div class="todo">
-    <b>TODO (needs the stored traces):</b> two verified cases in the Vals case-study format: the position, tabs per model, the model's reasoning and plays, the outcome, and an embedded replay.
-    <ul>
-      <li><b>A verified loss:</b> the Balloon tower race or the critical-health defense, where Opus and GPT-6.1 Sol both failed.</li>
-      <li><b>A contrasting win:</b> separate a good decision from a favorable outcome.</li>
-    </ul>
-    Use a small fixed taxonomy (for example execution, planning, verification) and check the labels against hand-read traces. Do not describe a cause before reading the trace.
-  </div>
-  <div class="panel">
-    <div class="panel-h"><b>Case study: [position name]</b><span>Placeholder</span></div>
-    <div class="tabs" role="tablist" aria-label="Case study models (placeholder)">
-      <button role="tab" aria-selected="true">Opus 5.5</button><button role="tab" aria-selected="false">GPT-6.1 Sol</button><button role="tab" aria-selected="false">Sonnet 5.5</button>
-    </div>
-    <div class="panel-b"><pre style="margin:0">Position: [task id, time left, elixir, tower HP, units on board]
-Question: [what the model saw]
-Response: [the model's reasoning and its plays, per decision]
-Outcome:  [result and one-line verdict, from a verified trace]</pre></div>
-  </div>
-
   <hr>
   <h2 id="methodology">Methodology</h2>
   <figure>
@@ -290,6 +468,7 @@ Outcome:  [result and one-line verdict, from a verified trace]</pre></div>
   <ul>
     <li>Single attempts, small task counts and no confidence intervals on the numbers above.</li>
     <li>v5 and the Win cohort were chosen partly because of how Opus and Sonnet performed, so those models' scores on them are not an unbiased estimate. The v7 additions would be selected the same way (tasks Opus fails), so the final set is adversarially chosen and should be tested on at least one other model family.</li>
+    <li>The failure patterns come from saved traces and result files. Where only a final message is stored (GPT-6.1 Sol), the model's reasoning is not available. A pattern is an observation, not a proven cause.</li>
     <li>The Planner sees hidden information and plays one fixed style. Results describe this simulator, these decks and this opponent. Live-game fidelity and human performance have not been established.</li>
     <li>Thinking pauses the game, so the benchmark does not measure real-time reaction speed.</li>
     <li>Scripted play is forbidden by the instructions and checked through diagnostics and trace review, not fully prevented.</li>
@@ -310,7 +489,7 @@ valkyrie run start --agent claude_code-v1.0.0 \
 
   <hr>
   <h2 id="ack">Acknowledgements</h2>
-  <p>Built on <a href="https://github.com/RoyaleGym">RoyaleGym and RoyaleLearn</a> and run on <a href="https://www.vals.ai/benchmarks">Vals AI</a>'s Valkyrie with Harbor-format tasks and Modal sandboxes. The page layout follows the <a href="https://www.vals.ai/benchmarks/poker_agent">Vals Poker Agent</a> page. The evaluation design draws on the <a href="https://arxiv.org/html/2603.23660">GTO Wizard Benchmark</a>, <a href="https://arxiv.org/html/2501.08328v2">PokerBench</a> and <a href="https://arxiv.org/pdf/2601.11868">Terminal-Bench</a>.</p>
+  <p>Built on <a href="https://github.com/RoyaleGym">RoyaleGym and RoyaleLearn</a> and run on Vals AI's <a href="https://docs.valkyrie.vals.ai/">Valkyrie</a> with <a href="https://docs.harborframework.com/tasks/overview">Harbor</a>-format tasks and Modal sandboxes. This is an unofficial fan project; Clash Royale is a trademark of Supercell.</p>
   <h3>Citation (BibTeX)</h3>
   <div class="bib"><button id="copy" type="button">Copy</button>
 <pre id="bibtex">@misc{royalebench2026,
@@ -320,13 +499,6 @@ valkyrie run start --agent claude_code-v1.0.0 \
   note   = {Vals Hacks, Build Your Own Eval. Draft. Accessed: 2026-11-15},
   url    = {https://github.com/ishanvepa/RoyaleBench}
 }</pre></div>
-
-  <h2 id="related">Related benchmarks</h2>
-  <div class="related">
-    <a href="https://www.vals.ai/benchmarks/poker_agent"><b>Poker Agent</b><span>Vals AI: 17 models play each other over 20,000 hands of no-limit hold'em.</span></a>
-    <a href="https://arxiv.org/html/2603.23660"><b>GTO Wizard Benchmark</b><span>LLMs against a strong fixed solver, with a baseline ladder and cost per model.</span></a>
-    <a href="https://arxiv.org/html/2501.08328v2"><b>PokerBench</b><span>Fixed poker decision spots with solver-derived answers.</span></a>
-  </div>
 </div>
 
 <footer><span>RoyaleBench · Vals Hacks 2026</span><span>Numbers come from files in the repository; anything unmeasured is marked TODO or pending.</span></footer>
@@ -336,7 +508,7 @@ valkyrie run start --agent claude_code-v1.0.0 \
   // Rows are single-attempt development results from files in this repo. n = attempts per task.
   var SETS = {
     "Overall (v6 / v7)": { note: "No model has been scored on v6 or v7 yet. Needs a Valkyrie login.", rows: [] },
-    "Win cohort, win@2 (4 tasks)": { note: "Source: docs/royalebench_win.md. Both lost the Balloon tower race and the critical-health defense.", rows: [
+    "Win cohort, win@2 (4 tasks)": { note: "Source: docs/royalebench_win.md. Both lost the Balloon tower race and the critical-health defense. Sol's Win 03 was an overtime HP-tiebreak win.", rows: [
       ["Claude Opus 5.5", "2 / 4", "50%", 1, "-"], ["GPT-6.1 Sol", "2 / 4", "50%", 1, "-"] ] },
     "v4 (5 tasks)": { note: "Source: docs/royalebench_v4.md, royalebench-v4@2.", rows: [
       ["Claude Opus 5.5", "3 / 5", "60%", 1, "-"], ["Claude Sonnet 5.5", "1 / 5", "20%", 1, "-"] ] },
@@ -370,8 +542,17 @@ valkyrie run start --agent claude_code-v1.0.0 \
     function fallback() { var r = document.createRange(); r.selectNodeContents(src); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); try { document.execCommand("copy"); done(); } catch (e) {} }
     try { navigator.clipboard.writeText(src.textContent).then(done, fallback); } catch (e) { fallback(); }
   });
-  var tabs = document.querySelectorAll(".tabs button");
-  tabs.forEach(function (b) { b.addEventListener("click", function () { tabs.forEach(function (x) { x.setAttribute("aria-selected", "false"); }); b.setAttribute("aria-selected", "true"); }); });
+
+  // Case-study tab groups: each [data-tabs] panel switches its own panes.
+  document.querySelectorAll("[data-tabs]").forEach(function (panel) {
+    var buttons = panel.querySelectorAll(".tabs button"), panes = panel.querySelectorAll(".tabpane");
+    buttons.forEach(function (b) {
+      b.addEventListener("click", function () {
+        buttons.forEach(function (x) { x.setAttribute("aria-selected", x === b ? "true" : "false"); });
+        panes.forEach(function (p) { p.hidden = p.id !== b.getAttribute("data-pane"); });
+      });
+    });
+  });
 })();
 </script>
 </body>

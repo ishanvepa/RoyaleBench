@@ -11,7 +11,7 @@ from cr_arena import tactics
 from cr_arena.build_tactics import FOUNDATION, FOUNDATION_PROTOCOL, OUT, build
 from cr_arena.build_v1 import MODEL_API_HOSTS
 from cr_arena.coordinate_benchmark import (config as v3_config, instruction, package_task,
-    packaged_protocol_digest, protocol_digest)
+    packaged_protocol_digest, protocol_digest, RUNTIME)
 from cr_arena.coordinate_task import MODE, CoordinateReferee
 from cr_arena.royale_task import make_referee, verify
 from cr_arena.telemetry import digest
@@ -26,7 +26,7 @@ def configs():
 def test_frozen_menu_inputs_and_v3_foundation_are_pinned(configs):
     assert len(configs)==8
     assert len(tactics.source_manifest()['runnable_tasks'])==7
-    assert protocol_digest()==FOUNDATION_PROTOCOL==json.loads((FOUNDATION/'manifest.json').read_text())['protocol_sha256']
+    assert FOUNDATION_PROTOCOL==json.loads((FOUNDATION/'manifest.json').read_text())['protocol_sha256']
     for c in configs.values():
         assert c['action_mode']==MODE and c['version']=='2.0.0'
         assert c['foundation_dataset']=='royalebench/royalebench-v3@2'
@@ -129,12 +129,19 @@ def test_builder_does_not_overwrite_foundation(protected,tmp_path):
     assert (protected/'manifest.json').read_bytes()==before
 
 
-def test_shared_packager_keeps_the_v3_runtime(tmp_path):
+def test_shared_packager_keeps_v3_gameplay_with_current_viewer(tmp_path):
     cfg=v3_config('01-immediate-lethal',title='RoyaleBench v3',version='3.0.0')
     evidence=Path('runs/royalebench-v3')
     package_task(cfg,tmp_path,evidence,Path('data/royalebench-v1-source')/cfg['id'],task_prefix='v3-')
     task=tmp_path/cfg['id']
-    assert packaged_protocol_digest(task)==packaged_protocol_digest(FOUNDATION/cfg['id'])
+    # New packages include the current standalone viewer; published packages stay frozen.
+    assert packaged_protocol_digest(task)==protocol_digest()
+    for source in RUNTIME:
+        if source in {'replay.py','replay.html'}:
+            continue
+        relative=Path('environment/referee')/source
+        assert (task/relative).read_bytes()==(FOUNDATION/cfg['id']/relative).read_bytes()
+    assert (task/'environment/cr').read_bytes()==(FOUNDATION/cfg['id']/'environment/cr').read_bytes()
     assert (task/'instruction.md').read_bytes()==(FOUNDATION/cfg['id']/'instruction.md').read_bytes()
     assert tomllib.loads((task/'task.toml').read_text())['agent']['allowed_hosts']==list(MODEL_API_HOSTS)
 
@@ -147,7 +154,7 @@ def test_packaged_tactics_match_foundation():
     assert len(benchmark.tasks)==7 and len(manifest['runnable_tasks'])==7
     for name,task in benchmark.tasks.items():
         assert not task_problems(task)
-        assert packaged_protocol_digest(task.path)==manifest['protocol_sha256']==protocol_digest()
+        assert packaged_protocol_digest(task.path)==manifest['protocol_sha256']==FOUNDATION_PROTOCOL
         cfg=json.loads((task.path/'tests/task.json').read_text())
         assert cfg==json.loads((task.path/'environment/task.json').read_text())
         assert cfg['action_mode']==MODE

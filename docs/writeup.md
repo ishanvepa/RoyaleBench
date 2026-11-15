@@ -6,6 +6,9 @@ recorded gameplay, failure analysis, inference cost, methodology,
 and limitations. [`modal_writeup.py`](../modal_writeup.py) serves
 the page and its evidence assets locally or on Modal.
 
+The **Overview** section directly above Background preserves the team's supplied
+five-paragraph introduction verbatim and uses the same article styling.
+
 ## Styling
 
 The page follows the [Vals AI Poker Agent benchmark](https://www.vals.ai/benchmarks/poker_agent):
@@ -58,7 +61,8 @@ credentials, secret references, organization IDs, raw agent logs, or environment
 variables are exported. Costs come from cached harness metrics or persisted
 token-pricing records; refreshing does not launch a model or call a billing API.
 Keep the page focused on results, task mechanics, and verified failure cases.
-Omit model-output quotations, editorial taglines, and speculative future work.
+Outside the team's verbatim Overview, omit model-output quotations, editorial
+taglines, and speculative future work.
 The page ends after Limitations. The reproduction section, on-page run
 manifest, acknowledgements, and footer are omitted; the frozen JSON remains
 available through the results snapshot link in the results discussion.

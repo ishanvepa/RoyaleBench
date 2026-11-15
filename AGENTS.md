@@ -103,6 +103,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/writeup.md`](docs/writeup.md): Vals reference styling, published RoyaleBench section layouts and Pareto chart controls, writeup evidence boundaries, snapshot and replay rebuilding, local-file and HTTP playback, browser checks, and Modal publication.
 - [`docs/writeup-assets/results.json`](docs/writeup-assets/results.json): sanitized frozen v9 results for 12 complete model runs, with per-task costs, settings and source checksums.
 - [`docs/writeup-assets/replay-provenance.json`](docs/writeup-assets/replay-provenance.json): independently checked source and export hashes for the synchronized historical model/reference comparison.
+- [`docs/writeup-assets/opus-trace.txt`](docs/writeup-assets/opus-trace.txt): readable saved Opus v6 gameplay transcript linked beneath the writeup's playback controls, with source hash and original messages, commands, and outputs.
 - [`docs/match_tasks.md`](docs/match_tasks.md): full-match Harbor tasks played through the `cr` CLI, referee isolation, replay grading, rewards, and how to build and publish them.
 - [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.

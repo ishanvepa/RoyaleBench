@@ -83,6 +83,11 @@ or change official rewards.
 
 The synchronized **v6@1** case is separate historical evidence, from run
 `45124458-3a52-4e73-b380-ee42f6934b19`. It is not counted as an extra v9 result.
+The playback caption links to [`opus-trace.txt`](writeup-assets/opus-trace.txt),
+a readable export of that task's recorded assistant messages, commands, and tool
+outputs in source order. Session metadata and empty reasoning blocks are omitted;
+message text is unchanged. The header records the source trajectory SHA-256, and
+the seven commands (initial observation plus six plays) match the saved run.
 The two replay pages use the current shared renderer and original recorded frames;
 both traces are independently verified during rebuilding. All six model/reference
 card IDs and deployment ticks match, but several placements differ, so the

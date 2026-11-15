@@ -20,6 +20,7 @@ from dashboard.loading import loading
 from cr_arena.decks import deck_options
 from cr_arena.game import Game
 from cr_arena.players import Decision, InfraError, build_player
+from cr_arena.bots import human_bot_specs
 
 HUMAN = 0  # you play blue, at the bottom of the board
 OUT_DIR = Path("runs/round_robin/human-play")
@@ -29,8 +30,8 @@ BLUE_DK, RED_DK = "#174a8a", "#9a3a14"
 
 
 def opponents(root: Path) -> dict[str, dict]:
-    """The reference search bot + every LLM player found in the config files (first definition of a name wins)."""
-    out = {"search-bot": {"name": "search-bot", "type": "search", "rollouts": 4, "horizon_s": 12.0}}
+    """The search bots + every LLM player found in the config files (first definition of a name wins)."""
+    out = {spec["name"]: spec for spec in human_bot_specs("turn-based").values()}
     for f in [root / "configs" / "claude.toml", root / "config.toml", *sorted((root / "configs").glob("*.toml"))]:
         try:
             cfg = tomllib.loads(f.read_text())
@@ -197,7 +198,7 @@ def page_play(root: Path, get_db) -> None:
     st.caption("You play blue (bottom) through exactly the interface the models get: every 2 s of game time you pick "
                "one move from the legal-move list, and the game pauses while you decide. Finished games are saved "
                "under the job **human-play**.")
-    st.info("For a real-time game against the planner bot (no pausing, drag cards onto the arena), run "
+    st.info("For a real-time game against the bots (no pausing, drag cards onto the arena), run "
             "`uv run python -m cr_arena.live` and open http://localhost:8600.")
     P = st.session_state.get("play")
     opps = opponents(root)

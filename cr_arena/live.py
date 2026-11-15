@@ -4,8 +4,8 @@
 
 The engine runs at its real speed (20 ticks a second) and never waits for anyone. You drop cards
 anywhere a card may go, at any moment. The bot thinks in its own process on snapshots of the game
-(so its thinking never stalls the clock) and its move is applied the moment it is ready, about
-0.3 s after the snapshot it was computed on. The page draws at the screen's refresh rate by
+(so its thinking never stalls the clock) and its move is applied when it is ready. Search v2
+revalidates the source card and discards answers older than four seconds. The page draws at the screen's refresh rate by
 interpolating between engine ticks. Finished games are saved under the job "human-play".
 """
 
@@ -33,15 +33,14 @@ from .db import DB
 from .decks import CLASSIC_DECKS
 from .game import Game
 from .rendering import embed_renderer
+from .bots import human_bot_specs
 
 HUMAN, BOT = 0, 1
-BOT_SPECS = {
-    "planner": {"name": "planner-bot", "type": "planner", "workers": 6},
-    "search": {"name": "search-bot", "type": "search", "rollouts": 4, "horizon_s": 12.0},
-}
+BOT_SPECS = human_bot_specs("live")
 COMMAND_DELAY_TICKS = 21  # a play lands about 1 s after it is made, for both sides, as measured on the real client
 MAX_GAMES = 3  # games at once (each one runs its own bot processes); a fourth player is asked to wait
 ACTIVE: set = set()
+SEARCH_V2_MAX_AGE_TICKS = 80  # discard answers older than four seconds
 BOT_EVERY_TICKS = 5  # the bot is shown a fresh snapshot at most every 0.25 s of game time
 OUT_DIR = Path("runs/round_robin/human-play")
 PAGE = Path(__file__).with_name("live.html")
@@ -61,44 +60,41 @@ def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int)
         os._exit(0)
 
     threading.Thread(target=watch, daemon=True).start()
-    planner = sim = bot = None
-    if spec.get("type") == "planner":
-        from .planner_bot import Planner
+    from .bots.live import LiveBot
 
-        planner = Planner(decks, seed, BOT, delay=delay, workers=spec.get("workers", 0))
-    else:
-        from .players import build_player
-
-        sim = Game(decks[0], decks[1], seed=seed, record=False, command_delay_ticks=delay)
-        bot = build_player(spec)
-        bot.sim = sim  # search on this private engine
+    bot = LiveBot(spec, decks, seed, BOT, delay)
     try:
         conn.send(None)  # ready (starting a process takes a second or two)
-    except OSError:  # the player left before the bot was up
-        if planner:
-            planner.close()
-        return
-    while True:
-        try:
+        while True:
             root = conn.recv()
-        except (EOFError, OSError):
-            root = None
-        if root is None:
-            if planner:
-                planner.close()
-            return
-        if planner:
-            play, raw = planner.act(root)
-            conn.send((play[1], play[2], play[3], raw) if play else (-1, 0, 0, raw))
-            continue
-        sim.engine.load_state(root)
-        moves = sim.legal_moves(BOT)
-        if len(moves) > 1:
-            d = bot.decide(sim, BOT, "", moves)
-            mv, raw = moves[d.index], d.raw
-        else:
-            mv, raw = moves[0], ""
-        conn.send((mv.slot, mv.x, mv.y, raw))
+            if root is None:
+                return
+            conn.send(bot.act(root))
+    except (EOFError, OSError):
+        return  # browser disconnected while the bot was starting or thinking
+    finally:
+        bot.close()
+
+
+def bot_answer_command(game: Game, answer: tuple) -> tuple[DeployCommand | None, str]:
+    """Revalidate v2's timestamp and card identity on the current real battle."""
+    slot, x, y, raw = answer[:4]
+    if slot < 0:
+        return None, raw
+    command = DeployCommand(BOT, slot, x, y)
+    if len(answer) > 4:
+        source_tick, card_id = answer[4:]
+        state = game.state
+        player = state.players[BOT]
+        if not 0 <= state.tick - source_tick <= SEARCH_V2_MAX_AGE_TICKS:
+            return None, raw + " (discarded: stale answer)"
+        if not 0 <= slot < len(player.hand) or player.hand[slot] != card_id:
+            return None, raw + " (discarded: hand changed)"
+        if any(p[0] == 0 and p[1] == card_id for p in player.pending):
+            return None, raw + " (discarded: card already pending)"
+        if game.engine.check_deploy(command) != DeployStatus.OK:
+            return None, raw + " (discarded: move no longer legal)"
+    return command, raw
 
 
 class Session:
@@ -119,7 +115,9 @@ class Session:
         self.paused = False
         self.t0 = time.time()
         # share the machine's cores between the games in progress
-        spec = {**self.bot_spec, "workers": max(2, 8 // (len(ACTIVE) + 1))} if self.bot_spec.get("workers") else self.bot_spec
+        spec = self.bot_spec
+        if spec.get("type") == "planner" and spec.get("workers"):
+            spec = {**spec, "workers": max(2, 8 // (len(ACTIVE) + 1))}
         ACTIVE.add(self)
         ctx = mp.get_context("spawn")
         self.conn, child = ctx.Pipe()
@@ -261,9 +259,9 @@ class Session:
                     answer = self.conn.recv()
                     self.bot_busy = False
                     if answer is not None:  # None = the worker's "ready"
-                        slot, x, y, raw = answer
-                        if slot >= 0:
-                            cmds.append(DeployCommand(BOT, slot, x, y))
+                        command, raw = bot_answer_command(g, answer)
+                        if command is not None:
+                            cmds.append(command)
                         if raw:
                             await self.send({"t": "bot", "raw": raw})
                 tick = g.state.tick

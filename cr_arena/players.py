@@ -1,4 +1,4 @@
-"""Players: baseline bots and LLMs. Every player maps (game view, legal moves) -> one move."""
+"""Model players and the unified factory; bot implementations live in cr_arena.bots."""
 
 from __future__ import annotations
 
@@ -6,9 +6,10 @@ import os
 import random
 import re
 import time
-from dataclasses import dataclass, field
 
-from .game import Game, Move
+from .game import Game
+from .player_types import Decision, DeckBuild, InfraError, Player
+from .bots.baselines import HeuristicBot, RandomBot  # compatibility exports
 
 SYSTEM_PROMPT = """You are playing a real-time lane-battle card game (Clash Royale rules) as one of two players.
 
@@ -58,103 +59,6 @@ Pick exactly 8 different cards from the pool. Think briefly about win condition,
 and average elixir cost, then end your reply with exactly one line:
 DECK: card1, card2, card3, card4, card5, card6, card7, card8
 using the card names exactly as written in the pool. An invalid deck is replaced by a default deck and counted as an error."""
-
-
-class InfraError(RuntimeError):
-    """The model could not be reached (rate limit, CLI/network failure) after retries. The match is
-    aborted and re-queued instead of being scored, so infrastructure problems never count as moves."""
-
-
-@dataclass
-class DeckBuild:
-    deck: list
-    raw: str = ""
-    ok: bool = True
-    error: str = ""
-    latency_s: float = 0.0
-    usage: dict = field(default_factory=dict)
-
-
-@dataclass
-class Decision:
-    index: int
-    raw: str = ""
-    ok: bool = True  # False when the reply could not be parsed / errored -> treated as wait
-    error: str = ""
-    latency_s: float = 0.0
-    usage: dict = field(default_factory=dict)
-
-
-class Player:
-    name: str
-
-    def start(self, game: Game, team: int) -> None:  # called once per match
-        pass
-
-    def decide(self, game: Game, team: int, text: str, moves: list[Move]) -> Decision:
-        raise NotImplementedError
-
-    def build_deck(self, pool: list[str], pool_text: str, interval: float) -> DeckBuild | None:
-        """Deck-building track. None = this player has no opinion (it plays its fixed/default deck)."""
-        return None
-
-
-class RandomBot(Player):
-    """Uniformly random legal move (including wait). Anchor of the rating scale."""
-
-    def __init__(self, name: str = "random-bot", seed: int = 0):
-        self.name = name
-        self.rng = random.Random(seed)
-
-    def decide(self, game, team, text, moves):
-        return Decision(self.rng.choice(moves).index)
-
-
-class HeuristicBot(Player):
-    """A few readable rules: spell clusters, defend the threatened lane, attack at high elixir."""
-
-    def __init__(self, name: str = "heuristic-bot", attack_elixir: float = 8.0):
-        self.name = name
-        self.attack_elixir = attack_elixir
-
-    def decide(self, game, team, text, moves):
-        s = game.state
-        me = s.players[team]
-        elixir = me.elixir_milli / 1000
-        enemy_units = [e for e in s.entities if e.team != team and e.kind in (0, 1) and e.hp > 0]
-        threats = []
-        for e in enemy_units:
-            tx, ty = game.own_tiles(team, e.x, e.y)
-            if ty < 16.5:  # on our side of the river
-                threats.append((ty, tx, e))
-        threats.sort(key=lambda t: t[0])
-
-        # 1. Spell a group of >= 3 enemy units close together.
-        for m in moves:
-            if m.kind == "SPELL" and m.target.startswith("on enemy"):
-                tx, ty = game.own_tiles(team, m.x, m.y)
-                near = sum(1 for e in enemy_units
-                           if abs(game.own_tiles(team, e.x, e.y)[0] - tx) <= 2.5
-                           and abs(game.own_tiles(team, e.x, e.y)[1] - ty) <= 2.5)
-                if near >= 3:
-                    return Decision(m.index)
-
-        # 2. Defend: cheapest troop/building in front of the threatened lane's tower.
-        if threats:
-            lane = game.lane_of(threats[0][1])
-            want = {"left": "in front of left tower", "right": "in front of right tower"}.get(lane, "center (between towers)")
-            cands = [m for m in moves if m.kind in ("TROOP", "BUILDING") and m.target in (want, "center (between towers)")]
-            if cands:
-                return Decision(min(cands, key=lambda m: (m.cost, m.target != want)).index)
-
-        # 3. Attack when elixir is high: most expensive troop at the bridge of the weaker enemy lane.
-        if elixir >= self.attack_elixir:
-            en = s.players[1 - team]
-            lane = "left" if en.tower_hp[1] <= en.tower_hp[2] else "right"
-            cands = [m for m in moves if m.kind == "TROOP" and m.target in (f"{lane} bridge", f"behind {lane} tower")]
-            if cands:
-                return Decision(max(cands, key=lambda m: (m.cost, m.target.endswith("tower"))).index)
-        return Decision(0)
 
 
 # ---------------------------------------------------------------------------------- LLMs
@@ -361,20 +265,13 @@ class MockLLM(Player):
         return Decision(idx, raw=f"(mock reasoning)\nMOVE: {idx}", latency_s=lat, usage=usage)
 
 
+
 def build_player(spec: dict) -> Player:
     kind = spec.get("type", "llm")
-    if kind == "mock":
-        return MockLLM(spec["name"], latency_s=spec.get("latency_s", 0.05), error_rate=spec.get("error_rate", 0.03),
-                       junk_rate=spec.get("junk_rate", 0.05), seed=spec.get("seed", 0))
-    if kind == "random":
-        return RandomBot(spec["name"], seed=spec.get("seed", 0))
-    if kind == "heuristic":
-        return HeuristicBot(spec["name"], attack_elixir=spec.get("attack_elixir", 8.0))
-    if kind == "search":
-        from .search_bot import SearchBot
+    if kind != "llm":
+        from .bots.registry import build_bot
 
-        return SearchBot(spec["name"], rollouts=spec.get("rollouts", 4), horizon_s=spec.get("horizon_s", 12.0),
-                         seed=spec.get("seed", 0))
+        return build_bot(spec)
     return LLMPlayer(
         name=spec["name"], provider=spec["provider"], model=spec["model"], effort=spec.get("effort"),
         max_tokens=spec.get("max_tokens", 4000), timeout_s=spec.get("timeout_s", 90.0),

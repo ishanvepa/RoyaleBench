@@ -1,0 +1,50 @@
+{
+  "simulated_work": {
+    "search-bot": {
+      "ticks": 14845555,
+      "state_loads": 65804,
+      "rollouts": 64648
+    },
+    "search-v2": {
+      "ticks": 56754025,
+      "state_loads": 273993,
+      "rollouts": 273993
+    }
+  },
+  "paired_sign_test_one_sided_p": 0.34375,
+  "positive_pairs": 4,
+  "negative_pairs": 2,
+  "wins": 11,
+  "draws": 0,
+  "losses": 7,
+  "score": 0.6111111111111112,
+  "completed_pairs": 9,
+  "paired_bootstrap_95": [
+    0.3333333333333333,
+    0.8333333333333334
+  ],
+  "score_by_matchup": {
+    "giant-beatdown__giant-beatdown": 0.5,
+    "giant-beatdown__hog-2.6-cycle": 1.0,
+    "giant-beatdown__lavaloon": 0.0,
+    "hog-2.6-cycle__giant-beatdown": 0.0,
+    "hog-2.6-cycle__hog-2.6-cycle": 1.0,
+    "hog-2.6-cycle__lavaloon": 1.0,
+    "lavaloon__giant-beatdown": 0.5,
+    "lavaloon__hog-2.6-cycle": 1.0,
+    "lavaloon__lavaloon": 0.5
+  },
+  "latency_s": {
+    "search-bot": {
+      "mean": 0.8776095229490408,
+      "p95": 2.0587521249981364,
+      "decisions": 1156
+    },
+    "search-v2": {
+      "mean": 2.6650036045242396,
+      "p95": 3.654926582999906,
+      "decisions": 1158
+    }
+  },
+  "illegal_actions": 0
+}

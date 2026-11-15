@@ -1,0 +1,10 @@
+{
+  "command": "uv run --locked python -m cr_arena.compare_search --config configs/search_v2_frozen.toml --out runs/search-v2/held-out --seeds 101 --cross-decks --parallel 6",
+  "match_processes": 6,
+  "workers_per_bot": 1,
+  "logical_cpus": 10,
+  "architecture": "arm64",
+  "os": "26.6.2",
+  "started_local": "2026-11-14T16:32:09.553383-08:00",
+  "validation_sha256": "8478a7cb6e43ccc9682d7f708d9ad87797a7d6b6deafd263f9ab1f51f8ad7509"
+}

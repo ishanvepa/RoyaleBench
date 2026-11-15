@@ -1,0 +1,130 @@
+{
+  "rule": "maximum development score, lower observed mean decision latency on a tie",
+  "chosen": "dev-legacy",
+  "frozen_config": "configs/search_v2_frozen.toml",
+  "development": [
+    {
+      "run": "dev-1",
+      "config": "configs/search_v2.toml",
+      "summary": {
+        "wins": 3,
+        "draws": 0,
+        "losses": 3,
+        "score": 0.5,
+        "completed_pairs": 3,
+        "paired_bootstrap_95": [
+          0.5,
+          0.5
+        ],
+        "score_by_matchup": {
+          "giant-beatdown__giant-beatdown": 0.5,
+          "hog-2.6-cycle__hog-2.6-cycle": 0.5,
+          "lavaloon__lavaloon": 0.5
+        },
+        "latency_s": {
+          "search-bot": {
+            "mean": 0.7778320617577562,
+            "p95": 1.6749901249968389,
+            "decisions": 392
+          },
+          "search-v2": {
+            "mean": 2.4521046463923994,
+            "p95": 4.043651750002027,
+            "decisions": 395
+          }
+        },
+        "illegal_actions": 0
+      }
+    },
+    {
+      "run": "dev-legacy",
+      "config": "configs/search_v2_legacy.toml",
+      "summary": {
+        "paired_sign_test_one_sided_p": 0.25,
+        "positive_pairs": 2,
+        "negative_pairs": 0,
+        "wins": 5,
+        "draws": 0,
+        "losses": 1,
+        "score": 0.8333333333333334,
+        "completed_pairs": 3,
+        "paired_bootstrap_95": [
+          0.5,
+          1.0
+        ],
+        "score_by_matchup": {
+          "giant-beatdown__giant-beatdown": 0.5,
+          "hog-2.6-cycle__hog-2.6-cycle": 1.0,
+          "lavaloon__lavaloon": 1.0
+        },
+        "latency_s": {
+          "search-bot": {
+            "mean": 0.9176909601384218,
+            "p95": 2.10791483399953,
+            "decisions": 412
+          },
+          "search-v2": {
+            "mean": 2.7525984557254763,
+            "p95": 3.921663458000694,
+            "decisions": 426
+          }
+        },
+        "illegal_actions": 0
+      }
+    },
+    {
+      "run": "dev-balanced",
+      "config": "configs/search_v2_balanced.toml",
+      "summary": {
+        "simulated_work": {
+          "search-bot": {
+            "ticks": 5224068,
+            "state_loads": 23191,
+            "rollouts": 22772
+          },
+          "search-v2": {
+            "ticks": 24158867,
+            "state_loads": 77091,
+            "rollouts": 77091
+          }
+        },
+        "paired_sign_test_one_sided_p": 0.5,
+        "positive_pairs": 1,
+        "negative_pairs": 0,
+        "wins": 4,
+        "draws": 0,
+        "losses": 2,
+        "score": 0.6666666666666666,
+        "completed_pairs": 3,
+        "paired_bootstrap_95": [
+          0.5,
+          1.0
+        ],
+        "score_by_matchup": {
+          "giant-beatdown__giant-beatdown": 0.5,
+          "hog-2.6-cycle__hog-2.6-cycle": 1.0,
+          "lavaloon__lavaloon": 0.5
+        },
+        "latency_s": {
+          "search-bot": {
+            "mean": 0.820155608809172,
+            "p95": 2.015186915999948,
+            "decisions": 419
+          },
+          "search-v2": {
+            "mean": 2.7514440952696235,
+            "p95": 3.6997751249982684,
+            "decisions": 430
+          }
+        },
+        "illegal_actions": 0
+      }
+    }
+  ],
+  "held_out_seeds": [
+    101
+  ],
+  "held_out_cases": 9,
+  "held_out_games": 18,
+  "strength_criterion": "score > 0.5 and one-sided exact sign test on non-tied paired scores p < 0.05"
+}

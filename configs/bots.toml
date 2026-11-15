@@ -1,0 +1,21 @@
+# Human-play catalog. Both selectors read this file in the listed order.
+# Modes: "live" (browser/phone) and "turn-based" (paused dashboard).
+# Inline entries contain player settings. A preset references a player in a run config.
+
+[bots.planner]
+modes = ["live"]
+name = "planner-bot"
+type = "planner"
+workers = 6
+
+[bots.search]
+modes = ["live", "turn-based"]
+name = "search-bot"
+type = "search"
+rollouts = 4
+horizon_s = 12.0
+
+[bots.search-v2]
+modes = ["live", "turn-based"]
+preset = "search_v2_frozen.toml"
+preset_player = "search-v2"

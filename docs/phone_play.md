@@ -1,7 +1,9 @@
 # Play against the bots on your phone
 
-The live browser game supports `planner-bot` and `search-bot`, with independent
+The live browser game supports `planner-bot`, `search-bot`, and `search-v2`, with independent
 choices of player and opponent decks. No model API credentials are needed.
+The shared [bot catalog](../configs/bots.toml) controls these choices; see
+[bot setup](bots.md) to change presets or add an opponent.
 
 ## One-time setup
 
@@ -33,6 +35,12 @@ then starts a Cloudflare Quick Tunnel. Open the printed
 `https://….trycloudflare.com` URL in Safari or Chrome on your phone.
 Your devices can stay on their existing Wi-Fi; they only need internet access.
 
+Choose **search-v2** in the opponent selector to play the selected Search v2
+preset, or choose either existing bot. Search v2 thinks in a separate process,
+uses the same command delay as you, and discards outdated card choices. It uses
+a soft 1.2-second search deadline at completed comparison rounds; a round can
+finish after that target. Its live results are separate from the paused benchmark.
+
 Choose an opponent and decks, then press **Start game**. Tap a card and then
 tap a legal location on the arena to deploy it. Use **Change deck** to return
 to setup and switch opponents. Finished games save to `runs/arena.db`, with
@@ -59,6 +67,9 @@ uv run --frozen python -m cr_arena.share --port 8602
   also fail on that network. The launcher prints Cloudflare's diagnostics.
 - For local play without a public tunnel, use
   `uv run --frozen python -m cr_arena.live` and open `http://127.0.0.1:8600`.
+
+Search v2 is also available in the dashboard's **You vs model** opponent selector.
+That mode pauses between decisions and uses the original fixed-budget preset.
 
 This reproduces the launch and dependency setup. Games currently choose a
 random seed on start; it does not guarantee identical matches or live timing.

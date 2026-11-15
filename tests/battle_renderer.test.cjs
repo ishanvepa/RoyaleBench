@@ -123,3 +123,65 @@ test('a shield is drawn above the health bar and its loss flashes the unit', () 
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#cfe3ff'), 'shield bar drawn');
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff'), 'hit flash after shield damage');
 });
+
+const classic = {1: ['Arrows'], 2: ['Fireball'], 3: ['GoblinBarrel'], 4: ['Lightning'], 5: ['Log'], 6: ['Poison'],
+  7: ['Rocket'], 8: ['Zap']};
+const generic = Object.fromEntries(Object.keys(classic).map(id => [id, ['Spell' + id]]));
+
+function classicFrames() {
+  const a = {en: [], pr: [], sp: [[0, 1, 5, 8, 3.5, 25.5, 'FLIGHT'], [0, 1, 7, 4, 3.5, 25.5, 'FLIGHT'],
+    [0, 2, 8, 6, 14.5, 25.5, 'FLIGHT'], [0, 3, 8, 6, 3.5, 28, 'FLIGHT'], [0, 7, 9, 5, 14.5, 28, 'FLIGHT'],
+    [1, 5, 14.5, 20, 14.5, 17.5, 'AIRBORNE'], [1, 5, 3.5, 20, 3.5, 10, 'ROLLING'], [1, 6, 9, 9, 9, 9, 'PULSING'],
+    [1, 4, 14.5, 9, 14.5, 9, 'STRIKES'], [1, 8, 9, 13, 9, 13, 'AREA']]};
+  const b = structuredClone(a);
+  for (const sp of b.sp) if (sp[6] === 'FLIGHT' || sp[6] === 'AIRBORNE') {
+    sp[2] += (sp[4] - sp[2]) * 0.2; sp[3] += (sp[5] - sp[3]) * 0.2;
+  }
+  b.sp[6][3] = 18;
+  return {a, b};
+}
+
+test('classic spell art keeps every spell position and hit target of the generic drawing', () => {
+  for (const flip of [false, true]) {
+    const hits = [classic, generic].map(names => {
+      const {renderer} = fixture(), {a, b} = classicFrames();
+      renderer.observe(a, 0); renderer.observe(b, 50);
+      return renderer.draw(a, b, .4, 30, {scale: 20, cards: names, flip}).map(h => [h.p, h.rad]);
+    });
+    assert.deepEqual(hits[0], hits[1]);
+    assert.equal(hits[0].length, 9);  // one per spell key, as before
+  }
+});
+
+test('every classic spell draws travel, ground and impact art with finite geometry', () => {
+  for (const flip of [false, true]) {
+    const {renderer, operations} = fixture(), {a, b} = classicFrames();
+    renderer.observe(a, 0); renderer.observe(b, 50);
+    renderer.draw(a, b, .5, 60, {scale: 20, cards: classic, flip});  // travel and ground art
+    const c = {en: [], pr: [], sp: []};
+    renderer.observe(c, 100);  // all of them land or end
+    for (const now of [120, 300]) renderer.draw(b, c, .5, now, {scale: 20, cards: classic, flip});
+    assert.ok(operations.some(op => op[0] === 'roundRect'), 'barrel, rocket or log bodies drawn');
+    assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff4b8'), 'fireball flash drawn');
+  }
+});
+
+test('all three Arrows volleys are drawn and an early volley landing gets its own impact', () => {
+  const {renderer, operations} = fixture();
+  const row = (x, y) => [0, 1, x, y, 3.5, 25.5, 'FLIGHT'];
+  const a = {en: [], pr: [], sp: [row(5, 18), row(6, 14), row(7, 10)]};
+  const b = {en: [], pr: [], sp: [row(5.5, 16), row(6.5, 12)]};
+  renderer.observe(a, 0); renderer.observe(b, 50);
+  operations.length = 0;
+  renderer.draw(a, b, .5, 60, {scale: 20, cards: classic});
+  const shafts = operations.filter(op => op[0] === 'strokeStyle' && op[1] === '#6b4a2b').length;
+  assert.equal(shafts, 2 * 7 + 11, 'two volleys of seven arrows in flight, eleven stuck at the landing');
+});
+
+test('other spells and effect objects keep the generic drawing', () => {
+  const {renderer, operations} = fixture(), {a, b} = classicFrames();
+  renderer.observe(a, 0); renderer.observe(b, 50);
+  operations.length = 0;
+  renderer.draw(a, b, .4, 30, {scale: 20, cards: generic});
+  assert.ok(!operations.some(op => op[0] === 'fillStyle' && ['#9a6434', '#7a4a22', '#e2b43c'].includes(op[1])));
+});

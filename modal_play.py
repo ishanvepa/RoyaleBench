@@ -16,6 +16,8 @@ image = (
     .add_local_dir(ROOT / "cr_arena", "/app/cr_arena", ignore=["__pycache__", "*.pyc"])
     .add_local_dir(ROOT / "configs", "/app/configs")
     .add_local_dir(ROOT / "supabase", "/app/supabase")
+    .add_local_dir(ROOT / "benchmarks/royalebench-tactics/05-hog-body-block",
+                   "/app/benchmarks/royalebench-tactics/05-hog-body-block")
 )
 
 

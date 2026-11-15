@@ -14,10 +14,37 @@ battle** to begin. **Back to arena** returns to the lobby and keeps the selected
 deck. The **How to play** button explains deployment, elixir, and winning. On
 phones, the final Enter battle button stays visible while browsing the decks.
 
-The deck picker uses no match slot. An eighth start receives **“Server at capacity —
-please try again shortly.”** Finish, quit, disconnect, or worker failure releases
-a slot. Matches run continuously with no pause control and expire after 15
-minutes. Reconnect starts a new game rather than resuming the previous one.
+## Try Benchmark
+
+The lobby also has **Try Benchmark** below Battle. It opens a short challenge
+prompt and the fixed deck for Tactics `@5` task `05-hog-body-block`. A full-health
+enemy Hog Rider is already approaching the left bridge; the player's left tower
+has **1 HP**. The player starts with **3 elixir**, may spend no more than **3 in
+total**, and must protect all crown towers from damage for **16 seconds**. The
+browser uses the packaged task configuration, seed, starting state, Planner,
+zero command delay, coordinate referee, and scoring rule. Each card placement or
+Wait advances one 0.5-second decision. After eight decisions, the referee
+resolves the rest of the window as waits. Thinking and reading the board do not
+advance game time. Placement taps keep their arena coordinates; the challenge
+does not snap them to legal cells. Illegal, affordable-over-budget, and
+unaffordable plays retain the benchmark's referee behavior and scoring.
+
+The challenge uses the existing arena renderer and hand controls, with an added
+decision and spending strip and a **Wait 0.5s** button. The result dialog reports
+challenge success, tower damage, and total elixir spent. **View resolution** opens
+the independently replayed packaged reference sequence in the shared replay
+viewer, with synchronized move text and timings. Challenge attempts save local
+replays but do not enter the ranked leaderboard or the full-match results DB.
+The Modal image mounts the published task package so local and hosted challenge
+starts use the same configuration and reference log. This is human practice on
+one eval case; it does not submit a Valkyrie model run.
+
+The deck picker and benchmark prompt use no match slot. Ranked battles and active
+benchmark attempts share the seven-session cap. An eighth start receives **“Server
+at capacity — please try again shortly.”** Finish, quit, disconnect, or worker
+failure releases a slot. Ranked battles run continuously with no pause control;
+all sessions expire after 15 minutes. Reconnect starts a new game rather than
+resuming the previous one.
 
 Completed battles open a result dialog over the dimmed arena, using the lobby's
 navy panels, crown emblem, and gold **Battle again** button. Victory, defeat, and

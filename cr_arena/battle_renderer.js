@@ -14,10 +14,10 @@
     blueDk: "#1c4f96",
     red: "#f0703c",
     redDk: "#9a3a14",
-    grassA: "#7fb85e",
-    grassB: "#76ae56",
-    water: "#3f9bd8",
-    bridge: "#b48a5c",
+    grassA: "#75ad4d",
+    grassB: "#6ca346",
+    water: "#358cb9",
+    bridge: "#a87540",
     gold: "#f2c230",
   });
   const KING = 2,
@@ -76,6 +76,8 @@
   const lerp = (a, b, t) => a + (b - a) * t;
   const isFlight = (s) => !s[6] || s[6] === "FLIGHT" || s[6] === "AIRBORNE";
   const spKey = (sp) => sp[0] + "|" + sp[1] + "|" + sp[4] + "|" + sp[5];
+
+  const grain = (x, y) => ((x * 73 + y * 151 + x * y * 17) % 101) / 101;
 
   function create(canvas, arena) {
     const ctx = canvas.getContext("2d"),
@@ -147,37 +149,80 @@
     function drawGround() {
       const half = arena.half,
         grid = arena.grid,
-        water = arena.water_half_rows;
-      for (let hy = 0; hy < grid.length; hy++)
-        for (let hx = 0; hx < grid[hy].length; hx++) {
-          const v = grid[hy][hx],
-            x0 = X(hx / half),
-            y0 = Y(hy / half);
-          const x1 = X((hx + 1) / half),
-            y1 = Y((hy + 1) / half);
-          const x = Math.min(x0, x1),
-            y = Math.min(y0, y1),
-            w = T / half + 0.5;
-          const inRiver = hy >= water[0] && hy <= water[1];
-          ctx.fillStyle =
-            v & arena.bits.WATER
-              ? C.water
-              : inRiver
-                ? C.bridge
-                : (Math.floor(hx / half) + Math.floor(hy / half)) % 2
-                  ? C.grassB
-                  : C.grassA;
-          ctx.fillRect(x, y, w, w);
-          if (!inRiver) {
-            ctx.fillStyle =
-              hy < water[0] ? "rgba(59,142,240,.07)" : "rgba(240,112,60,.07)";
-            ctx.fillRect(x, y, w, w);
-          }
-          if (v & arena.bits.NO_DEPLOY) {
-            ctx.fillStyle = "rgba(40,60,30,.18)";
-            ctx.fillRect(x, y, w, w);
+        water = arena.water_half_rows,
+        cell = T / half;
+      ctx.fillStyle = "#344b2b";
+      ctx.fillRect(0, 0, TX * T, TY * T);
+      // The mown field is drawn at tile resolution; only the river needs the
+      // simulator's finer grid. This keeps the terrain inexpensive to redraw.
+      for (let ty = 0; ty < TY; ty++)
+        for (let tx = 0; tx < TX; tx++) {
+          const px = Math.min(X(tx), X(tx + 1)),
+            py = Math.min(Y(ty), Y(ty + 1));
+          ctx.fillStyle = (tx + ty) % 2 ? C.grassA : C.grassB;
+          ctx.fillRect(px, py, T + 0.5, T + 0.5);
+          ctx.fillStyle = "rgba(235,255,174,.11)";
+          ctx.fillRect(px + 1, py + 1, T - 2, Math.max(1, T * 0.09));
+          if (grain(tx, ty) > 0.58) {
+            ctx.strokeStyle = "rgba(35,93,35,.32)";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(px + T * 0.33, py + T * 0.75);
+            ctx.lineTo(px + T * 0.25, py + T * 0.52);
+            ctx.moveTo(px + T * 0.33, py + T * 0.75);
+            ctx.lineTo(px + T * 0.43, py + T * 0.55);
+            ctx.stroke();
           }
         }
+      for (let hy = water[0]; hy <= water[1]; hy++)
+        for (let hx = 0; hx < grid[hy].length; hx++) {
+          const v = grid[hy][hx],
+            x = Math.min(X(hx / half), X((hx + 1) / half)),
+            y = Math.min(Y(hy / half), Y((hy + 1) / half)),
+            bridge = !(v & arena.bits.WATER);
+          ctx.fillStyle = bridge
+            ? (hy + hx) % 3 ? "#ac7a43" : "#ba8950"
+            : (hy + hx) % 3 ? C.water : "#419bc4";
+          ctx.fillRect(x, y, cell + 0.6, cell + 0.6);
+          if (bridge) {
+            ctx.fillStyle = "rgba(255,229,163,.28)";
+            ctx.fillRect(x + 1, y + 1, cell - 2, Math.max(1, cell * 0.1));
+            ctx.fillStyle = "rgba(55,35,19,.34)";
+            ctx.fillRect(x, y + cell - Math.max(1, cell * 0.09), cell, Math.max(1, cell * 0.09));
+            // The rails follow the actual bridge cells supplied by the engine.
+            for (const side of [-1, 1]) {
+              const neighbor = grid[hy][hx + side];
+              if (neighbor === undefined || neighbor & arena.bits.WATER) {
+                ctx.fillStyle = "#6d492d";
+                const railX = (flip ? -side : side) < 0 ? x : x + cell - Math.max(2, cell * 0.16);
+                ctx.fillRect(railX, y, Math.max(2, cell * 0.16), cell + 0.5);
+                ctx.fillStyle = "#d4a66a";
+                ctx.fillRect(railX + 1, y + 1, Math.max(1, cell * 0.05), cell - 2);
+              }
+            }
+          } else {
+            ctx.strokeStyle = "rgba(209,242,246,.36)";
+            ctx.lineWidth = Math.max(1, T * 0.045);
+            ctx.beginPath();
+            ctx.moveTo(x + cell * 0.16, y + cell * 0.48);
+            ctx.lineTo(x + cell * 0.63, y + cell * 0.4);
+            ctx.stroke();
+          }
+        }
+      // Stone banks and a raised frame make the river legible at replay size.
+      for (const row of [water[0], water[1] + 1]) {
+        const py = Y(row / half);
+        ctx.fillStyle = "#dbc48c";
+        ctx.fillRect(0, py - T * 0.09, TX * T, T * 0.18);
+        ctx.fillStyle = "rgba(47,57,36,.34)";
+        ctx.fillRect(0, py + T * 0.09, TX * T, Math.max(1, T * 0.07));
+      }
+      ctx.strokeStyle = "#35472c";
+      ctx.lineWidth = Math.max(3, T * 0.22);
+      ctx.strokeRect(0, 0, TX * T, TY * T);
+      ctx.strokeStyle = "rgba(230,218,170,.75)";
+      ctx.lineWidth = Math.max(1, T * 0.055);
+      ctx.strokeRect(T * 0.12, T * 0.12, TX * T - T * 0.24, TY * T - T * 0.24);
     }
     function shieldBar(x, y, w, frac) {
       ctx.fillStyle = "rgba(0,0,0,.55)";
@@ -185,11 +230,244 @@
       ctx.fillStyle = "#cfe3ff";
       ctx.fillRect(x - w / 2, y, w * Math.max(0, Math.min(1, frac)), 3);
     }
-    function hpBar(x, y, w, frac) {
+    function hpBar(x, y, w, frac, team) {
       ctx.fillStyle = "rgba(0,0,0,.55)";
       ctx.fillRect(x - w / 2, y, w, 4);
-      ctx.fillStyle = frac > 0.6 ? "#3ecf4a" : frac > 0.3 ? C.gold : "#f0503c";
+      ctx.fillStyle = team === 0 ? C.blue : C.red;
       ctx.fillRect(x - w / 2, y, w * Math.max(0, Math.min(1, frac)), 4);
+    }
+    function polygon(points, fill, stroke = null, width = 0.1) {
+      ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) ctx.lineTo(points[i][0], points[i][1]);
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = width;
+        ctx.stroke();
+      }
+    }
+    function disk(x, y, rx, ry, fill, stroke = null, width = 0.1) {
+      ctx.beginPath();
+      ctx.ellipse(x, y, rx, ry, 0, 0, 7);
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = width;
+        ctx.stroke();
+      }
+    }
+    function drawTower(e, px, py, r, hit, fill, edge) {
+      let left = px - r,
+        top = py - r,
+        width = 2 * r,
+        height = 2 * r;
+      if (e[2] === PRINCESS && e[14]) {
+        const [x0, y0, x1, y1] = e[14];
+        left = Math.min(X(x0), X(x1));
+        top = Math.min(Y(y0), Y(y1));
+        width = Math.abs(x1 - x0) * T;
+        height = Math.abs(y1 - y0) * T;
+      }
+      ctx.fillStyle = "rgba(20,29,21,.35)";
+      ctx.beginPath();
+      ctx.ellipse(left + width * 0.55, top + height * 0.88, width * 0.63, height * 0.3, 0, 0, 7);
+      ctx.fill();
+      // The first rectangle is the exact simulator footprint, including wide
+      // princess-tower footprints. Decorative pieces stay inside this outline.
+      ctx.fillStyle = hit > 0 ? "#fff" : "#8f8e79";
+      ctx.strokeStyle = "#4a4b45";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(left, top, width, height, Math.min(6, r * 0.3));
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "#666f67";
+      ctx.fillRect(left + width * 0.07, top + height * 0.55, width * 0.86, height * 0.32);
+      ctx.fillStyle = "#c5bea1";
+      ctx.fillRect(left + width * 0.1, top + height * 0.12, width * 0.8, height * 0.47);
+      ctx.fillStyle = edge;
+      ctx.fillRect(left + width * 0.09, top + height * 0.2, width * 0.82, height * 0.12);
+      ctx.fillStyle = fill;
+      ctx.fillRect(left + width * 0.13, top + height * 0.08, width * 0.74, height * 0.32);
+      ctx.fillStyle = "rgba(255,255,255,.22)";
+      ctx.fillRect(left + width * 0.16, top + height * 0.1, width * 0.66, height * 0.05);
+      ctx.fillStyle = "#494b43";
+      ctx.fillRect(left + width * 0.45, top + height * 0.48, width * 0.1, height * 0.29);
+      for (const side of [0.04, 0.79]) {
+        ctx.fillStyle = "#d3c9a9";
+        ctx.fillRect(left + width * side, top + height * 0.04, width * 0.17, height * 0.18);
+        ctx.fillStyle = "#817b68";
+        ctx.fillRect(left + width * side, top + height * 0.19, width * 0.17, height * 0.06);
+      }
+      if (e[2] === KING) {
+        polygon([
+          [px - r * 0.34, top + height * 0.25],
+          [px - r * 0.35, top + height * 0.1],
+          [px - r * 0.12, top + height * 0.17],
+          [px, top + height * 0.03],
+          [px + r * 0.12, top + height * 0.17],
+          [px + r * 0.35, top + height * 0.1],
+          [px + r * 0.34, top + height * 0.25],
+        ], "#f1c943", "#7d5a25", 1.2);
+        disk(px, top + height * 0.16, r * 0.065, r * 0.065, "#fff2a4");
+      } else {
+        polygon([
+          [px - r * 0.23, top + height * 0.26],
+          [px, top + height * 0.04],
+          [px + r * 0.23, top + height * 0.26],
+        ], "#f4d166", "#795b2b", 1);
+      }
+    }
+    function drawBuilding(name, px, py, r, fill, edge, hit) {
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.scale(r, r);
+      disk(0.12, 0.43, 0.95, 0.42, "rgba(20,29,21,.3)");
+      ctx.fillStyle = hit > 0 ? "#fff" : "#8b8575";
+      ctx.strokeStyle = "#3e4241";
+      ctx.lineWidth = 0.12;
+      ctx.beginPath();
+      ctx.roundRect(-0.85, -0.72, 1.7, 1.55, 0.15);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = fill;
+      ctx.fillRect(-0.72, -0.72, 1.44, 0.28);
+      if (/Cannon|Xbow|Tesla|Inferno/i.test(name)) {
+        disk(0, -0.2, 0.58, 0.52, edge, "#e4be77", 0.1);
+        ctx.fillStyle = "#303b46";
+        ctx.fillRect(-0.16, -1.08, 0.32, 0.9);
+        disk(0, -1.08, 0.16, 0.13, /Inferno/.test(name) ? "#f6a43c" : "#c3d8dd");
+      } else if (/Tombstone/.test(name)) {
+        ctx.fillStyle = "#c0bcb0";
+        ctx.beginPath();
+        ctx.roundRect(-0.4, -0.74, 0.8, 1.1, 0.35);
+        ctx.fill();
+        ctx.fillStyle = "#5e625b";
+        ctx.fillRect(-0.06, -0.57, 0.12, 0.6);
+        ctx.fillRect(-0.25, -0.37, 0.5, 0.12);
+      } else {
+        ctx.fillStyle = "#d0c4a5";
+        ctx.fillRect(-0.57, -0.35, 1.14, 0.8);
+        ctx.fillStyle = edge;
+        ctx.fillRect(-0.19, -0.11, 0.38, 0.56);
+      }
+      ctx.restore();
+    }
+    function drawTroop(name, px, py, r, fill, edge, hit, facing) {
+      const goblin = /Goblin/.test(name), skeleton = /Skeleton/.test(name),
+        giant = /Giant|Golem|Pekka|LavaHound/.test(name),
+        metal = /Pekka|MegaMinion/.test(name),
+        winged = /Minion|Bat|Dragon|LavaHound/.test(name),
+        archer = /Archer|Princess/.test(name),
+        caster = /Wizard|Witch|Spirit/.test(name),
+        mounted = /HogRider|BattleRam/.test(name);
+      const skin = skeleton ? "#e7e4ce" : goblin ? "#8ccc55" : metal ? "#596177" : "#e3ad82";
+      const coat = /Wizard/.test(name) ? "#375db1" : archer ? "#9d4d86" :
+        goblin ? "#875638" : /Barbarian/.test(name) ? "#bd7645" :
+        metal ? "#4c4b72" : /Golem/.test(name) ? "#7c8c8d" : fill;
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.rotate(facing);
+      ctx.scale(r, r);
+      disk(0.1, 0.7, 0.87, 0.32, "rgba(14,27,20,.3)");
+      // Team color lives on the base; the miniature keeps its card colors.
+      disk(0, 0.45, 0.82, 0.35, edge);
+      disk(0, 0.42, 0.67, 0.24, "#d3c49d");
+      if (winged) {
+        polygon([[-0.25, -0.25], [-1.25, -0.9], [-1.02, 0.12], [-0.35, 0.4]],
+          /Dragon|Lava/.test(name) ? "#658e57" : "#5d597f", "#303849");
+        polygon([[0.25, -0.25], [1.25, -0.9], [1.02, 0.12], [0.35, 0.4]],
+          /Dragon|Lava/.test(name) ? "#658e57" : "#5d597f", "#303849");
+      }
+      if (mounted) {
+        disk(0, 0.17, 0.82, 0.64, "#78534a", "#513c37");
+        disk(0, -0.49, 0.52, 0.39, "#aa8171", "#684c44");
+        disk(-0.33, -0.54, 0.16, 0.21, "#d6b69b");
+        disk(0.33, -0.54, 0.16, 0.21, "#d6b69b");
+      }
+      disk(-0.34, 0.45, giant ? 0.28 : 0.19, 0.3, "#534b42");
+      disk(0.34, 0.45, giant ? 0.28 : 0.19, 0.3, "#534b42");
+      disk(0, 0.05, giant ? 0.78 : 0.57, giant ? 0.71 : 0.56,
+        hit > 0 ? "#fff" : coat, "#3b4347", 0.1);
+      if (/Golem/.test(name)) {
+        polygon([[-0.7,-0.4],[-0.25,-0.8],[0.25,-0.72],[0.7,-0.4],[0.58,0.32],[0,0.48],[-0.65,0.3]],
+          /Ice/.test(name) ? "#a4dce5" : "#899493", "#4b6064");
+      }
+      disk(0, -0.47, giant ? 0.54 : 0.43, giant ? 0.51 : 0.43,
+        hit > 0 ? "#fff" : skin, "#5b544c", 0.09);
+      if (goblin) {
+        polygon([[-0.36,-0.5],[-0.98,-0.69],[-0.55,-0.25]], "#8ccc55", "#4e7135");
+        polygon([[0.36,-0.5],[0.98,-0.69],[0.55,-0.25]], "#8ccc55", "#4e7135");
+      } else if (skeleton) {
+        disk(-0.16, -0.46, 0.13, 0.17, "#323a42");
+        disk(0.16, -0.46, 0.13, 0.17, "#323a42");
+        ctx.fillStyle = "#5b5650";
+        ctx.fillRect(-0.15, -0.18, 0.3, 0.08);
+      } else if (metal) {
+        polygon([[-0.58,-0.7],[-0.42,-1.13],[-0.15,-0.87],[0.15,-0.87],[0.42,-1.13],[0.58,-0.7]],
+          "#666984", "#2f344f");
+        ctx.fillStyle = "#b5dff0";
+        ctx.fillRect(-0.28, -0.49, 0.56, 0.09);
+      } else if (archer || caster || /Musketeer/.test(name)) {
+        polygon([[-0.53,-0.43],[-0.47,-0.96],[0,-1.13],[0.47,-0.96],[0.53,-0.43]],
+          /Musketeer/.test(name) ? "#5b417e" : coat, "#4d3d55");
+        disk(0, -0.43, 0.28, 0.31, skin);
+      } else if (/Knight|Barbarian|BattleRam/.test(name)) {
+        polygon([[-0.53,-0.42],[-0.4,-0.88],[0,-1.02],[0.4,-0.88],[0.53,-0.42]],
+          /Barbarian/.test(name) ? "#e2c445" : "#aeb6bd", "#59616a");
+      }
+      if (!skeleton && !metal) {
+        disk(-0.16, -0.48, 0.055, 0.075, "#2b3237");
+        disk(0.16, -0.48, 0.055, 0.075, "#2b3237");
+      }
+      if (archer) {
+        ctx.strokeStyle = "#6a412c";
+        ctx.lineWidth = 0.15;
+        ctx.beginPath();
+        ctx.arc(0.65, -0.07, 0.43, -1.3, 1.3);
+        ctx.stroke();
+        ctx.strokeStyle = "#eee5c5";
+        ctx.lineWidth = 0.05;
+        ctx.beginPath();
+        ctx.moveTo(0.76, -0.48);
+        ctx.lineTo(0.76, 0.34);
+        ctx.stroke();
+      } else if (/Musketeer/.test(name)) {
+        ctx.fillStyle = "#3c4149";
+        ctx.fillRect(0.39, -0.95, 0.17, 1.12);
+        ctx.fillStyle = "#c8a35a";
+        ctx.fillRect(0.36, -0.15, 0.24, 0.13);
+      } else if (caster) {
+        disk(0.59, -0.33, 0.25, 0.25,
+          /Ice/.test(name) ? "#a8ebfa" : "#f6b24b", "#f8e1a8");
+      } else if (!winged && !mounted) {
+        ctx.strokeStyle = "#d7e1e4";
+        ctx.lineWidth = 0.17;
+        ctx.beginPath();
+        ctx.moveTo(0.5, 0.2);
+        ctx.lineTo(0.7, -0.75);
+        ctx.stroke();
+        ctx.fillStyle = "#776040";
+        ctx.fillRect(0.27, 0.1, 0.47, 0.12);
+      }
+      if (/Balloon/.test(name)) {
+        disk(0, -1.16, 0.72, 0.88, fill, edge, 0.13);
+        ctx.fillStyle = "rgba(255,255,255,.28)";
+        ctx.fillRect(-0.37, -1.73, 0.13, 0.75);
+        ctx.strokeStyle = "#e6d1a8";
+        ctx.lineWidth = 0.07;
+        for (const side of [-0.42, 0.42]) {
+          ctx.beginPath();
+          ctx.moveTo(side, -0.52);
+          ctx.lineTo(side * 0.65, 0.18);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
     }
     function drawEntity(e, x, y, hp, now) {
       const [uid, team, kind, cid, , , , maxHp, rad, flags, , fxv, fyv] = e;
@@ -213,44 +491,21 @@
         ctx.ellipse(X(x), Y(y) + r * 0.5, r, r * 0.45, 0, 0, 7);
         ctx.fill();
       }
-      ctx.fillStyle = hit > 0 ? "#fff" : fill;
-      ctx.strokeStyle = flying ? "#fff" : edge;
-      ctx.lineWidth = tower ? 2.5 : 1.5;
-      if (tower || kind === BUILDING) {
-        if (tower) r = (kind === KING ? 1.55 : 1.5) * T;
-        ctx.beginPath();
+      const name = tower ? "" : cards[cid]?.[0] || "Unknown";
+      if (tower) {
+        r = (kind === KING ? 1.55 : 1.5) * T;
         if (kind === PRINCESS && e[14]) {
           const [x0, y0, x1, y1] = e[14];
-          const left = Math.min(X(x0), X(x1)),
-            top = Math.min(Y(y0), Y(y1));
-          const width = Math.abs(x1 - x0) * T,
-            height = Math.abs(y1 - y0) * T;
-          r = Math.max(width, height) / 2;
-          ctx.roundRect(left, top, width, height, Math.min(6, r * 0.3));
-        } else {
-          ctx.roundRect(px - r, py - r, 2 * r, 2 * r, Math.min(6, r * 0.3));
+          r = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) * T / 2;
         }
-        ctx.fill();
-        ctx.stroke();
+        drawTower(e, px, py, r, hit, fill, edge);
+      } else if (kind === BUILDING) {
+        drawBuilding(name, px, py, r, fill, edge, hit);
       } else {
-        ctx.beginPath();
-        ctx.arc(px, py, r, 0, 7);
-        ctx.fill();
-        ctx.stroke();
-        const n = Math.hypot(fxv, fyv);
-        if (n > 0 && r > 5) {
-          // a small nose in the direction the unit faces
-          ctx.fillStyle = "#fff";
-          ctx.beginPath();
-          ctx.arc(
-            px + ((flip ? -fxv : fxv) / n) * r * 0.72,
-            py - ((flip ? -fyv : fyv) / n) * r * 0.72,
-            Math.max(1.5, r * 0.2),
-            0,
-            7,
-          );
-          ctx.fill();
-        }
+        const screenX = flip ? -fxv : fxv,
+          screenY = flip ? fyv : -fyv,
+          facing = Math.hypot(screenX, screenY) > 0.1 ? Math.atan2(screenX, -screenY) : 0;
+        drawTroop(name, px, py, r, fill, edge, hit, facing);
       }
       ctx.globalAlpha = 1;
       if (e[13] > 0) {
@@ -260,40 +515,18 @@
         ctx.arc(px, py, r + 3.5, 0, 7);
         ctx.stroke();
       }
-      const name = tower
-        ? kind === KING
-          ? "👑"
-          : "🏰"
-        : cards[cid]
-          ? cards[cid][0]
-          : "?";
-      const pic = tower ? name : iconOf(name);
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      if (pic) {
-        ctx.fillStyle = "#fff";
-        ctx.font =
-          Math.round(Math.max(10, r * (tower ? 0.95 : 1.25))) + "px system-ui";
-        ctx.fillText(pic, px, py + 1);
-      } else if (r >= 6) {
-        ctx.fillStyle = hit > 0 ? "#222" : "#fff";
-        ctx.font =
-          "600 " +
-          Math.round(Math.min(12, Math.max(8, r * 0.95))) +
-          "px system-ui";
-        ctx.fillText(name.slice(0, 2), px, py + 0.5);
-      }
       const shield = e[15] || 0;
+      const barY = Math.max(12, py - r - 8);
       if (tower || hp < maxHp || shield > 0)
-        hpBar(px, py - r - 8, Math.max(16, 2 * r), maxHp ? hp / maxHp : 0);
+        hpBar(px, barY, Math.max(16, 2 * r), maxHp ? hp / maxHp : 0, team);
       if (shield > 0)
-        shieldBar(px, py - r - 12, Math.max(16, 2 * r), shield / (shieldMax.get(uid) || shield));
+        shieldBar(px, barY - 4, Math.max(16, 2 * r), shield / (shieldMax.get(uid) || shield));
       if (tower) {
         ctx.fillStyle = "#16202e";
         ctx.font = "700 11px ui-monospace, Menlo, monospace";
         ctx.textAlign = "center";
         ctx.textBaseline = "alphabetic";
-        ctx.fillText(Math.round(hp), px, py - r - 11);
+        ctx.fillText(Math.round(hp), px, Math.max(10, barY - 3));
       }
       drawn.push({ p: [px, py], rad: r, entity: e });
       if (deploying) {

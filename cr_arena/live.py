@@ -47,7 +47,7 @@ PAGE = Path(__file__).with_name("live.html")
 _NOT_YET = {DeployStatus.NOT_ENOUGH_ELIXIR, DeployStatus.TOO_EARLY}
 
 
-def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int) -> None:
+def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int, team: int = BOT) -> None:
     """Runs in its own process: receives an engine snapshot, answers with the bot's move."""
     import os
     import threading
@@ -62,7 +62,7 @@ def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int)
     threading.Thread(target=watch, daemon=True).start()
     from .bots.live import LiveBot
 
-    bot = LiveBot(spec, decks, seed, BOT, delay)
+    bot = LiveBot(spec, decks, seed, team, delay)
     try:
         conn.send(None)  # ready (starting a process takes a second or two)
         while True:
@@ -76,16 +76,16 @@ def _bot_worker(conn, decks: list[list[str]], seed: int, spec: dict, delay: int)
         bot.close()
 
 
-def bot_answer_command(game: Game, answer: tuple) -> tuple[DeployCommand | None, str]:
+def bot_answer_command(game: Game, answer: tuple, team: int = BOT) -> tuple[DeployCommand | None, str]:
     """Revalidate v2's timestamp and card identity on the current real battle."""
     slot, x, y, raw = answer[:4]
     if slot < 0:
         return None, raw
-    command = DeployCommand(BOT, slot, x, y)
+    command = DeployCommand(team, slot, x, y)
     if len(answer) > 4:
         source_tick, card_id = answer[4:]
         state = game.state
-        player = state.players[BOT]
+        player = state.players[team]
         if not 0 <= state.tick - source_tick <= SEARCH_V2_MAX_AGE_TICKS:
             return None, raw + " (discarded: stale answer)"
         if not 0 <= slot < len(player.hand) or player.hand[slot] != card_id:

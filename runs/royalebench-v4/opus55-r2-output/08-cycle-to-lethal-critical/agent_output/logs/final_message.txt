@@ -1,7 +1,0 @@
-I won the scenario: the replay ended `GAME OVER: scenario SUCCESS`. Final crowns were 1–0, my towers took no extra damage, and I spent 9 elixir over 6 seconds of match time.
-
-1. **Log on the enemy left princess tower (3.5, 22).** The tower was at 180 HP, more than the 159 a Fireball does to towers, so it needed extra damage first. The Log didn't show up on the next board (still 180), but the tower was at 145 two seconds later.
-2. **Cannon at (6, 10.5).** The Giant was 1.5 tiles from my left princess tower, which had 250 HP, and was about to kill it. The Cannon pulled the Giant onto itself, so it never hit the tower. This was also the second card play, which brought Fireball into my hand.
-3. **Fireball on the enemy left princess tower (3.5, 25.5).** With the tower at 145 HP, the 159 damage destroyed it. In overtime the first tower destroyed wins.
-
-The Log's rolling hit and the enemy tower's lost HP seem to account for the 35 HP drop, but the game didn't report where each bit of damage came from.

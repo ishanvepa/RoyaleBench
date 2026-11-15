@@ -1,4 +1,0 @@
-I failed the scenario. Both towers survived the 20 seconds and I spent exactly 8 elixir. But total tower damage came to 1,822, against a limit of 450. The final board shows the right tower at 1,766 of 3,052 HP.
-
-- **What went wrong:** I misread where the GoblinBarrel would land. The scenario text says (3.5, 6.5), but it landed on the right tower at (14.5, 6.5). I had put the Musketeer on the left side to cover it, so it didn't help. By the time I saw the barrel land at elapsed 8.0s, I had only 2 elixir left. The IceGolemite I played then didn't stop the barrel goblins or the second goblin gang, and the right tower kept taking damage.
-- **What I should have done:** Watch the board more closely, and keep the Musketeer's 4 elixir back until the barrel's real position was known. A Musketeer by the right tower would probably have handled the barrel goblins and the gang.

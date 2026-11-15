@@ -1,7 +1,0 @@
-The scenario failed, so the reward is 0. Both princess towers survived the 20 seconds, but they took 1515 total tower damage against a limit of 450. I spent 8 elixir, which was within budget.
-
-The damage came from two threats:
-- **Left tower:** The Goblin Barrel landed at 6.0s, and the left tower took 375 damage. The Cannon I'd placed killed the goblins, but only after those hits.
-- **Right tower:** The opponent's second Goblin Gang and Knight pushed down the right lane, and I couldn't answer them. I'd used all 8 elixir by 12.0s, leaving only the Ice Spirits there. The right tower had taken 324 damage by 18.0s, and the total was already over 450.
-
-The game has ended, so there is nothing further to play.

@@ -1,9 +1,0 @@
-I lost. The scenario ended 0–1 on crowns because my left princess tower fell before the Fireball landed, so the reward is 0.
-
-- **Decision 1:** I cast Log at (3.5, 21.0) hoping it would chip the enemy left princess tower, which started at 180 HP. It only took the tower to 145 HP.
-- **Decision 2:** I played IceGolemite at (3.5, 8.5) to distract the Giant and cycle toward Fireball.
-- **Decision 3:** I cast Fireball at (3.5, 25.0), which would have destroyed the 145 HP tower. The Giant killed my 205 HP left tower while the Fireball was still in flight, so the enemy got the crown first.
-
-The mistake was timing. The Giant was already at the left tower and had it at 458 HP before my first move. The Fireball had to arrive before the Giant landed one more hit, and I didn't allow enough lead time for that. I could not tell from the output when the Giant's hit would land, so I didn't plan around it.
-
-I did not use the elixir I had left. A cheaper earlier play, such as Skeletons or IceSpirits, might have held the Giant off long enough. I didn't try that and can't say it would have worked.

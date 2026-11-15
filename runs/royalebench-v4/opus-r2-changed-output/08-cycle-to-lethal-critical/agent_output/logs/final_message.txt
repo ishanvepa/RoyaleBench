@@ -1,5 +1,0 @@
-I won the scenario in three plays and the game reported **SUCCESS**: crowns 1–0, no extra damage to my towers, 9 elixir spent.
-
-1. **Log on the enemy's left princess tower (3.5, 24.5).** That tower had 180 HP, and Fireball only does 159 to towers, so it needed some damage first. The next board read showed the tower at 145.
-2. **Cannon at (5.5, 11.0).** I placed it to pull the Giant away from my left princess tower, which had 250 HP. The Cannon was down to 291/824 HP at the next check, but the tower never took damage. This play also brought Fireball into my hand.
-3. **Fireball on the enemy's left princess tower (3.5, 25.5).** 145 HP was within its 159 tower damage, so the tower fell and the game ended with about 14 seconds left.

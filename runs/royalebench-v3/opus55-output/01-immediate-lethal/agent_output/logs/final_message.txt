@@ -1,5 +1,0 @@
-I won with a single play: Fireball at the enemy's left princess tower, (3.5, 25.5).
-
-That tower had 158 HP left and a Fireball deals 159 to crown towers, so one cast was enough to destroy it. In overtime the first tower destroyed wins, so the game ended right there.
-
-The game reported `GAME OVER: scenario SUCCESS`, with crowns 1–0, no damage to my towers and 4 elixir spent.

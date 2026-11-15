@@ -1,7 +1,0 @@
-The scenario ended in `GAME OVER: scenario SUCCESS`. Both princess towers survived the 20-second window and I spent 8 of the 9 elixir allowed.
-
-- **Inferno Tower at (14.5, 10.5):** I played it first, because the right tower was down to 1068 HP and the Giant was heading for it. The Giant went for the building instead and had been destroyed by 6 seconds in.
-- **Knight at (14.5, 11.5):** I added it to hold the right lane, and it was gone by 14 seconds.
-- **Waiting:** I waited for the rest of the window. A Log would have brought spending to 10, over the cap.
-
-The final report says tower damage was 1843 and crowns finished 0–0. Both princess towers took damage but stayed up. The right one finished at 851 of 3052 HP.

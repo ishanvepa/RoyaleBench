@@ -1,7 +1,0 @@
-I won the scenario: the game ended with `GAME OVER: scenario SUCCESS` and a 1–0 crown lead. Elapsed time was about 4 of the 18 seconds, I spent 7 elixir, and I made all three moves by hand.
-
-1. **Log at (3.5, 21):** I rolled it into the enemy's left princess tower, which was on 180 HP. The tower still showed 180 at the next decision, but it was down to 145 by the decision after that.
-2. **Ice Spirits on the Giant at (3.7, 9.5):** This was the second card play, which brought Fireball into my hand. It also froze the Giant before it could hit my left princess tower, which had 458 HP and was never damaged.
-3. **Fireball on the tower at (3.5, 25.5):** It does 159 to towers, more than the 145 left, so it destroyed the tower and ended overtime.
-
-My backup plan, if the Log had missed, was to cycle Skeletons to draw Hog Rider and send it at the same tower. I didn't need it.

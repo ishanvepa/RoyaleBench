@@ -1,1 +1,0 @@
-{"decision": 0, "tick": 5400, "action": {"cmd": "wait"}, "action_hash": "978dbc590691a690e472156514e0342a3a1b9aacea6c4c400605590b219d0fef", "think_s": 5.0, "state_hash": "a9008f00b494eb6972e94dba4c78863b30cc1c9fe52b0b1b00e53cd027f8052e", "accepted": true, "rejection": null, "deployment": null, "application_tick": 5400}

@@ -1,7 +1,0 @@
-This run failed. Both towers survived the 20 seconds and I spent exactly 8 elixir, but the towers took **741 damage** against a 450 limit.
-
-What happened:
-- **Right tower (Goblin Barrel):** The Musketeer at (12.5, 5.0) plus the Log rolled from (14.5, 4.5) at 8.0s handled it with no damage to the tower.
-- **Left lane:** At 10s the planner sent a Goblin Gang to my left tower. I spent my last 2 elixir on an Ice Golemite as a tank. It soaked damage, but it died before the Spear Goblins were cleared. The planner then added Princess and Ice Spirits behind them. With no budget left I couldn't respond, and the damage passed 450 in the last few seconds.
-
-The main mistake was the Musketeer. It walked away toward the enemy side and never helped defend. Spending 4 elixir on it left too little for the second threat in the other lane, which is what this scenario tests. A better plan was probably to Log the Barrel (2), answer the Gang cheaply in the other lane with Ice Spirits and Skeletons (1 each), and keep the leftover elixir for whatever came next.

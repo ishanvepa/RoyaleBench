@@ -90,6 +90,6 @@ separately to show where a model succeeded or failed.
 ## Validation record
 
 The ten source task folders were checked for byte identity and a common packaged
-protocol. Static Harbor checks reported no problems. Docker reference and negative
-control results, plus hosted publication and pilot evidence, are recorded in
-[`checks.json`](../runs/royalebench-v5/checks.json).
+protocol. Static Harbor checks reported no problems. The committed
+[selection record](../runs/royalebench-v5/selection.json) pins package and model-run
+provenance. Full local Docker captures are generated artifacts.

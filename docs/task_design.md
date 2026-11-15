@@ -48,9 +48,9 @@ retain each source's objective and packaged runtime when reproducing that merge.
 The separate [v7 challenge cohort](royalebench_v7.md) ends its scoring windows before
 the overtime deadline, so every successful continuation must take a crown. Keep
 its scores distinct from v6's mixture of defensive objectives and match wins.
-The default [v8 merge](royalebench_v8.md) preserves all 18 v6@1 and v7@1 packages
-and weights each source-task binary objective equally. Its aggregate score is
-objective success, not an all-task match-win rate.
+The default [v9 release](royalebench_v9.md) preserves all 18 v8@1 packages and adds
+three Tactics defenses. It weights each source-task binary objective equally. Its
+aggregate score is objective success, not an all-task match-win rate.
 
 For the harder [RoyaleBench Win](royalebench_win.md) cohort, every gameplay objective is
 an actual terminal match win. Do not award success for merely surviving a short window,

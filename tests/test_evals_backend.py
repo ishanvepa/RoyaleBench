@@ -51,7 +51,7 @@ class ConfigTests(unittest.TestCase):
         cfg = load_config(Path(tempfile.gettempdir()) / "does-not-exist-evals.toml")
         self.assertEqual((cfg.benchmark, cfg.provider, cfg.default_concurrency), ("royalebench", "modal", 1))
         self.assertEqual(cfg.models, ())
-        self.assertEqual(cfg.default_dataset, "royalebench-v8")
+        self.assertEqual(cfg.default_dataset, "royalebench-v9")
 
     def test_reads_values_and_read_only_flag(self):
         with tempfile.TemporaryDirectory() as d:
@@ -338,10 +338,15 @@ class ResultsTests(unittest.TestCase):
         metrics = results.read_agent_metrics(ROOT / "runs" / "valkyrie-ben-key-smoke-output" / "elixir-check")
         self.assertAlmostEqual(metrics["cost"], 0.0158661)
         self.assertEqual(metrics["output_tokens"], 152)
-        flat = results.read_agent_metrics(ROOT / "runs" / "valkyrie-smoke-output" / "elixir-check")
-        self.assertAlmostEqual(flat["cost"], 0.0158661)  # metrics_total.json layout
         with tempfile.TemporaryDirectory() as d:
-            self.assertIsNone(results.read_agent_metrics(Path(d)))
+            root = Path(d)
+            folder = root / "agent_output" / "logs"
+            folder.mkdir(parents=True)
+            (folder / "metrics_total.json").write_text(json.dumps({"cost": 0.0158661, "output_tokens": 152}))
+            flat = results.read_agent_metrics(root)
+            self.assertAlmostEqual(flat["cost"], 0.0158661)
+            self.assertEqual(flat["output_tokens"], 152)
+            self.assertIsNone(results.read_agent_metrics(root / "empty"))
 
     def test_error_classification(self):
         data = synthetic_results({"ok": 1.0, "half": 0.5},

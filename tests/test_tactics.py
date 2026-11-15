@@ -137,7 +137,7 @@ def test_shared_packager_keeps_v3_gameplay_with_current_viewer(tmp_path):
     # New packages include the current standalone viewer; published packages stay frozen.
     assert packaged_protocol_digest(task)==protocol_digest()
     for source in RUNTIME:
-        if source in {'replay.py','replay.html'}:
+        if source in {'replay.py','replay.html','battle_renderer.js'}:
             continue
         relative=Path('environment/referee')/source
         assert (task/relative).read_bytes()==(FOUNDATION/cfg['id']/relative).read_bytes()

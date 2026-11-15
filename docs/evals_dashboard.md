@@ -188,10 +188,10 @@ tasks. Its `cr_arena.validate_v9` command prepares both a combined manifest and
 runtime-specific manifests for existing dashboard processes. The live browser
 check opens every resolution dialog and tests playback, seeking and flipping.
 
-**RoyaleBench v8** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It combines
-all 14 v6@1 tasks with the four harder v7@1 continuations, preserving their source objectives. Explicit benchmark links override the
+**RoyaleBench v9** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It includes
+all 18 v8@1 tasks and three Tactics defenses, preserving their source objectives. Explicit benchmark links override the
 default, and an unpublished/unavailable default falls back to an available published benchmark.
-See the [v8 guide](royalebench_v8.md) for validation, grading, and launch commands.
+See the [v9 guide](royalebench_v9.md) for validation, grading, and launch commands.
 The historical [v6 merge](royalebench_v6.md) retains all source objectives.
 The separate [win-only cohort](royalebench_win.md) remains available.
 Historical v3 and its 11 scenario objectives remain available separately.

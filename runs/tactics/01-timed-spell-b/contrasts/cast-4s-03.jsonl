@@ -1,3 +1,0 @@
-{"decision": 0, "tick": 2200, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
-{"decision": 1, "tick": 2240, "move": 0, "label": "0. wait (save elixir)", "think_s": 5.0}
-{"decision": 2, "tick": 2280, "move": 4, "label": "4. Fireball (4 elixir, spell) @ enemy right princess tower", "think_s": 5.0}

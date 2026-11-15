@@ -50,7 +50,7 @@ The 72-second v03 pass:
 
 The remaining production improvement is a measured human voice take and a restrained audio mix. The preview remains silent. No benchmark evidence or recorded action timing changed.
 
-Review artifacts: [contact sheet](../exports/v03-contact-sheet.jpg), [storyboard](../storyboard.md), and [narration](../script.md). Media is local and ignored by Git.
+Review the local `../exports/v03-contact-sheet.jpg` after rendering, alongside the [storyboard](../storyboard.md) and [narration](../script.md). Media is ignored by Git.
 
 ## Refresh the ending footage
 
@@ -63,7 +63,7 @@ python3 demo/prepare_ending_capture.py
 python3 -m http.server 8767 --bind 127.0.0.1 --directory demo/assets/captures
 ```
 
-Capture `opus-ending-capture.html`, `reference-ending-capture.html`, `opus-impact-capture.html`, and `reference-impact-capture.html` at that local server with `demo/capture.js` (the same Playwright workflow as [the original capture](../README.md#rebuild-the-historical-v01-cut)). The capture script reads each page's variant, output directory, and presentation tail. Then encode the four variants:
+Capture `opus-ending-capture.html`, `reference-ending-capture.html`, `opus-impact-capture.html`, and `reference-impact-capture.html` at that local server with `demo/capture.js`. The capture script reads each page's variant, output directory, and presentation tail. Then encode the four variants:
 
 ```bash
 for source in opus reference; do
@@ -86,4 +86,4 @@ The capture manifest is `demo/assets/captures/ending-capture-metadata.json`; the
 - [Storyboard](../storyboard.md): current cut timing.
 - [Official Remotion skills](https://www.remotion.dev/docs/ai/skills): creation, markup, video layout, editable timelines, interactivity, Studio, media, local fonts, and review-frame rendering.
 
-The old Pillow edit and v01 export remain for history, but are superseded by this composition. Human narration and the final audio mix remain production work.
+Human narration, the final audio mix, and the submission MP4 remain production work.

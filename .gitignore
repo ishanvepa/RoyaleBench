@@ -38,3 +38,7 @@ runs/tactics-hog/docker/
 runs/tactics-hog-one-hit/docker/
 .playwright-cli/
 output/playwright/
+
+# Run outputs are generated and can be large. Commit selected evidence explicitly with git add -f.
+runs/**
+!runs/README.md

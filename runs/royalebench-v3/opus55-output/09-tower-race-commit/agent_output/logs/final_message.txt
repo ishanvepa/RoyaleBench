@@ -1,4 +1,0 @@
-I won the overtime position in two plays, at 1 crown to 0. Your crown towers took no further damage, and I spent 7 elixir in total.
-
-1. **Cannon at (3.5, 9.5):** The enemy Balloon was about to reach your left princess tower, which had only 305 HP left. Balloons go after the nearest building, so a Cannon placed between them pulled it off the tower. The Cannon was down to 157 HP but your tower took no damage. In those 2 seconds your Giant and Musketeer brought the enemy's left princess tower down from 366 to 149 HP.
-2. **Fireball at (3.5, 25.5):** This finished the enemy's left princess tower. In overtime the next tower to fall wins, so the game ended there with `GAME OVER: scenario SUCCESS`.

@@ -1,5 +1,0 @@
-I won the scenario. My one play was Fireball on the enemy's left princess tower at (3.5, 25.5), which destroyed it. The game ended 1–0 on crowns and the scenario reported SUCCESS.
-
-I spent 4 elixir and made one decision. The tower was at 366 HP when I played. The log shows the Fireball alone took it down, and the Giant and Musketeer never needed to attack.
-
-I haven't seen the verifier's independent replay result. The reward depends on it.

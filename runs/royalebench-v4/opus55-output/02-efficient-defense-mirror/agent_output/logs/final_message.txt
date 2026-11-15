@@ -1,5 +1,0 @@
-I completed the scenario and the referee reported **SUCCESS**: the right princess tower took 0 damage and I spent 3 of the 4 allowed elixir. Both princess towers stayed alive.
-
-- **Opening move:** The enemy Hog Rider was at the right bridge, so I placed the Cannon at (12, 10). That's closer to the Hog than the right princess tower and still inside the tower's range.
-- **The defence:** The Hog went for the Cannon. The Cannon and tower together brought it down to 126 HP before the Cannon was destroyed, and the tower finished it off before it could hit the tower.
-- **Rest of the window:** I waited out the remaining 12 seconds. The opponent played nothing else.

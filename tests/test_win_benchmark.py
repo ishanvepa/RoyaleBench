@@ -6,7 +6,7 @@ from unittest.mock import PropertyMock, patch
 import msgspec
 import pytest
 
-from cr_arena.coordinate_benchmark import packaged_protocol_digest, protocol_digest
+from cr_arena.coordinate_benchmark import packaged_protocol_digest
 from cr_arena.royale_task import make_referee
 from cr_arena.win_benchmark import OUT, VERSION, catalog, instruction, spell_crown_damage
 from rb_evals.benchmarks import load_benchmark, task_problems
@@ -76,7 +76,8 @@ def test_packaged_cohort_has_complete_consistent_isolated_tasks():
     assert manifest["version"] == VERSION
     for name, task in benchmark.tasks.items():
         assert not task_problems(task)
-        assert packaged_protocol_digest(task.path) == manifest["protocol_sha256"] == protocol_digest()
+        # This published package is frozen even if the working runtime evolves.
+        assert packaged_protocol_digest(task.path) == manifest["protocol_sha256"]
         cfg = json.loads((task.path / "tests/task.json").read_text())
         assert cfg == json.loads((task.path / "environment/task.json").read_text())
         assert cfg["scenario"]["grading"] == "win"

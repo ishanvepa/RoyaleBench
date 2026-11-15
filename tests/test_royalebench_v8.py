@@ -10,8 +10,8 @@ from rb_evals.benchmarks import load_benchmark, task_problems
 from rb_evals.config import EvalsConfig, load_config
 
 
-def test_v8_is_the_dashboard_and_fallback_default():
-    assert load_config().default_dataset == EvalsConfig().default_dataset == OUT.name
+def test_v9_is_the_dashboard_and_fallback_default():
+    assert load_config().default_dataset == EvalsConfig().default_dataset == "royalebench-v9"
 
 
 def test_v8_is_the_exact_published_source_union_with_original_grading():

@@ -1,7 +1,0 @@
-The scenario ended in **SUCCESS**: both princess towers were still standing at 20 seconds, and I spent 8 of the 9 elixir allowed.
-
-1. **Inferno Tower at (7.5, 10.5), 5 elixir.** I put it in the centre so the Giant would walk to it instead of the left tower, which was at 1068 HP. The Inferno killed the Giant before it reached either tower.
-2. **Knight at (3.7, 14.5), 3 elixir.** I put it in front of the Musketeer, which was hanging back at the bridge, to keep the tank and its support apart.
-3. **Waited for the rest of the window.** A second Musketeer and then Minions went at the right tower, which was at full HP. They brought it down to 1967 but couldn't destroy it in the time left, so I spent nothing more.
-
-The towers took 1192 damage in total, all of it on the right tower; the left tower stayed at 1068.

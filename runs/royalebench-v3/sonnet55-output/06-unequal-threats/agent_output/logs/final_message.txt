@@ -1,8 +1,0 @@
-The scenario ended in SUCCESS. Both princess towers survived the 20 seconds, with no crowns lost on either side.
-
-I spent exactly 8 elixir, 2 of it on the right lane, so both budgets held:
-- **Left lane (3 elixir each):** I placed a Cannon at (3.5, 11) and a Knight at (4, 10). They drew the BattleRam away from the left tower, which was down to 458 HP.
-- **Right lane (2 elixir):** I used Zap at (11.8, 16.4) to kill the three Bats heading for the right tower.
-- **Right tower damage:** The right tower dropped to 948 HP when the two BattleRams reached it, but it held.
-
-The result line reported 1917 tower damage, but I didn't work out whose towers that counts. The enemy left princess tower did drop to 2850 HP.

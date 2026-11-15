@@ -1,7 +1,7 @@
 # RoyaleBench v7
 
 v7 is a separate development cohort built from the November 15 v6 critique and is
-included in the default [v8 merge](royalebench_v8.md). Every
+included in the [v8 merge](royalebench_v8.md) and current [v9 release](royalebench_v9.md). Every
 task requires a completed match win by taking a crown within a stated window.
 Each starts with 60 seconds of overtime remaining, but the scoring window ends
 earlier. The existing `win` grader therefore cannot award an HP or seed tiebreak.

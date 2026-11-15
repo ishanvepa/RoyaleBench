@@ -1,5 +1,0 @@
-I won the scenario: the game ended 1–0 in crowns with no damage to my towers, and I spent 9 elixir.
-
-1. **Log** at (3.5, 15.5) didn't reach the enemy tower; it only hit the Giant.
-2. **Cannon** at (3.5, 11.0) pulled the Giant off my left princess tower, which had only 250 HP left.
-3. **Fireball** at (3.5, 25.5) hit the enemy left princess tower, which had dropped to 145 HP by then. The Fireball's 159 damage destroyed it, and the next tower down wins in overtime.

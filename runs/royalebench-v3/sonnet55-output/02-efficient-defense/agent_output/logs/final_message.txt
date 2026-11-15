@@ -1,7 +1,0 @@
-I failed the scenario. The final result was `GAME OVER: scenario FAILURE`.
-
-Both princess towers survived and I spent only 3 of the 4 allowed elixir. But the left princess tower took 634 damage, well over the 400 limit.
-
-I played Cannon at (3.5, 11.5) to pull the Hog Rider away from the left princess tower. The Hog Rider destroyed the Cannon in about four seconds and then hit the tower twice before the tower killed it. With only 1 elixir left after the Cannon, I couldn't afford Zap (2 elixir) or anything else to stop those hits.
-
-I should have put the Cannon closer to the river so it took more damage before the Hog Rider reached the tower. A cheaper second play, such as a Knight, might also have worked if I'd budgeted for it.

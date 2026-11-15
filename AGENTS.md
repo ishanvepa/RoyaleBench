@@ -53,10 +53,12 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/royalebench_v3.md`](docs/royalebench_v3.md): historical coordinate-action benchmark, all 11 released scenarios, scoring, validation, and Harbor/Valkyrie workflow.
 - [`docs/royalebench_win.md`](docs/royalebench_win.md): separate win-only continuation tasks, v3 saturation audit, calibration controls, and container/hosted validation.
 - [`docs/royalebench_v6.md`](docs/royalebench_v6.md): historical 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
-- [`docs/royalebench_v8.md`](docs/royalebench_v8.md): default 18-task merge of v6@1 and v7@1, exact source provenance, retained grading, runtime-specific validation and publication.
+- [`docs/royalebench_v8.md`](docs/royalebench_v8.md): historical 18-task merge of v6@1 and v7@1, exact source provenance, retained grading, runtime-specific validation and publication.
 - [`docs/royalebench_v9.md`](docs/royalebench_v9.md): 21-task extension of v8@1 with Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball, exact provenance, validation, all-task resolution playback and observed pass-rate difficulty calibration.
+- [`runs/README.md`](runs/README.md): compact evidence policy and instructions to regenerate local run artifacts.
 - [`runs/royalebench-v9/difficulty.json`](runs/royalebench-v9/difficulty.json): timestamped 12-run task pass-rate snapshot and thresholds behind v9's benchmark-level difficulty labels.
 - [`runs/royalebench-v9/checks.json`](runs/royalebench-v9/checks.json): source identity, passing references, publication, live API resolution hashes and browser playback checks for all 21 v9 tasks.
+- [`runs/royalebench-v9/model-results.json`](runs/royalebench-v9/model-results.json): twelve complete v9 model runs from Valkyrie, per-task objective and game-win scores, run IDs, result checksums and representative action sequences.
 - [`runs/royalebench-v8/merge.json`](runs/royalebench-v8/merge.json): all 18 source task digests, archive checksums, objectives and packaged protocol hashes.
 - [`runs/royalebench-v8/checks.json`](runs/royalebench-v8/checks.json): merged source identity, protected reference and negative-control checks, regression tests and publication evidence.
 - [`docs/royalebench_v7.md`](docs/royalebench_v7.md): separate harder tower-winning continuations included in v8, latest eight-model v6 audit, second-wave and split-lane task design, validation and frontier calibration.
@@ -68,7 +70,6 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`runs/royalebench-v4/checks-revision2.json`](runs/royalebench-v4/checks-revision2.json): corrected v4 `@2` digest, protocol and Docker checks, full Opus/Sonnet run settings, costs, and per-task scores.
 - [`docs/royalebench_v5.md`](docs/royalebench_v5.md): ten-case coordinate dataset, source revisions, Opus/Sonnet/Haiku selection evidence, scoring, validation, and Valkyrie workflow.
 - [`runs/royalebench-v5/selection.json`](runs/royalebench-v5/selection.json): task-by-task source revisions, package hashes, model run IDs, and selection rewards.
-- [`runs/royalebench-v5/checks.json`](runs/royalebench-v5/checks.json): v5 static, Docker, negative-control, and hosted publication checks.
 - [`runs/royalebench-v3/checks-revision2.json`](runs/royalebench-v3/checks-revision2.json): v3 `@2` publication digest, protocol hash, validation counts and hosted Qwen pilot pointer.
 - [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
 - [`docs/tactics.md`](docs/tactics.md): ten coordinate Tactics tasks in seven families on the v3 foundation, including Hog body-blocking and two clip-inspired defenses, unchanged source packages, spatial contrasts, and release evidence.

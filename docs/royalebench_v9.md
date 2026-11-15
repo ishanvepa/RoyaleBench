@@ -37,8 +37,56 @@ solutions, runtime and grading retain their published source bytes. The score
 is the **mean binary objective reward over all 21 equally weighted tasks**.
 Twelve require terminal match wins and nine use other objectives. Report it as
 objective success rather than an all-task match-win rate. V8 contributes 18/21
-of the score and the three added defenses contribute 3/21. No source scores are
-presented as a new full v9 model run.
+of the score and the three added defenses contribute 3/21. The full v9 model
+runs are recorded below.
+
+## Full v9 model runs
+
+Twelve distinct models each completed one full run against the published
+`royalebench/royalebench-v9@1` dataset, with concurrency 21. Valkyrie returned
+all 21 graded task results for every run; every replay passed integrity checks,
+and no run reported task errors. Agents completed 218 of the 252 task attempts;
+the other 34 unfinished tasks received zero objective reward and remain in the
+score denominator. Across 252 model-task attempts, 91 met the binary objective
+(**36.1%**). These are single attempts, and the runs used
+Claude Code, Codex, and mini-SWE-agent, so the table compares model-and-harness
+setups rather than isolating model effects.
+
+| Model | Harness | Objective successes | Match wins |
+|---|---|---:|---:|
+| Claude Opus 5.5 | Claude Code | 14/21 (66.7%) | 10/21 |
+| Claude Fable 5.2 | Claude Code | 13/21 (61.9%) | 8/21 |
+| GPT-6.1 Sol | Codex | 12/21 (57.1%) | 7/21 |
+| Claude Fable 5.1 | Claude Code | 11/21 (52.4%) | 8/21 |
+| GPT-6 Astra | Codex | 10/21 (47.6%) | 6/21 |
+| Claude Sonnet 5.5 | Claude Code | 7/21 (33.3%) | 5/21 |
+| GPT-6 Luna | Codex | 7/21 (33.3%) | 5/21 |
+| Claude Haiku 5.5 | Claude Code | 4/21 (19.0%) | 3/21 |
+| Inkling 2 Small | mini-SWE-agent | 4/21 (19.0%) | 3/21 |
+| Kimi K3.1 Pro | mini-SWE-agent | 4/21 (19.0%) | 6/21 |
+| Qwen 3.8 2.4T A95B | mini-SWE-agent | 3/21 (14.3%) | 2/21 |
+| DeepSeek V4.1 Flash | mini-SWE-agent | 2/21 (9.5%) | 2/21 |
+
+“Match wins” is the verifier's match-win metric. It is separate from objective
+success, since an agent can win the game but miss a task's damage, spell, or
+resource constraint. For example, Kimi recorded six match wins but four
+objective successes. The exact run IDs, per-task reward matrix, result-file
+checksums, stopped duplicate run, and representative accepted placements are
+in the [downloaded model results](../runs/royalebench-v9/model-results.json).
+
+Four tasks received no objective successes across this cohort:
+`02-reserve-counter-a`, `04-critical-cycle-and-connect`, `05-hog-body-block`,
+and `07-balloon-fireball`. `03-spell-placement` and `10-protect-the-lead` each
+passed 11 of 12 attempts.
+
+Representative records show narrow, verifiable failures as well as a success.
+Opus used its three-elixir allowance on the Hog defense, but its towers took
+635 additional damage. On Balloon Fireball, one legal Fireball led to 241
+damage against a 240 limit. GPT-6.1 Sol used Cannon, Minions, Fireball and
+Musketeer to win `02-second-wave-air-race` 1–0 in 11.1 seconds. Each record
+passed replay integrity; the action placements and run IDs are in the results
+file. Valkyrie can provide full agent output using
+`valkyrie run output RUN_ID TASK_ID/agent_output.tar.gz`.
 
 ## Difficulty calibrated from observed pass rates
 
@@ -138,12 +186,13 @@ Evidence lives under [`runs/royalebench-v9`](../runs/royalebench-v9):
 - [`browser-resolution-check.json`](../runs/royalebench-v9/browser-resolution-check.json): all 21 dialogs play, seek and flip successfully.
 - [`checks.json`](../runs/royalebench-v9/checks.json): combined release and dashboard checks.
 
-The live server on port 8000 serves a separate local checkout. Its new
+The live server used for the release check on port 8000 served a separate local checkout. Its new
 `benchmarks/royalebench-v9/` directory and runtime-specific resolution artifacts
 were installed there with matching task hashes and tested through that running
 server. On another checkout, run the build and validation commands there before
-opening its dashboard. The existing dashboard default remains configurable;
-the v9 benchmark page's **Run this benchmark** action selects v9 explicitly.
+opening its dashboard. New jobs default to v9 through `evals.toml`, and the v9
+benchmark page's **Run this benchmark** action selects it explicitly.
 
-To compare models, start new full runs against `royalebench/royalebench-v9@1`
-with `--provider modal`. Existing v8 and Tactics pilots remain source evidence.
+To repeat this comparison, start new full runs against
+`royalebench/royalebench-v9@1` with `--provider modal`. The cohort contains one
+attempt per model; repeated runs would be needed to estimate run-to-run variation.

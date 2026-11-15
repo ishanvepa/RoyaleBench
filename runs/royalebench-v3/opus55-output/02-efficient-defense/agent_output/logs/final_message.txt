@@ -1,7 +1,0 @@
-The scenario finished with **GAME OVER: scenario SUCCESS**, so the objective is met.
-
-- **Play:** I placed one Cannon at (6.5, 10.5), between the left lane and the centre. The Hog Rider went for the Cannon instead of the left princess tower. The Cannon and the tower together killed it by about 8 seconds in.
-- **Damage:** 0 to my towers (limit 400). The left princess tower stayed at 1831, where it started, and both princess towers survived.
-- **Elixir:** 3 spent (limit 4).
-
-After the Cannon I waited out the rest of the 12 seconds.

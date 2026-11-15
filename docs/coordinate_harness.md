@@ -1,7 +1,7 @@
 # Coordinate-action harness
 
 [RoyaleBench v3](royalebench_v3.md) promoted this protocol to all 11 released scenarios.
-The current default is [RoyaleBench v8](royalebench_v8.md). This page preserves the historical three-task pilot and its results.
+The current default is [RoyaleBench v9](royalebench_v9.md). This page preserves the historical three-task pilot and its results.
 
 The **RoyaleBench coordinates pilot** is a separate Harbor dataset at
 [`benchmarks/royalebench-coordinates`](../benchmarks/royalebench-coordinates), version
@@ -82,8 +82,9 @@ live under [`runs/royalebench-coordinates`](../runs/royalebench-coordinates).
 
 Docker validation builds the packaged runtime, runs the protected coordinate reference through
 the actual `cr` client as `player`, checks private-file/root isolation, restarts the server,
-and grades the carried action log in a fresh container with no networking. Its evidence is under
-[`runs/royalebench-coordinates/docker`](../runs/royalebench-coordinates/docker).
+and grades the carried action log in a fresh container with no networking. Full
+captures are generated under `runs/royalebench-coordinates/docker`; see the
+[artifact policy](../runs/README.md).
 
 ## Model comparison
 
@@ -123,9 +124,9 @@ All runs were enrolled in evidence collection and copied to the durable archive.
 captures are complete. The frozen menu runtime predates telemetry identities and online full-replay
 capture; the collector accurately reports those gaps. Its model action logs were separately
 replayed in fresh offline containers built from the frozen v1 sources, reproducing both successes
-and the cycling loss with matching frame hashes. These reconstructed replays are under
-[`menu-model-replays`](../runs/royalebench-coordinates/menu-model-replays); they are not original
-online telemetry.
+and the cycling loss with matching frame hashes. The reconstructed replays are
+generated under `runs/royalebench-coordinates/menu-model-replays`; they are not
+original online telemetry and are not part of the compact submission evidence.
 
 Use the immutable published revision through the existing
 [Valkyrie/Modal workflow](valkyrie_guide.md). Run one task first, inspect its trace, then compare

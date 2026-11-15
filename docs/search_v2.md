@@ -240,8 +240,7 @@ counterpush probe matches v1's 904 damage. These are engine outcomes after the
 root action, recorded in [`tactics-legacy.json`](../runs/search-v2/tactics-legacy.json);
 they do not establish full-game strength.
 
-The held-out run also saves a [Hog cycle win replay](../runs/search-v2/held-out/replays/representative-win.html)
-and a [Giant loss replay](../runs/search-v2/held-out/replays/representative-loss.html).
+The held-out run generated a Hog cycle win replay and a Giant loss replay.
 Those HTML files and the full msgpack replays are local artifacts under the ignored
 `replays/` directory. Regenerate a viewer with `python -m cr_arena.replay TRACE.msgpack
 --stride 4 -o VIEWER.html` after restoring a trace.

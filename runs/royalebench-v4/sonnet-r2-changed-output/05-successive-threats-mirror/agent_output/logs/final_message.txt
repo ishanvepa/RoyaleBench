@@ -1,8 +1,0 @@
-I failed the scenario. Both princess towers survived the 20 seconds, but the towers took 905 damage against a limit of 450. Spending was within budget at 8 elixir, so the reward is 0.
-
-Here is how the sequence went:
-- **Log at (14.5, 11):** I played it at the start to hit the first GoblinGang heading for the right tower. That wave never damaged a tower.
-- **IceGolemite at (14.5, 9) and IceSpirits at (14.5, 8):** I played both around the 6s GoblinBarrel. They walked forward and left the right tower before the barrel goblins arrived, so the tower took the barrel damage anyway. I misjudged that.
-- **Cannon at (3.5, 11):** I played it after a second GoblinGang appeared on the left lane. It was destroyed within about 2 seconds, and the left tower then took damage from the goblins and the Knight.
-
-I used all 8 elixir by 12 seconds, so I had no way to answer the Knight and the remaining goblins in the last 8 seconds. The main errors were committing the budget to units that left the tower area and to a Cannon that died too fast, rather than holding elixir for the second wave.

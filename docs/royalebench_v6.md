@@ -2,7 +2,7 @@
 
 RoyaleBench v6 merges **all 10 tasks from `royalebench/royalebench-v5@1`** with
 **all four tasks from `royalebench/royalebench-win@2`**. It contains 14 tasks and is
-the former dashboard default; [v8](royalebench_v8.md) now merges it with v7 and is the default. Published release:
+an earlier dashboard default; [v8](royalebench_v8.md) later merged it with v7, and [v9](royalebench_v9.md) is the current default. Published release:
 **`royalebench/royalebench-v6@1`**, tagged `v6`.
 No task IDs collide, and every task file retains its source bytes, with matching
 published task content digests. Instructions, starting states,

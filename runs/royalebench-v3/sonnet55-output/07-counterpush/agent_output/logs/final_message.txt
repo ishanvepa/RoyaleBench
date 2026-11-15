@@ -1,6 +1,0 @@
-I won the match 1–0 on crowns, and the game reported `GAME OVER: scenario SUCCESS`.
-
-- **Offense:** I played the Giant behind the Knight and Musketeer in the left lane, then used Fireball on the enemy's left princess tower. The Giant finished that tower for the crown.
-- **Defense:** I then held the lead through the last 17 seconds of regulation. I used Cannon, Minions, Knight and Zap to stop the enemy Battle Rams, Bats, Mini Pekka and Electro Wizard from taking any of my towers.
-
-The final report said tower damage 0, so none of my towers took additional damage. Total spend was 28 elixir.

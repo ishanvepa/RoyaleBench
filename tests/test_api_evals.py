@@ -32,7 +32,7 @@ class EnvironmentTests(ApiCase):
         self.assertIn("claude_code-v1.0.0", env["agents"])
         self.assertEqual((env["read_only"], env["settings"]["provider"], env["settings"]["max_concurrency"]), (False, "modal", 4))
         self.assertEqual(env["queue"], {"waiting": 0, "building": 0, "in_progress": 0, "evaluating": 0})
-        self.assertEqual(env["settings"]["default_dataset"], "royalebench-v8")
+        self.assertEqual(env["settings"]["default_dataset"], "royalebench-v9")
 
     def test_a_valkyrie_outage_is_reported_not_raised(self):
         def down(*args, **kwargs):

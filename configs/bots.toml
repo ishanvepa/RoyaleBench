@@ -2,6 +2,12 @@
 # Modes: "live" (browser/phone) and "turn-based" (paused dashboard).
 # Inline entries contain player settings. A preset references a player in a run config.
 
+[bots.heuristic]
+modes = ["live", "turn-based"]
+name = "heuristic-bot"
+type = "heuristic"
+attack_elixir = 8.0
+
 [bots.planner]
 modes = ["live"]
 name = "planner-bot"

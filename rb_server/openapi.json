@@ -2813,9 +2813,24 @@
       },
       "ModelPresetOut": {
         "properties": {
+          "family": {
+            "title": "Family",
+            "type": "string"
+          },
           "id": {
             "title": "Id",
             "type": "string"
+          },
+          "logo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo Url"
           },
           "secret_env": {
             "title": "Secret Env",
@@ -2824,7 +2839,8 @@
         },
         "required": [
           "id",
-          "secret_env"
+          "secret_env",
+          "family"
         ],
         "title": "ModelPresetOut",
         "type": "object"

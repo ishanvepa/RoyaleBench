@@ -13,10 +13,10 @@ import { PageHeader } from "@/components/ui/page-header";
 import { ALL, Select } from "@/components/ui/select";
 import { stringParam, useSearchState } from "@/hooks/useSearchState";
 import { useReadOnly } from "@/hooks/useServerInfo";
+import { familyLabel } from "@/lib/family";
 import { DASH } from "@/lib/format";
 import { useModelCheck, useModels } from "../api/models";
 
-const FAMILY_LABEL: Record<string, string> = { gpt: "GPT", claude: "Claude", gemini: "Gemini", grok: "Grok", deepseek: "DeepSeek", mistral: "Mistral", llama: "Llama", qwen: "Qwen", bot: "Baseline bots", other: "Other" };
 const searchSchema = z.object({ family: stringParam() });
 const col = createColumnHelper<ModelRow>();
 
@@ -28,7 +28,7 @@ export function Component() {
   const columns = useMemo(
     () => [
       col.accessor("name", { header: "Player", cell: (c) => <ModelLabel model={c.getValue()} logoUrl={c.row.original.logo_url} /> }),
-      col.accessor((r) => FAMILY_LABEL[r.family] ?? r.family, { id: "family", header: "Family" }),
+      col.accessor((r) => familyLabel(r.family), { id: "family", header: "Family" }),
       col.accessor("type", { header: "Type", cell: (c) => <span className="text-subtle">{c.getValue()}</span> }),
       col.accessor("provider", { header: "Provider", cell: (c) => <span className="text-subtle">{c.getValue()}</span> }),
       col.accessor("model", { header: "Model id", cell: (c) => <code className="font-mono text-xs">{c.getValue() || DASH}</code> }),
@@ -92,7 +92,7 @@ export function Component() {
                   aria-label="Model family"
                   value={family || ALL}
                   onValueChange={(v) => setState({ family: v === ALL ? "" : v })}
-                  options={[{ value: ALL, label: "All families" }, ...families.map((f) => ({ value: f, label: FAMILY_LABEL[f] ?? f }))]}
+                  options={[{ value: ALL, label: "All families" }, ...families.map((f) => ({ value: f, label: familyLabel(f) }))]}
                 />
               </div>
               <DataTable caption="Configured models" columns={columns} data={shown} getRowId={(m) => m.name} initialSorting={[{ id: "name", desc: false }]} empty="No players in the configuration." />

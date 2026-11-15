@@ -94,6 +94,11 @@ export function modelName(model: string): string {
   return i >= 0 ? model.slice(i + 1) : model;
 }
 
+/** The first letter or digit of a name, upper-cased: what a logo shows when there is no image. */
+export function initialOf(name: string): string {
+  return (name.match(/[a-z0-9]/i)?.[0] ?? "?").toUpperCase();
+}
+
 /** "claude_code-v1.0.0" -> "claude_code" */
 export function harnessName(harness: string): string {
   return harness.replace(/-v\d[\w.]*$/, "");

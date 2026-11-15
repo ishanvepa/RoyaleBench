@@ -64,6 +64,10 @@ for configurations, recorded comparisons, and remaining limitations.
 
 The `[all]` extra brings all these components into the dependency graph. Their presence in the lockfile does not mean our benchmark actively uses their training or desktop-viewer features. Reproduce this snapshot with the committed lockfile, for example using `uv sync --locked`, and retain that file with published results.
 
+The [public game](public_play.md) installs the separate `play` dependency
+group from that same lockfile. It uses RoyaleGym and RoyaleSim without the model
+SDKs, training, GPU, or desktop-viewer packages needed by other project modes.
+
 ## What the foundation gives us—and what we must establish
 
 The engine gives us controlled battle execution and recorded trajectories. Our benchmark still needs explicit task instructions, a defined score, a fixed opponent protocol, and evidence that failures reflect model decisions. Deterministic simulation makes a fixed action sequence reproducible; an LLM may choose different actions on repeated runs, so a seed alone does not reproduce the entire evaluation.

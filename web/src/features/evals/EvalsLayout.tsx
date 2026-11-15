@@ -7,6 +7,8 @@ const SECTIONS = [
   { to: "/evals/jobs", label: "Jobs" },
   { to: "/evals/benchmarks", label: "Benchmarks" },
   { to: "/evals/leaderboard", label: "Leaderboard" },
+  { to: "/evals/overview", label: "Overview" },
+  { to: "/evals/models", label: "Models" },
 ];
 
 /** Says up front when jobs cannot run (not signed in, Modal missing, read-only) instead of failing on click. */
@@ -42,7 +44,7 @@ function EnvironmentBanner() {
 export function EvalsLayout() {
   return (
     <>
-      <TabNav items={SECTIONS} label="Evals sections" className="mb-6" />
+      <TabNav items={SECTIONS} label="Evals sections" className="mb-6 justify-center" />
       <EnvironmentBanner />
       <Outlet />
     </>

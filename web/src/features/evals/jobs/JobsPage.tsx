@@ -1,14 +1,7 @@
-import { createColumnHelper } from "@tanstack/react-table";
 import { Plus, Rocket } from "lucide-react";
-import { useMemo } from "react";
 import { Link, useNavigate } from "react-router";
 import { z } from "zod";
-import type { JobRow } from "@/api/types";
-import { ModelLabel } from "@/components/domain/ModelLabel";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
-import { ProgressCell } from "@/components/domain/SegmentedProgress";
-import { StatusPill } from "@/components/domain/StatusPill";
-import { Duration, RelativeTime, Score } from "@/components/domain/values";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -18,9 +11,10 @@ import { Switch } from "@/components/ui/switch";
 import { ToggleChip } from "@/components/ui/toggle-chip";
 import { Tooltip } from "@/components/ui/tooltip";
 import { boolParam, listParam, stringParam, useSearchState } from "@/hooks/useSearchState";
-import { harnessName, plural } from "@/lib/format";
+import { plural } from "@/lib/format";
 import { useJobs } from "../api/jobs";
 import { useCanStart } from "../useCanStart";
+import { jobColumns } from "./columns";
 
 const searchSchema = z.object({ status: listParam(), dataset: stringParam(), model: stringParam(), mine: boolParam() });
 
@@ -32,73 +26,24 @@ const STATUS_FILTERS = [
   { label: "Stopped", statuses: ["STOPPED"] },
 ];
 
-const STATUS_RANK: Record<string, number> = { IN_PROGRESS: 0, STOPPING: 1, ERROR: 2, STOPPED: 3, FINISHED: 4 };
-const col = createColumnHelper<JobRow>();
-
-function useColumns() {
-  return useMemo(
-    () => [
-      col.accessor((r) => STATUS_RANK[r.status] ?? 9, {
-        id: "status",
-        header: "Status",
-        cell: (c) => <StatusPill kind="run" status={c.row.original.status} />,
-      }),
-      col.accessor("job", {
-        header: "Job",
-        cell: (c) => (
-          <Link to={`/evals/jobs/${c.row.original.id}`} className="font-medium underline-offset-4 hover:underline">
-            {c.getValue()}
-          </Link>
-        ),
-      }),
-      col.accessor("dataset", {
-        header: "Benchmark",
-        cell: (c) => (
-          <Link to={`/evals/benchmarks/${c.getValue()}`} className="text-subtle underline-offset-4 hover:text-ink hover:underline">
-            {c.getValue() || "–"}
-          </Link>
-        ),
-      }),
-      col.accessor("model", { header: "Model", cell: (c) => <ModelLabel model={c.getValue()} logoUrl={c.row.original.logo_url} /> }),
-      col.accessor((r) => harnessName(r.harness), { id: "harness", header: "Harness", cell: (c) => <span className="text-subtle">{c.getValue()}</span> }),
-      col.accessor("progress", {
-        header: "Progress",
-        cell: (c) => <ProgressCell done={c.row.original.done} total={c.row.original.total} counts={c.row.original.task_state_counts} />,
-      }),
-      col.accessor((r) => r.score ?? undefined, {
-        id: "score",
-        header: "Score",
-        sortDescFirst: true,
-        sortUndefined: "last",
-        meta: { align: "right" },
-        cell: (c) => <Score value={c.row.original.score} />,
-      }),
-      col.accessor((r) => r.started_by.split("@")[0] ?? "", { id: "by", header: "Started by", cell: (c) => <span className="text-subtle">{c.getValue() || "–"}</span> }),
-      col.accessor((r) => (r.started_at ? Date.parse(r.started_at) : 0), {
-        id: "started",
-        header: "Started",
-        sortDescFirst: true,
-        cell: (c) => <RelativeTime value={c.row.original.started_at} />,
-      }),
-      col.accessor((r) => r.duration_s ?? undefined, {
-        id: "duration",
-        header: "Duration",
-        sortUndefined: "last",
-        sortDescFirst: true,
-        meta: { align: "right" },
-        cell: (c) => <Duration seconds={c.row.original.duration_s} />,
-      }),
-    ],
-    [],
-  );
-}
+const COLUMNS = [
+  jobColumns.status,
+  jobColumns.job,
+  jobColumns.benchmark,
+  jobColumns.model,
+  jobColumns.harness,
+  jobColumns.progress,
+  jobColumns.score,
+  jobColumns.startedBy,
+  jobColumns.started,
+  jobColumns.duration,
+];
 
 export function Component() {
   const navigate = useNavigate();
   const [filters, setFilters] = useSearchState(searchSchema);
   const jobs = useJobs(filters);
   const canStart = useCanStart();
-  const columns = useColumns();
   const filtered = filters.status.length > 0 || filters.dataset !== "" || filters.model !== "" || filters.mine;
 
   const newJob = canStart.allowed ? (
@@ -183,7 +128,7 @@ export function Component() {
               </div>
               <DataTable
                 caption="Jobs"
-                columns={columns}
+                columns={COLUMNS}
                 data={data.jobs}
                 getRowId={(r) => r.id}
                 initialSorting={[{ id: "started", desc: true }]}

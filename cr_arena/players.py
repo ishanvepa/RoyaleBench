@@ -16,8 +16,8 @@ SYSTEM_PROMPT = """You are playing a real-time lane-battle card game (Clash Roya
 RULES IN BRIEF
 - Each side has a king tower and two princess towers (left and right). Destroying a princess tower = 1 crown, the king tower = 3 crowns (instant win).
 - Most crowns when time runs out wins. If tied, overtime starts and the next crown wins. If crowns are still tied when
-  overtime ends, no more cards can be played and every tower drains: the side whose weakest standing tower has LESS hp
-  loses (exactly equal = draw). So tower damage matters even when it takes no crown.
+  overtime ends, the match ends there and the side with more tower HP left, all its towers added up, wins (if even that
+  is exactly equal, a fixed coin flip decides). There are no draws. So tower damage matters even when it takes no crown.
 - You spend elixir (max 10, regenerates over time; faster in the last minute and overtime) to play cards from a 4-card hand. A played card goes to the back of your 8-card deck queue.
 - Troops walk down their lane toward enemy buildings and fight what they meet. Buildings stay put and defend. Spells hit an area once.
 - Good play: defend efficiently (spend less elixir than the enemy push costs), counter-attack with surviving troops, don't sit at full elixir (wasted regeneration), punish the lane where the enemy just spent elixir.

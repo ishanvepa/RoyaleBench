@@ -28,6 +28,13 @@ The secret contains both `MODAL_TOKEN_ID` and `MODAL_TOKEN_SECRET`. Keep their v
 
 For direct Modal development, follow [getting started](https://modal.com/docs/guide/getting-started) to install the SDK/CLI and run `modal setup`. The Valkyrie workflow above connects its hosted runner through a stored token.
 
+## Host the public game
+
+The separate [public play guide](public_play.md) deploys `modal_play.py` as one warm
+native server with ten Planner matches at once and a fixed Hog Cycle opponent deck. From a locally authenticated
+Modal account, run `uv run --frozen --extra hosting modal deploy modal_play.py`.
+This creates a shareable web game; it is independent of Valkyrie evaluation runs.
+
 ## During the hackathon
 
 - Use `--provider modal --concurrency 1 --slice 0:1` for the initial run. Follow the complete command in the [Valkyrie guide](valkyrie_guide.md).

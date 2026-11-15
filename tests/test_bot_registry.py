@@ -6,7 +6,7 @@ from pathlib import Path
 from cr_arena.bots import build_bot, human_bot_specs
 from cr_arena.bots.baselines import HeuristicBot, RandomBot
 from cr_arena.bots.live import LiveBot
-from cr_arena.bots.planner import Planner
+from cr_arena.bots.planner import Planner, PlannerPlayer
 from cr_arena.bots.search import SearchBot
 from cr_arena.bots.search_v2 import SearchV2
 from cr_arena.decks import DEFAULT_DECK
@@ -31,8 +31,8 @@ class BotRegistryTests(unittest.TestCase):
             build_bot({'type': 'typo', 'name': 'bad'})
 
     def test_catalog_modes_order_and_fresh_presets(self):
-        self.assertEqual(list(human_bot_specs('live')), ['planner', 'search', 'search-v2'])
-        self.assertEqual(list(human_bot_specs('turn-based')), ['search', 'search-v2'])
+        self.assertEqual(list(human_bot_specs('live')), ['heuristic', 'planner', 'search', 'search-v2'])
+        self.assertEqual(list(human_bot_specs('turn-based')), ['heuristic', 'search', 'search-v2'])
         first = human_bot_specs('live')
         first['search-v2']['opponent_mix'].clear()
         self.assertEqual(human_bot_specs('live')['search-v2']['opponent_mix'],
@@ -77,6 +77,25 @@ class BotRegistryTests(unittest.TestCase):
             self.assertIn(answer[:3], [(m.slot, m.x, m.y) for m in game.legal_moves(1)])
         finally:
             bot.close()
+
+    def test_planner_turn_based_picks_a_numbered_move_deterministically(self):
+        self.assertIsInstance(build_player({'type': 'planner', 'name': 'planner-bot', 'workers': 0}), PlannerPlayer)
+        choices = []
+        for _ in range(2):
+            game = Game(DEFAULT_DECK, DEFAULT_DECK, 11, record=False)
+            game.engine.step([], 160)
+            bot = build_bot({'type': 'planner', 'name': 'planner-bot', 'horizon_s': 4.0})
+            bot.start(game, 1)
+            moves = game.legal_moves(1)
+            self.assertGreater(len(moves), 1)
+            root = game.engine.save_state()
+            decision = bot.decide(game, 1, '', moves)
+            bot.close()
+            self.assertEqual(game.engine.save_state(), root, 'the real game must not be stepped')
+            self.assertIn(decision.index, range(len(moves)))
+            self.assertTrue(decision.raw.startswith('planner:'))
+            choices.append((decision.index, decision.raw))
+        self.assertEqual(choices[0], choices[1])
 
     def test_planner_process_pool_still_works_after_module_move(self):
         planner = Planner([DEFAULT_DECK, DEFAULT_DECK], 11, 1, delay=21, horizon_s=1, workers=1)

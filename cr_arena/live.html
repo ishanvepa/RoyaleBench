@@ -43,6 +43,52 @@
   .ghost:hover { background: var(--panel-2); }
   button:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
+  /* ---------- leaderboard: chunky blue frames and pixel gold, like the card tray ---------- */
+  #leaderboard { background: var(--panel); border: 3px solid #3f7fd6; border-radius: 2px;
+                 box-shadow: 4px 4px 0 #070d18, inset 0 0 0 2px #0f2a57; scroll-margin: 16px; }
+  .lb-header { display: flex; align-items: center; gap: 14px; padding: 18px;
+               background: linear-gradient(180deg, #2860b4, #1b4386); border-bottom: 3px solid #0f2a57; }
+  .lb-trophy { width: 40px; height: 40px; flex: none; image-rendering: pixelated; filter: drop-shadow(2px 3px 0 #0f2a57); }
+  #leaderboard h2 { margin: 0; font: 900 20px/1.3 var(--num); color: #ffe69a; text-shadow: 2px 2px 0 #0f2a57; }
+  #setup .lb-header p { margin-top: 3px; color: #c4dcff; font-size: 12px; }
+  .lb-button { margin-left: auto; border: 2px solid #729fe1; border-radius: 2px; background: #173d78;
+               box-shadow: 0 3px 0 #0f2a57; padding: 7px 10px; font: 700 12px var(--num); }
+  .lb-button:hover { background: #24559b; }
+  .lb-button:disabled { opacity: .55; cursor: wait; }
+  #lb-you { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 16px;
+             padding: 12px 18px; background: #223858; border-bottom: 2px solid #0f2a57; font: 700 12px/1.5 var(--num); }
+  #lb-you-name { color: #b8d9ff; overflow-wrap: anywhere; min-width: 0; }
+  #lb-you-score { color: var(--gold); white-space: nowrap; }
+  .lb-scroll { max-height: 320px; overflow: auto; }
+  .lb-table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+  .lb-table th { position: sticky; top: 0; background: #101b2e; color: var(--dim);
+                 font: 700 10px/1.4 var(--num); text-transform: uppercase; letter-spacing: .06em; }
+  .lb-table th, .lb-table td { padding: 11px 14px; text-align: right; border-bottom: 1px solid #2c3a58; }
+  .lb-table th:first-child, .lb-table td:first-child { width: 56px; text-align: center; font-family: var(--num); }
+  .lb-table th:nth-child(2), .lb-table td:nth-child(2) { text-align: left; }
+  .lb-table th:nth-child(n+3) { width: 76px; }
+  .lb-table td { font-size: 13px; }
+  .lb-table td:nth-child(2) { overflow-wrap: anywhere; font-weight: 650; }
+  .lb-table td:nth-child(n+3) { font: 800 14px var(--num); }
+  .lb-table td:nth-child(3) { color: var(--gold); }
+  .lb-table td:nth-child(4) { color: #c2cce0; }
+  .lb-table tr[data-rank="1"] td:first-child { color: var(--gold); font-weight: 900; }
+  .lb-table tr[data-rank="2"] td:first-child { color: #d6e3ef; font-weight: 900; }
+  .lb-table tr[data-rank="3"] td:first-child { color: #e7a16c; font-weight: 900; }
+  .lb-table tr.is-you { background: #203a60; }
+  .lb-you-tag { margin-left: 8px; color: #9cc7ff; font: 700 10px var(--num); }
+  #lb-status { padding: 26px 18px; text-align: center; color: var(--dim); font-size: 13px; }
+  #setup .lb-note { padding: 12px 18px; max-width: none; font-size: 11px; color: var(--dim); }
+  @media (max-width: 480px) {
+    .lb-header { gap: 10px; padding: 14px 10px; }
+    #leaderboard h2 { font-size: 17px; }
+    .lb-trophy { width: 30px; height: 30px; }
+    .lb-button { padding: 7px; font-size: 11px; }
+    .lb-table th, .lb-table td { padding: 10px 8px; }
+    .lb-table th:first-child, .lb-table td:first-child { width: 40px; }
+    .lb-table th:nth-child(n+3) { width: 59px; }
+  }
+
   /* ---------- game ---------- */
   #game { height: 100%; display: flex; justify-content: center; gap: 18px; padding: 10px 12px; }
   #col { display: flex; flex-direction: column; gap: 8px; min-width: 0; max-width: 100%; align-items: center; }
@@ -162,6 +208,26 @@
       <button class="ghost" id="reconnect" hidden>Reconnect</button>
       <span id="conn" class="help" role="status" aria-live="polite"></span>
     </div>
+    <section id="leaderboard" aria-labelledby="lb-title" tabindex="-1">
+      <div class="lb-header">
+        <svg class="lb-trophy" viewBox="0 0 20 20" shape-rendering="crispEdges" aria-hidden="true">
+          <path fill="#9a5d13" d="M3 2h14v3h2v5h-3v2h-3v3h-2v2h4v2H5v-2h4v-2H7v-3H4v-2H1V5h2z"/>
+          <path fill="#f2c230" d="M5 2h10v8h-2v2H7v-2H5zM2 4h3v2H3v3h2v2H2zm13 0h3v7h-3V9h2V6h-2zM9 12h2v5H9zm-3 5h8v2H6z"/>
+          <path fill="#ffe69a" d="M6 3h2v5H6zm2 0h6v2H8zM6 17h8v1H6z"/>
+        </svg>
+        <div><h2 id="lb-title">Leaderboard</h2><p>All-time wins · Top 50 players</p></div>
+        <button class="lb-button" id="lb-refresh" type="button">Refresh</button>
+      </div>
+      <div id="lb-you" hidden><span id="lb-you-name"></span><span id="lb-you-score"></span></div>
+      <div class="lb-scroll">
+        <table class="lb-table" id="lb-table" aria-label="Player leaderboard" hidden>
+          <thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">Wins</th><th scope="col">Losses</th></tr></thead>
+          <tbody id="lb-entries"></tbody>
+        </table>
+        <div id="lb-status" role="status" aria-live="polite">Loading leaderboard…</div>
+      </div>
+      <p class="lb-note">Most wins first. Fewer losses break ties. Draws and unfinished games don't count.</p>
+    </section>
   </div>
 </div>
 
@@ -186,9 +252,11 @@
       <div id="banner" hidden><div>
         <h2 id="banner-title"></h2>
         <p id="banner-sub"></p>
+        <p id="banner-record" role="status"></p>
         <div class="row" style="justify-content:center">
           <button class="primary" id="again">Play again</button>
           <button class="ghost" id="change">Change deck</button>
+          <button class="ghost" id="view-leaderboard">Leaderboard</button>
         </div>
       </div></div>
     </div>
@@ -238,6 +306,51 @@
   let over = false, paused = false, handKey = "", T = 16;
   let delayTicks = 0;
 
+  // ---------------------------------------------------------------- leaderboard
+  async function loadLeaderboard() {
+    if ($("lb-refresh").disabled) return;
+    $("lb-refresh").disabled = true;
+    $("leaderboard").setAttribute("aria-busy", "true");
+    try {
+      const response = await fetch("/leaderboard", {cache: "no-store"});
+      if (!response.ok) throw new Error("Leaderboard unavailable");
+      const board = await response.json();
+      const body = $("lb-entries"); body.textContent = "";
+      for (const player of board.entries) {
+        const row = document.createElement("tr");
+        row.dataset.rank = player.rank;
+        row.classList.toggle("is-you", player.is_you);
+        for (const value of [player.rank, player.name, player.wins, player.losses]) {
+          const cell = document.createElement("td"); cell.textContent = value; row.append(cell);
+        }
+        if (player.is_you) {
+          const tag = document.createElement("span"); tag.className = "lb-you-tag"; tag.textContent = "YOU";
+          row.children[1].append(tag);
+        }
+        body.append(row);
+      }
+      const you = board.you;
+      $("lb-you-name").textContent = you.name + " · You";
+      $("lb-you-score").textContent = (you.rank ? "#" + you.rank + " · " : "") + you.wins + " W / " + you.losses + " L";
+      $("lb-you").hidden = false;
+      $("lb-table").hidden = !board.entries.length;
+      $("lb-status").hidden = !!board.entries.length;
+      $("lb-status").textContent = "No results yet. Finish a battle to claim your place!";
+      $("banner-record").textContent = "Your record: " + you.wins + " wins · " + you.losses + " losses";
+    } catch (_) {
+      $("lb-status").hidden = false;
+      $("lb-status").textContent = "Couldn't load the leaderboard. Tap Refresh to try again.";
+    } finally {
+      $("lb-refresh").disabled = false;
+      $("leaderboard").removeAttribute("aria-busy");
+    }
+  }
+  $("lb-refresh").onclick = () => loadLeaderboard();
+  $("view-leaderboard").onclick = () => {
+    send({t: "quit"}); $("game").hidden = true; $("setup").hidden = false;
+    loadLeaderboard(); $("leaderboard").focus(); $("leaderboard").scrollIntoView({block: "start"});
+  };
+
   // ---------------------------------------------------------------- connection
   function connect() {
     $("reconnect").hidden = true; $("start").disabled = true;
@@ -273,6 +386,7 @@
 
   // ---------------------------------------------------------------- setup screen
   function showSetup(m) {
+    loadLeaderboard();
     $("conn").textContent = ""; $("start").disabled = false;
     fixedOpponent = m.fixed_opponent || null;
     $("setup-title").textContent = fixedOpponent ? "Play against Planner" : "You against the bots, in real time";
@@ -318,7 +432,9 @@
   $("start").onclick = () => { $("conn").textContent = ""; start(false); };
   $("reconnect").onclick = () => connect();
   $("again").onclick = () => start(true);
-  $("change").onclick = $("quit").onclick = $("mobile-quit").onclick = () => { send({ t: "quit" }); $("game").hidden = true; $("setup").hidden = false; };
+  $("change").onclick = $("quit").onclick = $("mobile-quit").onclick = () => {
+    send({ t: "quit" }); $("game").hidden = true; $("setup").hidden = false; loadLeaderboard();
+  };
   $("pause").onclick = () => togglePause();
   function togglePause() { if (over) return; send({ t: "pause", on: !paused }); }
 
@@ -331,6 +447,7 @@
     $("opp-name").title = m.decks[1] === "hog-2.6-cycle" ? "Hog 2.6 Cycle" : m.decks[1];
     $("think").textContent = m.opp === "heuristic-bot" ? "Defends threatened lanes, spells clusters, and attacks at high elixir." : "waiting for its first decision";
     $("banner").hidden = true; $("setup").hidden = true; $("game").hidden = false;
+    $("banner-record").textContent = "";
     resize();
   }
 
@@ -448,6 +565,8 @@
     $("banner-sub").textContent = m.saved ? "Saved as " + m.saved + " (job human-play). Replay on the dashboard's Match page."
                                           : "Not saved: " + (m.save_error || "unknown error");
     $("banner").hidden = false;
+    if (m.leaderboard_error) $("banner-record").textContent = "Match finished, but your leaderboard result couldn't be saved.";
+    else loadLeaderboard();
   }
   let toastTimer = 0;
   function toast(text, ms) { const t = $("toast"); t.textContent = text; t.classList.add("on"); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove("on"), ms || 1400); }

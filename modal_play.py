@@ -11,7 +11,7 @@ image = (
     modal.Image.debian_slim(python_version="3.12")
     .uv_sync(uv_project_dir=str(ROOT), uv_version="0.9.26", extra_options="--only-group play")
     .env({"PYTHONPATH": "/app", "CR_ARENA_DB": "/data/arena.db",
-          "CR_ARENA_REPLAY_DIR": "/data/human-play"})
+          "CR_ARENA_REPLAY_DIR": "/data/human-play", "CR_ARENA_LEADERBOARD": "/data/leaderboard.csv"})
     # Runtime file mounts must come after all image build steps, including env().
     .add_local_dir(ROOT / "cr_arena", "/app/cr_arena", ignore=["__pycache__", "*.pyc"])
     .add_local_dir(ROOT / "configs", "/app/configs")

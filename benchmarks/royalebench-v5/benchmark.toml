@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench v5"
+kind = "eval"
+description = "Ten calibrated coordinate-action Clash Royale scenarios selected from verified Opus, Sonnet, and Haiku runs."

@@ -141,10 +141,10 @@ the dialog explains that it is unavailable. A run's task panel shows the resolut
 current local task version, which may differ from an older run revision. Reference gameplay
 is a local dashboard view; the solution remains outside the agent sandbox.
 
-**RoyaleBench v3** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It
-uses coordinate actions across all 11 released scenarios. Explicit benchmark links override the
-default, and an unpublished/unavailable default falls back to an available published benchmark.
-See the [v3 guide](royalebench_v3.md) for validation and launch commands.
+**RoyaleBench v5** is the default benchmark for new jobs (`default_dataset` in `evals.toml`).
+It curates ten coordinate tasks from the v3, Tactics, and v4 releases. Explicit benchmark links
+override the default, and an unpublished/unavailable default falls back to an available published
+benchmark. See the [v5 guide](royalebench_v5.md) for selection evidence and launch commands.
 
 The historical **RoyaleBench coordinates pilot** is discovered separately from **RoyaleBench v1**. It uses
 three matching positions with direct coordinate actions; see the [protocol guide](coordinate_harness.md).

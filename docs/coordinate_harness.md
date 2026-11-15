@@ -1,7 +1,8 @@
 # Coordinate-action harness
 
-[RoyaleBench v3](royalebench_v3.md) is now the default benchmark and promotes this protocol to
-all 11 released scenarios. This page preserves the historical three-task pilot and its results.
+[RoyaleBench v3](royalebench_v3.md) promotes this protocol to all 11 released scenarios;
+the curated [v5 dataset](royalebench_v5.md) is now the dashboard default. This page preserves
+the historical three-task pilot and its results.
 
 The **RoyaleBench coordinates pilot** is a separate Harbor dataset at
 [`benchmarks/royalebench-coordinates`](../benchmarks/royalebench-coordinates), version

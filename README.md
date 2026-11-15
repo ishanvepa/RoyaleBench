@@ -14,13 +14,24 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 [TODO: State the specific capability gap supported by the final results.]
 
+## RoyaleBench v5
+
+[RoyaleBench v5](docs/royalebench_v5.md) is the current ten-case coordinate benchmark,
+published as `royalebench/royalebench-v5@1`. It curates four cases Opus 5.5 failed,
+four cases Sonnet 5.5 passed and Haiku 5.5 failed, and two cases Haiku 5.5 passed.
+The task folders are byte-for-byte copies of their published v3, Tactics, and v4
+sources; every reference passes isolated Docker replay validation. The
+[selection record](runs/royalebench-v5/selection.json) pins source revisions, run
+IDs, outcomes, and task hashes. These selected single attempts describe how the
+set was chosen; compare models by running all ten tasks on v5 `@1`.
+
 ## RoyaleBench v3
 
-[RoyaleBench v3](docs/royalebench_v3.md) is the default benchmark. Its 11 continuation scenarios
+[RoyaleBench v3](docs/royalebench_v3.md) is the 11-case coordinate foundation. Its continuation scenarios
 against Planner use direct coordinate actions: `cr play SLOT X Y` and `cr wait`, with paused text
 observations and independent replay grading. Starting positions and objectives match the released
 v1 set; cycle-history and comeback candidates remain gated. Build with
-`uv run python -m cr_arena.build_v3 --jobs 2`. The dashboard prefers v3 for new jobs once published.
+`uv run python -m cr_arena.build_v3 --jobs 2`. The dashboard now prefers v5 for new jobs.
 See the guide and manifest for release validation and model-run evidence.
 Current release: `royalebench/royalebench-v3@2` (tag `v3-support`), with capture provenance,
 compact opponent play observations and the Modal model endpoint allowlist. All 11 references pass isolated Docker
@@ -116,7 +127,8 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 ## Quick guides
 
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
-- [RoyaleBench v3](docs/royalebench_v3.md): default full continuation benchmark using coordinate actions, release validation, and run commands.
+- [RoyaleBench v5](docs/royalebench_v5.md): selected ten-case coordinate benchmark, source-run evidence, validation, and run commands.
+- [RoyaleBench v3](docs/royalebench_v3.md): 11-case coordinate foundation, release validation, and run commands.
 - [RoyaleBench Tactics](docs/tactics.md): four task families with spatial variations, timing and resource constraints, contrast evidence, and build/validation commands.
 - [RoyaleBench v4](docs/royalebench_v4.md): focused challenge set based on the Opus and Sonnet v3 traces, with validation and run instructions.
 - [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).

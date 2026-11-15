@@ -42,6 +42,9 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/royalebench_v3.md`](docs/royalebench_v3.md): default coordinate-action benchmark, all 11 released scenarios, scoring, validation, dashboard default, and Harbor/Valkyrie workflow.
 - [`docs/royalebench_v4.md`](docs/royalebench_v4.md): Opus and Sonnet v3 comparison, task-level failure evidence, focused challenge variants, validation, and publication workflow.
 - [`runs/royalebench-v4/checks-revision2.json`](runs/royalebench-v4/checks-revision2.json): corrected v4 `@2` digest, protocol and Docker checks, full Opus/Sonnet run settings, costs, and per-task scores.
+- [`docs/royalebench_v5.md`](docs/royalebench_v5.md): ten-case coordinate dataset, source revisions, Opus/Sonnet/Haiku selection evidence, scoring, validation, and Valkyrie workflow.
+- [`runs/royalebench-v5/selection.json`](runs/royalebench-v5/selection.json): task-by-task source revisions, package hashes, model run IDs, and selection rewards.
+- [`runs/royalebench-v5/checks.json`](runs/royalebench-v5/checks.json): v5 static, Docker, negative-control, and hosted publication checks.
 - [`runs/royalebench-v3/checks-revision2.json`](runs/royalebench-v3/checks-revision2.json): v3 `@2` publication digest, protocol hash, validation counts and hosted Qwen pilot pointer.
 - [`docs/royalebench_v1.md`](docs/royalebench_v1.md): historical menu-based continuation scenarios against Planner, scoring, calibration, release gates, revision `@2` telemetry, revision `@3` Modal Qwen networking, and Harbor/Valkyrie packaging.
 - [`docs/tactics.md`](docs/tactics.md): coordinate Tactics on the v3 foundation, four task families, bounded spatial contrasts, historical menu results and release evidence.

@@ -3,7 +3,7 @@
 Tactics version **2.0.0** uses the same **`coordinates-v1`** action protocol and runtime files as
 **`royalebench/royalebench-v3@2`**. The current main changes were integrated through commit
 `4eb50d4`. Tactics retains its own scenario set and scoring objectives; it does not change the
-11 default v3 scenarios. Publication and validation evidence is recorded under
+11 v3 foundation scenarios. Publication and validation evidence is recorded under
 [`runs/tactics-coordinates`](../runs/tactics-coordinates).
 
 The published coordinate release is **`royalebench/royalebench-tactics@3`**, tagged

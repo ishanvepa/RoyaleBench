@@ -14,7 +14,7 @@ The RoyaleGym ecosystem supplies the environment and battle engine. Our reposito
 | --- | --- | --- |
 | [RoyaleGym](https://github.com/RoyaleGym/RoyaleGym) | Python battle environment, observations, actions, rewards, and integration with the other packages. | Our main API for constructing and controlling battles. |
 | [RoyaleSim](https://github.com/RoyaleGym/RoyaleSim) | Rust battle engine exposed to Python. Runs matches locally without the official game client. | The engine behind the `RustEngine` we already call through RoyaleGym. |
-| [RoyaleViser](https://github.com/RoyaleGym/RoyaleViser) | Desktop viewer for saved battles and live training runs, including pause and step controls. | An available tool for inspecting failures and preparing demonstrations. Our current replay path uses RoyaleGym's HTML renderer. |
+| [RoyaleViser](https://github.com/RoyaleGym/RoyaleViser) | Desktop viewer for saved battles and live training runs, including pause and step controls. | An available tool for inspecting failures and preparing demonstrations. Our current HTML replay path shares RoyaleBench's live battle graphics. |
 | [RoyaleLearn](https://github.com/RoyaleGym/RoyaleLearn) | Reinforcement learning trainer for bots in RoyaleGym, with PPO and self-play support. | An optional way to train fixed opponents for future evaluations. It is not required to call frontier LLMs. |
 | [RoyaleImitate](https://github.com/RoyaleGym/RoyaleImitate) | Optional training extension for starting from an existing bot and retaining teacher behavior during learning. The ecosystem also documents cloning from human games. | A possible starting point for stronger trained opponents. Replay preparation, training, and opponent validation would be additional work. |
 
@@ -36,7 +36,7 @@ The main implementation points are:
 
 - [`cr_arena/game.py`](../cr_arena/game.py) creates `RustEngine`, resolves decks, resets with a seed, constructs player observations and moves, and records replay frames.
 - [`cr_arena/match.py`](../cr_arena/match.py) requests both players' decisions from the same frozen state, applies their choices, and saves decision logs and a replay. It records outcomes, latency, token usage, cost, and errors.
-- [`cr_arena/replay.py`](../cr_arena/replay.py) renders saved battles through `royalegym.render.render_html` and patches scrubbing behavior. This is separate from launching the RoyaleViser desktop application.
+- [`cr_arena/replay.py`](../cr_arena/replay.py) prepares saved battles through `royalegym.render.build_view` and embeds the same `battle_renderer.js` graphics as live play in a standalone HTML replay, with local playback controls. See [Battle graphics](rendering.md) for placement geometry and rendering checks. This is separate from launching the RoyaleViser desktop application.
 
 By default, decisions occur every 40 engine ticks, described by our current interface as two seconds of game time. The game waits while agents decide. Benchmark commands have zero configured command delay; the live-play path can use a delay. Those settings affect the task and must be recorded with results.
 

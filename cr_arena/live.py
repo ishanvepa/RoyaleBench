@@ -21,7 +21,8 @@ from collections import deque
 from pathlib import Path
 
 import uvicorn
-from royalegym.protocol import DeployCommand, DeployStatus, EntityKind
+from royalegym.action import PlacementOracle
+from royalegym.protocol import BIT_NO_DEPLOY, BIT_WATER, DeployCommand, DeployStatus, EntityKind, Placement, SpellMotion
 from royalegym.replay import save_trace
 from starlette.applications import Starlette
 from starlette.responses import HTMLResponse
@@ -31,6 +32,7 @@ from starlette.websockets import WebSocket, WebSocketDisconnect
 from .db import DB
 from .decks import CLASSIC_DECKS
 from .game import Game
+from .rendering import embed_renderer
 
 HUMAN, BOT = 0, 1
 BOT_SPECS = {
@@ -43,8 +45,6 @@ ACTIVE: set = set()
 BOT_EVERY_TICKS = 5  # the bot is shown a fresh snapshot at most every 0.25 s of game time
 OUT_DIR = Path("runs/round_robin/human-play")
 PAGE = Path(__file__).with_name("live.html")
-# Statuses that say "this spot is not allowed" (everything else is about timing or elixir).
-_BAD_SPOT = {DeployStatus.WATER, DeployStatus.NO_DEPLOY, DeployStatus.OUT_OF_TERRITORY, DeployStatus.OUT_OF_ARENA}
 _NOT_YET = {DeployStatus.NOT_ENOUGH_ELIXIR, DeployStatus.TOO_EARLY}
 
 
@@ -114,6 +114,7 @@ class Session:
         self.game = Game(self.decks[0], self.decks[1], seed=seed, record=True, command_delay_ticks=self.delay)
         self.aim: dict[tuple[int, int], tuple[float, float]] = {}  # (team, card) -> where its waiting play was aimed
         self.sub = self.game.sub
+        self.placement = PlacementOracle(self.game.arena, self.game.engine.rules(), self.game.cards)
         self.cmds: deque[DeployCommand] = deque()
         self.paused = False
         self.t0 = time.time()
@@ -133,7 +134,11 @@ class Session:
         g = self.game
         return {"t": "init", "opp": self.bot_spec["name"], "seed": self.seed, "decks": list(self.deck_names),
                 "cards": {c.card_id: [c.name, g.kind_of(c), c.elixir] for c in g.cards},
-                "lockout": g.engine.rules().deploy_lockout_ticks, "delay": self.delay}
+                "lockout": g.engine.rules().deploy_lockout_ticks, "delay": self.delay,
+                "arena": {"tiles_x": g.arena.tiles_x, "tiles_y": g.arena.tiles_y,
+                          "half": g.arena.half, "grid": g.arena.grid,
+                          "water_half_rows": list(g.arena.water_half_rows),
+                          "bits": {"WATER": BIT_WATER, "NO_DEPLOY": BIT_NO_DEPLOY}}}
 
     def snapshot(self) -> dict:
         g, sub = self.game, self.sub
@@ -147,7 +152,8 @@ class Session:
                 continue
             flags = (1 if e.flying else 0) | (2 if e.deploy_ticks > 0 else 0)
             ents.append([e.uid, e.team, int(e.kind), e.card_id, round(e.x / sub, 3), round(e.y / sub, 3), e.hp, e.max_hp,
-                         round(e.radius / sub, 3), flags, e.tower_slot, e.facing[0], e.facing[1]])
+                         round(e.radius / sub, 3), flags, e.tower_slot, e.facing[0], e.facing[1], e.stun_ticks,
+                         [v / sub for v in e.footprint] if e.footprint is not None else None])
         return {
             "t": "s", "k": s.tick, "left": round(left, 2), "ot": ot, "rate": s.elixir_rate, "paused": self.paused,
             # elixir shown net of plays that are on their way; "pend" = [slot, card, x, y, ticks left]
@@ -158,36 +164,53 @@ class Session:
             "op": {"crowns": op.crowns},
             "en": ents,
             "sp": [[sp.team, sp.card_id, round(sp.x / sub, 2), round(sp.y / sub, 2), round(sp.aim_x / sub, 2),
-                    round(sp.aim_y / sub, 2)] for sp in s.spells],
+                    round(sp.aim_y / sub, 2), SpellMotion(sp.motion).name] for sp in s.spells],
             "pr": [[p.team, round(p.x / sub, 2), round(p.y / sub, 2)] for p in s.projectiles],
         }
 
     def mask(self, slot: int) -> dict:
-        """Which tiles the card in `slot` may be dropped on (row-major from the human's back edge)."""
+        """Spatial eligibility at half-cell centres, independent of elixir and cooldown."""
         g, sub = self.game, self.sub
-        hand = g.state.players[HUMAN].hand
+        state = g.state
+        hand = state.players[HUMAN].hand
         card = g.card_by_id.get(hand[slot]) if 0 <= slot < len(hand) else None
+        half = g.arena.half
+        width, height = g.arena.tiles_x * half, g.arena.tiles_y * half
+        reply = {"t": "mask", "slot": slot, "card": card.card_id if card else -1,
+                 "half": half, "width": width, "height": height, "m": "0" * (width * height)}
         if card is None:
-            return {"t": "mask", "slot": slot, "m": ""}
-        kind = g.kind_of(card)
-        spell = kind == "SPELL"
-        # Lanes whose enemy princess tower still stands (x < 9 tiles = the human's left lane).
-        closed = {e.x < 9 * sub for e in g.state.entities
-                  if e.team == BOT and e.kind == EntityKind.PRINCESS_TOWER and e.hp > 0}
-        out = []
-        for ty in range(32):
-            for tx in range(18):
-                st = g.engine.check_deploy(DeployCommand(HUMAN, slot, int((tx + 0.5) * sub), int((ty + 0.5) * sub)))
-                if st in _NOT_YET:  # the engine answers "not yet" before it looks at the spot: assume own half
-                    ok = spell or ty < 15
-                else:
-                    ok = st not in _BAD_SPOT
-                # The engine accepts a troop tapped across the river by moving it back to the legal edge.
-                # Show the real territory instead: own half, plus the pocket behind a fallen tower.
-                if ok and kind == "TROOP" and ty >= 15:
-                    ok = (tx < 9) not in closed and ty <= 20
-                out.append("1" if ok else "0")
-        return {"t": "mask", "slot": slot, "card": card.card_id, "m": "".join(out)}
+            return reply
+        if card.placement == Placement.MIRROR:
+            card = g.card_by_id.get(state.players[HUMAN].mirror_target)
+            if card is None:
+                return reply
+        # The oracle tests the actual tap geometry, without spending resources or
+        # advancing the game. It also excludes taps the engine would clamp back
+        # from enemy territory, so the highlighted cell is where the player aimed.
+        legal = self.placement.point_grid(state, HUMAN, card, half).copy()
+        if g.kind_of(card) in ("TROOP", "BUILDING"):
+            # The engine accepts taps on an own princess tower by relocating
+            # them. The UI must not offer its occupied footprint as a drop site.
+            # King towers retain their separate arena-defined no-deploy block.
+            px, py = self.placement.points(half)
+            for entity in state.entities:
+                if entity.team != HUMAN or entity.kind != EntityKind.PRINCESS_TOWER or entity.hp <= 0:
+                    continue
+                if entity.footprint is None:
+                    raise ValueError("princess tower is missing its placement footprint")
+                x0, y0, x1, y1 = entity.footprint
+                legal &= ~((px >= x0) & (px < x1) & (py >= y0) & (py < y1))
+        for cy, cx in zip(*legal.nonzero(), strict=True):
+            x, y = int((cx + 0.5) * sub / half), int((cy + 0.5) * sub / half)
+            if card.placement == Placement.BUILDING:
+                # Relocation may fail on a crowded board. This query ignores
+                # elixir/cooldown too, unlike check_deploy.
+                legal[cy, cx] = g.engine.building_placement(HUMAN, card.name, x, y) is not None
+            else:
+                status = g.engine.check_deploy(DeployCommand(HUMAN, slot, x, y))
+                legal[cy, cx] = status == DeployStatus.OK or status in _NOT_YET
+        reply["m"] = "".join("1" if ok else "0" for ok in legal.flat)
+        return reply
 
     async def send(self, msg: dict) -> None:
         await self.ws.send_text(json.dumps(msg, separators=(",", ":")))
@@ -307,7 +330,7 @@ class Session:
 
 
 async def page(_request) -> HTMLResponse:
-    return HTMLResponse(PAGE.read_text(encoding="utf-8"), headers={"Cache-Control": "no-store"})
+    return HTMLResponse(embed_renderer(PAGE.read_text(encoding="utf-8")), headers={"Cache-Control": "no-store"})
 
 
 async def socket(ws: WebSocket) -> None:

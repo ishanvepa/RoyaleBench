@@ -22,7 +22,7 @@ from .game import Game
 from .players import RULES
 
 ROOT = Path(__file__).resolve().parent
-REFEREE_FILES = ["__init__.py", "game.py", "player_types.py", "decks.py", "royale_task.py", "replay.py",
+REFEREE_FILES = ["__init__.py", "game.py", "player_types.py", "decks.py", "royale_task.py", "telemetry.py", "replay.py",
                  "rendering.py", "replay.html", "battle_renderer.js", "card_art.js",
                  "bots/__init__.py", "bots/registry.py", "bots/baselines.py"]
 ROYALEGYM, ROYALESIM = "0.1.28", "0.1.48"  # keep in step with uv.lock
@@ -235,6 +235,11 @@ def build(out: Path) -> list[str]:
                 (env / "referee" / f).parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / f, env / "referee" / f)
             cfg = json.dumps(task_config(seed, team), indent=1) + "\n"
+            from .telemetry import digest
+            config = task_config(seed, team)
+            config.update(task_id=name, instruction_sha256=digest(instruction), rubric="binary-win-v1",
+                          resources={"agent_timeout_s": AGENT_TIMEOUT_S, "cpus": 1, "memory_mb": 2048})
+            cfg = json.dumps(config, indent=1) + "\n"
             (env / "task.json").write_text(cfg)
             (d / "tests" / "task.json").write_text(cfg)
             (env / "Dockerfile").write_text(DOCKERFILE)

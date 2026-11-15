@@ -45,7 +45,7 @@ The agent plays through the `cr` CLI. Each decision advances 2 seconds of game t
 - **Verification:** A separate referee owns the engine and action log. A clean verifier replays the log and checks decision numbers, ticks, and move labels. An integrity failure receives zero reward.
 - **Score:** Mean binary win reward. At the overtime limit, tied crowns are resolved by remaining total tower HP, then seed parity for an exact tie. Crown counts and tower damage are diagnostics.
 
-[TODO: Freeze the final dataset revision, simulator versions, inference settings, and repeated-run protocol. Revision `@3` is published but has no recorded evaluation yet.]
+[TODO: Freeze the final comparison cohort and repeated-run protocol. Instrumented tasks are published as revision `@7`; the preliminary scores above use `@2`. See [data collection](docs/data_collection.md) for capture and archive details.]
 
 ## What the traces show
 
@@ -75,6 +75,7 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 ## Quick guides
 
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
+- [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from a web app, and browse the original arena (`uv run python -m rb_server`).
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.
 - [Bot setup](docs/bots.md): bot presets, human-play choices, and implementation registry.

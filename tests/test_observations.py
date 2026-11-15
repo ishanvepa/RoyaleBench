@@ -142,7 +142,7 @@ class ShieldsAndStatus(unittest.TestCase):
             self.skipTest("engine reports no shield")
         self.assertIn(f"+ shield {prince.shield}", game.describe(0, game.legal_moves(0)))
         session = Session.__new__(Session)
-        session.game, session.sub, session.paused = game, game.sub, False
+        session.game, session.sub, session.paused, session.starting = game, game.sub, False, False
         from royalegym.action import PlacementOracle
         session.placement = PlacementOracle(game.arena, game.engine.rules(), game.cards)
         session.mask_cache = {}
@@ -154,7 +154,7 @@ class LivePending(unittest.TestCase):
     def test_pending_play_marks_the_slot_that_was_played(self):
         game = game_with([], [], delay=21)
         session = Session.__new__(Session)
-        session.game, session.sub, session.paused = game, game.sub, False
+        session.game, session.sub, session.paused, session.starting = game, game.sub, False, False
         from royalegym.action import PlacementOracle
         session.placement = PlacementOracle(game.arena, game.engine.rules(), game.cards)
         session.mask_cache = {}

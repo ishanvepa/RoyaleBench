@@ -218,6 +218,12 @@ def main() -> None:
         print(f"job '{job_name}' (id {job_id}): {len(specs)} players, {len(jobs)} matches, {len(done)} done, "
               f"{len(todo)} to play, ~{calls:,} LLM calls")
         job_dir = out_dir / job_name
+        from .telemetry import atomic_json, digest, public_settings, utc
+        run_manifest = {"run_id": f"local-{job_id}", "job": job_name, "created_at": utc(),
+                        "planned_tasks": jobs, "settings": public_settings(cfg),
+                        "cohort_id": digest(public_settings(cfg)), "decision_ticks": decision_ticks}
+        atomic_json(job_dir / "run_manifests" / f"{digest(run_manifest)}.json", run_manifest)
+        atomic_json(job_dir / "run_manifest.json", run_manifest)
         db.set_job_status(job_id, "running")
 
         def run(job):
@@ -248,7 +254,8 @@ def main() -> None:
                 deck_blue, deck_red = decks_now
             db.set_match_decks(job_id, mid, deck_blue, deck_red)
             res = play_match(blue, red, deck_blue, deck_red, job["seed"], mid, job_dir,
-                             decision_ticks=decision_ticks, verbose=args.verbose, on_step=on_step, record=record)
+                             decision_ticks=decision_ticks, verbose=args.verbose, on_step=on_step, record=record,
+                             run_context=run_manifest)
             for key, b in (("stats_blue", builds[0]), ("stats_red", builds[1])):
                 if b is not None:
                     res[key]["deck_build"] = {"deck": b.deck, "ok": b.ok, "error": b.error, "raw": b.raw,

@@ -41,6 +41,10 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
 - [`docs/royalebench_v1.md`](docs/royalebench_v1.md): RoyaleBench v1 continuation scenarios against Planner, scoring, calibration, release gates, and Harbor/Valkyrie packaging.
 - [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from the web app and browse the arena.
+- [`docs/data_collection_plan.md`](docs/data_collection_plan.md): telemetry design, implementation stages, analysis targets, and validation gates for future runs.
+- [`docs/data_collection.md`](docs/data_collection.md): implemented telemetry, automatic collection for new runs, analysis exports, archive verification/restoration, and limitations.
+- [`docs/telemetry.schema.json`](docs/telemetry.schema.json): machine-readable schema for versioned match evidence records.
+- [`docs/data_collection_validation.json`](docs/data_collection_validation.json): local, container, archival and hosted-pilot validation evidence for data collection.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
 - [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
 - [`docs/match_tasks.md`](docs/match_tasks.md): full-match Harbor tasks played through the `cr` CLI, referee isolation, replay grading, rewards, and how to build and publish them.

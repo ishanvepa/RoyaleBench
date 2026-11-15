@@ -16,6 +16,8 @@ modal.json
 runs/evals/
 runs/evals-fake/
 runs/evals-e2e/
+runs/analysis/
+runs/**/analysis/
 runs/e2e-arena/
 
 # Web app: dependencies and the production build

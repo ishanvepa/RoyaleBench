@@ -48,6 +48,10 @@ per model. Valkyrie stays the source of truth; finished runs and downloaded cost
 `runs/evals/` (git-ignored). Cost comes from the harness's own summary in each task's output (Claude Code
 writes one) and does not include Modal's sandbox charges.
 
+New real runs are enrolled in [data collection](data_collection.md). A server-side worker archives
+their raw artifacts, normalizes telemetry, exports analysis tables, and verifies a durable copy outside
+the dashboard cache. The standalone collector works when this server is closed. Existing runs are not backfilled.
+
 Settings (default harness, model presets, concurrency limits, the task count above which a job needs an
 explicit confirmation) are in [`evals.toml`](../evals.toml). Benchmarks are authored as in
 [task design](task_design.md): `benchmarks/<name>/<task-id>/` in Harbor format, plus an optional

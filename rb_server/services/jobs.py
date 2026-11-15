@@ -201,4 +201,14 @@ def start_job(ctx: AppContext, body: JobSpecIn) -> JobStartOut:
                        f"This job runs {spec.task_count(known)} tasks (more than {ctx.cfg.confirm_over_tasks}). "
                        "Confirm to start it.")
     out = ctx.valkyrie.start_run(**spec.start_kwargs())
+    if not ctx.fake:
+        from rb_evals.archive import enroll
+        try:
+            enroll(out["run_id"], config={"benchmark": spec.benchmark, "dataset": spec.dataset,
+                "revision": spec.revision, "agent": spec.agent, "model": spec.model,
+                "concurrency": spec.concurrency, "task_ids": spec.task_ids or known,
+                "provider": spec.provider, "label": spec.label,
+                "cohort_id": f"{spec.benchmark}/{spec.dataset}@{spec.revision}"})
+        except OSError as exc:
+            out["warning"] = f"Run started, but archive enrollment failed: {exc}"
     return JobStartOut(run_id=out["run_id"], task_count=out["task_count"], warning=out.get("warning"))

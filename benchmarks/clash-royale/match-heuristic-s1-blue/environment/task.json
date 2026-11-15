@@ -22,5 +22,13 @@
   "Zap"
  ],
  "opponent": "heuristic",
- "decision_ticks": 40
+ "decision_ticks": 40,
+ "task_id": "match-heuristic-s1-blue",
+ "instruction_sha256": "cbf9d3b95dacc2cccbf1d95001a765ed0b57ed9d86a01153a6058d6bbe65dcf9",
+ "rubric": "binary-win-v1",
+ "resources": {
+  "agent_timeout_s": 3600,
+  "cpus": 1,
+  "memory_mb": 2048
+ }
 }

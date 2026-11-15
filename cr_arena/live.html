@@ -402,7 +402,7 @@
     const name = cards[m.card] ? pretty(cards[m.card][0]) : "card";
     if (m.who === 0 && !m.ok) return toast("Can't play that: " + m.why);
     if (m.ok && m.x !== null && cards[m.card] && cards[m.card][1] === "SPELL" && !m.flying)
-      renderer.addEffect({ kind: "boom", x: m.x, y: m.y, team: m.who, at: performance.now() + DELAY_MS });
+      renderer.addEffect({ kind: "boom", x: m.x, y: m.y, team: m.who, card: m.card, at: performance.now() + DELAY_MS });
     const row = document.createElement("div");
     row.className = m.who === 0 ? "h" : "b";
     row.textContent = (s ? fmtClock(s.left) : "") + "  " + (m.who === 0 ? "you" : "bot") + "  " + name;

@@ -148,6 +148,13 @@
   const spKey = (sp) => sp[0] + "|" + sp[1] + "|" + sp[4] + "|" + sp[5];
 
   const grain = (x, y) => ((x * 73 + y * 151 + x * y * 17) % 101) / 101;
+  // deterministic 0..1 scatter, so a seek redraws the same picture
+  const hash = (n) => {
+    const v = Math.sin(n * 127.1 + 311.7) * 43758.5453;
+    return v - Math.floor(v);
+  };
+  // The classic-deck spells with their own travel, landing and impact art.
+  const SPELL_ART = new Set(["Arrows", "Fireball", "GoblinBarrel", "Lightning", "Log", "Poison", "Rocket", "Zap"]);
 
   function create(canvas, arena) {
     const ctx = canvas.getContext("2d"),
@@ -163,7 +170,8 @@
       stunMax = new Map(),
       chip = new Map(),
       towerSites = new Map(),
-      spellFrom = new Map();
+      spellFrom = new Map(),
+      spellSeen = new Map();
     let previous = null,
       drawn = [],
       bars = [];
@@ -179,6 +187,7 @@
       chip.clear();
       towerSites.clear();
       spellFrom.clear();
+      spellSeen.clear();
     }
     function observe(s, now) {
       s.by = new Map(s.en.map((e) => [e[0], e]));
@@ -216,21 +225,35 @@
         if (e[15] > (shieldMax.get(e[0]) || 0)) shieldMax.set(e[0], e[15]);
       }
       s.spBy = new Map(s.sp.map((sp) => [spKey(sp), sp]));
-      for (const [k, sp] of s.spBy)
+      // Every row per key: one Arrows cast is three volleys that share a key.
+      s.spAll = new Map();
+      for (const sp of s.sp) {
+        const k = spKey(sp);
+        if (!s.spAll.has(k)) s.spAll.set(k, []);
+        s.spAll.get(k).push(sp);
+      }
+      for (const [k, sp] of s.spBy) {
         if (!spellFrom.has(k)) spellFrom.set(k, [sp[2], sp[3]]);
+        if (!spellSeen.has(k)) spellSeen.set(k, now);
+      }
       if (prev)
         for (const [k, sp] of prev.spBy)
           if (!s.spBy.has(k)) {
             // a travelling spell has arrived
             spellFrom.delete(k);
+            spellSeen.delete(k);
             if (isFlight(sp))
               fx.push({
                 kind: "boom",
                 x: sp[4],
                 y: sp[5],
                 team: sp[0],
+                card: sp[1],
                 at: now,
               });
+          } else if (isFlight(sp) && (prev.spAll?.get(k)?.length || 0) > s.spAll.get(k).length) {
+            // an earlier volley of the same cast has landed; only spell art draws this
+            fx.push({ kind: "land", x: sp[4], y: sp[5], team: sp[0], card: sp[1], at: now });
           }
 
       previous = s;
@@ -474,6 +497,361 @@
         ctx.lineWidth = width;
         ctx.stroke();
       }
+    }
+    // ---- Classic-deck spell art -------------------------------------------------
+    // Only the eight cards in SPELL_ART get custom art; every other spell or effect
+    // object keeps the generic drawing. The art is decoration placed on the points,
+    // sizes and timings the renderer already used: the simulator reports no spell
+    // hit radius in this contract, so nothing here is drawn as a radius.
+    const artOf = (cid) => {
+      const name = cards[cid]?.[0];
+      return SPELL_ART.has(name) ? name : null;
+    };
+    // screen-space unit vector along a tile-space direction (flip-safe)
+    function screenDir(dx, dy) {
+      const sx = X(dx) - X(0),
+        sy = Y(dy) - Y(0),
+        n = Math.hypot(sx, sy);
+      return n > 1e-6 ? [sx / n, sy / n] : [0, -1];
+    }
+    function bolt(x0, y0, x1, y1, seed, jag) {
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      const nx = -(y1 - y0),
+        ny = x1 - x0,
+        n = Math.hypot(nx, ny) || 1;
+      for (let i = 1; i < 6; i++) {
+        const f = i / 6,
+          w = (hash(seed + i) - 0.5) * 2 * jag;
+        ctx.lineTo(lerp(x0, x1, f) + (nx / n) * w, lerp(y0, y1, f) + (ny / n) * w);
+      }
+      ctx.lineTo(x1, y1);
+    }
+    function arrowShape(x, y, ux, uy, len, fletch) {
+      // shaft from tail to head along (ux, uy)
+      const hx = x + ux * len * 0.5,
+        hy = y + uy * len * 0.5,
+        tx = x - ux * len * 0.5,
+        ty = y - uy * len * 0.5,
+        px = -uy,
+        py = ux;
+      ctx.strokeStyle = "#6b4a2b";
+      ctx.lineWidth = Math.max(1, len * 0.09);
+      ctx.beginPath();
+      ctx.moveTo(tx, ty);
+      ctx.lineTo(hx, hy);
+      ctx.stroke();
+      polygon([
+        [hx + ux * len * 0.22, hy + uy * len * 0.22],
+        [hx + px * len * 0.11, hy + py * len * 0.11],
+        [hx - px * len * 0.11, hy - py * len * 0.11],
+      ], "#d9dde0", "#5d6469", Math.max(0.5, len * 0.03));
+      polygon([
+        [tx, ty],
+        [tx - ux * len * 0.16 + px * len * 0.13, ty - uy * len * 0.16 + py * len * 0.13],
+        [tx + ux * len * 0.12, ty + uy * len * 0.12],
+        [tx - ux * len * 0.16 - px * len * 0.13, ty - uy * len * 0.16 - py * len * 0.13],
+      ], fletch);
+    }
+    function barrelShape(x, y, r, spin, team) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(spin);
+      ctx.fillStyle = "#9a6434";
+      ctx.strokeStyle = "#4b2f19";
+      ctx.lineWidth = Math.max(1, r * 0.1);
+      ctx.beginPath();
+      ctx.roundRect(-r * 0.78, -r, r * 1.56, r * 2, r * 0.55);
+      ctx.fill();
+      ctx.stroke();
+      ctx.strokeStyle = "rgba(60,34,16,.55)";
+      ctx.lineWidth = Math.max(0.6, r * 0.05);
+      for (const sx of [-0.35, 0, 0.35]) {
+        ctx.beginPath();
+        ctx.moveTo(r * sx, -r * 0.92);
+        ctx.lineTo(r * sx, r * 0.92);
+        ctx.stroke();
+      }
+      ctx.fillStyle = "#59606a";
+      for (const sy of [-0.62, 0.48]) ctx.fillRect(-r * 0.8, r * sy, r * 1.6, r * 0.16);
+      ctx.fillStyle = team === 0 ? C.blue : C.red;
+      ctx.fillRect(-r * 0.8, -r * 0.08, r * 1.6, r * 0.14);
+      ctx.restore();
+    }
+    function logShape(cx, cy, ux, uy, len, thick, roll, team) {
+      // a log lying across (ux, uy): the roll direction is perpendicular to it
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(Math.atan2(uy, ux));
+      ctx.fillStyle = "#7a4a22";
+      ctx.strokeStyle = team === 0 ? C.blueDk : C.redDk;
+      ctx.lineWidth = Math.max(1, thick * 0.12);
+      ctx.beginPath();
+      ctx.roundRect(-len / 2, -thick / 2, len, thick, thick * 0.35);
+      ctx.fill();
+      ctx.stroke();
+      ctx.fillStyle = "rgba(255,214,150,.22)";
+      ctx.fillRect(-len / 2 + thick * 0.3, -thick * 0.38, len - thick * 0.6, thick * 0.18);
+      // bark grooves move as the log turns
+      ctx.strokeStyle = "rgba(48,27,12,.6)";
+      ctx.lineWidth = Math.max(0.7, thick * 0.08);
+      for (let i = 0; i < 6; i++) {
+        const v = Math.sin(roll + i * 1.05);
+        if (v < -0.2) continue;
+        const gy = (thick / 2) * Math.cos(roll + i * 1.05) * 0.8;
+        ctx.beginPath();
+        ctx.moveTo(-len / 2 + thick * 0.45 + i * len * 0.03, gy);
+        ctx.lineTo(len / 2 - thick * 0.45 - i * len * 0.02, gy);
+        ctx.stroke();
+      }
+      for (const side of [-1, 1]) {
+        disk((side * len) / 2, 0, thick * 0.22, thick * 0.5, "#c9945a", "#5e3a1c", Math.max(0.7, thick * 0.08));
+        disk((side * len) / 2, 0, thick * 0.1, thick * 0.22, "#a87543");
+      }
+      ctx.restore();
+    }
+    function smokePuff(x, y, r, a, dark) {
+      ctx.globalAlpha = a;
+      disk(x, y, r, r * 0.9, dark ? "#3c3330" : "#e7dfcf");
+      ctx.globalAlpha = 1;
+    }
+    // Travel: one spell row at (x, y) on the ground, `lift` above it, moving along (ux, uy).
+    function drawFlightArt(art, sp, x, y, lift, r, ux, uy, prog, trail, now) {
+      const gx = X(x),
+        gy = Y(y),
+        hx = gx,
+        hy = gy - lift,
+        team = sp[0];
+      ctx.save();
+      ctx.lineCap = "round";
+      if (art === "Fireball") {
+        trail.forEach(([tx, ty], i) => smokePuff(tx, ty, r * (0.55 + i * 0.16), 0.42 - i * 0.07, true));
+        polygon([[hx - ux * r * 2.6, hy - uy * r * 2.6], [hx - uy * r * 0.85, hy + ux * r * 0.85],
+          [hx + uy * r * 0.85, hy - ux * r * 0.85]], "rgba(246,120,32,.75)");
+        disk(hx, hy, r * 1.05, r * 1.05, "#e9521c");
+        disk(hx + ux * r * 0.12, hy + uy * r * 0.12, r * 0.78, r * 0.78, "#f9a12e");
+        disk(hx + ux * r * 0.22, hy + uy * r * 0.22, r * 0.45, r * 0.45, "#fff2a8");
+      } else if (art === "Rocket") {
+        trail.forEach(([tx, ty], i) => smokePuff(tx, ty, r * (0.45 + i * 0.18), 0.6 - i * 0.1, false));
+        const L = r * 2.4,
+          W = r * 0.62,
+          tx = hx - ux * L * 0.5,
+          ty = hy - uy * L * 0.5,
+          flick = 0.8 + 0.2 * Math.sin(now / 35);
+        polygon([[tx - ux * L * 0.55 * flick, ty - uy * L * 0.55 * flick], [tx - uy * W * 0.8, ty + ux * W * 0.8],
+          [tx + uy * W * 0.8, ty - ux * W * 0.8]], "#ffb43a", "#f06a1f", 1);
+        ctx.save();
+        ctx.translate(hx, hy);
+        ctx.rotate(Math.atan2(uy, ux));
+        polygon([[-L * 0.5, -W], [-L * 0.62, -W * 1.5], [-L * 0.3, -W * 0.7]], "#59606a");
+        polygon([[-L * 0.5, W], [-L * 0.62, W * 1.5], [-L * 0.3, W * 0.7]], "#59606a");
+        ctx.fillStyle = "#cfd3d6";
+        ctx.strokeStyle = "#3b4045";
+        ctx.lineWidth = Math.max(1, r * 0.1);
+        ctx.beginPath();
+        ctx.roundRect(-L * 0.5, -W * 0.7, L * 0.78, W * 1.4, W * 0.4);
+        ctx.fill();
+        ctx.stroke();
+        polygon([[L * 0.28, -W * 0.7], [L * 0.6, 0], [L * 0.28, W * 0.7]], "#d23b2b", "#3b4045", Math.max(1, r * 0.1));
+        ctx.fillStyle = team === 0 ? C.blue : C.red;
+        ctx.fillRect(-L * 0.2, -W * 0.7, L * 0.12, W * 1.4);
+        ctx.restore();
+      } else if (art === "Arrows") {
+        // a tight volley; tails fletched in the caster's colour
+        const px = -uy,
+          py = ux,
+          len = Math.max(6, r * 1.9),
+          fletch = team === 0 ? "#cfe3ff" : "#ffd9c7";
+        for (let i = 0; i < 7; i++) {
+          const a = (hash(i * 3 + 1) - 0.5) * 2,
+            b = (hash(i * 7 + 5) - 0.5) * 2;
+          arrowShape(hx + px * a * r * 1.25 + ux * b * r * 0.8, hy + py * a * r * 1.25 + uy * b * r * 0.8, ux, uy, len, fletch);
+        }
+      } else if (art === "GoblinBarrel") {
+        barrelShape(hx, hy, r * 0.95, prog * Math.PI * 5, team);
+      } else if (art === "Log") {
+        logShape(hx, hy, -uy, ux, 2 * T, T * 0.4, prog * Math.PI * 3, team);
+      }
+      ctx.restore();
+    }
+    // A spell sitting at its centre (ROLLING, AREA, PULSING, STRIKES).
+    function drawGroundArt(art, sp, px, py, col, age, now) {
+      ctx.save();
+      ctx.lineCap = "round";
+      if (art === "Log" && sp[6] === "ROLLING") {
+        const [ux, uy] = screenDir(sp[4] - sp[2], sp[5] - sp[3]),
+          rolled = Math.hypot(sp[2], sp[3]) / 0.4;
+        for (let i = 1; i <= 3; i++)
+          smokePuff(px - ux * T * (0.35 + i * 0.32) + (hash(i) - 0.5) * T,
+            py - uy * T * (0.35 + i * 0.32), T * (0.2 + i * 0.05), 0.45 - i * 0.12, false);
+        logShape(px, py, -uy, ux, 2 * T, T * 0.4, rolled, sp[0]);
+      } else if (art === "Poison") {
+        ctx.globalAlpha = 0.5 + 0.08 * Math.sin(now / 160);
+        disk(px, py, T * 1.05, T * 0.92, "#e2b43c", "#b0731f", Math.max(1, T * 0.08));
+        ctx.globalAlpha = 0.45;
+        for (let i = 0; i < 5; i++)
+          disk(px + Math.cos(i * 1.26) * T * 0.48, py + Math.sin(i * 1.26) * T * 0.4, T * 0.42, T * 0.36,
+            i % 2 ? "#f0cf5a" : "#d79a2c");
+        ctx.globalAlpha = 0.7;
+        for (let i = 0; i < 9; i++)
+          disk(px + (hash(i * 3 + 2) - 0.5) * T * 1.6, py + (hash(i * 7 + 1) - 0.5) * T * 1.3,
+            T * 0.05, T * 0.05, "#5a2f63");
+        ctx.globalAlpha = 1;
+        for (let i = 0; i < 7; i++) {
+          const life = ((now / 900 + hash(i * 11)) % 1),
+            bx = px + (hash(i * 5 + 2) - 0.5) * T * 1.5,
+            by = py + (hash(i * 9 + 4) - 0.5) * T * 1.2 - life * T * 0.35;
+          ctx.globalAlpha = 0.85 * (1 - life);
+          disk(bx, by, T * (0.06 + life * 0.1), T * (0.06 + life * 0.1), "rgba(255,236,160,.35)", "#fff0a8", 1);
+        }
+        ctx.globalAlpha = 1;
+      } else if (art === "Lightning") {
+        // bolts drop from above on a beat counted from when the spell appeared (decorative:
+        // the strikes' targets and times are not in the drawing contract)
+        ctx.globalAlpha = 0.18;
+        disk(px, py, T, T * 0.9, "#cfeeff");
+        ctx.globalAlpha = 1;
+        const beat = Math.floor(age / 460),
+          phase = (age % 460) / 460;
+        if (phase < 0.32) {
+          const a = hash(beat * 13 + 1) * Math.PI * 2,
+            d = hash(beat * 17 + 3) * T * 0.75,
+            sx = px + Math.cos(a) * d,
+            sy = py + Math.sin(a) * d * 0.8;
+          ctx.globalAlpha = 1 - phase / 0.32;
+          disk(sx, sy, T * 0.55, T * 0.42, "rgba(255,248,190,.65)");
+          ctx.strokeStyle = "#8fd7ff";
+          ctx.lineWidth = Math.max(3, T * 0.24);
+          bolt(sx + (hash(beat) - 0.5) * T * 0.5, sy - T * 2.4, sx, sy, beat * 7, T * 0.35);
+          ctx.stroke();
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = Math.max(1.2, T * 0.09);
+          bolt(sx + (hash(beat) - 0.5) * T * 0.5, sy - T * 2.4, sx, sy, beat * 7, T * 0.35);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
+      } else if (art === "Zap") {
+        ctx.globalAlpha = 0.45;
+        disk(px, py, T, T, "#9fe3ff");
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = "#8fd7ff";
+        ctx.lineWidth = Math.max(2.5, T * 0.2);
+        bolt(px + T * 0.2, py - T * 2.2, px, py, Math.floor(now / 70), T * 0.25);
+        ctx.stroke();
+        ctx.strokeStyle = "#e9fbff";
+        ctx.lineWidth = Math.max(1.5, T * 0.1);
+        const spin = Math.floor(now / 70);
+        for (let i = 0; i < 6; i++) {
+          const a = (i / 6) * Math.PI * 2 + hash(spin + i) * 0.6;
+          bolt(px, py, px + Math.cos(a) * T, py + Math.sin(a) * T, spin * 6 + i, T * 0.18);
+          ctx.stroke();
+        }
+      }
+      ctx.restore();
+      // the existing centre marker stays as it was
+      if (!(art === "Log" && sp[6] === "ROLLING")) {
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.arc(px, py, T, 0, 7);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+    // Impact: drawn on the same 450 ms clock and size envelope as the generic burst.
+    function drawImpactArt(art, f, t) {
+      const x = X(f.x),
+        y = Y(f.y),
+        R = T * (0.8 + 1.9 * Math.min(1, t * 2.2)),
+        fade = Math.max(0, 1 - t);
+      ctx.save();
+      ctx.lineCap = "round";
+      if (art === "Fireball" || art === "Rocket") {
+        const big = art === "Rocket" ? 1.15 : 1;
+        if (t < 0.3) {
+          ctx.globalAlpha = 1 - t / 0.3;
+          disk(x, y, R * 0.75 * big, R * 0.75 * big, "#fff4b8");
+        }
+        ctx.globalAlpha = Math.max(0, 0.95 - t * 1.2);
+        disk(x, y, R * 0.62 * big, R * 0.58 * big, "#f47a24");
+        ctx.globalAlpha = Math.max(0, 0.9 - t * 1.6);
+        disk(x, y, R * 0.36 * big, R * 0.34 * big, "#ffd35a");
+        for (let i = 0; i < 9; i++) {
+          const a = (i / 9) * Math.PI * 2 + hash(i) * 0.5;
+          smokePuff(x + Math.cos(a) * R * 0.55 * big, y + Math.sin(a) * R * 0.5 * big - t * T * 0.4,
+            T * (0.38 + t * 0.4) * big, Math.min(0.7, t * 1.6) * fade, true);
+        }
+        ctx.fillStyle = "#ffcf4a";
+        for (let i = 0; i < 10; i++) {
+          const a = hash(i * 3 + 7) * Math.PI * 2,
+            d = R * (0.5 + t * 0.7) * big;
+          ctx.globalAlpha = fade;
+          ctx.fillRect(x + Math.cos(a) * d, y + Math.sin(a) * d, Math.max(1.5, T * 0.1), Math.max(1.5, T * 0.1));
+        }
+        if (art === "Rocket") {
+          ctx.globalAlpha = fade;
+          ctx.strokeStyle = "#fff1c9";
+          ctx.lineWidth = Math.max(2, T * 0.14);
+          ctx.beginPath();
+          ctx.arc(x, y, R * 1.05, 0, 7);
+          ctx.stroke();
+        }
+      } else if (art === "Arrows") {
+        // arrows stuck where the volley came down, inside the landing marker
+        ctx.globalAlpha = Math.max(0, 0.6 - t * 0.7);
+        ctx.strokeStyle = "#efe6cc";
+        ctx.lineWidth = Math.max(1.5, T * 0.1);
+        ctx.beginPath();
+        ctx.arc(x, y, R * 0.8, 0, 7);
+        ctx.stroke();
+        ctx.globalAlpha = fade;
+        const fletch = f.team === 0 ? "#cfe3ff" : "#ffd9c7";
+        for (let i = 0; i < 11; i++) {
+          const a = hash(i * 5 + (f.kind === "land" ? 3 : 0)) * Math.PI * 2,
+            d = Math.sqrt(hash(i * 13 + 1)) * T * 1.9;
+          arrowShape(x + Math.cos(a) * d, y + Math.sin(a) * d * 0.85, 0.42, -0.9, T * 0.75, fletch);
+        }
+      } else if (art === "GoblinBarrel") {
+        for (let i = 0; i < 6; i++) {
+          const a = (i / 6) * Math.PI * 2 + 0.3;
+          smokePuff(x + Math.cos(a) * R * 0.35, y + Math.sin(a) * R * 0.3, T * (0.45 + t * 0.5), 0.75 * fade, false);
+        }
+        ctx.globalAlpha = fade;
+        for (let i = 0; i < 6; i++) {
+          const a = (i / 6) * Math.PI * 2 + hash(i) * 0.6,
+            d = T * (0.3 + t * 1.6);
+          ctx.save();
+          ctx.translate(x + Math.cos(a) * d, y + Math.sin(a) * d - Math.sin(t * Math.PI) * T * 0.6);
+          ctx.rotate(a + t * 6);
+          ctx.fillStyle = "#9a6434";
+          ctx.fillRect(-T * 0.08, -T * 0.32, T * 0.16, T * 0.64);
+          ctx.restore();
+        }
+      } else if (art === "Log" || art === "Zap" || art === "Lightning" || art === "Poison") {
+        // Log touching down after its throw; a Zap or other area seen only as an event
+        const dust = art === "Log";
+        ctx.globalAlpha = fade;
+        if (dust) {
+          for (const side of [-1, 1])
+            for (let i = 0; i < 3; i++)
+              smokePuff(x + side * T * (0.7 + i * 0.3), y + (i - 1) * T * 0.15, T * (0.3 + t * 0.4), 0.6 * fade, false);
+        } else {
+          disk(x, y, R * 0.7, R * 0.7, art === "Poison" ? "rgba(226,180,60,.45)" : "rgba(159,227,255,.55)");
+          ctx.strokeStyle = "#8fd7ff";
+          ctx.lineWidth = Math.max(2.5, T * 0.2);
+          bolt(x + T * 0.2, y - T * 2.2, x, y, 21, T * 0.25);
+          ctx.stroke();
+          ctx.strokeStyle = "#e9fbff";
+          ctx.lineWidth = Math.max(1.5, T * 0.1);
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * Math.PI * 2 + hash(i + 4) * 0.6;
+            bolt(x, y, x + Math.cos(a) * R * 0.7, y + Math.sin(a) * R * 0.7, i + 9, T * 0.16);
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.restore();
     }
     function drawTower(e, px, py, r, hit, ruined = false) {
       let left = px - r,
@@ -1536,7 +1914,12 @@
       for (const f of fx) {
         const t = (now - f.at) / 450;
         if (t < 0) continue;
-        if (f.kind === "boom") {
+        const art = (f.kind === "boom" || f.kind === "land") && f.card !== undefined ? artOf(f.card) : null;
+        if (art) {
+          drawImpactArt(art, f, t);
+        } else if (f.kind === "land") {
+          // a volley landing has no generic picture
+        } else if (f.kind === "boom") {
           const col = f.team === 0 ? C.blue : C.red,
             r = T * (0.8 + 1.9 * Math.min(1, t * 2.2));
           ctx.fillStyle = "#fff";
@@ -1607,6 +1990,14 @@
         ctx.lineWidth = 1.5;
         ctx.stroke();
         ctx.setLineDash([]);
+        if (artOf(sp[1])) {
+          // a pale inner rim, as the game marks a spell's landing spot
+          ctx.strokeStyle = "rgba(255,255,255,.55)";
+          ctx.lineWidth = Math.max(1.5, T * 0.12);
+          ctx.beginPath();
+          ctx.arc(X(sp[4]), Y(sp[5]), 2.2 * T - Math.max(2, T * 0.12), 0, 7);
+          ctx.stroke();
+        }
         ctx.fillStyle = "#16202e";
         ctx.font = "600 11px system-ui";
         ctx.textAlign = "center";
@@ -1742,11 +2133,15 @@
       for (const sp of b.sp.filter((s) => !isFlight(s))) {
         const px = X(sp[2]),
           py = Y(sp[3]),
-          col = sp[0] === 0 ? C.blue : C.red;
+          col = sp[0] === 0 ? C.blue : C.red,
+          art = artOf(sp[1]);
         ctx.strokeStyle = col;
         ctx.fillStyle = "#7a4a1f";
         ctx.lineWidth = 2;
-        if (sp[6] === "ROLLING") {
+        if (art) {
+          const seen = spellSeen.get(spKey(sp));
+          drawGroundArt(art, sp, px, py, col, seen === undefined ? 0 : Math.max(0, now - seen), now);
+        } else if (sp[6] === "ROLLING") {
           ctx.fillRect(px - T, py - T * 0.2, 2 * T, T * 0.4);
           ctx.strokeRect(px - T, py - T * 0.2, 2 * T, T * 0.4);
         } else {
@@ -1780,6 +2175,49 @@
         const dx = sp[4] - from[0],
           dy = sp[5] - from[1],
           n = Math.hypot(dx, dy) || 1;
+        const art = artOf(sp[1]);
+        if (art) {
+          // Same arc, position and hit target as the generic ball below; only the picture differs.
+          const rows = b.spAll?.get(k) || [sp],
+            before = a.spAll?.get(k) || [];
+          for (const row of rows) {
+            let rx = x,
+              ry = y;
+            if (row !== sp) {
+              // another volley of this cast: interpolate from its nearest row in the earlier frame
+              let q = row,
+                best = 2.5;
+              for (const o of before) {
+                const d = Math.hypot(o[2] - row[2], o[3] - row[3]);
+                if (d < best) (best = d), (q = o);
+              }
+              rx = lerp(q[2], row[2], t);
+              ry = lerp(q[3], row[3], t);
+            }
+            const rp = total > 0 ? Math.min(1, Math.hypot(rx - from[0], ry - from[1]) / total) : 1,
+              rl = Math.sin(Math.PI * rp) * 2.2 * T,
+              rr = T * (0.45 + 0.25 * Math.sin(Math.PI * rp));
+            ctx.fillStyle = "rgba(0,0,0,.25)";
+            ctx.beginPath();
+            ctx.ellipse(X(rx), Y(ry), rr, rr * 0.5, 0, 0, 7);
+            ctx.fill();
+            // on-screen heading of the arc, including the climb or fall
+            const [gx, gy] = screenDir(dx, dy),
+              vx = gx * total * T,
+              vy = gy * total * T - Math.cos(Math.PI * rp) * Math.PI * 2.2 * T,
+              vn = Math.hypot(vx, vy) || 1;
+            const trail = [];
+            for (let i = 1; i <= 4; i++) {
+              const bx = rx - (dx / n) * i * 0.45,
+                by = ry - (dy / n) * i * 0.45,
+                bl = Math.sin(Math.PI * Math.max(0, rp - i * 0.02)) * 2.2 * T;
+              trail.push([X(bx), Y(by) - bl]);
+            }
+            drawFlightArt(art, row, rx, ry, rl, rr, vx / vn, vy / vn, rp, trail, now);
+          }
+          drawn.push({ p: [X(x), Y(y) - lift], rad: r, spell: sp });
+          continue;
+        }
         ctx.fillStyle = "rgba(0,0,0,.25)";
         ctx.beginPath();
         ctx.ellipse(X(x), Y(y), r, r * 0.5, 0, 0, 7);

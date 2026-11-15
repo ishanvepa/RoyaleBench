@@ -5,6 +5,7 @@ import { z } from "zod";
 import type { BenchmarkTaskDetail, TaskResultRow, TaskResults } from "@/api/types";
 import { ModelLabel } from "@/components/domain/ModelLabel";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
+import { RewardPill } from "@/components/domain/RewardPill";
 import { Duration, KeyValues, Money, RelativeTime } from "@/components/domain/values";
 import { Badge } from "@/components/ui/badge";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
@@ -18,7 +19,7 @@ import { Markdown } from "@/components/ui/markdown";
 import { PageHeader } from "@/components/ui/page-header";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { enumParam, useSearchState } from "@/hooks/useSearchState";
-import { formatBytes, formatDuration, formatPercent, formatReward, harnessName } from "@/lib/format";
+import { formatBytes, formatDuration, formatPercent, harnessName } from "@/lib/format";
 import { useBenchmarkTask, useTaskResults } from "../api/benchmarks";
 import { TraceView } from "../shared/TraceView";
 import { TaskReplay } from "../shared/TaskReplay";
@@ -228,8 +229,10 @@ function Results({ benchmark, taskId }: { benchmark: string; taskId: string }) {
         meta: { align: "right" },
         cell: (c) => (
           <span className="inline-flex items-center gap-2">
-            <span className="tabular-nums">{formatReward(c.row.original.reward)}</span>
-            {c.row.original.solved ? <Badge tone="success">Solved</Badge> : c.row.original.error ? <Badge tone="danger">Error</Badge> : <Badge>Not solved</Badge>}
+            <RewardPill reward={c.row.original.reward} />
+            {c.row.original.reward != null && c.row.original.reward !== 0 && c.row.original.reward !== 1
+              ? c.row.original.solved ? <Badge tone="success">Solved</Badge> : c.row.original.error ? <Badge tone="danger">Error</Badge> : <Badge>Not solved</Badge>
+              : c.row.original.error ? <Badge tone="danger">Error</Badge> : null}
           </span>
         ),
       }),

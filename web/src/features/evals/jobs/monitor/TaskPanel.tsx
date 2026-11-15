@@ -2,13 +2,13 @@ import { ExternalLink, X } from "lucide-react";
 import { Link } from "react-router";
 import type { TaskRow } from "@/api/types";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
+import { RewardPill } from "@/components/domain/RewardPill";
 import { StatusPill } from "@/components/domain/StatusPill";
 import { Duration, KeyValues, Money } from "@/components/domain/values";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CodeBlock } from "@/components/ui/code-block";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatReward } from "@/lib/format";
 import { useTaskDetail } from "../../api/jobs";
 import { TraceView } from "../../shared/TraceView";
 import { TaskReplay } from "../../shared/TaskReplay";
@@ -38,7 +38,7 @@ export function TaskPanel({ runId, dataset, task, hasLocalTask, onClose }: { run
             <>
               <KeyValues
                 items={[
-                  { label: "Reward", value: d.reward == null ? "Not graded yet" : `${formatReward(d.reward)}${d.solved ? " (solved)" : ""}` },
+                  { label: "Reward", value: d.reward == null ? "Not graded yet" : <RewardPill reward={d.reward} /> },
                   { label: "Agent time", value: <Duration seconds={d.agent_s} /> },
                   { label: "API cost", value: <Money usd={task.cost_usd} /> },
                   { label: "Sandbox time", value: <Duration seconds={d.sandbox_s} /> },

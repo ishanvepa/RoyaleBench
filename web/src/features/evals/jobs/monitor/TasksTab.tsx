@@ -2,10 +2,10 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { useMemo } from "react";
 import type { JobDetail, TaskRow } from "@/api/types";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
+import { RewardPill } from "@/components/domain/RewardPill";
 import { StatusPill } from "@/components/domain/StatusPill";
 import { Duration, Money } from "@/components/domain/values";
 import { DataTable } from "@/components/ui/data-table";
-import { formatReward } from "@/lib/format";
 import { useBenchmark } from "../../api/benchmarks";
 import { useJobTasks } from "../../api/jobs";
 import { DifficultyBadge } from "../../benchmarks/badges";
@@ -41,7 +41,7 @@ export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDet
         sortUndefined: "last",
         sortDescFirst: true,
         meta: { align: "right" },
-        cell: (c) => <span className="tabular-nums">{formatReward(c.row.original.reward)}</span>,
+        cell: (c) => <RewardPill reward={c.row.original.reward} />,
       }),
       col.accessor((r) => r.duration_s ?? undefined, {
         id: "duration",

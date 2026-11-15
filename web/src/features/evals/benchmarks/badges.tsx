@@ -1,5 +1,17 @@
 import { Badge, type Tone } from "@/components/ui/badge";
 
+const DIFFICULTY: Record<string, Tone> = {
+  easy: "success",
+  medium: "warning",
+  hard: "danger",
+};
+
+export function DifficultyBadge({ difficulty }: { difficulty: string }) {
+  const label = difficulty.trim();
+  if (!label) return <span className="text-subtle">–</span>;
+  return <Badge tone={DIFFICULTY[label.toLowerCase()] ?? "outline"}>{label}</Badge>;
+}
+
 const STATE: Record<string, { label: string; tone: Tone; title: string }> = {
   published: { label: "Published", tone: "success", title: "The local files match the latest published version." },
   modified: { label: "Modified", tone: "warning", title: "Local files differ from the latest published version. Publish to run the changes." },

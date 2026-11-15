@@ -29,6 +29,10 @@ secret_env = "ANTHROPIC_API_KEY"
 
 # Claude 5 family
 [[models]]
+id = "anthropic/claude-fable-5-2"
+secret_env = "ANTHROPIC_API_KEY"
+
+[[models]]
 id = "anthropic/claude-fable-5-1"
 secret_env = "ANTHROPIC_API_KEY"
 

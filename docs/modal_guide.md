@@ -31,7 +31,7 @@ For direct Modal development, follow [getting started](https://modal.com/docs/gu
 ## Host the public game
 
 The separate [public play guide](public_play.md) deploys `modal_play.py` as one warm
-native server with five Planner matches at once and a fixed Hog Cycle opponent deck. From a locally authenticated
+native server with ten Planner matches at once and a fixed Hog Cycle opponent deck. From a locally authenticated
 Modal account, run `uv run --frozen --extra hosting modal deploy modal_play.py`.
 This creates a shareable web game; it is independent of Valkyrie evaluation runs.
 

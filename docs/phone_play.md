@@ -6,9 +6,10 @@ The shared [bot catalog](../configs/bots.toml) controls these choices; see
 [bot setup](bots.md) to change presets or add an opponent.
 
 For public play against Planner's fixed Hog Cycle deck, use `uv run --frozen python -m cr_arena.share --public`.
-It allows five active matches and shows “Server at
-capacity” on a sixth start. See [public play](public_play.md) for permanent hosting
-on Modal and the five-match load check.
+It allows ten active matches and shows “Server at
+capacity” on an eleventh start. See [public play](public_play.md) for permanent hosting
+on Modal and the ten-match load check. The hosted instance reserves 32 CPU cores;
+a temporary link uses the capacity of the local computer.
 
 ## One-time setup
 

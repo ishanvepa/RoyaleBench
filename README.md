@@ -8,7 +8,7 @@ benchmark for clash royale
 - [Bot setup](docs/bots.md): bot presets, human-play choices, and implementation registry.
 - [Search v2](docs/search_v2.md): CPU search implementation and head-to-head evaluation against the original bot.
 - [Phone play](docs/phone_play.md): launch the game and a temporary public link with one command.
-- [Public play](docs/public_play.md): face Planner's fixed Hog Cycle deck with up to five concurrent players; includes hosting instructions.
+- [Public play](docs/public_play.md): face Planner's fixed Hog Cycle deck with up to ten concurrent players; includes hosting instructions.
 - [Battle graphics](docs/rendering.md): the shared renderer for live play and saved replays.
 - [Valkyrie guide](docs/valkyrie_guide.md): publish tasks, run evaluations, and collect hackathon results.
 - [Modal guide](docs/modal_guide.md): connect sandbox compute and manage evaluation usage.

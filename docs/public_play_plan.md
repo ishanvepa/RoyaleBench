@@ -1,8 +1,8 @@
-# Five-player public play implementation plan
+# Public play implementation plan
 
-Scope: one always-on server, at most five active matches, the existing live
+Scope: one always-on server, at most ten active matches, the existing live
 renderer and seven preset decks, and the existing Planner bot with its deck fixed to Hog 2.6 Cycle. Browsing the
-deck picker consumes no match slot. A sixth start receives “Server at capacity —
+deck picker consumes no match slot. An eleventh start receives “Server at capacity —
 please try again shortly.” Slots return when matches end, disconnect, or quit.
 
 ## Original public implementation (historical)
@@ -26,7 +26,7 @@ please try again shortly.” Slots return when matches end, disconnect, or quit.
 
 ## Acceptance and operational limits
 
-Five matches must advance concurrently at approximately 20 ticks/second; a sixth
+Ten matches must advance concurrently at approximately 20 ticks/second; an eleventh
 cannot start. Warm local input/placement responses should remain under 150 ms at
 p95. Report actual measurements and distinguish them from internet latency and
 the intentional 21-tick (1.05-second) deployment delay shared by both players.
@@ -54,7 +54,7 @@ user could play. The local five-full-game validation above remains valid.
 
 Regression checks passed: 216 Python tests (9 skipped) and 32 renderer tests.
 
-## Planner release
+## Planner release (historical five-match capacity)
 
 - [x] Confirm the requested bot: the user selected the existing `planner-bot`.
 - [x] Pin the public opponent and Hog 2.6 Cycle deck on the server; only the human
@@ -67,7 +67,7 @@ Regression checks passed: 216 Python tests (9 skipped) and 32 renderer tests.
 - [x] Check pending plays, hand cycling, building placement, and tower destruction
   against fresh engine masks; verify five real Planner matches and the phone UI.
 
-The preceding heuristic measurements are historical. Current results are recorded
+The preceding heuristic measurements are historical. Five-match Planner results are recorded
 under `planner_release` in the validation JSON.
 
 Planner release validation: 219 Python tests (9 skipped), 32 renderer tests, and
@@ -76,3 +76,34 @@ every hand. Local games held 20 ticks/second; hosted games held 19.99–20. The
 hosted worst p95 input acknowledgment was 220.36 ms, above the 150 ms WAN target.
 Phone-size browser instrumentation recorded four cached masks and zero mask
 requests when selecting a card and sending a play.
+
+## Vertical scaling to ten matches
+
+- [x] Double the single Modal Server reservation to 32 physical CPU cores and
+  16 GiB RAM, and raise admission to ten matches. Preserve two Planner search
+  workers per match and the existing search settings.
+- [x] Extend admission, slot reuse, disconnect cleanup, and simultaneous replay
+  persistence checks to ten matches. Verify server-side bot response-time telemetry.
+- [x] Make the WebSocket load checker use the server's advertised capacity,
+  cycle decks when there are more matches than deck presets, and support
+  `--sessions` for a smaller comparison load.
+- [x] Verify eleventh-player refusal and reuse of a quit slot while nine other
+  matches are still active. Separate gameplay checks from the 150 ms input target
+  in JSON results; keep the overall check unsuccessful if either fails.
+- [x] Deploy and compare 30-second five-match and ten-match WAN runs. The ten-match
+  run sustained 19.94–20.01 ticks/second; the input target remained unmet.
+- [x] Run ten games to completion and record saving and sustained responsiveness
+  under `vertical_scale` in the validation JSON.
+
+All ten hosted matches completed and saved at 19.79–19.97 ticks/second. The worst
+per-match bot response p95 was 250 ms across 4,750 decisions. The worst input p95
+was 314.93 ms and the maximum snapshot gap was 964.34 ms: gameplay checks passed,
+but the overall latency acceptance check remains failed. The first full-game
+attempt was interrupted by the separate lobby deployment; the successful rerun
+used a combined build preserving both changes. The load result does not establish
+equivalent responsiveness to five sessions.
+
+Regression validation after lobby integration: 42 Python checks and 32 renderer checks passed. The
+five-match baseline used the new 32-core instance, not the previous 16-core one.
+Server-side bot response timings include IPC, scheduling, and lazy search-pool
+startup; they exclude the initial bot-worker ready handshake.

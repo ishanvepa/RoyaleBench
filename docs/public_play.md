@@ -1,6 +1,6 @@
-# Public play: five concurrent matches
+# Public play: ten concurrent matches
 
-One warm server supports at most **five active matches**. Visitors choose their
+One warm server supports at most **ten active matches**. Visitors choose their
 own deck from the seven presets, then face **planner-bot playing Hog 2.6 Cycle**.
 The opponent and its deck are fixed on the server. The public UI shows no bot or
 opponent-deck selectors. Local mode retains the full bot catalog and both deck
@@ -14,7 +14,7 @@ battle** to begin. **Back to arena** returns to the lobby and keeps the selected
 deck. The **How to play** button explains deployment, elixir, and winning. On
 phones, the final Enter battle button stays visible while browsing the decks.
 
-The deck picker uses no match slot. A sixth start receives **“Server at capacity —
+The deck picker uses no match slot. An eleventh start receives **“Server at capacity —
 please try again shortly.”** Finish, quit, disconnect, or worker failure releases
 a slot. A game expires after 15 minutes including pauses. Reconnect starts a new
 game rather than resuming the previous one.
@@ -84,9 +84,27 @@ The [original shared link](https://b-charest04--royalebench-play-serve.us-west.m
 also works through a redirect.
 
 See the [implementation plan](public_play_plan.md) and
-[validation record](public_play_validation.json). Historical heuristic measurements
-are retained in the record; the `planner_release` section describes this version.
-A local 30-second five-Planner check sustained 20 ticks/second in all five games,
+[validation record](public_play_validation.json). The `planner_release` section
+retains the historical five-match Planner measurements; `vertical_scale` records
+the ten-match deployment and its load tests.
+
+On November 14, 2026, the 32-core / 16-GiB deployment completed and saved all ten
+scripted matches, with the eleventh start refused and a quit slot successfully
+reused while the other nine remained active. Per-match tick rates were
+19.79–19.97/second, and server-side bot response p95 was at most 250 ms across
+4,750 decisions. The worst per-match input-to-pending p95 was **314.93 ms**,
+above the unchanged 150 ms WAN target; the longest snapshot-delivery gap was
+**964.34 ms**. Gameplay checks passed, but the overall load check remains failed
+on input latency. This establishes ten-match functionality, not equivalent
+responsiveness or an absence of stalls. Matches lasted 38.60–182.38 seconds;
+concurrency decreased as matches completed.
+
+For comparison, a 30-second five-match run on the same larger instance measured
+272.77 ms worst input p95; the ten-match short run measured 403.94 ms. These short
+runs have few accepted plays and are sensitive to startup outliers. The combined
+deployment preserves the new arena lobby, player names, and leaderboard.
+
+A historical local 30-second five-Planner check sustained 20 ticks/second in all five games,
 with worst per-match p95 input-to-pending latency of 63.16 ms. Hosted internet
 latency is measured separately and is not guaranteed by those local results.
 The hosted 30-second five-Planner run verified ready masks for every hand,
@@ -114,7 +132,7 @@ links depend on the local computer staying awake and running the command.
 ## Permanent hosting on Modal
 
 [`modal_play.py`](../modal_play.py) deploys the existing Starlette game directly.
-It runs Uvicorn in one warm native Modal Server with 16 reserved physical CPU cores and 8 GB of
+It runs Uvicorn in one warm native Modal Server with 32 reserved physical CPU cores and 16 GiB of
 memory, plus a persistent Modal Volume. Each match gets two Planner search workers;
 the worker budget does not depend on which player connected first. Native Servers proxy WebSockets directly
 to the game process to reduce transport latency. The application expires matches
@@ -143,8 +161,8 @@ remains healthy and serves its capacity message.
 
 `min_containers=1` keeps the game server warm and incurs idle hosting charges
 while deployed. `max_containers=1` keeps game capacity in one process. Request
-autoscaling is disabled; setup visitors and the sixth player reach the application
-and see its capacity response. **The game's match cap remains five.** A separate
+autoscaling is disabled; setup visitors and the eleventh player reach the application
+and see its capacity response. **The game's match cap is ten.** A separate
 redirect Function preserves the original link and scales to zero when unused.
 Do not increase the game container count or deploy another game process against
 the same volume.
@@ -177,26 +195,34 @@ Reference: [Modal Servers](https://modal.com/docs/guide/servers),
 [regions](https://modal.com/docs/guide/region-selection),
 [volumes](https://modal.com/docs/guide/volumes).
 
-## Check five-match responsiveness
+## Check ten-match responsiveness
 
-Use a disposable server with all five slots free. The check starts five unranked
-scripted players using different decks against Planner's fixed Hog Cycle deck,
-verifies a sixth start is refused, deploys cards using the pushed masks, and verifies a freed
-slot can be reused. It also requires each bot to make a successful play.
+Use a disposable server with all ten slots free. The check starts ten unranked scripted
+players cycling the seven presets against Planner's fixed Hog Cycle deck, verifies an
+eleventh start is refused, reuses a freed slot while the other nine are occupied,
+then deploys cards using the pushed masks. It also requires each bot to make a successful play.
 
 ```bash
 uv run --frozen python -m cr_arena.check_live --seconds 30
+uv run --frozen python -m cr_arena.check_live --sessions 5 --seconds 30
 uv run --frozen python -m cr_arena.check_live --full-games --output /tmp/live-check.json
 ```
 
 Use `--url https://YOUR_DEPLOYED_URL.modal.direct` to check the hosted server, preferably
-from near its region. `--full-games` allows ten minutes and requires all five
+from near its region. `--full-games` allows ten minutes and requires all ten
 matches to finish and save. The check prints per-match tick rates, snapshot gaps,
 preloaded mask availability/update counts, successful bot plays, and time from
-input to the server reporting a pending deployment. It sends no placement-mask
+input to the server reporting a pending deployment. It also reports bot response
+time and source-snapshot age, measured on the server from snapshot submission to
+answer consumption (including IPC, scheduling, and lazy search-pool startup;
+excluding the initial bot-worker ready handshake).
+It sends no placement-mask
 requests. It fails if a hand arrives without matching masks, a bot makes no play,
 a match advances below 19 ticks/second, or p95 input latency reaches 150 ms. It excludes the first two seconds of stream startup from
-tick-rate measurements.
+tick-rate measurements. `--sessions` defaults to the capacity advertised by the server;
+smaller runs skip the capacity-refusal check. The JSON separates `gameplay_passed`
+from `latency_target_met`, and `passed` requires both. Bot timings are diagnostic;
+they have no absolute pass threshold and must be compared across equivalent runs.
 
 The engine runs at 20 ticks/second and the page interpolates at the display's
 refresh rate. Both sides retain the intentional **21-tick / 1.05-second card

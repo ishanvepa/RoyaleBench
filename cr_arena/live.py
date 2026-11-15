@@ -44,7 +44,7 @@ from .bots import human_bot_specs
 HUMAN, BOT = 0, 1
 BOT_SPECS = human_bot_specs("live")
 COMMAND_DELAY_TICKS = 21  # a play lands about 1 s after it is made, for both sides, as measured on the real client
-MAX_GAMES = 5  # one server process; visitors choosing decks do not occupy a slot
+MAX_GAMES = 10  # one server process; visitors choosing decks do not occupy a slot
 PUBLIC_BOT = "planner"
 PUBLIC_DECK = "hog-2.6-cycle"
 PUBLIC_PLANNER_WORKERS = 2  # a fixed budget per match, independent of connection order
@@ -159,6 +159,8 @@ class Session:
         self.bot_busy = True  # until the worker reports it is ready
         self.bot_asked_tick = -10_000
         self.bot_send: asyncio.Future | None = None
+        self.bot_sent_at = 0.0
+        self.bot_source_tick = 0
 
     # ------------------------------------------------------------------ messages out
     def init_msg(self) -> dict:
@@ -367,6 +369,9 @@ class Session:
                     answer = self.conn.recv()
                     self.bot_busy = False
                     if answer is not None:  # None = the worker's "ready"
+                        await self.send({"t": "bot_timing",
+                                         "decision_ms": round((loop.time() - self.bot_sent_at) * 1000, 2),
+                                         "source_age_ticks": g.state.tick - self.bot_source_tick})
                         command, raw = bot_answer_command(g, answer)
                         if command is not None:
                             cmds.append(command)
@@ -391,6 +396,7 @@ class Session:
                             status = -1
                         await self.send(self.event(team, card, reason == 0, status, self.aim.pop((team, card), None), tick))
                 if not self.bot_busy and tick - self.bot_asked_tick >= BOT_EVERY_TICKS:
+                    self.bot_sent_at, self.bot_source_tick = loop.time(), g.state.tick
                     self.bot_send = loop.run_in_executor(None, self.conn.send, e.save_state())
                     self.bot_send.add_done_callback(lambda done: done.exception() if not done.cancelled() else None)
                     self.bot_busy, self.bot_asked_tick = True, tick
@@ -611,7 +617,7 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8600)
-    ap.add_argument("--public", action="store_true", help="play Planner with its fixed Hog Cycle deck (five games)")
+    ap.add_argument("--public", action="store_true", help="play Planner with its fixed Hog Cycle deck (ten games)")
     a = ap.parse_args()
     print(f"Live play: http://{a.host}:{a.port}")
     uvicorn.run(create_app(public=a.public), host=a.host, port=a.port, log_level="warning",

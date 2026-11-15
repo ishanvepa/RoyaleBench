@@ -68,7 +68,7 @@ def signal_group(process: subprocess.Popen, sig: int) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8601, help="local game port (default: 8601)")
-    parser.add_argument("--public", action="store_true", help="play Planner's fixed Hog Cycle deck, with five slots")
+    parser.add_argument("--public", action="store_true", help="play Planner's fixed Hog Cycle deck, with ten slots")
     args = parser.parse_args()
     if not 1 <= args.port <= 65535:
         parser.error("--port must be between 1 and 65535")

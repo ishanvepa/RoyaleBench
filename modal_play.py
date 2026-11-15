@@ -1,4 +1,4 @@
-"""Deploy the five-match public game: uv run --extra hosting modal deploy modal_play.py."""
+"""Deploy the ten-match public game: uv run --extra hosting modal deploy modal_play.py."""
 
 from pathlib import Path
 
@@ -21,8 +21,8 @@ image = (
 
 @app.server(
     image=image,
-    cpu=16,  # five planner parents + two search workers per match, with capacity for the game loop
-    memory=8192,
+    cpu=32,  # ten planner parents + two search workers per match, with game-loop headroom
+    memory=16384,
     min_containers=1,
     max_containers=1,
     compute_region="us-west",

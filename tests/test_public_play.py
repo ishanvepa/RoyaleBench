@@ -1,11 +1,11 @@
-"""Five-game admission, worker lifecycle, and concurrent live-game persistence."""
+"""Ten-game admission, worker lifecycle, and concurrent live-game persistence."""
 
 import asyncio
 import json
 import tempfile
 import time
 import unittest
-from contextlib import ExitStack
+from contextlib import ExitStack, suppress
 from pathlib import Path
 from unittest.mock import patch
 
@@ -47,33 +47,35 @@ class PublicPlayTests(unittest.TestCase):
         for session in list(live.ACTIVE):
             session.close()
 
-    def test_five_games_sixth_refused_and_quit_disconnect_release_slots(self):
+    def test_ten_games_eleventh_refused_and_quit_disconnect_release_slots(self):
         with ExitStack() as stack:
             client = stack.enter_context(TestClient(live.create_app(public=True)))
-            sockets = [stack.enter_context(client.websocket_connect('/ws')) for _ in range(7)]
+            sockets = [stack.enter_context(client.websocket_connect('/ws')) for _ in range(12)]
             for ws in sockets:
                 hello = ws.receive_json()
+                self.assertEqual(hello['max_games'], 10)
                 self.assertEqual(list(hello['bots']), ['planner'])
                 self.assertEqual(hello['fixed_opponent'], {'bot': 'planner', 'deck': 'hog-2.6-cycle'})
             self.assertEqual(client.get('/health').json()['active_games'], 0)
-            for ws in sockets[:5]:
+            for ws in sockets[:10]:
                 ws.send_json(START)
                 init = receive(ws, 'init')
                 self.assertEqual(init['opp'], 'planner-bot')
                 self.assertEqual(init['decks'], ['giant-beatdown', 'hog-2.6-cycle'])
-            self.assertEqual(client.get('/health').json()['active_games'], 5)
-            sockets[5].send_json(START)
-            busy = receive(sockets[5], 'busy')
+            self.assertEqual(client.get('/health').json()['active_games'], 10)
+            sockets[10].send_json(START)
+            busy = receive(sockets[10], 'busy')
+            self.assertEqual(busy['n'], 10)
             self.assertEqual(busy['message'], 'Server at capacity — please try again shortly.')
             sockets[0].send_json({'t': 'quit'})
-            self.wait_count(client, 4)
-            sockets[5].send_json(START)
-            receive(sockets[5], 'init')
+            self.wait_count(client, 9)
+            sockets[10].send_json(START)
+            receive(sockets[10], 'init')
             sockets[1].close()
-            self.wait_count(client, 4)
-            sockets[6].send_json(START)
-            receive(sockets[6], 'init')
-            self.assertEqual(client.get('/health').json()['active_games'], 5)
+            self.wait_count(client, 9)
+            sockets[11].send_json(START)
+            receive(sockets[11], 'init')
+            self.assertEqual(client.get('/health').json()['active_games'], 10)
         self.assertEqual(len(live.ACTIVE), 0)
 
     def wait_count(self, client, count):
@@ -164,14 +166,37 @@ class PublicPlayTests(unittest.TestCase):
             with self.subTest(kind=kind):
                 asyncio.run(scenario(kind))
 
-    def test_five_natural_completions_save_unique_replays_and_release_open_sockets(self):
+    def test_bot_timing_reports_response_time_and_source_age(self):
+        async def scenario():
+            ws = MemorySocket()
+            session = live.Session(ws, 'giant-beatdown', 'giant-beatdown', 11)
+            task = asyncio.create_task(session.run())
+            try:
+                async with asyncio.timeout(15):
+                    while not any(m['t'] == 'bot_timing' for m in ws.messages):
+                        if task.done():
+                            self.fail(f'Game stopped before a bot decision: {ws.messages}')
+                        await asyncio.sleep(.01)
+                timing = next(m for m in ws.messages if m['t'] == 'bot_timing')
+                self.assertGreater(timing['decision_ms'], 0)
+                self.assertGreaterEqual(timing['source_age_ticks'], 0)
+                self.assertLessEqual(timing['source_age_ticks'], session.game.state.tick)
+            finally:
+                task.cancel()
+                with suppress(asyncio.CancelledError):
+                    await task
+            self.assertNotIn(session, live.ACTIVE)
+            self.assertFalse(session.proc.is_alive())
+        asyncio.run(scenario())
+
+    def test_ten_natural_completions_save_unique_replays_and_release_open_sockets(self):
         async def finish_games(board):
             sessions = [live.Session(MemorySocket(), 'giant-beatdown', 'giant-beatdown', seed,
                                      leaderboard=board, player_id='test-player', player_name='Alice, the Great')
-                        for seed in range(5)]
+                        for seed in range(10)]
             for index, session in enumerate(sessions):
                 hp = [list(player.tower_hp) for player in session.game.state.players]
-                if index:  # Two wins and two losses on tower HP; seed 0 stays level and goes to blue by seed parity.
+                if index:  # Five wins and four losses on tower HP; level seed 0 goes to blue by parity.
                     hp[index % 2][1] = 1000
                 setup = msgspec.structs.replace(session.game.setup, tower_hp=hp)
                 session.game.engine.reset(session.seed, setup)
@@ -203,14 +228,14 @@ class PublicPlayTests(unittest.TestCase):
                 you = Leaderboard(board.path).standings('test-player')['you']
                 self.assertEqual(you['wins'], winners.count(0))
                 self.assertEqual(you['losses'], winners.count(1))
-                self.assertEqual((you['wins'], you['losses']), (3, 2))  # no draws: all five games have a winner
+                self.assertEqual((you['wins'], you['losses']), (6, 4))  # all ten games have a winner
                 self.assertEqual(you['name'], 'Alice, the Great')
-            self.assertEqual(len(set(ids)), 5)
-            self.assertEqual(len(list((Path(tmp) / 'replays').glob('*.msgpack'))), 5)
+            self.assertEqual(len(set(ids)), 10)
+            self.assertEqual(len(list((Path(tmp) / 'replays').glob('*.msgpack'))), 10)
             db = DB(db_path)
             try:
-                self.assertEqual(db.query('SELECT COUNT(*) AS n FROM matches WHERE status = ?', ('done',))[0]['n'], 5)
-                self.assertEqual(db.query('SELECT total_matches FROM jobs')[0]['total_matches'], 5)
+                self.assertEqual(db.query('SELECT COUNT(*) AS n FROM matches WHERE status = ?', ('done',))[0]['n'], 10)
+                self.assertEqual(db.query('SELECT total_matches FROM jobs')[0]['total_matches'], 10)
             finally:
                 db.close()
 

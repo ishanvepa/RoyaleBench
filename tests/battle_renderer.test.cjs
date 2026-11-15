@@ -123,3 +123,60 @@ test('a shield is drawn above the health bar and its loss flashes the unit', () 
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#cfe3ff'), 'shield bar drawn');
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff'), 'hit flash after shield damage');
 });
+
+function troopScene(card, unit, facing, options = {}) {
+  const {renderer, operations} = fixture();
+  const names = {0: [card], 1: ['Tombstone'], 2: ['Minions']};
+  const row = [7, options.team || 0, 0, 0, 6, 9, 100, 100, options.radius ?? .5, options.flags || 0, -1,
+    facing[0], facing[1], 0, null, 0, 0, -1];
+  if (unit !== undefined) row.push(unit);
+  const s = {en: [row], sp: [], pr: []};
+  renderer.observe(s, 0);
+  const hits = renderer.draw(s, s, 0, 500, {scale: 20, cards: names, flip: !!options.flip});
+  return {hits, operations, ops: JSON.stringify(operations)};
+}
+
+test('classic ground troops stand upright and mirror instead of rotating', () => {
+  for (const card of ['Archer', 'BattleRam', 'ElectroWizard', 'Giant', 'Golem', 'HogRider', 'IceGolemite',
+    'IceSpirits', 'Knight', 'MiniPekka', 'Musketeer', 'Pekka', 'Princess', 'Wizard']) {
+    const right = troopScene(card, card, [1, 0]), left = troopScene(card, card, [-1, 0]);
+    assert.ok(!right.operations.some(op => op[0] === 'rotate'), card);
+    assert.ok(right.operations.some(op => op[0] === 'scale' && op[1] === 10 && op[2] === 10), card);
+    assert.ok(left.operations.some(op => op[0] === 'scale' && op[1] === -10 && op[2] === 10), card);
+  }
+});
+
+test('flipping the board mirrors a ground troop with its screen motion', () => {
+  const plain = troopScene('Knight', 'Knight', [1, 0]), flipped = troopScene('Knight', 'Knight', [1, 0], {flip: true});
+  assert.ok(plain.operations.some(op => op[0] === 'scale' && op[1] === 10));
+  assert.ok(flipped.operations.some(op => op[0] === 'scale' && op[1] === -10));
+  // walking up the screen shows the back; the same motion seen from the other side shows the face
+  assert.notEqual(troopScene('Knight', 'Knight', [0, 1]).ops, troopScene('Knight', 'Knight', [0, -1]).ops);
+});
+
+test('ground troop poses keep the entity position and hit target', () => {
+  for (const facing of [[1, 0], [-1, 0], [0, 1], [0, -1], [0, 0]]) {
+    const hit = troopScene('Pekka', 'Pekka', facing, {radius: .75}).hits[0];
+    assert.deepEqual([...hit.p], [120, 460]);
+    assert.equal(hit.rad, 15);
+  }
+});
+
+test('spawned units are drawn by unit type, with a radius fallback for old traces', () => {
+  const golem = troopScene('Golem', 'Golem', [1, 0], {radius: .75}).ops;
+  const golemite = troopScene('Golem', 'Golemite', [1, 0], {radius: .5}).ops;
+  assert.notEqual(golem.replace(/15/g, '10'), golemite);
+  assert.equal(troopScene('Golem', undefined, [1, 0], {radius: .5}).ops, golemite);
+  assert.equal(troopScene('BattleRam', undefined, [1, 0], {radius: .5}).ops,
+    troopScene('BattleRam', 'Barbarian', [1, 0], {radius: .5}).ops);
+  assert.notEqual(troopScene('GoblinGang', 'Goblin_Stab', [1, 0]).ops, troopScene('GoblinGang', 'SpearGoblin', [1, 0]).ops);
+  assert.equal(troopScene('GoblinGang', 'Goblin_Stab', [1, 0]).ops, troopScene('GoblinGang', undefined, [1, 0]).ops);
+  assert.equal(troopScene('Skeletons', 'Skeleton', [1, 0]).ops, troopScene('Skeletons', undefined, [1, 0]).ops);
+});
+
+test('other cards and flying troops keep the rotating miniature', () => {
+  const others = [['Tombstone', 'Skeleton', {}], ['Minions', 'Minion', {flags: 1}], ['Knight', 'Knight', {flags: 1}],
+    ['Witch', 'Skeleton', {}]];
+  for (const [card, unit, options] of others)
+    assert.ok(troopScene(card, unit, [1, 0], options).operations.some(op => op[0] === 'rotate'), card);
+});

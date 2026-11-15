@@ -145,6 +145,7 @@ class Session:
         left, ot = g.time_left_s()
         costs = me.hand_costs if len(me.hand_costs) == len(me.hand) else [-1] * len(me.hand)
         ents = []
+        units = self.unit_types()
         for e in s.entities:
             if e.hp <= 0:
                 continue
@@ -152,7 +153,8 @@ class Session:
             ents.append([e.uid, e.team, int(e.kind), e.card_id, round(e.x / sub, 3), round(e.y / sub, 3), e.hp, e.max_hp,
                          round(e.radius / sub, 3), flags, e.tower_slot, e.facing[0], e.facing[1], e.stun_ticks,
                          [v / sub for v in e.footprint] if e.footprint is not None else None,
-                         e.shield, e.status_flags, e.charge])
+                         e.shield, e.status_flags, e.charge,
+                         units[e.unit_type] if 0 <= e.unit_type < len(units) else None])
         return {
             "t": "s", "k": s.tick, "left": round(left, 2), "ot": ot, "rate": s.elixir_rate, "paused": self.paused,
             # elixir shown net of plays that are on their way; "pend" = [slot, card, x, y, ticks left]
@@ -166,6 +168,14 @@ class Session:
                     round(sp.aim_y / sub, 2), SpellMotion(sp.motion).name] for sp in s.spells],
             "pr": [[p.team, round(p.x / sub, 2), round(p.y / sub, 2)] for p in s.projectiles],
         }
+
+    def unit_types(self) -> list[str]:
+        """The engine's unit-type names, so the page can tell a Golem from its Golemites."""
+        names = getattr(self, "_unit_types", None)
+        if names is None:
+            said = getattr(self.game.engine, "unit_types", None)
+            names = self._unit_types = list(said()) if callable(said) else []
+        return names
 
     def pending_plays(self, me) -> list[list]:
         """The human's plays on their way, each [hand slot, card, x, y, ticks left]. The engine's

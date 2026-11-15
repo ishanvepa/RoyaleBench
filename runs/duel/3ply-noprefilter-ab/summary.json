@@ -1,0 +1,18 @@
+{
+  "a": "planner:three_ply=true,prefilter=false",
+  "b": "planner",
+  "games": 12,
+  "wins": 8,
+  "draws": 0,
+  "losses": 4,
+  "score": 0.667,
+  "crowns": [
+    13,
+    8
+  ],
+  "pairs": 6,
+  "pairs_won": 3,
+  "pairs_lost": 1,
+  "sign_test_p_one_sided": 0.3125,
+  "mean_tower_margin": 0.113
+}

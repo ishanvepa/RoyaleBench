@@ -1,1 +1,1 @@
-{"decision": 0, "tick": 5400, "move": 12, "label": "12. Fireball (4 elixir, spell) @ enemy left princess tower", "think_s": 0.034, "wall": 1794722179.493}
+{"decision": 0, "tick": 5400, "move": 12, "label": "12. Fireball (4 elixir, spell) @ enemy left princess tower", "think_s": 0.163834, "wall": 1794730428.026, "segment_id": "af4a1517719a43b997208e6de6ab9123", "observation_id": "d05e0fdaa3e0406cbf5100d90e1eff43:referee:observations:0", "state_hash": "a15f3caf8ddfdcd7d111c9a4ec8051b71f2159068fd99cf6a847582ccde91bf8"}

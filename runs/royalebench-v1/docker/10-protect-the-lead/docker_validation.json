@@ -3,11 +3,15 @@
   "family": 10,
   "reward": 1,
   "integrity": 1,
-  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
-  "config_sha256": "1202771bd5d30cec670897f297411e815c949f5df6820d9d6ba084f5db9be0b9",
-  "image": "sha256:d9223521eb5bdd0de58285874dcbd3d54176bb94e7390d69b5383b74e1cd839e",
+  "protocol_sha256": "fe344fb1a1b8d90bc4bd6f235af06f6c2be5a457583ed71dd5003c6740b35696",
+  "config_sha256": "ce86afc4d478db7cc56044292e2da3d450cfced0339a7076f9b5dfd83648afae",
+  "image": "sha256:0f4a90c6f97f7d75bb7a554793f984b86ce0cbac056e511b257960d39a604a40",
   "isolated": true,
   "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 241,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
   "network": "none",
-  "elapsed_s": 10.848
+  "elapsed_s": 13.736
 }

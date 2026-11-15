@@ -19,13 +19,13 @@ waits automatically. A decision the agent never makes (timeout, abandoned game) 
 from __future__ import annotations
 
 import argparse
-import fcntl
 import json
+import math
 import os
+import socket
 import socketserver
 import sys
 import time
-import math
 from pathlib import Path
 
 from .game import Game, Move
@@ -48,6 +48,9 @@ def make_opponent(spec: str) -> Player:
 class Referee:
     """One match from the agent's seat. ``cfg`` keys: seed, agent_team (0 blue / 1 red),
     agent_deck, opponent_deck, opponent, decision_ticks."""
+
+    capture: Capture | None = None
+    action_source = "agent"
 
     def __init__(self, cfg: dict, record: bool = False, capture: Capture | None = None):
         self.cfg = cfg
@@ -153,6 +156,21 @@ class Referee:
         return (f"GAME OVER: {o['result'].upper()}. Crowns: you {o['crowns_for']} - enemy {o['crowns_against']}. "
                 "The match is finished; there is nothing more to do.")
 
+    def success(self) -> bool:
+        return self.outcome()["result"] == "win"
+
+
+def make_referee(cfg: dict, record: bool = False, capture: Capture | None = None) -> Referee:
+    if "scenario" in cfg:
+        from .scenario_task import ScenarioReferee
+
+        ref = ScenarioReferee(cfg, record=record)
+        ref.capture = capture
+        if capture:
+            ref.game.telemetry = GameTelemetry(capture, ref.game)
+        return ref
+    return Referee(cfg, record=record, capture=capture)
+
 
 # ---------------------------------------------------------------------------------------- log
 
@@ -177,12 +195,20 @@ def replay_entries(ref: Referee, entries: list[dict]) -> int:
     applied = 0
     for e in entries:
         if ref.over:
+            if ref.cfg.get("scenario"):
+                raise LogMismatch("extra decisions after the scenario ended")
             break
+        if not isinstance(e, dict) or any(type(e.get(k)) is not int for k in ("decision", "tick", "move")):
+            raise LogMismatch(f"entry {applied}: decision, tick and move must be integers")
+        think_s = e.get("think_s", 0)
+        if (think_s is not None or ref.cfg.get("scenario")) and (
+                type(think_s) not in (int, float) or not math.isfinite(think_s) or think_s < 0):
+            raise LogMismatch(f"entry {applied}: invalid think_s")
         expected = (ref.decision, ref.tick)
         if (e.get("decision"), e.get("tick")) != expected:
             raise LogMismatch(f"entry {applied}: logged decision/tick {(e.get('decision'), e.get('tick'))}, "
                               f"replay is at {expected}")
-        mv = ref.check_move(int(e["move"]))
+        mv = ref.check_move(e["move"])
         if e.get("label") != mv.label():
             raise LogMismatch(f"entry {applied}: logged move {e.get('label')!r}, replay offers {mv.label()!r}")
         if e.get("state_hash") and e["state_hash"] != digest(ref.game.state):
@@ -194,10 +220,14 @@ def replay_entries(ref: Referee, entries: list[dict]) -> int:
 
 # ------------------------------------------------------------------------------------- server
 
-class GameServer(socketserver.UnixStreamServer):
+class GameServer(socketserver.TCPServer):
     """Single-threaded on purpose: requests are applied one at a time, in order."""
 
+    address_family = getattr(socket, "AF_UNIX", socket.AF_INET)
+
     def __init__(self, sock_path: str, ref: Referee, log_path: Path):
+        if not hasattr(socket, "AF_UNIX"):
+            raise RuntimeError("the cr socket server requires Linux; use the task Docker image")
         self.ref = ref
         self.log_path = log_path
         self.shown_at = time.time()
@@ -299,6 +329,7 @@ class Handler(socketserver.StreamRequestHandler):
 
 
 def serve(config: Path, state_dir: Path, sock: str) -> None:
+    import fcntl  # server locking is Linux-only; replay/calibration also run on Windows
     state_dir.mkdir(parents=True, exist_ok=True)
     lock = open(state_dir / "server.lock", "w")
     try:
@@ -307,7 +338,7 @@ def serve(config: Path, state_dir: Path, sock: str) -> None:
         print("server already running", file=sys.stderr)
         return
     cfg = json.loads(config.read_text())
-    ref = Referee(cfg, record=True)
+    ref = make_referee(cfg, record=True)
     log_path = state_dir / "actions.jsonl"
     resumed = replay_entries(ref, read_log(log_path))  # a restarted server continues the same match
     print(f"serving seed={cfg['seed']} team={ref.team} resumed={resumed}", file=sys.stderr, flush=True)
@@ -327,11 +358,13 @@ def verify(cfg: dict, log_path: Path, out_dir: Path | None) -> dict:
         shutil.rmtree(out_dir / "telemetry", ignore_errors=True)
         capture = Capture(out_dir / "telemetry", source="verifier", config=cfg,
                           match_id=identity.get("match_id"), attempt_id=identity.get("attempt_id"))
-    ref = Referee(cfg, record=out_dir is not None, capture=capture)
+    ref = make_referee(cfg, record=out_dir is not None, capture=capture)
     parse_error = None
     try:
         entries = read_log(log_path)
-    except (ValueError, OSError) as exc:
+        if any(not isinstance(e, dict) for e in entries):
+            raise ValueError("log entries must be objects")
+    except (ValueError, OSError, UnicodeError) as exc:
         entries, parse_error = [], str(exc)
     report: dict = {"seed": cfg["seed"], "agent_team": ref.team, "opponent": cfg["opponent"],
                     "log_entries": len(entries)}
@@ -340,7 +373,7 @@ def verify(cfg: dict, log_path: Path, out_dir: Path | None) -> dict:
             raise LogMismatch(parse_error)
         applied = replay_entries(ref, entries)
         integrity = 1
-    except (LogMismatch, ValueError, KeyError) as exc:
+    except (LogMismatch, ValueError, KeyError, TypeError, OverflowError) as exc:
         report["integrity_error"] = str(exc)
         applied, integrity = 0, 0
     completed = int(ref.over)
@@ -366,7 +399,7 @@ def verify(cfg: dict, log_path: Path, out_dir: Path | None) -> dict:
         except (KeyError, TypeError, ValueError):
             pass
     rewards = {
-        "reward": float(outcome["result"] == "win" and integrity),  # 1 or 0, never a fraction
+        "reward": float(ref.success() and integrity and (not cfg.get("scenario") or (completed and applied > 0))),
         "win": float(outcome["result"] == "win" and integrity),
         "crowns_for": float(outcome["crowns_for"]),
         "crowns_against": float(outcome["crowns_against"]),
@@ -381,6 +414,11 @@ def verify(cfg: dict, log_path: Path, out_dir: Path | None) -> dict:
                   termination_tick=termination_tick, timing_known=len(think),
                   task_config=cfg, rubric="binary-win-v1")
     report["tiebreak_reason"] = reason
+    if cfg.get("scenario"):
+        report.update(benchmark=cfg["benchmark"], task_id=cfg["id"], scenario=cfg["scenario"],
+                      setup_hash=ref.setup_hash, planner=cfg["planner"], rubric="scenario-objective-v1")
+        rewards.update(spent_elixir=float(ref.spent), tower_damage=float(outcome["tower_damage"]),
+                       objective_met=float(ref.success()))
     if out_dir is not None:
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / "reward.json").write_text(json.dumps(rewards, indent=1) + "\n")
@@ -403,7 +441,7 @@ def verify(cfg: dict, log_path: Path, out_dir: Path | None) -> dict:
 def selfplay(cfg: dict, log_path: Path, agent: str) -> None:
     """Play the agent seat with a bot through the same act/log path the server uses."""
     bot = make_opponent(agent)
-    ref = Referee(cfg)
+    ref = make_referee(cfg)
     bot.start(ref.game, ref.team)
     log_path.unlink(missing_ok=True)
     with log_path.open("a") as f:

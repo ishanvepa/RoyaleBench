@@ -1,2 +1,2 @@
-{"decision": 0, "tick": 5400, "move": 33, "label": "33. Cannon (3 elixir, building) @ left bridge", "think_s": 0.034, "wall": 1794722187.382}
-{"decision": 1, "tick": 5440, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.027, "wall": 1794722187.43}
+{"decision": 0, "tick": 5400, "move": 33, "label": "33. Cannon (3 elixir, building) @ left bridge", "think_s": 0.156756, "wall": 1794730437.942, "segment_id": "c6f48d191093475e95542d97a3802945", "observation_id": "06d28995e31d479fab8f99195c570fee:referee:observations:0", "state_hash": "110322288b6a27e6e2b1108d1038eaec287986930f58376ee10e41ec29cc0090"}
+{"decision": 1, "tick": 5440, "move": 0, "label": "0. wait (save elixir)", "think_s": 0.152105, "wall": 1794730438.238, "segment_id": "c6f48d191093475e95542d97a3802945", "observation_id": "06d28995e31d479fab8f99195c570fee:referee:observations:1", "state_hash": "ca772654146fa6408b3dbc567090b11867352355aea67b52c597532e59a20acc"}

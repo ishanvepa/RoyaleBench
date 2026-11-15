@@ -113,6 +113,12 @@ pilot does not estimate aggregate benchmark performance.
 
 The dataset is automatically discoverable in the existing evals dashboard. Before publishing, review `manifest.json`, run the tests and Docker validation, and follow the [Valkyrie guide](valkyrie_guide.md) for authentication and the existing organization. The package follows the current [Harbor task layout](https://docs.harborframework.com/tasks/overview), [separate verifier](https://docs.harborframework.com/tasks/separate-verifier) and [network policy configuration](https://docs.harborframework.com/tasks/configuration).
 
+The next generated release uses the compact `Opponent plays: Card@(x,y), ...` observation line
+described in the [simulator guide](simulator_foundation.md). This changes observation text and its
+protocol hash; revalidate the existing references and publish a new immutable revision before model
+comparisons. Existing published revisions and their recorded validation results keep their original
+observation format.
+
 ```bash
 valkyrie dataset push royalebench/royalebench-v1 ./benchmarks/royalebench-v1 --tag v2
 ```

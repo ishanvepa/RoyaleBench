@@ -322,10 +322,187 @@
         ], "#f4d166", "#795b2b", 1);
       }
     }
-    function drawBuilding(name, px, py, r, fill, edge, hit) {
+    // Classic-deck buildings, drawn in units of the entity radius around its centre. Shapes follow
+    // gameplay footage (see docs/rendering.md); the weapon turns toward `aim`, 0 meaning screen-up.
+    function line(points, stroke, width) {
+      ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) ctx.lineTo(points[i][0], points[i][1]);
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = width;
+      ctx.stroke();
+    }
+    function octagon(rx, ry) {
+      const pts = [];
+      for (let i = 0; i < 8; i++) {
+        const a = Math.PI / 8 + (i * Math.PI) / 4;
+        pts.push([Math.cos(a) * rx, Math.sin(a) * ry]);
+      }
+      return pts;
+    }
+    const BUILDING_ART = {
+      Cannon(fill, edge, body, aim) {
+        disk(0.1, 0.45, 0.95, 0.38, "rgba(20,29,21,.3)");
+        ctx.lineCap = "round";
+        for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+          line([[0, 0.05], [dx * 0.76, 0.05 + dy * 0.58]], "#45301d", 0.34);
+          line([[0, 0.05], [dx * 0.72, 0.05 + dy * 0.55]], "#a8743f", 0.18);
+        }
+        polygon(octagon(0.6, 0.52), body("#7d838b"), "#2b3036", 0.1);
+        disk(0, -0.02, 0.43, 0.36, fill, edge, 0.08);
+        ctx.save();
+        ctx.translate(0, -0.05);
+        ctx.rotate(aim);
+        ctx.fillStyle = body("#4a535e");
+        ctx.strokeStyle = "#15191e";
+        ctx.lineWidth = 0.08;
+        ctx.beginPath();
+        ctx.roundRect(-0.2, -1.02, 0.4, 1.02, 0.1);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "rgba(255,255,255,.28)";
+        ctx.fillRect(-0.12, -0.95, 0.07, 0.85);
+        ctx.fillStyle = fill;
+        ctx.fillRect(-0.23, -0.78, 0.46, 0.15);
+        disk(0, -1.0, 0.17, 0.08, "#0d1013");
+        ctx.restore();
+        disk(0, -0.05, 0.22, 0.2, "#3d444d", "#15191e", 0.05);
+      },
+      Tombstone(fill, edge, body) {
+        disk(0.08, 0.5, 0.85, 0.3, "rgba(20,29,21,.3)");
+        disk(0, 0.42, 0.64, 0.25, "#3b2d21", "#241a12", 0.06);
+        ctx.beginPath();
+        ctx.moveTo(-0.5, 0.45);
+        ctx.lineTo(-0.42, -0.38);
+        ctx.quadraticCurveTo(-0.42, -0.8, 0, -0.82);
+        ctx.quadraticCurveTo(0.42, -0.8, 0.42, -0.38);
+        ctx.lineTo(0.5, 0.45);
+        ctx.closePath();
+        ctx.fillStyle = body("#ccb08d");
+        ctx.fill();
+        ctx.strokeStyle = "#6b533a";
+        ctx.lineWidth = 0.07;
+        ctx.stroke();
+        polygon([[0.22, -0.66], [0.42, -0.38], [0.5, 0.45], [0.3, 0.45]], "rgba(96,64,32,.22)");
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = edge;
+        ctx.lineWidth = 0.06;
+        ctx.beginPath();
+        ctx.roundRect(-0.24, -0.2, 0.48, 0.52, 0.06);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = "rgba(255,255,255,.3)";
+        ctx.fillRect(-0.19, -0.15, 0.38, 0.08);
+        disk(0, -0.5, 0.17, 0.15, "#f3eee2", "#6b533a", 0.04);
+        ctx.fillStyle = "#f3eee2";
+        ctx.fillRect(-0.08, -0.41, 0.16, 0.08);
+        disk(-0.065, -0.51, 0.045, 0.05, "#2a1f16");
+        disk(0.065, -0.51, 0.045, 0.05, "#2a1f16");
+        disk(-0.44, 0.52, 0.12, 0.07, "#8a7863");
+        disk(0.45, 0.48, 0.1, 0.06, "#8a7863");
+      },
+      InfernoTower(fill, edge, body, aim) {
+        disk(0.1, 0.45, 0.9, 0.36, "rgba(20,29,21,.3)");
+        disk(0, 0.25, 0.72, 0.38, "#5a2611", "#2e130a", 0.06);
+        disk(0, 0.22, 0.58, 0.29, "#ef7322");
+        disk(0, 0.2, 0.4, 0.19, "#ffd45c");
+        polygon([[-0.36, 0.22], [-0.24, -0.78], [0.24, -0.78], [0.36, 0.22]], body("#3b4048"), "#1c2025", 0.08);
+        polygon([[-0.3, 0.18], [-0.21, -0.74], [-0.1, -0.74], [-0.14, 0.18]], "rgba(255,255,255,.14)");
+        ctx.fillStyle = "#23272d";
+        ctx.fillRect(-0.33, -0.06, 0.66, 0.08);
+        ctx.fillStyle = fill;
+        ctx.strokeStyle = edge;
+        ctx.lineWidth = 0.05;
+        ctx.fillRect(-0.29, -0.62, 0.58, 0.17);
+        ctx.strokeRect(-0.29, -0.62, 0.58, 0.17);
+        ctx.save();
+        ctx.translate(0, -0.86);
+        disk(0, 0, 0.3, 0.2, "#e1a93b", "#74501a", 0.06);
+        ctx.rotate(aim);
+        polygon([[-0.11, 0], [-0.06, -0.36], [0.06, -0.36], [0.11, 0]], "#f4cd52", "#74501a", 0.05);
+        disk(0, -0.38, 0.08, 0.06, "#ff6a2a");
+        ctx.restore();
+        disk(0, -0.86, 0.12, 0.08, "#ff9a3a");
+      },
+      Tesla(fill, edge, body) {
+        disk(0.08, 0.42, 0.8, 0.3, "rgba(20,29,21,.3)");
+        disk(0, 0.32, 0.62, 0.25, body("#908a7b"), "#4b4941", 0.07);
+        ctx.lineCap = "round";
+        const braces = [
+          [[-0.38, 0.22], [0.38, 0.22]],
+          [[-0.29, -0.24], [0.29, -0.24]],
+          [[-0.36, 0.2], [0.28, -0.22]],
+          [[0.36, 0.2], [-0.28, -0.22]],
+          [[-0.28, -0.26], [0.23, -0.64]],
+          [[0.28, -0.26], [-0.23, -0.64]],
+        ];
+        for (const b of braces) line(b, "#6f4a28", 0.09);
+        for (const s of [-1, 1]) {
+          line([[s * 0.42, 0.32], [s * 0.22, -0.72]], "#3a2817", 0.2);
+          line([[s * 0.42, 0.32], [s * 0.22, -0.72]], "#a8743f", 0.11);
+        }
+        ctx.fillStyle = body("#5b7ea8");
+        ctx.strokeStyle = "#22344a";
+        ctx.lineWidth = 0.06;
+        ctx.beginPath();
+        ctx.roundRect(-0.36, -1.0, 0.72, 0.34, 0.12);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = fill;
+        ctx.fillRect(-0.36, -0.81, 0.72, 0.1);
+        disk(0, -1.0, 0.22, 0.12, "#bfe8ff", "#22344a", 0.05);
+        line([[0.16, -1.04], [0.34, -1.1], [0.3, -1.2], [0.5, -1.26]], "#e2f7ff", 0.06);
+        line([[-0.16, -1.04], [-0.32, -1.16], [-0.24, -1.22]], "#e2f7ff", 0.05);
+      },
+      Xbow(fill, edge, body, aim) {
+        disk(0.1, 0.45, 0.95, 0.38, "rgba(20,29,21,.3)");
+        const hex = [];
+        for (let i = 0; i < 6; i++) {
+          const a = (i * Math.PI) / 3;
+          hex.push([Math.cos(a) * 0.66, 0.08 + Math.sin(a) * 0.52]);
+        }
+        polygon(hex, body("#606a76"), "#252b32", 0.09);
+        disk(0, 0.06, 0.46, 0.35, fill, edge, 0.07);
+        disk(0, 0.02, 0.2, 0.17, "#2e343c");
+        ctx.save();
+        ctx.rotate(aim);
+        ctx.lineCap = "round";
+        ctx.fillStyle = "#7a5230";
+        ctx.strokeStyle = "#37240f";
+        ctx.lineWidth = 0.06;
+        ctx.beginPath();
+        ctx.roundRect(-0.11, -0.95, 0.22, 1.42, 0.06);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = fill;
+        ctx.fillRect(-0.12, -0.12, 0.24, 0.13);
+        for (const [stroke, width] of [["#37240f", 0.22], ["#b37c44", 0.12]]) {
+          ctx.beginPath();
+          ctx.moveTo(-0.9, -0.36);
+          ctx.quadraticCurveTo(0, -0.98, 0.9, -0.36);
+          ctx.strokeStyle = stroke;
+          ctx.lineWidth = width;
+          ctx.stroke();
+        }
+        line([[-0.9, -0.36], [0, 0.16], [0.9, -0.36]], "#f1e8d0", 0.05);
+        disk(-0.9, -0.36, 0.08, 0.08, "#cfd8e0", "#4b5560", 0.03);
+        disk(0.9, -0.36, 0.08, 0.08, "#cfd8e0", "#4b5560", 0.03);
+        ctx.fillStyle = "#5b4228";
+        ctx.fillRect(-0.04, -1.1, 0.08, 1.0);
+        polygon([[-0.1, -1.06], [0, -1.3], [0.1, -1.06]], "#d7dfe6", "#4b5560", 0.04);
+        ctx.restore();
+      },
+    };
+    function drawBuilding(name, px, py, r, fill, edge, hit, aim = 0) {
       ctx.save();
       ctx.translate(px, py);
       ctx.scale(r, r);
+      const art = Object.hasOwn(BUILDING_ART, name) ? BUILDING_ART[name] : null;
+      if (art) {
+        art(fill, edge, (color) => (hit > 0 ? "#fff" : color), aim);
+        ctx.restore();
+        return;
+      }
       disk(0.12, 0.43, 0.95, 0.42, "rgba(20,29,21,.3)");
       ctx.fillStyle = hit > 0 ? "#fff" : "#8b8575";
       ctx.strokeStyle = "#3e4241";
@@ -499,13 +676,17 @@
           r = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)) * T / 2;
         }
         drawTower(e, px, py, r, hit, fill, edge);
-      } else if (kind === BUILDING) {
-        drawBuilding(name, px, py, r, fill, edge, hit);
       } else {
         const screenX = flip ? -fxv : fxv,
           screenY = flip ? fyv : -fyv,
-          facing = Math.hypot(screenX, screenY) > 0.1 ? Math.atan2(screenX, -screenY) : 0;
-        drawTroop(name, px, py, r, fill, edge, hit, facing);
+          aimed = Math.hypot(screenX, screenY) > 0.1;
+        if (kind === BUILDING) {
+          // without a reported facing, a building points at the enemy side of the board
+          const aim = aimed ? Math.atan2(screenX, -screenY) : mine !== flip ? 0 : Math.PI;
+          drawBuilding(name, px, py, r, fill, edge, hit, aim);
+        } else {
+          drawTroop(name, px, py, r, fill, edge, hit, aimed ? Math.atan2(screenX, -screenY) : 0);
+        }
       }
       ctx.globalAlpha = 1;
       if (e[13] > 0) {

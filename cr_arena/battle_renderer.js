@@ -1,7 +1,9 @@
 /* Shared battle graphics for live play and standalone saved replays.
  * Coordinates and radii in the drawing contract are tiles, Blue at the bottom.
- * en: [uid, team, kind, card, x, y, hp, maxHp, radius, flags, towerSlot, facingX, facingY, stunTicks, footprint]
- * footprint: optional [x0, y0, x1, y1] in tiles.
+ * en: [uid, team, kind, card, x, y, hp, maxHp, radius, flags, towerSlot, facingX, facingY, stunTicks, footprint,
+ *      shield, statusFlags, charge]
+ * footprint: optional [x0, y0, x1, y1] in tiles. shield: shield hp left (0 none). statusFlags: the engine's
+ * status bits, -1 when not reported. charge: build-up in permille, -1 when not reported.
  * sp: [team, card, x, y, aimX, aimY, motionName]; pr: [team, x, y]
  * flags: bit 0 flying, bit 1 deploying. Missing optional fields are supported for old traces.
  */
@@ -85,6 +87,7 @@
       fx = [],
       firstSeen = new Map(),
       hitAt = new Map(),
+      shieldMax = new Map(),
       spellFrom = new Map();
     let previous = null,
       drawn = [];
@@ -95,6 +98,7 @@
       fx = [];
       firstSeen.clear();
       hitAt.clear();
+      shieldMax.clear();
       spellFrom.clear();
     }
     function observe(s, now) {
@@ -112,11 +116,14 @@
               team: e[1],
               at: now,
             });
-          else if (n[6] < e[6]) hitAt.set(uid, now);
+          else if (n[6] < e[6] || (n[15] || 0) < (e[15] || 0)) hitAt.set(uid, now);
         }
       }
-      for (const e of s.en)
+      for (const e of s.en) {
         if (!firstSeen.has(e[0])) firstSeen.set(e[0], prev ? now : -1e9);
+        // the bar shows the shield left against the most it has been
+        if (e[15] > (shieldMax.get(e[0]) || 0)) shieldMax.set(e[0], e[15]);
+      }
       s.spBy = new Map(s.sp.map((sp) => [spKey(sp), sp]));
       for (const [k, sp] of s.spBy)
         if (!spellFrom.has(k)) spellFrom.set(k, [sp[2], sp[3]]);
@@ -171,6 +178,12 @@
             ctx.fillRect(x, y, w, w);
           }
         }
+    }
+    function shieldBar(x, y, w, frac) {
+      ctx.fillStyle = "rgba(0,0,0,.55)";
+      ctx.fillRect(x - w / 2, y, w, 3);
+      ctx.fillStyle = "#cfe3ff";
+      ctx.fillRect(x - w / 2, y, w * Math.max(0, Math.min(1, frac)), 3);
     }
     function hpBar(x, y, w, frac) {
       ctx.fillStyle = "rgba(0,0,0,.55)";
@@ -270,8 +283,11 @@
           "px system-ui";
         ctx.fillText(name.slice(0, 2), px, py + 0.5);
       }
-      if (tower || hp < maxHp)
+      const shield = e[15] || 0;
+      if (tower || hp < maxHp || shield > 0)
         hpBar(px, py - r - 8, Math.max(16, 2 * r), maxHp ? hp / maxHp : 0);
+      if (shield > 0)
+        shieldBar(px, py - r - 12, Math.max(16, 2 * r), shield / (shieldMax.get(uid) || shield));
       if (tower) {
         ctx.fillStyle = "#16202e";
         ctx.font = "700 11px ui-monospace, Menlo, monospace";

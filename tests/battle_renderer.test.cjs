@@ -112,3 +112,14 @@ test('old replay rows without footprints use the three-tile princess size', () =
   assert.equal(rect[3], 60);
   assert.equal(rect[4], 60);
 });
+
+test('a shield is drawn above the health bar and its loss flashes the unit', () => {
+  const {renderer, operations} = fixture();
+  const a = {en: [[1, 0, 0, 0, 4, 8, 100, 100, .5, 0, -1, 1, 0, 0, null, 50, 0, -1]], sp: [], pr: []};
+  const b = {en: [[1, 0, 0, 0, 4, 8, 100, 100, .5, 0, -1, 1, 0, 0, null, 20, 0, -1]], sp: [], pr: []};
+  renderer.observe(a, 0); renderer.observe(b, 100);
+  operations.length = 0;
+  renderer.draw(a, b, 1, 110, {scale: 20, cards});
+  assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#cfe3ff'), 'shield bar drawn');
+  assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff'), 'hit flash after shield damage');
+});

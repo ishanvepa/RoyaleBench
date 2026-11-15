@@ -14,7 +14,9 @@ SYSTEM_PROMPT = """You are playing a real-time lane-battle card game (Clash Roya
 
 RULES IN BRIEF
 - Each side has a king tower and two princess towers (left and right). Destroying a princess tower = 1 crown, the king tower = 3 crowns (instant win).
-- Most crowns when time runs out wins. If tied, overtime starts and the next crown wins; still tied after overtime = draw.
+- Most crowns when time runs out wins. If tied, overtime starts and the next crown wins. If crowns are still tied when
+  overtime ends, no more cards can be played and every tower drains: the side whose weakest standing tower has LESS hp
+  loses (exactly equal = draw). So tower damage matters even when it takes no crown.
 - You spend elixir (max 10, regenerates over time; faster in the last minute and overtime) to play cards from a 4-card hand. A played card goes to the back of your 8-card deck queue.
 - Troops walk down their lane toward enemy buildings and fight what they meet. Buildings stay put and defend. Spells hit an area once.
 - Good play: defend efficiently (spend less elixir than the enemy push costs), counter-attack with surviving troops, don't sit at full elixir (wasted regeneration), punish the lane where the enemy just spent elixir.
@@ -45,7 +47,8 @@ HOW THE GAME IS PLAYED
 Every {interval:.1f} seconds of game time you pick one move from a numbered list of legal moves: wait, or play a card
 from your hand. Troops and buildings go to fixed zones on your side (left/right bridge, in front of / behind
 your left/right tower, center, behind your king tower; once an enemy princess tower falls, also the enemy side of
-that lane). Spells can be aimed at any visible enemy unit or enemy tower.
+that lane). Spells can be aimed at visible units (yours or the enemy's), at enemy towers, or at those fixed
+zones and the enemy side of either lane.
 
 CARD POOL (name: elixir cost, type, count, hitpoints, flying)
 {pool}

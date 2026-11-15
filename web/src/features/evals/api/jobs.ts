@@ -81,6 +81,18 @@ export function useTaskTrace(runId: string, taskId: string | null, enabled: bool
   });
 }
 
+/** Mount only when opening playback: artifact downloads are always user initiated. */
+export function useTaskReplay(runId: string, taskId: string) {
+  return useQuery({
+    queryKey: qk.evals.jobReplay(runId, taskId),
+    queryFn: () =>
+      unwrap(api.GET("/api/evals/jobs/{run_id}/tasks/{task_id}/replay", { params: { path: { run_id: runId, task_id: taskId } } })),
+    staleTime: 0, // stopped/errored attempts can be resumed/retried
+    gcTime: 0, // discard HTML on close; reopening must not briefly show a previous attempt
+    refetchOnWindowFocus: false, // preserve the viewer's playback position
+  });
+}
+
 export interface LogParams {
   taskId: string;
   q: string;

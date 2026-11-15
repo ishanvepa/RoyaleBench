@@ -21,6 +21,7 @@ import { enumParam, useSearchState } from "@/hooks/useSearchState";
 import { formatBytes, formatDuration, formatPercent, formatReward, harnessName } from "@/lib/format";
 import { useBenchmarkTask, useTaskResults } from "../api/benchmarks";
 import { TraceView } from "../shared/TraceView";
+import { TaskReplay } from "../shared/TaskReplay";
 import { DifficultyBadge, SyncBadge } from "./badges";
 
 const TABS = ["overview", "files", "results"] as const;
@@ -251,6 +252,11 @@ function Results({ benchmark, taskId }: { benchmark: string; taskId: string }) {
         cell: (c) => <RelativeTime value={c.row.original.started_at} />,
       }),
       resultCol.display({
+        id: "replay",
+        header: () => <span className="sr-only">Replay</span>,
+        cell: (c) => <TaskReplay runId={c.row.original.run_id} taskId={taskId} />,
+      }),
+      resultCol.display({
         id: "trace",
         header: () => <span className="sr-only">Trace</span>,
         cell: (c) => (
@@ -260,7 +266,7 @@ function Results({ benchmark, taskId }: { benchmark: string; taskId: string }) {
         ),
       }),
     ],
-    [],
+    [taskId],
   );
 
   return (

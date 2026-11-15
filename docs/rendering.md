@@ -313,6 +313,9 @@ To check that other graphics did not change, render the same frames with the old
 new renderers and compare canvas operations. Non-classic spells, units, towers,
 projectiles, and death or drop effects produce identical operations.
 
+In narrow replay viewers (including dashboard task dialogs), the board and playback controls appear
+before the player stat panels so the game remains easy to reach on phones.
+
 `live.html` handles the WebSocket stream, HUD, and placement controls. `replay.html`
 adapts RoyaleGym's named trace columns into the same drawing contract and handles
 playback, scrubbing, flipping, and tooltips. Its playback controls were adapted

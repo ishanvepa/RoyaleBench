@@ -295,6 +295,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/evals/jobs/{run_id}/tasks/{task_id}/replay": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Recorded task gameplay, rendered on demand for a sandboxed iframe */
+        get: operations["get_replay_api_evals_jobs__run_id__tasks__task_id__replay_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/evals/jobs/{run_id}/tasks/{task_id}/trace": {
         parameters: {
             query?: never;
@@ -2043,6 +2060,26 @@ export interface components {
              * @default 0
              */
             waiting: number;
+        };
+        /** ReplayOut */
+        ReplayOut: {
+            /** Available */
+            available: boolean;
+            /**
+             * Html
+             * @default
+             */
+            html: string;
+            /**
+             * Message
+             * @default
+             */
+            message: string;
+            /**
+             * Partial
+             * @default false
+             */
+            partial: boolean;
         };
         /** ResumeIn */
         ResumeIn: {
@@ -4087,6 +4124,103 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TaskDetail"];
+                };
+            };
+            /** @description Rejected */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not signed in to Valkyrie */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Read-only mode */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Invalid input */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Upstream error */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+            /** @description Valkyrie unreachable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiErrorResponse"];
+                };
+            };
+        };
+    };
+    get_replay_api_evals_jobs__run_id__tasks__task_id__replay_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Valkyrie run id */
+                run_id: string;
+                /** @description Task id (the task folder name) */
+                task_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReplayOut"];
                 };
             };
             /** @description Rejected */

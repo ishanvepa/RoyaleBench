@@ -11,10 +11,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatReward } from "@/lib/format";
 import { useTaskDetail } from "../../api/jobs";
 import { TraceView } from "../../shared/TraceView";
+import { TaskReplay } from "../../shared/TaskReplay";
 
 const TERMINAL = ["FINISHED", "ERROR", "STOPPED"];
 
-/** Everything about one task of a run: grade, timings, the error if any, the verifier's output and the agent's trace. */
+/** One task's grade, timings, errors, recorded gameplay, verifier output and agent trace. */
 export function TaskPanel({ runId, dataset, task, onClose }: { runId: string; dataset: string; task: TaskRow; onClose: () => void }) {
   const detail = useTaskDetail(runId, task.task);
   return (
@@ -61,12 +62,20 @@ export function TaskPanel({ runId, dataset, task, onClose }: { runId: string; da
           )}
         </QueryBoundary>
         {TERMINAL.includes(task.status) ? (
-          <div className="space-y-2">
-            <h3 className="text-[13px] font-medium">Agent trace</h3>
-            <TraceView key={`${runId}/${task.task}`} runId={runId} taskId={task.task} />
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <h3 className="text-[13px] font-medium">Game replay</h3>
+              <TaskReplay key={`replay/${runId}/${task.task}`} runId={runId} taskId={task.task} />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-[13px] font-medium">Agent trace</h3>
+              <TraceView key={`${runId}/${task.task}`} runId={runId} taskId={task.task} />
+            </div>
           </div>
         ) : (
-          <p className="text-[13px] text-muted">The agent trace is available once the task has finished.</p>
+          <p className="text-[13px] text-muted">
+            The game replay and agent trace are available once the task has finished or stopped.
+          </p>
         )}
         {dataset ? (
           <Link

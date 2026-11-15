@@ -70,6 +70,20 @@
     Bat: "🦇",
     Minion: "😈",
   };
+  // Flying units from the classic decks. height: flying_height / 1000 (tiles) from RoyaleAPI's
+  // cards_stats.json; span: shadow half-width and size: miniature scale, both relative to the unit
+  // radius. Other flyers keep the
+  // generic winged miniature.
+  const AIR = Object.freeze({
+    Minions: { height: 1.5, span: 1.15, size: 1.3, flap: 110 },
+    MegaMinion: { height: 1.5, span: 1.25, size: 1.35, flap: 130 },
+    Bats: { height: 2, span: 1.2, size: 1.25, flap: 70 },
+    Balloon: { height: 3, span: 0.95, size: 1.4, flap: 0 },
+    BabyDragon: { height: 3.5, span: 1.3, size: 1.45, flap: 150 },
+    LavaPups: { height: 3.5, span: 1.1, size: 1.3, flap: 90 },
+    LavaHound: { height: 4, span: 1.35, size: 1.45, flap: 220 },
+  });
+  const AIR_LIFT = 0.3; // screen tiles of lift per tile of flying height (top-down camera)
   const iconOf = (name) => ICON[name] || ICON[name.replace(/s$/, "")] || "";
 
   const pretty = (n) => n.replace(/([a-z])([A-Z])/g, "$1 $2");
@@ -469,6 +483,139 @@
       }
       ctx.restore();
     }
+    // A classic-deck flying unit, or null. Lava Pups reuse the hound's card id; only their
+    // smaller radius (0.45 vs 0.75 tiles) or, in traces without radii, their health tells them apart.
+    function airOf(e) {
+      if (!(e[9] & 1) || e[2] === KING || e[2] === PRINCESS || e[2] === BUILDING) return null;
+      const name = cards[e[3]]?.[0];
+      if (name === "LavaHound" && (e[8] > 0 ? e[8] < 0.6 : e[7] < 1000)) return "LavaPups";
+      return AIR[name] ? name : null;
+    }
+    // Screen pixels between a flyer's ground point (its shadow) and its body, with a slow hover.
+    function airLift(air, uid, now) {
+      return (AIR[air].height * AIR_LIFT + Math.sin(now / 260 + uid * 1.7) * 0.04) * T;
+    }
+    function unitRadius(e, now) {
+      const pop = Math.min(1, Math.max(0, (now - (firstSeen.get(e[0]) ?? 0)) / 160));
+      return Math.max(T * 0.48, e[8] * T) * (0.6 + 0.4 * pop);
+    }
+    // Shadows sit on the true ground position, under every ground unit and building.
+    function drawAirShadow(e, air, x, y, now) {
+      const r = unitRadius(e, now),
+        h = AIR[air].height,
+        w = r * AIR[air].span * AIR[air].size * (1 - h * 0.05);
+      ctx.globalAlpha = e[9] & 2 ? 0.55 : 1;
+      disk(X(x), Y(y), w, w * 0.45, `rgba(12,24,16,${0.36 - h * 0.03})`);
+      ctx.strokeStyle = e[1] === 0 ? C.blueDk : C.redDk;
+      ctx.globalAlpha *= 0.55;
+      ctx.lineWidth = Math.max(1, T * 0.06);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    function wings(points, fill, stroke, width = 0.08) {
+      for (const side of [-1, 1])
+        polygon(points.map(([wx, wy]) => [wx * side, wy]), fill, stroke, width);
+    }
+    // Original miniatures, drawn in radius units facing -y; f is the wing-beat offset.
+    function drawFlyer(air, px, py, r, fill, edge, hit, facing, f) {
+      const flash = (c) => (hit > 0 ? "#fff" : c);
+      ctx.save();
+      ctx.translate(px, py);
+      if (air !== "Balloon") ctx.rotate(facing);
+      ctx.scale(r * AIR[air].size, r * AIR[air].size);
+      if (air === "Bats") {
+        wings([[0.12, -0.08], [0.55, -0.42 - f], [1.08, -0.28 - f], [0.95, 0.06],
+          [0.74, -0.02], [0.56, 0.2], [0.36, 0.06], [0.14, 0.2]], "#6b4f93", edge);
+        disk(0, 0.04, 0.24, 0.3, flash("#4a3566"), "#2a1f3a", 0.06);
+        polygon([[-0.17, -0.34], [-0.21, -0.6], [-0.04, -0.44]], "#4a3566");
+        polygon([[0.17, -0.34], [0.21, -0.6], [0.04, -0.44]], "#4a3566");
+        disk(0, -0.3, 0.2, 0.18, flash("#57407a"), "#2a1f3a", 0.06);
+        disk(-0.08, -0.33, 0.045, 0.045, "#ffd54a");
+        disk(0.08, -0.33, 0.045, 0.045, "#ffd54a");
+      } else if (air === "Minions" || air === "MegaMinion") {
+        const mega = air === "MegaMinion",
+          skin = mega ? "#5c6378" : "#7c98cc";
+        wings([[0.22, -0.12], [0.88, -0.62 - f], [1.08, -0.16 - f], [0.78, 0.12], [0.32, 0.22]],
+          mega ? "#3a3f55" : "#46548a", edge, 0.1);
+        disk(0, 0.12, 0.38, 0.4, flash(skin), "#2d3a5c", 0.08);
+        if (mega) {
+          disk(-0.4, -0.04, 0.17, 0.15, fill, edge, 0.06);
+          disk(0.4, -0.04, 0.17, 0.15, fill, edge, 0.06);
+          polygon([[-0.4, -0.3], [-0.5, -0.82], [-0.2, -0.6], [0.2, -0.6], [0.5, -0.82], [0.4, -0.3],
+            [0, -0.12]], flash("#7d849a"), "#2f344f", 0.07);
+          ctx.fillStyle = "#b5dff0";
+          ctx.fillRect(-0.2, -0.42, 0.4, 0.07);
+        } else {
+          disk(0, 0.12, 0.38, 0.12, fill); // team sash
+          polygon([[-0.2, -0.5], [-0.32, -0.74], [-0.08, -0.56]], "#e8e2cf");
+          polygon([[0.2, -0.5], [0.32, -0.74], [0.08, -0.56]], "#e8e2cf");
+          disk(0, -0.34, 0.3, 0.27, flash(skin), "#2d3a5c", 0.07);
+          disk(-0.11, -0.38, 0.06, 0.07, "#fff");
+          disk(0.11, -0.38, 0.06, 0.07, "#fff");
+          disk(-0.11, -0.39, 0.03, 0.035, "#1d2433");
+          disk(0.11, -0.39, 0.03, 0.035, "#1d2433");
+        }
+      } else if (air === "BabyDragon") {
+        polygon([[-0.13, 0.4], [0.13, 0.4], [0.04, 0.98], [0, 1.1], [-0.04, 0.98]], "#55a03c", "#2f5d23", 0.06);
+        wings([[0.25, -0.15], [0.95, -0.6 - f], [1.05, -0.05 - f], [0.82, 0.05], [0.66, 0.22], [0.3, 0.24]],
+          "#4e9a3a", edge, 0.1);
+        disk(0, 0.15, 0.42, 0.45, flash("#6cbf4a"), "#2f5d23", 0.08);
+        disk(0, 0.2, 0.24, 0.3, "#ead78f");
+        polygon([[-0.18, -0.55], [-0.28, -0.8], [-0.06, -0.62]], "#f2e7c4");
+        polygon([[0.18, -0.55], [0.28, -0.8], [0.06, -0.62]], "#f2e7c4");
+        disk(0, -0.44, 0.31, 0.27, flash("#74c851"), "#2f5d23", 0.07);
+        disk(0, -0.66, 0.18, 0.13, flash("#8ad466"), "#2f5d23", 0.05);
+        disk(-0.12, -0.46, 0.06, 0.07, "#20301a");
+        disk(0.12, -0.46, 0.06, 0.07, "#20301a");
+      } else if (air === "Balloon") {
+        ctx.strokeStyle = "#e6d1a8";
+        ctx.lineWidth = 0.06;
+        for (const side of [-0.4, 0, 0.4]) {
+          ctx.beginPath();
+          ctx.moveTo(side, 0.2);
+          ctx.lineTo(side * 0.5, 0.62);
+          ctx.stroke();
+        }
+        ctx.fillStyle = "#7a5634";
+        ctx.fillRect(-0.28, 0.58, 0.56, 0.32);
+        ctx.strokeStyle = "#4a3320";
+        ctx.lineWidth = 0.06;
+        ctx.strokeRect(-0.28, 0.58, 0.56, 0.32);
+        disk(0, 0.6, 0.17, 0.15, "#30343c", "#15181d", 0.05); // the bomb
+        disk(0, -0.38, 0.8, 0.84, flash(fill), edge, 0.12);
+        ctx.strokeStyle = edge;
+        ctx.lineWidth = 0.06;
+        for (const k of [-0.45, 0.45]) {
+          ctx.beginPath();
+          ctx.ellipse(0, -0.38, Math.abs(k), 0.84, 0, 0, 7);
+          ctx.stroke();
+        }
+        disk(-0.32, -0.7, 0.13, 0.22, "rgba(255,255,255,.35)");
+      } else if (air === "LavaHound" || air === "LavaPups") {
+        const hound = air === "LavaHound";
+        wings(hound
+          ? [[0.35, -0.2], [0.95, -0.55 - f], [1.0, -0.1 - f], [0.62, 0.12]]
+          : [[0.3, -0.15], [0.95, -0.42 - f], [0.9, 0.05 - f], [0.4, 0.15]],
+        "#4a3c37", edge, 0.1);
+        if (hound) {
+          for (const [lx, ly] of [[-0.42, 0.55], [0.42, 0.55], [-0.38, -0.28], [0.38, -0.28]])
+            disk(lx, ly, 0.13, 0.13, "#3d302b");
+        }
+        disk(0, 0.08, hound ? 0.62 : 0.46, hound ? 0.66 : 0.48, flash("#5b4a44"), "#2a1f1b", 0.08);
+        ctx.strokeStyle = "#ff8a2a";
+        ctx.lineWidth = 0.07;
+        ctx.beginPath();
+        ctx.moveTo(-0.3, -0.05); ctx.lineTo(-0.08, 0.15); ctx.lineTo(-0.2, 0.4);
+        ctx.moveTo(0.28, 0.0); ctx.lineTo(0.1, 0.25); ctx.lineTo(0.25, 0.42);
+        ctx.stroke();
+        disk(0, 0.1, 0.16, 0.16, "#ffb347");
+        disk(0, -0.5, hound ? 0.36 : 0.3, hound ? 0.3 : 0.26, flash("#66544c"), "#2a1f1b", 0.07);
+        disk(-0.13, -0.54, 0.06, 0.05, "#ffc23d");
+        disk(0.13, -0.54, 0.06, 0.05, "#ffc23d");
+        disk(0, -0.5, 0.36, 0.08, fill); // team collar
+      }
+      ctx.restore();
+    }
     function drawEntity(e, x, y, hp, now) {
       const [uid, team, kind, cid, , , , maxHp, rad, flags, , fxv, fyv] = e;
       const mine = team === 0,
@@ -476,16 +623,17 @@
         edge = mine ? C.blueDk : C.redDk;
       const flying = flags & 1,
         deploying = flags & 2,
-        tower = kind === KING || kind === PRINCESS;
+        tower = kind === KING || kind === PRINCESS,
+        air = airOf(e);
       const born = firstSeen.get(uid) ?? 0,
         pop = Math.min(1, Math.max(0, (now - born) / 160));
       const elapsed = now - (hitAt.get(uid) ?? -1e9);
       const hit = elapsed < 0 ? 0 : Math.max(0, 1 - elapsed / 140);
       const px = X(x),
-        py = Y(y) - (flying ? T * 0.5 : 0);
+        py = Y(y) - (air ? airLift(air, uid, now) : flying ? T * 0.5 : 0);
       let r = Math.max(T * 0.48, rad * T) * (0.6 + 0.4 * pop);
       ctx.globalAlpha = deploying ? 0.55 : 1;
-      if (flying) {
+      if (flying && !air) {
         ctx.fillStyle = "rgba(0,0,0,.22)";
         ctx.beginPath();
         ctx.ellipse(X(x), Y(y) + r * 0.5, r, r * 0.45, 0, 0, 7);
@@ -505,7 +653,12 @@
         const screenX = flip ? -fxv : fxv,
           screenY = flip ? fyv : -fyv,
           facing = Math.hypot(screenX, screenY) > 0.1 ? Math.atan2(screenX, -screenY) : 0;
-        drawTroop(name, px, py, r, fill, edge, hit, facing);
+        if (air) {
+          const rate = AIR[air].flap;
+          drawFlyer(air, px, py, r, fill, edge, hit, facing, rate ? Math.sin(now / rate + uid) * 0.1 : 0);
+          // rings, bars and the hit target follow the miniature; the balloon's envelope rises higher
+          r *= AIR[air].size * (air === "Balloon" ? 1.2 : 1);
+        } else drawTroop(name, px, py, r, fill, edge, hit, facing);
       }
       ctx.globalAlpha = 1;
       if (e[13] > 0) {
@@ -628,6 +781,10 @@
         (p, q) =>
           (p[0][9] & 1) - (q[0][9] & 1) || (flip ? p[2] - q[2] : q[2] - p[2]),
       ); // ground first, then flying; far before near
+      for (const [e, x, y] of list) {
+        const air = airOf(e);
+        if (air) drawAirShadow(e, air, x, y, now);
+      }
       for (const [e, x, y, hp] of list) drawEntity(e, x, y, hp, now);
       const named = []; // one name per group of the same unit standing together
       ctx.font = "700 " + Math.max(9, Math.round(T * 0.5)) + "px system-ui";
@@ -636,20 +793,23 @@
       ctx.lineJoin = "round";
       for (const [e, x, y] of list) {
         if (e[2] === KING || e[2] === PRINCESS || !cards[e[3]]) continue;
+        const air = airOf(e),
+          group = air === "LavaPups" ? "pups" : e[3];
         if (
           named.some(
             (n) =>
               n[0] === e[1] &&
-              n[1] === e[3] &&
+              n[1] === group &&
               Math.abs(n[2] - x) < 2.2 &&
               Math.abs(n[3] - y) < 2.2,
           )
         )
           continue;
-        named.push([e[1], e[3], x, y]);
-        const r = Math.max(T * 0.48, e[8] * T),
-          ly = Y(y) + r + 2 - (e[9] & 1 ? T * 0.5 : 0),
-          label = pretty(cards[e[3]][0]);
+        named.push([e[1], group, x, y]);
+        const r = Math.max(T * 0.48, e[8] * T) * (air ? AIR[air].size : 1),
+          lift = air ? airLift(air, e[0], now) : e[9] & 1 ? T * 0.5 : 0,
+          ly = Y(y) + r + 2 - lift,
+          label = pretty(air === "LavaPups" ? air : cards[e[3]][0]);
         ctx.lineWidth = 3;
         ctx.strokeStyle = "rgba(10,16,28,.85)";
         ctx.strokeText(label, X(x), ly);

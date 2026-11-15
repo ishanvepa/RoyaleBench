@@ -1,108 +1,157 @@
-"""Tests of strategic contrasts and release gates, using the pinned battle engine."""
+"""Tactics must use the exact v3 protocol and independently earn coordinate-mode release."""
 from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+import tomllib
 
 import pytest
 
-from cr_arena.build_v1 import build, instruction, release_problem
-from cr_arena.royale_task import verify
-from cr_arena.royalebench_v1 import protocol_digest
-from cr_arena.tactics import TITLE, catalog, mirror
-from cr_arena.validate_tactics import reference
-from cr_arena.validate_v1 import pick, play
+from cr_arena import tactics
+from cr_arena.build_tactics import FOUNDATION, FOUNDATION_PROTOCOL, OUT, build
+from cr_arena.build_v1 import MODEL_API_HOSTS
+from cr_arena.coordinate_benchmark import (config as v3_config, instruction, package_task,
+    packaged_protocol_digest, protocol_digest)
+from cr_arena.coordinate_task import MODE, CoordinateReferee
+from cr_arena.royale_task import make_referee, verify
+from cr_arena.telemetry import digest
+from cr_arena.validate_tactics import card_action, play, problem, reference, validation_digest
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope='module')
 def configs():
-    return {c["id"]: c for c in catalog()}
+    return {c['id']:c for c in tactics.catalog()}
 
 
-def test_mirror_preserves_state_and_disclosed_schedule(configs):
-    c = deepcopy(configs["02-reserve-counter-a"])
-    initial = deepcopy(c)
-    mirror(c)
-    assert c["scenario"]["units"][0]["x"] == 14.5
-    assert c["scenario"]["scheduled_attack"]["x"] == 14.5
-    mirror(c)
-    assert c == initial
-    text = instruction(configs["02-reserve-counter-b"])
-    assert "(14.5, 6.5)" in text and TITLE in text
+def test_frozen_menu_inputs_and_v3_foundation_are_pinned(configs):
+    assert len(configs)==8
+    assert len(tactics.source_manifest()['runnable_tasks'])==7
+    assert protocol_digest()==FOUNDATION_PROTOCOL==json.loads((FOUNDATION/'manifest.json').read_text())['protocol_sha256']
+    for c in configs.values():
+        assert c['action_mode']==MODE and c['version']=='2.0.0'
+        assert c['foundation_dataset']=='royalebench/royalebench-v3@2'
+        assert isinstance(make_referee(c),CoordinateReferee)
 
 
-def test_release_requires_each_contrast_even_with_winning_reference(configs):
-    c = configs["03-tower-race-a"]
-    evidence = dict(config_sha256=hashlib.sha256(json.dumps(c, sort_keys=True).encode()).hexdigest(),
-        protocol_sha256=protocol_digest(), reference_reward=1, deterministic=True,
-        wait_success=False, empty_reward=0, malformed_reward=0, release_gate_passed=True)
-    assert "contrast" in release_problem(c, evidence).lower()
-    evidence["contrast_rewards"] = dict(c["validation_requirements"])
-    assert "opening audit" in release_problem(c, evidence).lower()
-    from cr_arena.royale_task import make_referee
-    moves = make_referee(c).moves
-    evidence["opening_audit"] = dict(config_sha256=evidence["config_sha256"],
-        protocol_sha256=protocol_digest(), source_sha256=c["opening_audit_source_sha256"],
-        trials=[dict(move_index=m.index, integrity=1, reward=int(m.card == "Fireball"), card=m.card) for m in moves])
-    assert release_problem(c, evidence) is None
-    evidence["opening_audit"]["trials"][0].update(reward=1, card="Cannon")
-    assert "shortcut" in release_problem(c, evidence).lower()
-    evidence["contrast_rewards"]["defend"] = 1
-    assert release_problem(c, evidence) is not None
+def test_free_placement_has_no_numbered_oracle(configs):
+    ref=make_referee(configs['01-timed-spell-a'])
+    def unavailable(*args):raise AssertionError('coordinate play must not query numbered moves')
+    ref.game.legal_moves=unavailable
+    text=ref.observation()
+    assert 'HAND SLOTS' in text and 'LEGAL MOVES' not in text
+    action=card_action(ref,'Fireball',4.25,12.25)
+    _,meta=ref.prepare_action(action)
+    assert meta['accepted']
+    assert ref.game.own_tiles(0,meta['deployment']['x'],meta['deployment']['y'])==(4.25,12.25)
+    with pytest.raises(ValueError,match='numbered'):ref.act(1)
 
 
-def test_timed_spell_requires_waiting_and_replays(configs, tmp_path):
-    c = configs["01-timed-spell-a"]
-    good_log = tmp_path / "good.jsonl"
-    good = play(c, good_log, reference)
-    bad = play(c, tmp_path / "early.jsonl", lambda r: pick(r, "Fireball", "enemy Giant") if not r.plays else 0)
-    assert good.success() and good.outcome()["tower_damage"] == 0
-    assert good.plays[0]["decision"] == 1
-    assert not bad.success() and bad.outcome()["tower_damage"] > c["scenario"]["damage_limit"]
-    assert verify(c, good_log, None)["rewards"]["reward"] == 1
+def test_illegal_coordinate_is_a_wait_without_snapping(configs,tmp_path):
+    cfg=configs['03-tower-race-a']
+    ref,idle=make_referee(cfg),make_referee(cfg)
+    action=card_action(ref,'Cannon',9,15.5)
+    before=ref.tick;entry=ref.entry(action,5.0)
+    assert not entry['accepted'] and entry['rejection']=='WATER'
+    assert 'rejected' in ref.act_action(action)
+    idle.act_action({'cmd':'wait'})
+    assert ref.tick==before+40 and digest(ref.game.state)==digest(idle.game.state)
+    assert ref.spent==0 and ref.rejected_actions==1
 
 
-@pytest.mark.parametrize("variant", ["a", "b"])
-def test_tower_race_reverses_opening_outcomes(configs, tmp_path, variant):
-    c = configs[f"03-tower-race-{variant}"]
-    wins = {}
-    for name, card, target in [("commit", "Fireball", "enemy left princess tower"),
-                                ("defend", "Cannon", "left bridge"),
-                                ("near_commit", "Fireball", "on your Giant")]:
-        ref = play(c, tmp_path / f"{name}.jsonl", lambda r: pick(r, card, target) if r.decision == 0 else 0)
-        wins[name] = int(ref.success())
-    assert wins == {**c["validation_requirements"], "near_commit": int(variant == "a")}
+def test_spending_limit_is_checked_after_accepted_play(configs,tmp_path):
+    cfg=deepcopy(configs['01-timed-spell-a'])
+    cfg['scenario']['spend_budget']=3
+    log=tmp_path/'overspend.jsonl'
+    ref=play(cfg,log)
+    assert ref.spent==4 and ref.outcome()['tower_damage']==0
+    entries=[json.loads(line) for line in log.read_text().splitlines()]
+    assert any(e['accepted'] and e['action']['cmd']=='play' for e in entries)
+    report=verify(cfg,log,None)
+    assert report['rewards']['integrity']==report['rewards']['completed']==1
+    assert report['rewards']['reward']==0
 
 
-def test_tower_trade_wins_after_losing_a_princess(configs, tmp_path):
-    c = configs["04-tower-trade-a"]
-    ref = play(c, tmp_path / "trade.jsonl", reference)
-    assert ref.success()
-    assert ref.game.state.players[0].tower_hp[1] == 0
-    assert ref.outcome()["crowns_for"] == 2 and ref.outcome()["crowns_against"] == 1
-    assert ref.outcome()["elapsed_s"] == 14
+@pytest.mark.parametrize('variant',['a','b'])
+def test_race_requires_different_opening_strategies(configs,tmp_path,variant):
+    cfg=configs[f'03-tower-race-{variant}']
+    outcomes={}
+    for name,card,x,y in [('commit','Fireball',3.5,22),('defend','Cannon',3.5,9.5)]:
+        ref=play(cfg,tmp_path/f'{name}.jsonl',lambda r:card_action(r,card,x,y) if r.decision==0 else {'cmd':'wait'})
+        outcomes[name]=int(ref.success())
+    assert outcomes=={'commit':int(variant=='a'),'defend':int(variant=='b')}
 
 
-def test_generic_builder_preserves_title_and_gates_unvalidated_tasks(configs, tmp_path):
-    result = build(tmp_path / "dataset", tmp_path / "no-evidence", configs=list(configs.values()),
-                   guide="tactics.md", generator="cr_arena.build_tactics")
-    assert result["benchmark"] == TITLE and result["runnable_tasks"] == []
-    assert len(list((tmp_path / "dataset/candidates").glob("*.json"))) == 8
-    assert "tactics.md" in (tmp_path / "dataset/README.md").read_text()
+def test_timed_reference_waits_then_casts_and_replays(configs,tmp_path):
+    cfg=configs['01-timed-spell-a'];log=tmp_path/'timing.jsonl'
+    ref=play(cfg,log)
+    assert ref.success() and ref.outcome()['tower_damage']==0
+    entries=[json.loads(line) for line in log.read_text().splitlines()]
+    assert entries[0]['action']=={'cmd':'wait'} and entries[1]['action']['cmd']=='play'
+    assert verify(cfg,log,None)['rewards']['reward']==1
 
 
-def test_packaged_tasks_are_discoverable_and_do_not_include_answers_in_environment():
-    from rb_evals.benchmarks import load_benchmark, task_problems
-    root = Path("benchmarks/royalebench-tactics")
-    if not (root / "manifest.json").is_file():
-        pytest.skip("build the calibrated Tactics dataset first")
-    benchmark = load_benchmark(root)
-    manifest = json.loads((root / "manifest.json").read_text())
-    assert set(benchmark.tasks) == set(manifest["runnable_tasks"])
-    for task in benchmark.tasks.values():
-        assert task_problems(task) == []
-        assert task.config["metadata"]["control"] is False
-        assert task.config["verifier"]["environment_mode"] == "separate"
-        assert not list((task.path / "environment").rglob("*reference*"))
-        cfg = json.loads((task.path / "environment/task.json").read_text())
-        assert cfg == json.loads((task.path / "tests/task.json").read_text())
+def test_trade_reference_accepts_tower_loss(configs,tmp_path):
+    ref=play(configs['04-tower-trade-a'],tmp_path/'trade.jsonl')
+    assert ref.success() and ref.game.state.players[0].tower_hp[1]==0
+    assert (ref.outcome()['crowns_for'],ref.outcome()['crowns_against'])==(2,1)
+
+
+@pytest.mark.parametrize('y',[13,6.5])
+def test_spending_counter_early_really_clears_opening(configs,y):
+    ref=make_referee(configs['02-reserve-counter-a'])
+    initial={e.uid for e in ref.game.state.entities if e.team==1 and e.card_id>=0}
+    ref.act_action(card_action(ref,'Log',3.5,y))
+    assert not any(e.uid in initial and e.hp>0 for e in ref.game.state.entities)
+    assert ref.outcome()['tower_damage']==0 and ref.spent==2
+
+
+def test_old_menu_evidence_cannot_release_coordinates(configs,tmp_path):
+    c=configs['03-tower-race-a'];d=tmp_path/c['id'];d.mkdir()
+    log=d/'reference.jsonl';log.write_text('fixture\n')
+    row=dict(config_sha256=hashlib.sha256(json.dumps(c,sort_keys=True).encode()).hexdigest(),
+        protocol_sha256=protocol_digest(),reward=1,integrity=1,deterministic=True,
+        negative_rewards=dict(wait=0,empty=0,malformed=0),
+        reference_log_sha256=hashlib.sha256(log.read_bytes()).hexdigest(),
+        validation_source_sha256=validation_digest())
+    assert 'contrast' in problem(c,row,tmp_path).lower()
+    row['contrasts']={'rewards':dict(c['validation_requirements'])}
+    assert problem(c,row,tmp_path) is None
+    row['contrasts']['rewards']['wrong_strategy_screen_wins']=1
+    assert problem(c,row,tmp_path) is not None
+    row['protocol_sha256']='historical-menu-protocol'
+    assert problem(c,row,tmp_path)=='runtime changed'
+
+
+@pytest.mark.parametrize('protected',[FOUNDATION,tactics.SOURCE])
+def test_builder_does_not_overwrite_foundation(protected,tmp_path):
+    before=(protected/'manifest.json').read_bytes()
+    with pytest.raises(ValueError,match='overwrite'):build(protected,tmp_path)
+    assert (protected/'manifest.json').read_bytes()==before
+
+
+def test_shared_packager_keeps_the_v3_runtime(tmp_path):
+    cfg=v3_config('01-immediate-lethal',title='RoyaleBench v3',version='3.0.0')
+    evidence=Path('runs/royalebench-v3')
+    package_task(cfg,tmp_path,evidence,Path('data/royalebench-v1-source')/cfg['id'],task_prefix='v3-')
+    task=tmp_path/cfg['id']
+    assert packaged_protocol_digest(task)==packaged_protocol_digest(FOUNDATION/cfg['id'])
+    assert (task/'instruction.md').read_bytes()==(FOUNDATION/cfg['id']/'instruction.md').read_bytes()
+    assert tomllib.loads((task/'task.toml').read_text())['agent']['allowed_hosts']==list(MODEL_API_HOSTS)
+
+
+def test_packaged_tactics_match_foundation():
+    manifest=json.loads((OUT/'manifest.json').read_text())
+    if manifest.get('action_mode')!=MODE:pytest.skip('build the coordinate Tactics release first')
+    from rb_evals.benchmarks import load_benchmark,task_problems
+    benchmark=load_benchmark(OUT)
+    assert len(benchmark.tasks)==7 and len(manifest['runnable_tasks'])==7
+    for name,task in benchmark.tasks.items():
+        assert not task_problems(task)
+        assert packaged_protocol_digest(task.path)==manifest['protocol_sha256']==protocol_digest()
+        cfg=json.loads((task.path/'tests/task.json').read_text())
+        assert cfg==json.loads((task.path/'environment/task.json').read_text())
+        assert cfg['action_mode']==MODE
+        assert 'cr play SLOT X Y' in task.instruction and 'cr act N' not in task.instruction
+        assert task.config['agent']['allowed_hosts']==list(MODEL_API_HOSTS)
+        assert task.config['verifier']['environment_mode']=='separate'
+        assert task.config['verifier']['network_mode']=='no-network'

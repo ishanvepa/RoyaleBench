@@ -41,9 +41,10 @@ passed **3/3** and the matching frozen menu tasks passed **2/3**, all with integ
 pilot verifies operation and does not establish that coordinate actions increase difficulty.
 See the guide for exact revisions, costs, action traces, and the menu cycling failure.
 
-The separate [Tactics extension](docs/tactics.md), published as `royalebench/royalebench-tactics@2`, develops timed spell placement, counter reservation,
-crossed tower-race decisions and deliberate tower trades. Reference wins and explicit strategy
-contrasts gate packaging; its validation and model results are reported separately from v1.
+The [Tactics extension](docs/tactics.md), published as `royalebench/royalebench-tactics@3`, uses
+the same coordinate foundation as v3 for timed spells, counter reservation, tower races and tower
+trades. Reference wins and coordinate-placement contrasts gate packaging. Its historical menu
+releases and model results remain attributed to their original revisions.
 
 ## Preliminary full-match results
 

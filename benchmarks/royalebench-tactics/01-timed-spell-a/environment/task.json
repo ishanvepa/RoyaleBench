@@ -4,7 +4,7 @@
   "title": "Time an area spell: position A",
   "difficulty": "hard",
   "benchmark": "RoyaleBench Tactics",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "seed": 103,
   "agent_team": 0,
   "agent_deck": [
@@ -130,17 +130,22 @@
     "damage_limit": 100,
     "only_card": "Fireball"
   },
-  "release_gate": "Winning reference and task-specific contrast evidence are required.",
+  "release_gate": "Current coordinate references, negative controls and strategic contrasts are required.",
   "control": false,
-  "calibration_source_sha256": "4b80ddf8857e52316b39dac96f235f20f5b3971f8456856fe3182bf4145aab3f",
   "validation_requirements": {
     "immediate_best": 0,
-    "late_best": 0
+    "late_best": 0,
+    "screen_immediate_best": 0,
+    "screen_late_best": 0
   },
   "agent_notes": "Spell targets are fixed coordinates when submitted; units keep moving before impact.",
+  "action_mode": "coordinates-v1",
+  "foundation_dataset": "royalebench/royalebench-v3@2",
+  "source_dataset": "royalebench/royalebench-tactics@2",
+  "source_config_sha256": "9e5cf088a75928e7e7d4d30c994ad507e510c237f0a7b6844a4a5dccd15be209",
   "task_id": "01-timed-spell-a",
-  "instruction_sha256": "6b397ee3e2565111e6733d0b7a66d0caf647980094e50e2780666df44e54028d",
-  "rubric": "scenario-objective-v1",
+  "instruction_sha256": "20487ff55f243ba3a3c0f82ad8200f49f02e9a0a62de396418c0e812b43f8030",
+  "rubric": "scenario-objective-coordinates-v1",
   "capture_schema_version": "1.0",
   "resources": {
     "agent_timeout_s": 3600,

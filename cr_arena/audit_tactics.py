@@ -1,59 +1,73 @@
-"""Audit every immediate menu opening in the one-card race and trade scenarios.
+"""Bounded coordinate sweeps; actual Planner replays validate every selected witness.
 
-    python -m cr_arena.audit_tactics --tasks 3 4
-
-The remainder of each attempt waits. This is an opening-policy audit, not an exhaustive
-search over delayed policies. Protected logs and independent replay results are retained.
+The grid is a reproducible search for shortcuts, not an exhaustive proof over continuous
+placements or multi-action policies. Screening omits future opponent deployments; witnesses
+are always replayed against the real Planner before they can affect a release gate.
 """
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 
+from royalegym.protocol import DeployCommand, DeployStatus
+
 from .royale_task import make_referee
-from .royalebench_v1 import protocol_digest
-from .tactics import catalog
-from .validate_tactics import attempt
 from .telemetry import atomic_json
 
 
+def screen(cfg, card, *, delay=0, step=.5, bounds=(0,18,0,32)):
+    if step <= 0 or 18 / step % 1 or 32 / step % 1:
+        raise ValueError("step must evenly divide the arena dimensions")
+    ref = make_referee(cfg)
+    while not ref.over and (ref.tick-ref.start_tick)/20 < delay:
+        ref.act_action({"cmd": "wait"})
+    if ref.over:
+        return dict(card=card, delay=delay, step=step, trials=[])
+    g = ref.game
+    slot = next(i for i, cid in enumerate(g.state.players[0].hand) if g.card_name(cid) == card)
+    cost = g.card_by_id[g.state.players[0].hand[slot]].elixir
+    before = cfg["scenario"]["tower_hp"][0]
+    state = g.engine.save_state()
+    ticks = ref.end_tick - ref.tick
+    rows = []
+    for ix in range(round(bounds[0]/step),round(bounds[1]/step)):
+        for iy in range(round(bounds[2]/step),round(bounds[3]/step)):
+            x, y = ix*step, iy*step
+            g.engine.load_state(state)
+            ex, ey = g.engine_point(0, x, y)
+            cmd = DeployCommand(0, slot, ex, ey)
+            if g.engine.check_deploy(cmd) != DeployStatus.OK:
+                continue
+            g.engine.step([cmd], ticks)
+            s = g.state
+            hp = list(s.players[0].tower_hp)
+            damage = sum(max(0, a-b) for a,b in zip(before,hp))
+            success = (all(hp[i]>0 for i in (1,2)) and damage <= cfg["scenario"]["damage_limit"]
+                       if cfg["scenario"]["grading"] == "one_spell" else s.game_over and s.winner == 0)
+            success = bool(success and cost <= cfg["scenario"].get("spend_budget",1000))
+            rows.append(dict(x=x,y=y,success=success,damage=damage,own_hp=hp,
+                             enemy_hp=list(s.players[1].tower_hp)))
+    ref.opponent.close()
+    return dict(card=card, delay=delay, step=step, bounds=bounds,
+                opponent_followups="omitted screening only",trials=rows)
+
+
 def main():
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--tasks", type=int, nargs="+", default=[3, 4], choices=[3, 4])
-    ap.add_argument("--out", type=Path, default=Path("runs/tactics/openings"))
-    ap.add_argument("--evidence", type=Path, default=Path("runs/tactics"))
-    args = ap.parse_args()
-    records = []
-    source_hash = hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
-    for cfg in catalog():
-        if cfg["family"] not in args.tasks:
-            continue
-        ref = make_referee(cfg)
-        trials = []
-        for move in ref.moves:
-            result = attempt(cfg, args.out, f"opening-{move.index:02d}",
-                lambda r, i=move.index: i if r.decision == 0 else 0)
-            result.update(move_index=move.index, card=move.card, target=move.target,
-                          target_kind=move.target.split(" at (")[0])
-            trials.append(result)
-        config_hash = hashlib.sha256(json.dumps(cfg, sort_keys=True).encode()).hexdigest()
-        audit = dict(task=cfg["id"], family=cfg["family"], config_sha256=config_hash,
-            protocol_sha256=protocol_digest(), source_sha256=source_hash, trials=trials)
-        records.append(audit)
-        path = args.evidence / cfg["id"] / "validation.json"
-        evidence = json.loads(path.read_text())
-        if evidence.get("config_sha256") != config_hash or evidence.get("protocol_sha256") != protocol_digest():
-            raise RuntimeError(f"Calibrate the current reference before auditing {cfg['id']}")
-        evidence["opening_audit"] = audit
-        atomic_json(path, evidence)
-        atomic_json(args.out / "validation.json", dict(protocol_sha256=protocol_digest(), tasks=records))
-    result = dict(protocol_sha256=protocol_digest(),
-        audit_source_sha256=source_hash, tasks=records)
-    args.out.mkdir(parents=True, exist_ok=True)
-    (args.out / "validation.json").write_text(json.dumps(result, indent=2) + "\n")
+    from .tactics import catalog
+    ap=argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--task",required=True)
+    ap.add_argument("--card",default="Fireball")
+    ap.add_argument("--delay",type=int,default=0)
+    ap.add_argument("--step",type=float,default=.5)
+    ap.add_argument("--out",type=Path,required=True)
+    args=ap.parse_args()
+    cfg=next(c for c in catalog() if c['id']==args.task)
+    result=screen(cfg,args.card,delay=args.delay,step=args.step)
+    atomic_json(args.out,result)
+    rows=result['trials'];wins=[r for r in rows if r['success']]
+    print(json.dumps(dict(task=cfg['id'],count=len(rows),wins=len(wins),best=sorted(rows,key=lambda r:r['damage'])[:3])))
 
 
-if __name__ == "__main__":
+if __name__=='__main__':
     main()

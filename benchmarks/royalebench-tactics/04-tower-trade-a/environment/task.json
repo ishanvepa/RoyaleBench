@@ -4,7 +4,7 @@
   "title": "Choose a winning tower trade: position A",
   "difficulty": "hard",
   "benchmark": "RoyaleBench Tactics",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "seed": 109,
   "agent_team": 0,
   "agent_deck": [
@@ -99,16 +99,21 @@
     ],
     "spend_budget": 4
   },
-  "release_gate": "Winning reference and task-specific contrast evidence are required.",
+  "release_gate": "Current coordinate references, negative controls and strategic contrasts are required.",
   "control": false,
-  "calibration_source_sha256": "4b80ddf8857e52316b39dac96f235f20f5b3971f8456856fe3182bf4145aab3f",
   "validation_requirements": {
     "save_tower": 0,
-    "reference_loses_princess": 1
+    "reference_loses_princess": 1,
+    "defensive_cannon_screen_wins": 0,
+    "defensive_cannon_best": 0
   },
+  "action_mode": "coordinates-v1",
+  "foundation_dataset": "royalebench/royalebench-v3@2",
+  "source_dataset": "royalebench/royalebench-tactics@2",
+  "source_config_sha256": "0b08660087804e206e9d768851591dd487f9311391f7404b969b28e7bd75e9c4",
   "task_id": "04-tower-trade-a",
-  "instruction_sha256": "aafccb912673a3f109b40408873e0cc4ba90e70b2fcc4a1becd3d69354ab1567",
-  "rubric": "scenario-objective-v1",
+  "instruction_sha256": "2464db9dd3be9eaef6c62db389f568d71dfc88ec1814744a46cb2578bc3e302b",
+  "rubric": "scenario-objective-coordinates-v1",
   "capture_schema_version": "1.0",
   "resources": {
     "agent_timeout_s": 3600,

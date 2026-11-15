@@ -1,9 +1,11 @@
 schema_version = "1.4"
-artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
+artifacts = [
+    { source = "/var/lib/royale", destination = "royale" },
+]
 
 [task]
-name = "royalebench/01-timed-spell-b"
-description = "Time an area spell: position B. Cast exactly one Fireball, keep both princess towers alive for 12 seconds, and take at most 100 additional total crown-tower damage. Only Fireball and waiting are available. | opponent=planner-bot | seed=103 | version=1.0.0"
+name = "royalebench/tactics-01-timed-spell-b"
+description = "Time an area spell: position B. Cast exactly one Fireball, keep both princess towers alive for 12 seconds, and take at most 100 additional total crown-tower damage. Only Fireball and waiting are available. | action_mode=coordinates-v1 | version=2.0.0"
 
 [metadata]
 category = "clash-royale-continuation"
@@ -13,15 +15,23 @@ deck = "xbow-cycle"
 seed = 103
 seat = "blue"
 decision_ticks = 40
-
-dataset_version = "1.0.0"
+dataset_version = "2.0.0"
 family = 1
 opponent_deck = "giant-goblin-pressure"
 control = false
+action_mode = "coordinates-v1"
 
 [agent]
 network_mode = "allowlist"
-allowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai"]
+allowed_hosts = [
+    "api.anthropic.com",
+    "api.openai.com",
+    "openrouter.ai",
+    "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct",
+    "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct",
+    "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct",
+    "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct",
+]
 timeout_sec = 3600.0
 user = "player"
 

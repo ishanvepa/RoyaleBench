@@ -1,0 +1,396 @@
+{
+  "run_id": "72a98358-fdd7-41d4-9b24-9eb7f7917237",
+  "dataset": "royalebench/royalebench-tactics@3",
+  "model": "anthropic/claude-opus-5-5",
+  "harness": "claude_code-v1.0.0",
+  "provider": "modal",
+  "concurrency": 7,
+  "status": "FINISHED",
+  "started_at_utc": "2026-11-15T09:11:18.542452",
+  "finished_at_utc": "2026-11-15T09:14:38.058165",
+  "task_passes": 5,
+  "task_count": 7,
+  "flat_task_score_percent": 71.42857142857143,
+  "family_mean_score_percent": 62.5,
+  "api_cost_usd": 0.8022358,
+  "cost_scope": "Harness-reported model usage; excludes sandbox compute.",
+  "capture": {
+    "artifact_count": 322,
+    "complete": true,
+    "counts": {
+      "commands": 113,
+      "events": 1560,
+      "matches": 7,
+      "model_calls": 37,
+      "observations": 37,
+      "states": 90
+    },
+    "gaps": [],
+    "schema_version": "1.0"
+  },
+  "archive_checksum_errors": [],
+  "raw_archive": "runs/analysis/72a98358-fdd7-41d4-9b24-9eb7f7917237",
+  "durable_archive": "~/.local/share/royalebench/archive/72a98358-fdd7-41d4-9b24-9eb7f7917237",
+  "tasks": [
+    {
+      "task": "01-timed-spell-a",
+      "rewards": {
+        "completed": 1.0,
+        "crowns_against": 0.0,
+        "crowns_for": 0.0,
+        "decisions": 2.0,
+        "enemy_tower_damage_frac": 0.0,
+        "fast_decision_frac": 0.0,
+        "integrity": 1.0,
+        "objective_met": 1.0,
+        "own_tower_damage_frac": 0.0,
+        "rejected_actions": 0.0,
+        "reward": 1.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 0.0,
+        "win": 0.0
+      },
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0,
+        "ticks": 2440,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 1,
+            "card": "Fireball",
+            "x": 64800,
+            "y": 208800,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0,
+        "rejected_actions": 0
+      },
+      "api_cost_usd": 0.0904658,
+      "agent_time_s": 26.951661641000015
+    },
+    {
+      "task": "01-timed-spell-b",
+      "rewards": {
+        "completed": 1.0,
+        "crowns_against": 0.0,
+        "crowns_for": 0.0,
+        "decisions": 2.0,
+        "enemy_tower_damage_frac": 0.0,
+        "fast_decision_frac": 0.0,
+        "integrity": 1.0,
+        "objective_met": 1.0,
+        "own_tower_damage_frac": 0.0,
+        "rejected_actions": 0.0,
+        "reward": 1.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 0.0,
+        "win": 0.0
+      },
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.0,
+        "ticks": 2440,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 1,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 207000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2320,
+            "card": "Goblins",
+            "x": 261000,
+            "y": 405000
+          }
+        ],
+        "elapsed_s": 12.0,
+        "rejected_actions": 0
+      },
+      "api_cost_usd": 0.09038860000000001,
+      "agent_time_s": 28.476275922000013
+    },
+    {
+      "task": "02-reserve-counter-a",
+      "rewards": {
+        "completed": 1.0,
+        "crowns_against": 0.0,
+        "crowns_for": 0.0,
+        "decisions": 10.0,
+        "enemy_tower_damage_frac": 0.0,
+        "fast_decision_frac": 0.3,
+        "integrity": 1.0,
+        "objective_met": 0.0,
+        "own_tower_damage_frac": 0.1855,
+        "rejected_actions": 0.0,
+        "reward": 0.0,
+        "spent_elixir": 6.0,
+        "tower_damage": 2027.0,
+        "win": 0.0
+      },
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.1855,
+        "ticks": 3100,
+        "tower_damage": 2027,
+        "spent_elixir": 6,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 3,
+            "card": "Log",
+            "x": 63000,
+            "y": 63000,
+            "cost": 2
+          },
+          {
+            "decision": 5,
+            "card": "Cannon",
+            "x": 81000,
+            "y": 171000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [
+          {
+            "tick": 2820,
+            "card": "GoblinBarrel",
+            "x": 63000,
+            "y": 117000
+          },
+          {
+            "tick": 2860,
+            "card": "GoblinGang",
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "tick": 2900,
+            "card": "Princess",
+            "x": 261000,
+            "y": 315000
+          },
+          {
+            "tick": 2980,
+            "card": "Knight",
+            "x": 63000,
+            "y": 315000
+          },
+          {
+            "tick": 3020,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 513000
+          }
+        ],
+        "elapsed_s": 20.0,
+        "rejected_actions": 0
+      },
+      "api_cost_usd": 0.2110126,
+      "agent_time_s": 72.55833448700002
+    },
+    {
+      "task": "03-tower-race-a",
+      "rewards": {
+        "completed": 1.0,
+        "crowns_against": 0.0,
+        "crowns_for": 1.0,
+        "decisions": 1.0,
+        "enemy_tower_damage_frac": 0.3127,
+        "fast_decision_frac": 0.0,
+        "integrity": 1.0,
+        "objective_met": 1.0,
+        "own_tower_damage_frac": 0.2747,
+        "rejected_actions": 0.0,
+        "reward": 1.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 0.0,
+        "win": 1.0
+      },
+      "outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2747,
+        "ticks": 5879,
+        "tower_damage": 0,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.95,
+        "rejected_actions": 0
+      },
+      "api_cost_usd": 0.064501,
+      "agent_time_s": 12.261668463999996
+    },
+    {
+      "task": "03-tower-race-b",
+      "rewards": {
+        "completed": 1.0,
+        "crowns_against": 1.0,
+        "crowns_for": 0.0,
+        "decisions": 1.0,
+        "enemy_tower_damage_frac": 0.2689,
+        "fast_decision_frac": 0.0,
+        "integrity": 1.0,
+        "objective_met": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "rejected_actions": 0.0,
+        "reward": 0.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 50.0,
+        "win": 0.0
+      },
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.2689,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5868,
+        "tower_damage": 50,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.4,
+        "rejected_actions": 0
+      },
+      "api_cost_usd": 0.06530419999999999,
+      "agent_time_s": 17.236515441999984
+    },
+    {
+      "task": "04-tower-trade-a",
+      "rewards": {
+        "completed": 1.0,
+        "crowns_against": 1.0,
+        "crowns_for": 2.0,
+        "decisions": 7.0,
+        "enemy_tower_damage_frac": 0.5977,
+        "fast_decision_frac": 0.4286,
+        "integrity": 1.0,
+        "objective_met": 1.0,
+        "own_tower_damage_frac": 0.7749,
+        "rejected_actions": 0.0,
+        "reward": 1.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 2225.0,
+        "win": 1.0
+      },
+      "outcome": {
+        "result": "win",
+        "crowns_for": 2,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.5977,
+        "own_tower_damage_frac": 0.7749,
+        "ticks": 3600,
+        "tower_damage": 2225,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 261000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 14.0,
+        "rejected_actions": 0
+      },
+      "api_cost_usd": 0.1768514,
+      "agent_time_s": 53.015795537
+    },
+    {
+      "task": "04-tower-trade-b",
+      "rewards": {
+        "completed": 1.0,
+        "crowns_against": 1.0,
+        "crowns_for": 2.0,
+        "decisions": 7.0,
+        "enemy_tower_damage_frac": 0.5977,
+        "fast_decision_frac": 0.4286,
+        "integrity": 1.0,
+        "objective_met": 1.0,
+        "own_tower_damage_frac": 0.7749,
+        "rejected_actions": 0.0,
+        "reward": 1.0,
+        "spent_elixir": 4.0,
+        "tower_damage": 2225.0,
+        "win": 1.0
+      },
+      "outcome": {
+        "result": "win",
+        "crowns_for": 2,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.5977,
+        "own_tower_damage_frac": 0.7749,
+        "ticks": 3600,
+        "tower_damage": 2225,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 14.0,
+        "rejected_actions": 0
+      },
+      "api_cost_usd": 0.1037122,
+      "agent_time_s": 25.819860825000006
+    }
+  ]
+}

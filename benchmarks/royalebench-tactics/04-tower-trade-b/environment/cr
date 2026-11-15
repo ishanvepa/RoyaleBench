@@ -3,6 +3,8 @@
 
     cr            show the current state and the numbered legal moves
     cr act N      play move N (0 = wait); the game advances and the next state is shown
+    cr play SLOT X Y   coordinate mode: deploy hand slot 0-3 at own-frame tile coordinates
+    cr wait           coordinate mode: wait for one decision interval
 
 The game is paused while you think. Keep playing until it prints GAME OVER.
 """
@@ -11,6 +13,7 @@ The game is paused while you think. Keep playing until it prints GAME OVER.
 # of the sandbox has no game engine; it talks to the referee's game server over a Unix socket.
 
 import json
+import math
 import os
 import socket
 import subprocess
@@ -61,6 +64,16 @@ def main(argv: list[str]) -> int:
         except ValueError:
             print("usage: cr act <move number>")
             return 2
+    elif argv[0] == "play" and len(argv) == 4:
+        try:
+            payload = {"cmd": "play", "slot": int(argv[1]), "x": float(argv[2]), "y": float(argv[3])}
+            if not all(math.isfinite(payload[k]) for k in ("x", "y")):
+                raise ValueError("coordinates must be finite")
+        except ValueError:
+            print("usage: cr play <hand-slot integer> <finite x> <finite y>")
+            return 2
+    elif argv == ["wait"]:
+        payload = {"cmd": "wait"}
     else:
         print(__doc__.strip())
         return 0 if argv and argv[0] in ("-h", "--help", "help") else 2

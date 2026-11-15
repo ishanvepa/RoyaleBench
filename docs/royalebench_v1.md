@@ -11,9 +11,9 @@ The [coordinate-action pilot](coordinate_harness.md) is a separate dataset using
 positions with direct placement commands. Existing packaged v1 tasks retain the numbered menu
 and their calibrated runtime snapshots.
 
-The separate [Tactics extension](tactics.md) builds on this protocol with timed spells, counter
-reservation, stronger tower-race contrasts and deliberate tower trades. It does not revise the
-published v1 positions or reuse v1 model scores.
+The separate [Tactics extension](tactics.md) now uses the v3 coordinate foundation for timed spells,
+counter reservation, tower races and tower trades. Its historical menu releases remain available;
+the coordinate release does not revise published v1 positions or reuse v1 model scores.
 
 Validation on November 14, 2026, after updating to three-ply Planner: **11/11 runnable references score 1 with integrity 1** through the actual `cr` socket, restart, and fresh-container grader with networking disabled. All eleven replay traces reproduce every frame hash. The Windows scenario/referee run passes 18 cases (socket test excluded); the Linux referee/Planner run passes 15 cases, including the socket test. Those test sets overlap. Additional Planner/registry, public-play and web checks are recorded in [checks.json](../runs/royalebench-v1/checks.json). Evidence: [local calibration](../runs/royalebench-v1/validation.json), [container checks](../runs/royalebench-v1/docker/validation.json), [trace hashes](../runs/royalebench-v1/docker/trace_validation.json), and [placement/race contrasts](../runs/royalebench-v1/contrasts.json).
 

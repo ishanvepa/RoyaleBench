@@ -4,7 +4,7 @@
   "title": "Resolve an overtime tower race: position B",
   "difficulty": "hard",
   "benchmark": "RoyaleBench Tactics",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "seed": 109,
   "agent_team": 0,
   "agent_deck": [
@@ -75,20 +75,20 @@
         "team": 0,
         "x": 3.5,
         "y": 24,
-        "hp": 150
+        "hp": 400
       },
       {
         "card": "Balloon",
         "team": 1,
         "x": 3.5,
-        "y": 10.0
+        "y": 9.5
       }
     ],
     "grading": "win",
     "tower_hp": [
       [
         4824,
-        305,
+        50,
         3052
       ],
       [
@@ -99,22 +99,21 @@
     ],
     "spend_budget": 4
   },
-  "release_gate": "Winning reference and task-specific contrast evidence are required.",
+  "release_gate": "Current coordinate references, negative controls and strategic contrasts are required.",
   "control": false,
-  "calibration_source_sha256": "4b80ddf8857e52316b39dac96f235f20f5b3971f8456856fe3182bf4145aab3f",
   "validation_requirements": {
     "commit": 0,
-    "defend": 1
+    "defend": 1,
+    "wrong_strategy_screen_wins": 0,
+    "wrong_strategy_witness_best": 0
   },
-  "opening_audit_source_sha256": "fb5e2d8a9c6168191b078177d68fea9ec77fb3bed257a40709c94bd3df86dda8",
-  "opening_audit_requirements": {
-    "winning_cards": [
-      "Cannon"
-    ]
-  },
+  "action_mode": "coordinates-v1",
+  "foundation_dataset": "royalebench/royalebench-v3@2",
+  "source_dataset": "royalebench/royalebench-tactics@2",
+  "source_config_sha256": "8a2143cc192b21ce1d6d14607f7f8cf1ec3cb40ee70c5cfd8fe674e98b9a4edc",
   "task_id": "03-tower-race-b",
-  "instruction_sha256": "7d0e464022a612668651888585578fb82c0196633b1e412fab609a9a8ab1daef",
-  "rubric": "scenario-objective-v1",
+  "instruction_sha256": "02e0c5065c4eed31cb4344fcab9bc5965efd125579ebb96086270da0a95963f0",
+  "rubric": "scenario-objective-coordinates-v1",
   "capture_schema_version": "1.0",
   "resources": {
     "agent_timeout_s": 3600,

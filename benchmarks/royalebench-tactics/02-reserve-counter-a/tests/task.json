@@ -4,7 +4,7 @@
   "title": "Allocate a counter across two attacks: position A",
   "difficulty": "hard",
   "benchmark": "RoyaleBench Tactics",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "seed": 105,
   "agent_team": 0,
   "agent_deck": [
@@ -99,16 +99,19 @@
       "y": 6.5
     }
   },
-  "release_gate": "Winning reference and task-specific contrast evidence are required.",
+  "release_gate": "Current coordinate references, negative controls and strategic contrasts are required.",
   "control": false,
-  "calibration_source_sha256": "4b80ddf8857e52316b39dac96f235f20f5b3971f8456856fe3182bf4145aab3f",
   "validation_requirements": {
     "spend_then_musketeer": 0,
     "spend_then_recover": 0
   },
+  "action_mode": "coordinates-v1",
+  "foundation_dataset": "royalebench/royalebench-v3@2",
+  "source_dataset": "royalebench/royalebench-tactics@2",
+  "source_config_sha256": "9eabf091903b8e02a2a666dcb62b70185f3e089c0c420acb8cfccb6873f83a44",
   "task_id": "02-reserve-counter-a",
-  "instruction_sha256": "a8c1509e04b829698e4ea672ada83ef9a1e529435ac42e2c16739fa871f0b4fe",
-  "rubric": "scenario-objective-v1",
+  "instruction_sha256": "d993624678de0f0efad56eceb99d27ba70431d04cde0e8808366ecdd101127fd",
+  "rubric": "scenario-objective-coordinates-v1",
   "capture_schema_version": "1.0",
   "resources": {
     "agent_timeout_s": 3600,

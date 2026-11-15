@@ -1,0 +1,42 @@
+{
+  "run_id": "88a361db-f330-4823-b202-b07f6fee8e27",
+  "dataset": "royalebench/royalebench-tactics@3",
+  "task": "03-tower-race-a",
+  "model": "anthropic/claude-sonnet-4-6",
+  "harness": "claude_code-v1.0.0",
+  "provider": "modal",
+  "concurrency": 1,
+  "status": "FINISHED",
+  "rewards": {
+    "reward": 1.0,
+    "win": 1.0,
+    "crowns_for": 1.0,
+    "crowns_against": 0.0,
+    "enemy_tower_damage_frac": 0.3127,
+    "own_tower_damage_frac": 0.2747,
+    "completed": 1.0,
+    "integrity": 1.0,
+    "decisions": 1.0,
+    "fast_decision_frac": 0.0,
+    "spent_elixir": 4.0,
+    "tower_damage": 0.0,
+    "objective_met": 1.0,
+    "rejected_actions": 0.0
+  },
+  "agent_time_s": 40.242061801000006,
+  "api_cost_usd": 0.08928225000000001,
+  "capture": {
+    "artifact_count": 94,
+    "complete": true,
+    "counts": {
+      "commands": 4,
+      "events": 42,
+      "matches": 1,
+      "model_calls": 3,
+      "observations": 2,
+      "states": 4
+    },
+    "gaps": [],
+    "schema_version": "1.0"
+  }
+}

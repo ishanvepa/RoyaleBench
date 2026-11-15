@@ -161,6 +161,16 @@ class Referee:
 
 
 def make_referee(cfg: dict, record: bool = False, capture: Capture | None = None) -> Referee:
+    if cfg.get("action_mode") == "coordinates-v1":
+        from .coordinate_task import CoordinateReferee
+
+        ref = CoordinateReferee(cfg, record=record)
+        ref.capture = capture
+        if capture:
+            ref.game.telemetry = GameTelemetry(capture, ref.game)
+        return ref
+    if cfg.get("action_mode") not in (None, "menu-v1"):
+        raise ValueError("unknown action_mode")
     if "scenario" in cfg:
         from .scenario_task import ScenarioReferee
 
@@ -192,6 +202,10 @@ class LogMismatch(RuntimeError):
 def replay_entries(ref: Referee, entries: list[dict]) -> int:
     """Apply logged decisions, checking each one was made at the state it claims. Returns the
     number of entries applied (entries after the end of the match are ignored)."""
+    if ref.cfg.get("action_mode") == "coordinates-v1":
+        from .coordinate_task import replay_coordinates
+
+        return replay_coordinates(ref, entries)
     applied = 0
     for e in entries:
         if ref.over:
@@ -249,6 +263,10 @@ class GameServer(socketserver.TCPServer):
             "decision_id": f"{ref.team}:{ref.tick}", "tick": ref.tick, "team": ref.team})
         if cmd == "observe":
             return self.response(ref.observation())
+        if ref.cfg.get("action_mode") == "coordinates-v1":
+            from .coordinate_task import handle_command
+
+            return handle_command(self, req)
         if cmd == "act":
             try:
                 index = int(req["move"])
@@ -419,6 +437,9 @@ def verify(cfg: dict, log_path: Path, out_dir: Path | None) -> dict:
                       setup_hash=ref.setup_hash, planner=cfg["planner"], rubric="scenario-objective-v1")
         rewards.update(spent_elixir=float(ref.spent), tower_damage=float(outcome["tower_damage"]),
                        objective_met=float(ref.success()))
+    if cfg.get("action_mode") == "coordinates-v1":
+        report.update(action_mode="coordinates-v1", rubric="scenario-objective-coordinates-v1")
+        rewards["rejected_actions"] = float(ref.rejected_actions)
     if out_dir is not None:
         out_dir.mkdir(parents=True, exist_ok=True)
         (out_dir / "reward.json").write_text(json.dumps(rewards, indent=1) + "\n")

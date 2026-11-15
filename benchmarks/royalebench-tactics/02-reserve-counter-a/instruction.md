@@ -4,25 +4,32 @@
 
 Keep both princess towers alive for 20 seconds, take at most 450 additional total crown-tower damage, and spend at most 6 elixir. At elapsed 6.0 seconds the opponent casts its reserved GoblinBarrel on your left princess tower (3.5, 6.5).
 
-Reward is binary: 1 if the objective is met after you finish the scenario, 0 otherwise.
-Only decisions submitted with `cr act N` count. A chat response alone does not complete the task.
-Missing or partial play receives 0. The referee may advance forced waits automatically.
-Spending limits are hard constraints on the legal menu and include all your cards played after this start.
-Tower damage means the sum of additional damage to all your crown towers from this starting state.
+Reward is 1 only for a completed, independently replayed sequence meeting the objective; otherwise 0.
+A chat response alone does not complete the task. Damage means additional damage to all your crown
+towers after the starting state. Spending includes all accepted plays, even as elixir regenerates.
+Spending and lane budgets are checked by the verifier; overspending is possible and fails the objective.
+Any stated card restriction or maximum decision count still applies.
 
 ## Play
 
-Run `cr` to inspect the board and numbered legal moves. Run `cr act N` to submit one move.
-Move 0 is wait. Both players choose from the same state; each interval advances up to 2.0 seconds.
-The game pauses while you think. Continue until `cr` prints `GAME OVER`.
-Make each decision yourself; do not write programs, scripts, or loops to choose or submit moves.
-The model is evaluated on decisions through this menu. The opponent can use arbitrary legal placements.
+Run `cr` to inspect the board and zero-based hand slots (0, 1, 2, 3).
+Run `cr play SLOT X Y` to deploy that slot at tile coordinates, or `cr wait` to wait.
+For command shape only: `cr play 0 8.5 10.5`. Choose your own card and position.
+Coordinates use your perspective: 0 <= x < 18, 0 <= y < 32. They are rounded only to engine
+subtile precision, never snapped to a nearby legal placement. There is no numbered action menu.
+Malformed commands do not advance time. A well-formed illegal play (bad slot, empty slot,
+unaffordable card, illegal location, or unavailable card) consumes one interval as a wait and
+reports its rejection. Accepted commands and rejected attempts are replayed by the verifier.
+Both players choose from the same frozen state. Each interval advances up to 2 seconds; thinking
+does not advance time. Continue until `GAME OVER`. Submit each decision yourself; do not write
+programs, scripts, or loops to choose or submit moves. Missing or partial play scores zero.
+After the task's maximum decision count, or its single allowed spell, the referee resolves waits.
 
-The fixed opponent is **planner-bot**: a deterministic 10-second search, best-reply analysis
-and a third ply answering the 3 worst replies, top 4 candidates with the quiet-score prefilter,
-margin 40, elixir value 150 HP, and no worker processes. It sees the true engine state, including your
-hand and elixir. You see only your own hand and elixir, the board, visible events, and the next card.
-The opponent's deck is disclosed below; its hand and draw queue are hidden unless inferable from history.
+Planner is unchanged: deterministic 10-second, three-ply search, top 4 candidates, 3 answers,
+margin 40, elixir value 150 HP, quiet-score prefilter, no worker processes. It generates its own
+coordinate candidates and sees the true engine state, including your hand and elixir. You see
+your own hand/elixir, the board, visible events, and next card. Its deck is disclosed below;
+its hand, queue and elixir remain hidden unless inferable from history.
 
 ## Fixed starting state
 
@@ -31,13 +38,13 @@ Seed 105, blue seat, zero command delay. Time remaining: 45 seconds in
 regulation; elixir multiplier x2.
 The scoring window is at most 20 seconds and ends earlier if the match ends.
 Your starting hand: Log, IceGolemite, IceSpirits, Musketeer. Starting elixir: 5.
-`cr` provides exact tower HP, current unit HP/positions, visible events, and legal placements.
+`cr` provides exact tower HP, current unit HP/positions, visible events, and your hand.
 
 The scheduled GoblinBarrel is guaranteed, costs the opponent 3 elixir, and is reserved in its hand until elapsed 6.0 seconds, when it targets (3.5, 6.5) in your coordinates. Planner chooses every other opponent play.
 
 Coordinates are in tiles from your perspective: x 0-18 from left to right, y 0-32 from your back
 edge to the enemy's. The river is near y 15-16; your princess towers are near (3.5, 6.5) and
-(14.5, 6.5), the enemy's near y 25.5. Legal moves are re-numbered after every decision.
+(14.5, 6.5), the enemy's near y 25.5.
 
 ## Match rules
 

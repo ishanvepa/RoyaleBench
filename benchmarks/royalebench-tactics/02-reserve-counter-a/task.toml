@@ -1,9 +1,11 @@
 schema_version = "1.4"
-artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
+artifacts = [
+    { source = "/var/lib/royale", destination = "royale" },
+]
 
 [task]
-name = "royalebench/02-reserve-counter-a"
-description = "Allocate a counter across two attacks: position A. Keep both princess towers alive for 20 seconds, take at most 450 additional total crown-tower damage, and spend at most 6 elixir. At elapsed 6.0 seconds the opponent casts its reserved GoblinBarrel on your left princess tower (3.5, 6.5). | opponent=planner-bot | seed=105 | version=1.0.0"
+name = "royalebench/tactics-02-reserve-counter-a"
+description = "Allocate a counter across two attacks: position A. Keep both princess towers alive for 20 seconds, take at most 450 additional total crown-tower damage, and spend at most 6 elixir. At elapsed 6.0 seconds the opponent casts its reserved GoblinBarrel on your left princess tower (3.5, 6.5). | action_mode=coordinates-v1 | version=2.0.0"
 
 [metadata]
 category = "clash-royale-continuation"
@@ -13,15 +15,23 @@ deck = "hog-2.6-cycle"
 seed = 105
 seat = "blue"
 decision_ticks = 40
-
-dataset_version = "1.0.0"
+dataset_version = "2.0.0"
 family = 2
 opponent_deck = "log-bait"
 control = false
+action_mode = "coordinates-v1"
 
 [agent]
 network_mode = "allowlist"
-allowed_hosts = ["api.anthropic.com", "api.openai.com", "openrouter.ai"]
+allowed_hosts = [
+    "api.anthropic.com",
+    "api.openai.com",
+    "openrouter.ai",
+    "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct",
+    "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct",
+    "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct",
+    "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct",
+]
 timeout_sec = 3600.0
 user = "player"
 

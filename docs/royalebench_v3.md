@@ -32,6 +32,9 @@ under `candidates/` without `task.toml`; they are not runnable or scored.
 
 ## Default player flow
 
+The [Tactics extension](tactics.md) also uses this coordinate foundation, sharing its runtime,
+deployment handling, telemetry and endpoint policy while calibrating separate strategic scenarios.
+
 ```mermaid
 flowchart LR
     A[Text board and numbered hand slots] --> B[Model chooses slot and coordinates]

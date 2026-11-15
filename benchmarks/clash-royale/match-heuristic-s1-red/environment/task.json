@@ -1,0 +1,26 @@
+{
+ "seed": 1,
+ "agent_team": 1,
+ "agent_deck": [
+  "Giant",
+  "Musketeer",
+  "Knight",
+  "Archer",
+  "Minions",
+  "Cannon",
+  "Fireball",
+  "Zap"
+ ],
+ "opponent_deck": [
+  "Giant",
+  "Musketeer",
+  "Knight",
+  "Archer",
+  "Minions",
+  "Cannon",
+  "Fireball",
+  "Zap"
+ ],
+ "opponent": "heuristic",
+ "decision_ticks": 40
+}

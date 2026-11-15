@@ -1,0 +1,55 @@
+{
+  "viewport": [
+    1280,
+    1100
+  ],
+  "board": [
+    388,
+    47.25,
+    504,
+    896
+  ],
+  "scale": 28,
+  "results": {
+    "normal": {
+      "tick": 1200,
+      "changed_pixels": 54401,
+      "outside_towers": 37,
+      "outside_max_channel_delta": 4,
+      "outside_delta_over_4": 0
+    },
+    "-flipped": {
+      "tick": 1200,
+      "changed_pixels": 54401,
+      "outside_towers": 37,
+      "outside_max_channel_delta": 4,
+      "outside_delta_over_4": 0
+    },
+    "-destroyed": {
+      "tick": 3778,
+      "changed_pixels": 49577,
+      "outside_towers": 57,
+      "outside_max_channel_delta": 4,
+      "outside_delta_over_4": 0
+    }
+  },
+  "trace": "runs/samples/heuristic-bot__vs__random-bot__s2.msgpack",
+  "stride": 1,
+  "interpolation": false,
+  "normal_hash": "4a812d60b54536a1",
+  "destroyed_hash": "21760f6f67a06341",
+  "reference_video": "arena-1-PD6QCK7GzA8.mp4",
+  "reference_sha256": "b8eb9da25d3dcbcc94d9dfed278d70329d1c1ee0f0759d6ae7c36ac9541a0a55",
+  "sample_timestamps": [
+    "00:30.000",
+    "01:30.000",
+    "05:10.000",
+    "05:12.000",
+    "05:15.000"
+  ],
+  "comparison_regions": "For each tower in screen pixels: footprint [left,top,width,height]; mask floor(left-0.1*width-2), floor(top-2), ceil(left+1.2*width+2), ceil(top+1.2*height+2). Princess uses optional footprint; King uses radius 1.55 tiles. This union includes old and new shadows plus antialias fringe.",
+  "rea_version": "6.9.0",
+  "rea_original_source_sha256": "3dfdb5f2c3088106ca49b80ac3dcce3a65a3c6b4e1b0f34a89acf4b25b5dbe10",
+  "rea_evidence_id": "ev_8796f5e61898951f2deaaaecabf23776ec78dc085d4ef79e3e76fe9533119401",
+  "rea_scope": "Static JavaScript analysis only; video frames extracted with ffmpeg and inspected visually."
+}

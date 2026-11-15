@@ -21,9 +21,38 @@ The exact task design, agent interface, and scoring method are still to be decid
 - Start with small runs to control cost, then expand only after the tasks and scoring work reliably.
 - Record the harness, model, dataset version, run configuration, and results so another person can reproduce the comparison.
 
-## Project references
+## Designing tasks
 
+Before creating or changing any task under `benchmarks/`, read [`docs/task_design.md`](docs/task_design.md). It covers task selection, the Harbor layout used here, writing instructions and verifiers, preventing shortcuts, and the validation checklist every task must pass before it is run at scale.
+
+## Documentation index
+
+- Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
+- [`README.md`](README.md): project entry point and links to quick guides.
+- [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, pinned dependencies, and benchmark validation priorities.
+- [`docs/bots.md`](docs/bots.md): shared bot catalog, registry, implementation layout, and adding opponents.
+- [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.
+- [`docs/search_v2_context.md`](docs/search_v2_context.md): Plan 1 implementation context for improving CPU search, including candidate selection, rollouts, budgets, integration, and validation.
+- [`docs/phone_play.md`](docs/phone_play.md): launch interactive play and share a temporary public link.
+- [`docs/rendering.md`](docs/rendering.md): shared live/replay graphics, Arena 1 terrain and tower references, classic-deck units, spells and card portraits, live HUD and placement cues, battle indicators, placement masks, and rendering checks.
+- [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks.
+- [`docs/evals_dashboard.md`](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal from the web app and browse the arena.
+- [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
+- [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, and links.
+- [`docs/match_tasks.md`](docs/match_tasks.md): full-match Harbor tasks played through the `cr` CLI, referee isolation, replay grading, rewards, and how to build and publish them.
+- [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.
 - [`docs/vals-hacks-opening-slides.md`](docs/vals-hacks-opening-slides.md): event context and schedule.
+- [`data/README.md`](data/README.md): documentation for project data.
 
-The track guide names the team's Valkyrie organization and provides example CLI commands. Check current Valkyrie and Harbor documentation when implementing their interfaces, since the project has not yet established a working benchmark structure.
+## Project references
+
+- [Valkyrie repository](https://github.com/vals-ai/Valkyrie): source code for the evaluation framework.
+- [Valkyrie documentation](https://docs.valkyrie.vals.ai/introduction/what-is-valkyrie): framework introduction and usage guidance.
+- [Valkyrie sandbox provider setup](https://docs.valkyrie.vals.ai/get-started/sandbox-providers): connect Modal credentials for evaluation compute.
+- [Modal getting started](https://modal.com/docs/guide/getting-started): account, CLI, and authentication setup.
+- [Modal Sandboxes](https://modal.com/docs/guide/sandboxes): isolated task execution and resource configuration.
+
+Modal provides the sandbox compute for evaluation tasks run through Valkyrie. Use `--provider modal` for evaluation runs and follow the provider setup and project smoke-test guide for credentials.
+
+The track guide names the team's Valkyrie organization and provides example CLI commands. Check current Valkyrie, Harbor, and Modal documentation when implementing their interfaces, since the project has not yet established a working benchmark structure.

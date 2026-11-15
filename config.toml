@@ -25,6 +25,7 @@ type = "heuristic"
 
 # ---------------------------------------------------------------- LLMs
 # provider = "anthropic"      -> Anthropic SDK, needs ANTHROPIC_API_KEY (or `ant auth login`)
+# provider = "openai"         -> direct OpenAI API, needs OPENAI_API_KEY; use bare model IDs
 # provider = "openai_compat"  -> any OpenAI-compatible API; default base_url is OpenRouter,
 #                                key from OPENROUTER_API_KEY (or set api_key_env / base_url)
 # Each (model, effort) combination is its own rated player.
@@ -39,12 +40,88 @@ price_in = 4        # USD per 1M input tokens (for the dashboard cost estimate)
 price_out = 20
 effort = "medium"          # low | medium | high | xhigh | max
 
+# GPT-6 family: direct OpenAI, low reasoning effort for every player.
+# Standard USD per 1M text tokens, checked 2026-11-07.
+[[players]]
+name = "gpt-6-astra"
+provider = "openai"
+model = "gpt-6-astra"
+effort = "low"
+price_in = 10
+price_out = 50
+
 [[players]]
 name = "gpt-6.1-sol"
-provider = "openai_compat"
-model = "openai/gpt-6.1-sol"
+provider = "openai"
+model = "gpt-6.1-sol"
+effort = "low"
 price_in = 2        # USD per 1M input tokens (for the dashboard cost estimate)
 price_out = 10
+
+[[players]]
+name = "gpt-6.1-terra"
+provider = "openai"
+model = "gpt-6.1-terra"
+effort = "low"
+price_in = 1
+price_out = 5
+
+[[players]]
+name = "gpt-6-luna"
+provider = "openai"
+model = "gpt-6-luna"
+effort = "low"
+price_in = 0.1
+price_out = 0.5
+
+[[players]]
+name = "gpt-6-sol"
+provider = "openai"
+model = "gpt-6-sol"
+effort = "low"
+price_in = 2
+price_out = 10
+
+# Direct OpenAI models; all use OPENAI_API_KEY.
+# GPT-5 / mini / nano retire 2026-12-11; GPT-4o / mini retire 2027-01-14.
+# Prices below: standard USD per 1M text tokens, checked 2026-11-07.
+[[players]]
+name = "gpt-5"
+provider = "openai"
+model = "gpt-5"
+effort = "low"
+price_in = 1.25
+price_out = 10
+
+[[players]]
+name = "gpt-5-mini"
+provider = "openai"
+model = "gpt-5-mini"
+effort = "low"
+price_in = 0.25
+price_out = 2
+
+[[players]]
+name = "gpt-5-nano"
+provider = "openai"
+model = "gpt-5-nano"
+effort = "low"
+price_in = 0.05
+price_out = 0.4
+
+[[players]]
+name = "gpt-4o"
+provider = "openai"
+model = "gpt-4o"
+price_in = 2.5
+price_out = 10
+
+[[players]]
+name = "gpt-4o-mini"
+provider = "openai"
+model = "gpt-4o-mini"
+price_in = 0.15
+price_out = 0.6
 
 [[players]]
 name = "gemini-4-argon"

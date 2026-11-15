@@ -45,12 +45,27 @@
   /* ---------- game ---------- */
   #game { height: 100%; display: flex; justify-content: center; gap: 18px; padding: 10px 12px; }
   #col { display: flex; flex-direction: column; gap: 8px; min-width: 0; max-width: 100%; align-items: center; }
-  #hud { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .side-tag { display: flex; align-items: center; gap: 8px; font-weight: 600; min-width: 0; }
+  #hud { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex: none; }
+  .sides { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .side-tag { display: flex; align-items: center; gap: 7px; font-weight: 650; min-width: 0; font-size: 13px; }
+  .side-tag .who { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .side-tag.op .who { color: #ffb08f; } .side-tag.me .who { color: #9cc7ff; }
   .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-  .crowns { font: 700 18px var(--num); }
-  #clock { font: 700 20px var(--num); padding: 2px 12px; border-radius: 8px; background: var(--panel); border: 1px solid var(--line); }
-  #clock.ot { color: var(--gold); border-color: var(--gold); }
+  .crown { display: inline-flex; align-items: center; gap: 3px; padding: 1px 7px 1px 4px; border-radius: 9px; flex: none;
+           background: #0008; border: 1px solid var(--line); }
+  .crown svg { width: 15px; height: 12px; display: block; }
+  .crowns { font: 800 14px/18px var(--num); }
+  .crown.op svg { fill: #ff8a5c; } .crown.me svg { fill: #5aa5ff; }
+  .crown.won { border-color: var(--gold); }
+  #timer { display: flex; align-items: center; gap: 8px; flex: none; }
+  #rate { font: 800 13px/1 var(--num); color: #fff; padding: 5px 7px; border-radius: 12px 12px 12px 3px;
+          background: radial-gradient(circle at 35% 30%, #f08af8, var(--elixir) 60%, var(--elixir-dk)); box-shadow: 0 1px 3px #0009; }
+  #timebox { display: flex; flex-direction: column; align-items: flex-end; padding: 3px 10px 4px; border-radius: 8px;
+             background: #05080dcc; border: 1px solid var(--line); min-width: 74px; }
+  #clock-label { font: 700 10px/1.1 var(--ui); color: #d9dfeb; letter-spacing: .02em; }
+  #clock { font: 800 21px/1.05 var(--num); color: #fff; }
+  #timebox.ot { border-color: var(--gold); } #timebox.ot #clock-label { color: var(--gold); }
+  #timebox.paused #clock { color: var(--dim); }
   #arena-wrap { flex: 1; min-height: 0; overflow: hidden; width: 100%; display: flex; justify-content: center; position: relative; }
   canvas { display: block; border-radius: 10px; touch-action: none; }
   #toast { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); background: #000c; color: #fff; padding: 6px 12px;
@@ -62,26 +77,57 @@
   #banner h2 { margin: 0; font-size: 26px; }
   #banner p { margin: 0; color: var(--dim); font-size: 13px; }
 
-  #dock { width: 100%; display: flex; flex-direction: column; gap: 6px; flex: none; }
-  #hand { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; min-height: 84px; }
-  .card { position: relative; height: 84px; border-radius: 9px; border: 1px solid var(--line); background: var(--panel); overflow: hidden;
-          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px; touch-action: none; }
-  .card .nm { font-weight: 650; font-size: 11px; text-align: center; line-height: 1.15; position: relative; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
-  .card .ic { font-size: 24px; line-height: 1; position: relative; }
-  .card .kd { font-size: 10px; color: var(--dim); letter-spacing: .06em; text-transform: uppercase; position: relative; }
-  .card .cost { position: absolute; top: 3px; left: 4px; min-width: 22px; height: 22px; border-radius: 11px; background: var(--elixir);
-                font: 700 13px/22px var(--num); text-align: center; color: #fff; }
-  .card .key { position: absolute; top: 4px; right: 6px; font: 10px var(--num); color: var(--dim); }
-  .card .fill { position: absolute; left: 0; right: 0; bottom: 0; background: var(--elixir-dk); opacity: .55; }
-  .card.poor .nm, .card.poor .kd { opacity: .55; }
-  .card.sel { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold) inset; transform: translateY(-3px); }
-  .card.next { background: transparent; border-style: dashed; cursor: default; }
-  .card.pending { border-color: var(--gold); border-style: dashed; opacity: .7; }
+  /* The tray: next card at the left, four cards, the elixir bar underneath. */
+  #dock { width: 100%; flex: none; display: grid; grid-template-columns: 50px minmax(0, 1fr); gap: 6px 7px; padding: 7px 8px 8px;
+          border-radius: 12px; background: linear-gradient(180deg, #2860b4, #1b4386); border: 2px solid #3f7fd6;
+          box-shadow: 0 2px 0 #0f2a57, inset 0 1px 0 #ffffff30; }
+  #next-box { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 3px; padding-bottom: 2px; }
+  #next-box .lbl { font: 800 11px/1 var(--ui); color: #fff; text-shadow: 0 1px 0 #0009; }
+  #next { position: relative; width: 42px; height: 52px; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  #next .ic { font-size: 22px; line-height: 1; }
+  #next .cost { width: 16px; height: 16px; font-size: 10px; line-height: 16px; bottom: -5px; }
+  #hand { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .card, #next { --face-a: #3b5588; --face-b: #1d2c4e;
+          background: radial-gradient(circle at 50% 38%, #ffffff2e, transparent 58%), linear-gradient(170deg, var(--face-a), var(--face-b));
+          border: 2px solid #0d1a33; box-shadow: inset 0 0 0 1px #ffffff24; }
+  .card[data-kind="building"], #next[data-kind="building"] { --face-a: #8b6b3d; --face-b: #3e2d17; }
+  .card[data-kind="spell"], #next[data-kind="spell"] { --face-a: #7d3f96; --face-b: #351846; }
+  .card { position: relative; aspect-ratio: 4 / 5; max-height: 104px; width: 100%; border-radius: 8px; overflow: visible; padding: 0;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; touch-action: none;
+          transition: transform .08s ease-out, box-shadow .08s; }
+  .card .ic { font-size: 30px; line-height: 1; position: relative; margin-top: -10px; filter: drop-shadow(0 2px 1px #0007); }
+  .card .ic.pixel-art, #next .ic.pixel-art { position: absolute; inset: 0; margin: 0; font-size: 0; filter: none;
+          border-radius: 5px; overflow: hidden; pointer-events: none; }
+  .ic.pixel-art svg { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+  .card[data-rarity="common"], #next[data-rarity="common"] { border-color: #a1b2bd; }
+  .card[data-rarity="rare"], #next[data-rarity="rare"] { border-color: #e9aa61; }
+  .card[data-rarity="epic"], #next[data-rarity="epic"] { border-color: #bc82e2; }
+  .card[data-rarity="legendary"], #next[data-rarity="legendary"] { border-color: #8ed6d5; }
+  .card .nm { position: absolute; left: 2px; right: 2px; bottom: 11px; font-weight: 750; font-size: 9.5px; text-align: center; line-height: 1.05;
+              color: #fff; text-shadow: 0 1px 1px #000, 0 0 3px #000; overflow: hidden; overflow-wrap: anywhere; z-index: 1;
+              display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .card:has(.pixel-art)::after { content: ""; position: absolute; inset: 56% 0 0; border-radius: 0 0 5px 5px;
+          background: linear-gradient(transparent, #0d182be6 78%); pointer-events: none; }
+  .card .kd { position: absolute; top: 3px; left: 4px; font: 700 8px/1 var(--ui); letter-spacing: .06em; text-transform: uppercase;
+              color: #ffffffd9; z-index: 1; text-shadow: 0 1px 2px #0a1528, 0 0 3px #0a1528; }
+  .cost { position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); width: 22px; height: 22px; z-index: 1;
+          border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 35% 30%, #f6a8ff, var(--elixir) 55%, var(--elixir-dk));
+          font: 800 13px/22px var(--num); text-align: center; color: #fff; text-shadow: 0 1px 1px #000a; box-shadow: 0 1px 2px #000a; }
+  .card .key { position: absolute; top: 3px; right: 5px; font: 9px var(--num); color: #ffffffd9; z-index: 1; text-shadow: 0 1px 2px #0a1528; }
+  .card .fill { position: absolute; left: 0; right: 0; bottom: 0; background: #0b1020; opacity: .55; border-radius: 0 0 6px 6px; z-index: 1; pointer-events: none; }
+  .card.poor { filter: grayscale(.65) brightness(.8); }
+  #hand .card.sel { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold), 0 0 14px #f2c23099; transform: translateY(-6px) scale(1.04); }
+  #hand .card.pending { border-color: var(--gold); border-style: dashed; opacity: .7; }
+  .card.pending .kd { position: absolute; top: auto; bottom: 3px; left: 0; right: 0; text-align: center; color: #fff; }
   .card.empty { opacity: .35; }
-  #elx { position: relative; height: 18px; border-radius: 9px; background: var(--panel); border: 1px solid var(--line); overflow: hidden; }
-  #elx-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(180deg, #dd6aec, var(--elixir)); }
-  #elx-ticks { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 1px), #0007 calc(10% - 1px) 10%); }
-  #elx-num { position: absolute; inset: 0; text-align: center; font: 700 11px/16px var(--num); color: #fff; text-shadow: 0 1px 2px #000; }
+  #elx-row { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  #elx-drop { position: relative; width: 30px; height: 30px; flex: none; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+              background: radial-gradient(circle at 35% 30%, #f6a8ff, var(--elixir) 55%, var(--elixir-dk)); box-shadow: 0 1px 3px #000b;
+              font: 800 16px/30px var(--num); color: #fff; text-align: center; text-shadow: 0 1px 1px #000; }
+  #elx { position: relative; flex: 1; height: 18px; border-radius: 9px; background: #10183a; border: 2px solid #0d1a33; overflow: hidden; }
+  #elx-fill { position: absolute; inset: 0 auto 0 0; width: 0; background: linear-gradient(180deg, #f39bfb, var(--elixir) 55%, #a233b6); }
+  #elx-ticks { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 calc(10% - 2px), #0d1a33 calc(10% - 2px) 10%); }
+  #elx-num { position: absolute; inset: 0; text-align: right; padding-right: 6px; font: 700 10px/14px var(--num); color: #fff; text-shadow: 0 1px 2px #000; }
 
   #rail { width: 250px; flex: none; display: flex; flex-direction: column; gap: 10px; padding-top: 4px; min-height: 0; }
   .box { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; min-height: 0; }
@@ -99,9 +145,11 @@
   <div class="inner">
     <div>
       <div class="label">CR Arena live play</div>
-      <h1>You against the planner bot, in real time</h1>
+      <h1>You against the bots, in real time</h1>
     </div>
     <p>The game runs at full speed and never waits. Pick a card, drop it anywhere it is allowed. The bot looks ahead on live snapshots of the game, several times a second.</p>
+    <label for="opponent" class="label">Opponent</label>
+    <select id="opponent"></select>
     <div class="label">Your deck</div>
     <div class="decks" id="decks"></div>
     <div class="row">
@@ -116,10 +164,16 @@
 <div id="game" hidden>
   <div id="col">
     <div id="hud">
-      <div class="side-tag"><span class="dot" style="background:var(--red)"></span><span id="opp-name">search-bot</span>
-        <span class="crowns" id="crowns-op">0</span></div>
-      <div id="clock">3:00</div>
-      <div class="side-tag"><span class="crowns" id="crowns-me">0</span><span>You</span><span class="dot" style="background:var(--blue)"></span></div>
+      <div class="sides">
+        <div class="side-tag op"><span class="dot" style="background:var(--red)"></span><span class="who" id="opp-name">search-bot</span>
+          <span class="crown op" id="crown-op" role="img" aria-label="Bot crowns: 0"><svg viewBox="0 0 20 16" aria-hidden="true"><path d="M1 4l4.5 4L10 1l4.5 7L19 4l-2 11H3z"/></svg><span class="crowns" id="crowns-op" aria-hidden="true">0</span></span></div>
+        <div class="side-tag me"><span class="dot" style="background:var(--blue)"></span><span class="who">You</span>
+          <span class="crown me" id="crown-me" role="img" aria-label="Your crowns: 0"><svg viewBox="0 0 20 16" aria-hidden="true"><path d="M1 4l4.5 4L10 1l4.5 7L19 4l-2 11H3z"/></svg><span class="crowns" id="crowns-me" aria-hidden="true">0</span></span></div>
+      </div>
+      <div id="timer">
+        <span id="rate" hidden aria-label="Double elixir">x2</span>
+        <div id="timebox" role="timer" aria-label="Time left 3:00"><span id="clock-label" aria-hidden="true">Time left:</span><span id="clock" aria-hidden="true">3:00</span></div>
+      </div>
     </div>
     <div id="arena-wrap">
       <canvas id="cv"></canvas>
@@ -134,8 +188,13 @@
       </div></div>
     </div>
     <div id="dock">
-      <div id="elx"><div id="elx-fill"></div><div id="elx-ticks"></div><div id="elx-num">0</div></div>
-      <div id="hand"></div>
+      <div id="next-box"><span class="lbl" aria-hidden="true">Next:</span><div id="next" role="img" aria-label="Next card"></div></div>
+      <div id="hand" role="group" aria-label="Your hand"></div>
+      <div id="elx-row">
+        <div id="elx-drop" aria-hidden="true">0</div>
+        <div id="elx" role="meter" aria-label="Elixir" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
+          <div id="elx-fill"></div><div id="elx-ticks"></div><div id="elx-num" aria-hidden="true"></div></div>
+      </div>
     </div>
   </div>
   <div id="rail">
@@ -156,29 +215,22 @@
   </div>
 </div>
 
+<!-- __BATTLE_RENDERER__ -->
+<!-- __CARD_ART__ -->
 <script>
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
-  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  const C = { blue: css("--blue"), blueDk: css("--blue-dk"), red: css("--red"), redDk: css("--red-dk"), grassA: css("--grass-a"),
-              grassB: css("--grass-b"), water: css("--water"), bridge: css("--bridge"), gold: css("--gold") };
-  const TX = 18, TY = 32, TICK_MS = 50, DELAY_MS = 90; // draw slightly in the past so there are always two ticks to blend
-  const KING = 2, PRINCESS = 3, BUILDING = 1;
-  // One picture per card (system emoji, our own choice of symbols), so a unit can be told apart at a glance.
-  const ICON = { Knight: "⚔️", Archer: "🏹", Giant: "🦍", Pekka: "🤖", Minions: "😈", Balloon: "🎈", Golem: "🗿", Skeletons: "💀",
-    Musketeer: "🔫", BabyDragon: "🐉", Wizard: "🧙", MiniPekka: "🦾", HogRider: "🐗", Princess: "👸", LavaHound: "🌋",
-    IceSpirits: "❄️", BattleRam: "🐏", IceGolemite: "🧊", MegaMinion: "👿", GoblinGang: "👺", ElectroWizard: "⚡", Bats: "🦇",
-    Cannon: "💣", InfernoTower: "🔥", Tesla: "🔌", Xbow: "🎯", Tombstone: "🪦", Fireball: "☄️", Arrows: "🎯", Rocket: "🚀",
-    GoblinBarrel: "🛢️", Lightning: "🌩️", Zap: "⚡", Poison: "☠️", Log: "🪵", Goblins: "👺", SpearGoblins: "👺", LavaPups: "🔥",
-    Golemite: "🗿", Barbarians: "🪓", Skeleton: "💀", Goblin: "👺", Bat: "🦇", Minion: "😈" };
-  const iconOf = (name) => ICON[name] || ICON[name.replace(/s$/, "")] || "";
+  const {iconOf, pretty, lerp, placement} = BattleRenderer;
+  const paintCard = (element, name) => CardArt.mount(element, name, iconOf(name) || "🃏");
+  const TICK_MS = 50, DELAY_MS = 90;
+  let TX = 18, TY = 32, HALF = 2;
+  let renderer;
 
   let ws, cards = {}, decks = {}, myDeck = null, lastStart = null;
   let snaps = [], clock0 = null, sel = -1, mask = null, maskSlot = -1, hover = null, dragging = false, dragMoved = false;
-  let over = false, paused = false, handKey = "", fx = [], firstSeen = new Map(), hitAt = new Map(), T = 16, lastMaskAsk = 0;
-  let delayTicks = 0, spellFrom = new Map();
-  const spKey = (sp) => sp[0] + "|" + sp[1] + "|" + sp[4] + "|" + sp[5];
+  let over = false, paused = false, handKey = "", T = 16, lastMaskAsk = 0;
+  let delayTicks = 0;
 
   // ---------------------------------------------------------------- connection
   function connect() {
@@ -194,7 +246,14 @@
     if (m.t === "s") return onSnap(m);
     if (m.t === "hello") return showSetup(m);
     if (m.t === "init") return onInit(m);
-    if (m.t === "mask") { if (m.slot === sel) { mask = m.m; maskSlot = m.slot; } return; }
+    if (m.t === "mask") {
+      const s = snaps[snaps.length - 1];
+      if (m.slot === sel && s && m.card === s.me.hand[sel]?.[0] && m.half === HALF &&
+          m.width === TX * HALF && m.height === TY * HALF && m.m.length === m.width * m.height) {
+        mask = m; maskSlot = m.slot;
+      }
+      return;
+    }
     if (m.t === "bot") { $("think").textContent = m.raw.replace(/^search:\s*/, "").split("; ").join("\n"); return; }
     if (m.t === "ev") return onEvent(m);
     if (m.t === "over") return onOver(m);
@@ -204,6 +263,11 @@
   // ---------------------------------------------------------------- setup screen
   function showSetup(m) {
     decks = m.decks;
+    const opponent = $("opponent"); opponent.textContent = "";
+    for (const [key, bot] of Object.entries(m.bots)) {
+      const option = document.createElement("option"); option.value = key;
+      option.textContent = bot.name; opponent.append(option);
+    }
     const names = Object.keys(decks);
     myDeck = myDeck || names[0];
     const box = $("decks"); box.textContent = "";
@@ -222,7 +286,7 @@
   function start(again) {
     if (!again || !lastStart) {
       const od = $("opp-deck").value;
-      lastStart = { t: "start", deck: myDeck, opp_deck: od === "same as mine" ? myDeck : od };
+      lastStart = { t: "start", bot: $("opponent").value, deck: myDeck, opp_deck: od === "same as mine" ? myDeck : od };
     }
     send(lastStart);
   }
@@ -233,8 +297,9 @@
   function togglePause() { if (over) return; send({ t: "pause", on: !paused }); }
 
   function onInit(m) {
-    cards = m.cards; snaps = []; clock0 = null; sel = -1; mask = null; over = false; paused = false; handKey = ""; fx = [];
-    firstSeen.clear(); hitAt.clear(); spellFrom.clear(); delayTicks = m.delay || 0;
+    cards = m.cards; snaps = []; clock0 = null; sel = -1; mask = null; over = false; paused = false; handKey = "";
+    renderer = BattleRenderer.create(cv, m.arena); delayTicks = m.delay || 0;
+    TX = m.arena.tiles_x; TY = m.arena.tiles_y; HALF = m.arena.half;
     $("opp-name").textContent = m.opp; $("log").textContent = ""; $("think").textContent = "waiting for its first decision";
     $("banner").hidden = true; $("setup").hidden = true; $("game").hidden = false;
     resize();
@@ -243,21 +308,8 @@
   // ---------------------------------------------------------------- state stream
   function onSnap(s) {
     const now = performance.now();
-    s.at = now; s.by = new Map(s.en.map((e) => [e[0], e]));
-    const prev = snaps[snaps.length - 1];
-    if (prev) {
-      for (const [uid, e] of prev.by) {
-        const n = s.by.get(uid);
-        if (!n) fx.push({ kind: "die", x: e[4], y: e[5], r: e[8], team: e[1], at: now + DELAY_MS });
-        else if (n[6] < e[6]) hitAt.set(uid, now + DELAY_MS);
-      }
-    }
-    for (const e of s.en) if (!firstSeen.has(e[0])) firstSeen.set(e[0], prev ? now + DELAY_MS : -1e9);
-    s.spBy = new Map(s.sp.map((sp) => [spKey(sp), sp]));
-    for (const [k, sp] of s.spBy) if (!spellFrom.has(k)) spellFrom.set(k, [sp[2], sp[3]]);
-    if (prev) for (const [k, sp] of prev.spBy) if (!s.spBy.has(k)) { // a travelling spell has arrived
-      spellFrom.delete(k); fx.push({ kind: "boom", x: sp[4], y: sp[5], team: sp[0], at: now + DELAY_MS });
-    }
+    s.at = now;
+    renderer.observe(s, now + DELAY_MS);
     snaps.push(s); if (snaps.length > 12) snaps.shift();
     // The page's clock: where the server's tick k lands on this machine's time. Follows slowly; jumps after a pause.
     const base = now - s.k * TICK_MS;
@@ -267,52 +319,76 @@
   }
   function fmtClock(sec) { sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec / 60) + ":" + String(sec % 60).padStart(2, "0"); }
   function updateHud(s) {
-    $("clock").textContent = (paused ? "paused " : "") + fmtClock(s.left) + (s.ot ? " OT" : "");
-    $("clock").classList.toggle("ot", s.ot);
+    const label = paused ? "Paused" : s.ot ? "Overtime" : "Time left:";
+    $("clock").textContent = fmtClock(s.left); $("clock-label").textContent = label;
+    $("timebox").classList.toggle("ot", !!s.ot); $("timebox").classList.toggle("paused", paused);
+    $("timebox").setAttribute("aria-label", label.replace(":", "") + " " + fmtClock(s.left));
     $("crowns-me").textContent = s.me.crowns; $("crowns-op").textContent = s.op.crowns;
+    $("crown-me").setAttribute("aria-label", "Your crowns: " + s.me.crowns);
+    $("crown-op").setAttribute("aria-label", "Bot crowns: " + s.op.crowns);
+    $("crown-me").classList.toggle("won", s.me.crowns > s.op.crowns);
+    $("crown-op").classList.toggle("won", s.op.crowns > s.me.crowns);
+    $("rate").hidden = !(s.rate > 1); $("rate").textContent = "x" + s.rate;
+    $("rate").setAttribute("aria-label", (s.rate === 2 ? "Double" : s.rate === 3 ? "Triple" : "x" + s.rate) + " elixir");
     const key = JSON.stringify([s.me.hand, s.me.next, s.me.pend.map((p) => p[0])]);
-    if (key !== handKey) { handKey = key; buildHand(s); if (sel >= 0) askMask(true); }
+    if (key !== handKey) {
+      handKey = key;
+      if (mask && mask.card !== s.me.hand[sel]?.[0]) { mask = null; maskSlot = -1; }
+      buildHand(s); if (sel >= 0) askMask(true);
+    }
     const el = s.me.e / 1000;
     const kids = $("hand").children;
     s.me.hand.forEach(([cid, cost], i) => {
-      const c = kids[i + 1]; if (!c || cid < 0) return;
+      const c = kids[i]; if (!c || cid < 0) return;
       const have = c.classList.contains("pending") ? 1 : Math.min(1, el / Math.max(1, cost));
       c.classList.toggle("poor", have < 1);
       const fill = c.querySelector(".fill");
       if (fill) fill.style.height = (have >= 1 ? 0 : have * 100) + "%";
     });
   }
+  const kindOf = (info) => String(info?.[1] || "").toLowerCase();
   function buildHand(s) {
     const hand = $("hand"); hand.textContent = "";
-    const nx = document.createElement("div"); nx.className = "card next";
-    nx.innerHTML = '<span class="kd">next</span><span class="nm"></span>';
-    nx.querySelector(".nm").textContent = pretty(cards[s.me.next] ? cards[s.me.next][0] : "");
-    hand.append(nx);
+    const nx = $("next"), ninfo = cards[s.me.next];
+    nx.textContent = ""; nx.dataset.kind = kindOf(ninfo);
+    if (ninfo) {
+      nx.innerHTML = '<span class="ic"></span><span class="cost"></span>';
+      paintCard(nx.querySelector(".ic"), ninfo[0]);
+      nx.querySelector(".cost").textContent = ninfo[2] ?? "";
+    } else delete nx.dataset.rarity;
+    nx.setAttribute("aria-label", ninfo ? "Next card: " + pretty(ninfo[0]) : "Next card: none");
     s.me.hand.forEach(([cid, cost], i) => {
       const b = document.createElement("button");
       const info = cards[cid];
       const pending = s.me.pend.some((p) => p[0] === i);
       b.className = "card" + (cid < 0 || !info ? " empty" : "") + (i === sel ? " sel" : "") + (pending ? " pending" : "");
+      b.dataset.kind = kindOf(info);
       if (info && cid >= 0 && pending) {
-        b.innerHTML = '<span class="nm"></span><span class="kd">on its way</span>';
+        b.innerHTML = '<span class="ic"></span><span class="nm"></span><span class="kd">on its way</span>';
+        paintCard(b.querySelector(".ic"), info[0]);
         b.querySelector(".nm").textContent = pretty(info[0]); b.disabled = true;
+        b.setAttribute("aria-label", pretty(info[0]) + ", on its way");
       } else if (info && cid >= 0) {
-        b.innerHTML = '<span class="fill"></span><span class="cost"></span><span class="key"></span><span class="ic"></span><span class="nm"></span><span class="kd"></span>';
-        b.querySelector(".ic").textContent = iconOf(info[0]);
+        b.innerHTML = '<span class="fill"></span><span class="kd"></span><span class="key"></span><span class="ic"></span><span class="nm"></span><span class="cost"></span>';
+        paintCard(b.querySelector(".ic"), info[0]);
         b.querySelector(".cost").textContent = cost;
         b.querySelector(".key").textContent = i + 1;
         b.querySelector(".nm").textContent = pretty(info[0]);
-        b.querySelector(".kd").textContent = info[1].toLowerCase();
+        b.querySelector(".kd").textContent = {building: "bldg"}[kindOf(info)] || kindOf(info);
+        b.setAttribute("aria-label", pretty(info[0]) + ", " + kindOf(info) + ", " + cost + " elixir, key " + (i + 1));
+        b.setAttribute("aria-pressed", String(i === sel));
         b.addEventListener("pointerdown", (ev) => { ev.preventDefault(); select(sel === i ? -1 : i); dragging = sel === i; dragMoved = false; });
-      } else b.disabled = true;
+      } else { b.disabled = true; b.setAttribute("aria-label", "Empty slot"); }
       hand.append(b);
     });
     if (sel >= 0 && ((s.me.hand[sel] || [-1])[0] < 0 || s.me.pend.some((p) => p[0] === sel))) select(-1);
   }
-  const pretty = (n) => n.replace(/([a-z])([A-Z])/g, "$1 $2");
   function select(i) {
     sel = i; mask = null; maskSlot = -1;
-    [...$("hand").children].forEach((c, k) => c.classList.toggle("sel", k - 1 === sel));
+    [...$("hand").children].forEach((c, k) => {
+      c.classList.toggle("sel", k === sel);
+      if (c.hasAttribute("aria-pressed")) c.setAttribute("aria-pressed", String(k === sel));
+    });
     if (sel >= 0) askMask(true);
   }
   function askMask(force) {
@@ -326,7 +402,7 @@
     const name = cards[m.card] ? pretty(cards[m.card][0]) : "card";
     if (m.who === 0 && !m.ok) return toast("Can't play that: " + m.why);
     if (m.ok && m.x !== null && cards[m.card] && cards[m.card][1] === "SPELL" && !m.flying)
-      fx.push({ kind: "boom", x: m.x, y: m.y, team: m.who, at: performance.now() + DELAY_MS });
+      renderer.addEffect({ kind: "boom", x: m.x, y: m.y, team: m.who, card: m.card, at: performance.now() + DELAY_MS });
     const row = document.createElement("div");
     row.className = m.who === 0 ? "h" : "b";
     row.textContent = (s ? fmtClock(s.left) : "") + "  " + (m.who === 0 ? "you" : "bot") + "  " + name;
@@ -347,9 +423,8 @@
   const cv = $("cv"), ctx = cv.getContext("2d");
   function tileAt(ev) {
     const r = cv.getBoundingClientRect();
-    const x = (ev.clientX - r.left) / T, y = TY - (ev.clientY - r.top) / T;
-    if (x < 0 || x >= TX || y < 0 || y >= TY) return null;
-    return { tx: Math.floor(x), ty: Math.floor(y) };
+    const x = (ev.clientX - r.left) / r.width * TX, y = TY - (ev.clientY - r.top) / r.height * TY;
+    return placement.at(x, y, {half: HALF, width: TX * HALF, height: TY * HALF});
   }
   function tryPlay(t) {
     const s = snaps[snaps.length - 1];
@@ -357,9 +432,10 @@
     const [cid, cost] = s.me.hand[sel] || [-1, 0];
     if (cid < 0) return;
     if (s.me.e < cost * 1000) return toast("Need " + cost + " elixir");
-    if (mask && maskSlot === sel && mask[t.ty * TX + t.tx] === "0") return toast("Can't place it there");
-    send({ t: "play", slot: sel, x: t.tx + 0.5, y: t.ty + 0.5 });
-    if (!delayTicks) fx.push({ kind: "drop", x: t.tx + 0.5, y: t.ty + 0.5, at: performance.now() });
+    if (!mask || maskSlot !== sel || mask.card !== cid) { askMask(true); return toast("Checking placement…"); }
+    if (!placement.allowed(mask, t)) return toast("Can't place it there");
+    send({ t: "play", slot: sel, x: t.x, y: t.y });
+    if (!delayTicks) renderer.addEffect({ kind: "drop", x: t.x, y: t.y, at: performance.now() });
     select(-1);
   }
   window.addEventListener("pointermove", (ev) => { hover = tileAt(ev); if (dragging) dragMoved = true; });
@@ -388,81 +464,10 @@
     $("col").style.width = Math.max(TX * T, 300) + "px";
   }
   window.addEventListener("resize", resize);
-  const X = (tx) => tx * T, Y = (ty) => (TY - ty) * T;
-  const lerp = (a, b, t) => a + (b - a) * t;
-
-  function drawGround() {
-    ctx.fillStyle = C.grassA; ctx.fillRect(0, 0, TX * T, TY * T);
-    ctx.fillStyle = C.grassB;
-    for (let ty = 0; ty < TY; ty++) for (let tx = (ty + 1) % 2; tx < TX; tx += 2) ctx.fillRect(X(tx), Y(ty + 1), T, T);
-    ctx.fillStyle = "rgba(240,112,60,.07)"; ctx.fillRect(0, 0, TX * T, 15 * T);
-    ctx.fillStyle = "rgba(59,142,240,.07)"; ctx.fillRect(0, 17 * T, TX * T, 15 * T);
-    ctx.fillStyle = C.water; ctx.fillRect(0, Y(17), TX * T, 2 * T);
-    ctx.fillStyle = C.bridge;
-    for (const bx of [2.5, 13.5]) { ctx.fillRect(X(bx), Y(17) - 2, 2 * T, 2 * T + 4); }
-  }
   function drawMask() {
     if (sel < 0 || !mask || maskSlot !== sel) return;
-    ctx.fillStyle = "rgba(200,30,30,.34)";
-    for (let ty = 0; ty < TY; ty++) for (let tx = 0; tx < TX; tx++) if (mask[ty * TX + tx] === "0") ctx.fillRect(X(tx), Y(ty + 1), T, T);
-    if (hover) {
-      const ok = mask[hover.ty * TX + hover.tx] !== "0";
-      ctx.lineWidth = 2; ctx.strokeStyle = ok ? "#fff" : "#ff5a4a"; ctx.fillStyle = ok ? "rgba(255,255,255,.25)" : "rgba(255,90,74,.25)";
-      ctx.beginPath(); ctx.arc(X(hover.tx + 0.5), Y(hover.ty + 0.5), T * 0.75, 0, 7); ctx.fill(); ctx.stroke();
-    }
-  }
-  function hpBar(x, y, w, frac) {
-    ctx.fillStyle = "rgba(0,0,0,.55)"; ctx.fillRect(x - w / 2, y, w, 4);
-    ctx.fillStyle = frac > 0.6 ? "#3ecf4a" : frac > 0.3 ? C.gold : "#f0503c"; ctx.fillRect(x - w / 2, y, w * Math.max(0, Math.min(1, frac)), 4);
-  }
-  function drawEntity(e, x, y, hp, now) {
-    const [uid, team, kind, cid, , , , maxHp, rad, flags, , fxv, fyv] = e;
-    const mine = team === 0, fill = mine ? C.blue : C.red, edge = mine ? C.blueDk : C.redDk;
-    const flying = flags & 1, deploying = flags & 2, tower = kind === KING || kind === PRINCESS;
-    const born = firstSeen.get(uid) || 0, pop = Math.min(1, Math.max(0, (now - born) / 160));
-    const hit = Math.max(0, 1 - (now - (hitAt.get(uid) || -1e9)) / 140);
-    const px = X(x), py = Y(y) - (flying ? T * 0.5 : 0);
-    let r = Math.max(T * 0.48, rad * T) * (0.6 + 0.4 * pop);
-    ctx.globalAlpha = deploying ? 0.55 : 1;
-    if (flying) { ctx.fillStyle = "rgba(0,0,0,.22)"; ctx.beginPath(); ctx.ellipse(X(x), Y(y) + r * 0.5, r, r * 0.45, 0, 0, 7); ctx.fill(); }
-    ctx.fillStyle = hit > 0 ? "#fff" : fill; ctx.strokeStyle = flying ? "#fff" : edge; ctx.lineWidth = tower ? 2.5 : 1.5;
-    if (tower || kind === BUILDING) {
-      if (tower) r = (kind === KING ? 1.55 : 1.2) * T;
-      ctx.beginPath(); ctx.roundRect(px - r, py - r, 2 * r, 2 * r, Math.min(6, r * 0.3)); ctx.fill(); ctx.stroke();
-    } else {
-      ctx.beginPath(); ctx.arc(px, py, r, 0, 7); ctx.fill(); ctx.stroke();
-      const n = Math.hypot(fxv, fyv);
-      if (n > 0 && r > 5) { // a small nose in the direction the unit faces
-        ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(px + (fxv / n) * r * 0.72, py - (fyv / n) * r * 0.72, Math.max(1.5, r * 0.2), 0, 7); ctx.fill();
-      }
-    }
-    ctx.globalAlpha = 1;
-    const name = tower ? (kind === KING ? "👑" : "🏰") : (cards[cid] ? cards[cid][0] : "?");
-    const pic = tower ? name : iconOf(name);
-    ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    if (pic) { ctx.fillStyle = "#fff"; ctx.font = Math.round(Math.max(10, r * (tower ? 0.95 : 1.25))) + "px system-ui"; ctx.fillText(pic, px, py + 1); }
-    else if (r >= 6) { ctx.fillStyle = hit > 0 ? "#222" : "#fff"; ctx.font = "600 " + Math.round(Math.min(12, Math.max(8, r * 0.95))) + "px system-ui"; ctx.fillText(name.slice(0, 2), px, py + 0.5); }
-    if (tower || hp < maxHp) hpBar(px, py - r - 8, Math.max(16, 2 * r), maxHp ? hp / maxHp : 0);
-    if (tower) { ctx.fillStyle = "#16202e"; ctx.font = "700 11px ui-monospace, Menlo, monospace"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillText(Math.round(hp), px, py - r - 11); }
-    if (deploying) { ctx.strokeStyle = "#fff"; ctx.setLineDash([3, 3]); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(px, py, r + 3, 0, 7); ctx.stroke(); ctx.setLineDash([]); }
-  }
-  function drawFx(now) {
-    fx = fx.filter((f) => now - f.at < 450);
-    for (const f of fx) {
-      const t = (now - f.at) / 450; if (t < 0) continue;
-      if (f.kind === "boom") {
-        const col = f.team === 0 ? C.blue : C.red, r = T * (0.8 + 1.9 * Math.min(1, t * 2.2));
-        ctx.fillStyle = "#fff"; ctx.globalAlpha = Math.max(0, 0.85 - t * 1.6); ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), r, 0, 7); ctx.fill();
-        ctx.strokeStyle = col; ctx.globalAlpha = 1 - t; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), r, 0, 7); ctx.stroke();
-      } else if (f.kind === "die") {
-        ctx.strokeStyle = f.team === 0 ? C.blue : C.red; ctx.globalAlpha = 1 - t; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), Math.max(4, f.r * T) * (1 + t * 1.6), 0, 7); ctx.stroke();
-      } else {
-        ctx.strokeStyle = "#fff"; ctx.globalAlpha = 1 - t; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.arc(X(f.x), Y(f.y), T * (0.4 + t * 1.2), 0, 7); ctx.stroke();
-      }
-      ctx.globalAlpha = 1;
-    }
+    const info = cards[mask.card];
+    placement.draw(ctx, mask, T, hover, info ? placement.cue(info[0], info[1], info[3]) : null);
   }
 
   function frame(now) {
@@ -476,63 +481,14 @@
     if (rt <= snaps[0].k) b = a;
     const span = b.k - a.k, t = span > 0 ? Math.max(0, Math.min(1, (rt - a.k) / span)) : 1;
 
-    drawGround(); drawMask();
-    for (const sp of b.sp) { // where each travelling spell will land
-      const col = sp[0] === 0 ? C.blue : C.red, name = cards[sp[1]] ? pretty(cards[sp[1]][0]) : "";
-      ctx.fillStyle = col; ctx.globalAlpha = 0.16; ctx.beginPath(); ctx.arc(X(sp[4]), Y(sp[5]), 2.2 * T, 0, 7); ctx.fill();
-      ctx.globalAlpha = 1; ctx.strokeStyle = col; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle = "#16202e"; ctx.font = "600 11px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillText(name, X(sp[4]), Y(sp[5]) - 2.4 * T);
-    }
-    const list = [];
-    for (const e of b.en) {
-      const p = a.by.get(e[0]);
-      list.push([e, p ? lerp(p[4], e[4], t) : e[4], p ? lerp(p[5], e[5], t) : e[5], p ? lerp(p[6], e[6], t) : e[6]]);
-    }
-    list.sort((p, q) => (p[0][9] & 1) - (q[0][9] & 1) || q[2] - p[2]); // ground first, then flying; far before near
-    for (const [e, x, y, hp] of list) drawEntity(e, x, y, hp, now);
-    const named = []; // one name per group of the same unit standing together
-    ctx.font = "700 " + Math.max(9, Math.round(T * 0.5)) + "px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "top"; ctx.lineJoin = "round";
-    for (const [e, x, y] of list) {
-      if (e[2] === KING || e[2] === PRINCESS || !cards[e[3]]) continue;
-      if (named.some((n) => n[0] === e[1] && n[1] === e[3] && Math.abs(n[2] - x) < 2.2 && Math.abs(n[3] - y) < 2.2)) continue;
-      named.push([e[1], e[3], x, y]);
-      const r = Math.max(T * 0.48, e[8] * T), ly = Y(y) + r + 2 - ((e[9] & 1) ? T * 0.5 : 0), label = pretty(cards[e[3]][0]);
-      ctx.lineWidth = 3; ctx.strokeStyle = "rgba(10,16,28,.85)"; ctx.strokeText(label, X(x), ly);
-      ctx.fillStyle = e[1] === 0 ? "#cfe3ff" : "#ffd9c7"; ctx.fillText(label, X(x), ly);
-    }
-    const same = a.pr.length === b.pr.length;
-    b.pr.forEach((p, i) => {
-      const q = same ? a.pr[i] : p;
-      ctx.fillStyle = p[0] === 0 ? "#dbeaff" : "#ffe2d2"; ctx.strokeStyle = "#16202e"; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(X(lerp(q[1], p[1], t)), Y(lerp(q[2], p[2], t)), Math.max(2.5, T * 0.16), 0, 7); ctx.fill(); ctx.stroke();
-    });
-    for (const p of b.me.pend) { // your own plays that have not landed yet: a marker with a clock that runs down
-      const q = a.me.pend.find((o) => o[0] === p[0]), left = q ? lerp(q[4], p[4], t) : p[4];
-      const px = X(p[2]), py = Y(p[3]), name = cards[p[1]] ? pretty(cards[p[1]][0]) : "";
-      ctx.fillStyle = "rgba(255,255,255,.22)"; ctx.beginPath(); ctx.arc(px, py, T * 0.8, 0, 7); ctx.fill();
-      ctx.strokeStyle = "#fff"; ctx.lineWidth = 3; ctx.beginPath();
-      ctx.arc(px, py, T * 0.8, -Math.PI / 2, -Math.PI / 2 + 2 * Math.PI * Math.max(0, Math.min(1, left / Math.max(1, delayTicks)))); ctx.stroke();
-      ctx.fillStyle = "#16202e"; ctx.font = "600 11px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "alphabetic"; ctx.fillText(name, px, py - T - 2);
-    }
-    for (const [k, sp] of b.spBy) { // travelling spells: a ball that arcs from where it was thrown to its target
-      const p = a.spBy.get(k) || sp, x = lerp(p[2], sp[2], t), y = lerp(p[3], sp[3], t), from = spellFrom.get(k) || [x, y];
-      const total = Math.hypot(sp[4] - from[0], sp[5] - from[1]), prog = total > 0 ? Math.min(1, Math.hypot(x - from[0], y - from[1]) / total) : 1;
-      const lift = Math.sin(Math.PI * prog) * 2.2 * T, col = sp[0] === 0 ? C.blue : C.red, r = T * (0.45 + 0.25 * Math.sin(Math.PI * prog));
-      const dx = sp[4] - from[0], dy = sp[5] - from[1], n = Math.hypot(dx, dy) || 1;
-      ctx.fillStyle = "rgba(0,0,0,.25)"; ctx.beginPath(); ctx.ellipse(X(x), Y(y), r, r * 0.5, 0, 0, 7); ctx.fill();
-      ctx.strokeStyle = col; ctx.lineCap = "round";
-      for (let i = 1; i <= 4; i++) { // trail
-        ctx.globalAlpha = 0.5 - i * 0.1; ctx.lineWidth = r * (1.5 - i * 0.25);
-        const bx = x - (dx / n) * i * 0.45, by = y - (dy / n) * i * 0.45, bl = Math.sin(Math.PI * Math.max(0, prog - i * 0.02)) * 2.2 * T;
-        ctx.beginPath(); ctx.moveTo(X(bx), Y(by) - bl); ctx.lineTo(X(bx + (dx / n) * 0.3), Y(by + (dy / n) * 0.3) - bl); ctx.stroke();
-      }
-      ctx.globalAlpha = 1; ctx.fillStyle = col; ctx.strokeStyle = "#fff"; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(X(x), Y(y) - lift, r, 0, 7); ctx.fill(); ctx.stroke();
-    }
-    drawFx(now);
+    renderer.draw(a, b, t, now, {scale: T, cards, delayTicks, overlay: drawMask});
     const el = lerp(a.me.e, b.me.e, t) / 1000;
     $("elx-fill").style.width = Math.min(100, el * 10) + "%";
-    $("elx-num").textContent = Math.floor(el) + (b.rate > 1 ? "   x" + b.rate : "");
+    const whole = Math.floor(el);
+    if ($("elx-drop").textContent !== String(whole)) {
+      $("elx-drop").textContent = whole; $("elx").setAttribute("aria-valuenow", whole);
+      $("elx-num").textContent = whole >= 10 ? "MAX" : "";
+    }
   }
 
   connect();

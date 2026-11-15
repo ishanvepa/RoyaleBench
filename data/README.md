@@ -5,7 +5,7 @@ reads. Snapshot taken 2026-11-07 (45 benchmark games plus earlier test jobs; ~37
 
 ```bash
 gunzip -k data/arena.db.gz && cp data/arena.db runs/arena.db    # restore locally, then:
-uv run streamlit run dashboard/app.py
+uv run python -m rb_server        # open http://127.0.0.1:8000/legacy/overview
 ```
 
 To refresh the snapshot after new runs:
@@ -31,6 +31,15 @@ including the exact board text sent and the model's full reply) is only in the d
 
 ## Tables (for moving to a hosted database, e.g. Supabase Postgres)
 
+The repository now includes a Supabase adapter and complete importer. Set `DATABASE_URL` in
+your git-ignored `.env`, then run `uv run python -m cr_arena.migrate`. This reads `arena.db.gz`
+directly, preserves every table and decision, and can be retried without duplication. The import
+is atomic and never changes this snapshot. See the root README's **Shared Supabase database**
+section for project setup and team access. New runs use the configured shared database automatically.
+
+The notes below describe the original SQLite representation; the deployed Postgres schema is
+in `supabase/migrations/202611070001_arena.sql` (JSON stays TEXT for compatibility with the dashboard).
+
 Schema is in `cr_arena/db.py` (`SCHEMA`). Notes for a Postgres port:
 - `jobs.id` is `INTEGER PRIMARY KEY AUTOINCREMENT` -> `BIGSERIAL`; `matches` PK is `(job_id, match_id)`.
 - Timestamps (`created_at`, `started_at`, `finished_at`, `checked_at`) are Unix seconds as `REAL` -> use
@@ -40,3 +49,25 @@ Schema is in `cr_arena/db.py` (`SCHEMA`). Notes for a Postgres port:
   (-> `ON CONFLICT DO NOTHING`), `PRAGMA` calls, `cursor.lastrowid` (-> `RETURNING id`), and one
   `ALTER TABLE decisions ADD COLUMN cost_usd` migration.
 - Size: ~75 MB uncompressed; `decisions.state` + `decisions.raw` are ~46 MB of it. Supabase free tier is 500 MB.
+
+## Visual reference
+
+The local graphics reference is `data/references/arena-1-PD6QCK7GzA8.mp4`,
+downloaded from [JustAction, “terrorizing arena 1 players”](https://www.youtube.com/watch?v=PD6QCK7GzA8)
+(published 2025-11-22). It is a 14:20, 1920×1080, 60 fps H.264/AAC video.
+SHA-256: `b8eb9da25d3dcbcc94d9dfed278d70329d1c1ee0f0759d6ae7c36ac9541a0a55`.
+The 145 MB video is git-ignored; the source link and checksum remain in the repository.
+
+The tower artwork pass sampled it with ffmpeg at 00:30.000, 01:30.000,
+05:10.000, 05:12.000 and 05:15.000. Timestamped crops, code-inspection provenance,
+before/after comparisons and remaining differences are recorded in
+[Battle graphics](../docs/rendering.md#tower-reference-and-scope). The video was
+inspected visually; REA inspected the renderer JavaScript, not the video.
+
+To restore the same local reference:
+
+```bash
+uvx --from yt-dlp yt-dlp --js-runtimes node --no-playlist -f '299+140-12' \
+  --merge-output-format mp4 -o 'data/references/arena-1-PD6QCK7GzA8.%(ext)s' \
+  'https://www.youtube.com/watch?v=PD6QCK7GzA8'
+```

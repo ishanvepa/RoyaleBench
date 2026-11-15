@@ -72,6 +72,7 @@ def play_match(blue: Player, red: Player, deck_blue: list[str], deck_red: list[s
                     "step": step_no, "time_left": round(left, 1), "team": t, "player": players[t].name,
                     "state": texts[t], "n_moves": len(moves[t]), "move": chosen[t].label(), "result": results[t],
                     "raw": d.raw, "ok": d.ok, "error": d.error, "latency_s": round(d.latency_s, 2), "usage": d.usage,
+                    "diagnostics": d.diagnostics,
                 }) + "\n")
             log.flush()
             if on_step:

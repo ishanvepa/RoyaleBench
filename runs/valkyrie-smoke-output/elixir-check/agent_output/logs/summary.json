@@ -1,0 +1,49 @@
+{
+    "metadata": {
+        "task_id": "elixir-check",
+        "model": "anthropic/claude-sonnet-4-6",
+        "agent": "claude_code-v1.0.0",
+        "cli_version": "2.1.325 (Claude Code)",
+        "timestamp": "20261114231721",
+        "output_path": "/logs",
+        "success": true,
+        "return_code": 0
+    },
+    "task_prompt": "Compute the remaining elixir after starting with 10 elixir and playing three\ncards costing 4, 3, and 2 elixir. No elixir regenerates during these actions.\n\nWrite your answer to `/app/answer.json` as a JSON object with exactly one key,\n`remaining_elixir`, whose value is an integer. Create the file; a chat response\nalone does not complete the task.\n",
+    "metrics": {
+        "cost": 0.0158661,
+        "wall_clock_duration": 4.547,
+        "input_tokens": 3,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 45257,
+        "output_tokens": 152,
+        "output_tokens_details": {
+            "thinking_tokens": 30
+        },
+        "server_tool_use": {
+            "web_search_requests": 0,
+            "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+            "ephemeral_1h_input_tokens": 0,
+            "ephemeral_5m_input_tokens": 0
+        },
+        "inference_geo": "global",
+        "iterations": [
+            {
+                "input_tokens": 1,
+                "output_tokens": 35,
+                "cache_read_input_tokens": 22721,
+                "cache_creation_input_tokens": 0,
+                "cache_creation": {
+                    "ephemeral_5m_input_tokens": 0,
+                    "ephemeral_1h_input_tokens": 0
+                },
+                "type": "message"
+            }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+    }
+}

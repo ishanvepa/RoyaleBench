@@ -6,6 +6,25 @@ runs/arena.db-*
 runs/**/replays/
 runs/site/
 runs/*.out
+runs/replay-cache/
+runs/dashboard/
 data/arena.db
 data/*.db-*
 runs/samples/*.html
+modal.json
+# Per-run results and downloaded agent output cache for the Evals dashboard
+runs/evals/
+runs/evals-fake/
+runs/evals-e2e/
+runs/e2e-arena/
+
+# Web app: dependencies and the production build
+web/node_modules/
+web/dist/
+web/test-results/
+web/playwright-report/
+data/references/*.mp4
+runs/indicator_scenes.json
+runs/indicator_check/
+.playwright-cli/
+output/playwright/

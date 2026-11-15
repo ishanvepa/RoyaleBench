@@ -1,0 +1,77 @@
+# Settings for the Evals area of the dashboard: Harbor benchmarks run on Valkyrie, sandboxes on Modal.
+# Read by rb_evals/config.py. Everything here has a default, so deleting a key is safe.
+
+[valkyrie]
+benchmark = "royalebench"        # Valkyrie benchmark namespace: a folder benchmarks/<name> is the dataset royalebench/<name>
+provider = "modal"               # every job runs its sandboxes on Modal
+default_agent = "claude_code-v1.0.0"
+default_concurrency = 1
+max_concurrency = 10             # upper bound offered in the New job form
+confirm_over_tasks = 5           # jobs with more tasks than this need an explicit confirmation checkbox
+
+# Model keys exactly as Valkyrie expects them. Any other key can be typed into the New job form.
+# Only anthropic/claude-sonnet-4-6 has been verified end to end (docs/valkyrie_smoke.md); the rest were
+# added from the model names in config.toml / configs/*.toml, so start any of them with a one-task job. secret_env is the variable the harness reads the API key from.
+[[models]]
+id = "anthropic/claude-sonnet-4-6"
+secret_env = "ANTHROPIC_API_KEY"
+
+# Claude 4 family
+[[models]]
+id = "anthropic/claude-opus-4-8"
+secret_env = "ANTHROPIC_API_KEY"
+
+[[models]]
+id = "anthropic/claude-haiku-4-5"
+secret_env = "ANTHROPIC_API_KEY"
+
+# Claude 5 family
+[[models]]
+id = "anthropic/claude-fable-5-1"
+secret_env = "ANTHROPIC_API_KEY"
+
+[[models]]
+id = "anthropic/claude-opus-5-5"
+secret_env = "ANTHROPIC_API_KEY"
+
+[[models]]
+id = "anthropic/claude-sonnet-5-5"
+secret_env = "ANTHROPIC_API_KEY"
+
+[[models]]
+id = "anthropic/claude-haiku-5-5"
+secret_env = "ANTHROPIC_API_KEY"
+
+# GPT-5 family
+[[models]]
+id = "openai/gpt-5"
+secret_env = "OPENAI_API_KEY"
+
+[[models]]
+id = "openai/gpt-5-mini"
+secret_env = "OPENAI_API_KEY"
+
+[[models]]
+id = "openai/gpt-5-nano"
+secret_env = "OPENAI_API_KEY"
+
+# GPT-6 family
+[[models]]
+id = "openai/gpt-6-astra"
+secret_env = "OPENAI_API_KEY"
+
+[[models]]
+id = "openai/gpt-6-luna"
+secret_env = "OPENAI_API_KEY"
+
+[[models]]
+id = "openai/gpt-6-sol"
+secret_env = "OPENAI_API_KEY"
+
+[[models]]
+id = "openai/gpt-6.1-sol"
+secret_env = "OPENAI_API_KEY"
+
+[[models]]
+id = "openai/gpt-6.1-terra"
+secret_env = "OPENAI_API_KEY"

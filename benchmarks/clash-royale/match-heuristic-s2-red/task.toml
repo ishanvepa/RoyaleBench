@@ -1,0 +1,36 @@
+schema_version = "1.4"
+artifacts = [{ source = "/var/lib/royale", destination = "royale" }]
+
+[task]
+name = "royalebench/match-heuristic-s2-red"
+description = "Full-match play through the cr CLI, graded by replaying the agent's moves. time_left=3:00 (full match) | player=giant-beatdown (avg 3.38) | opponent_deck=giant-beatdown (avg 3.38) | opponent=heuristic-bot | seed=2 | seat=red | scoring=win 1, draw 0.5, loss 0"
+
+[metadata]
+category = "clash-royale-match"
+difficulty = "hard"
+opponent = "heuristic"
+deck = "giant-beatdown"
+seed = 2
+seat = "red"
+decision_ticks = 40
+
+[agent]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+timeout_sec = 300.0
+environment_mode = "separate"
+
+[environment]
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

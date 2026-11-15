@@ -1,11 +1,11 @@
 """Round robin: every pair of players, every seed, both sides. Every run is a named JOB in the
-SQLite DB (runs/arena.db); rerunning the same job name resumes it.
+shared DATABASE_URL or local SQLite DB; rerunning the same job name resumes it.
 
     uv run python -m cr_arena.tournament --job main-v1                 # full run (resumable)
     uv run python -m cr_arena.tournament --job bots-smoke --bots-only  # free smoke test
     uv run python -m cr_arena.tournament --job main-v1 --dry-run       # schedule + call estimate
     uv run python -m cr_arena.tournament --leaderboard [--job main-v1] # print standings
-Watch it live: uv run streamlit run dashboard/app.py
+Watch it live: uv run python -m rb_server, then open http://127.0.0.1:8000/legacy/overview
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-from .db import DEFAULT_DB, DB
+from .db import DB
 from .decks import CLASSIC_DECKS, DEFAULT_DECK, POOL, pool_text
 from .match import play_match
 from .players import DeckBuild, InfraError, build_player
@@ -74,6 +74,8 @@ def prune_replays(db: DB, job_id: int, jobs: list[dict], keep: int) -> int:
                 f.unlink()
                 n += 1
         db.execute("UPDATE matches SET replay_path = '' WHERE job_id = ? AND match_id = ?", (job_id, r["match_id"]))
+        if db.postgres:
+            db.execute("DELETE FROM replays WHERE job_id = ? AND match_id = ?", (job_id, r["match_id"]))
     return n
 
 
@@ -125,7 +127,7 @@ def main() -> None:
     ap.add_argument("--config", default="config.toml")
     ap.add_argument("--job", help="job name (default: timestamp). Same name = resume.")
     ap.add_argument("--notes", default="", help="free-text note shown on the dashboard")
-    ap.add_argument("--db", default=str(DEFAULT_DB))
+    ap.add_argument("--db", help="Override DATABASE_URL with a SQLite path or Postgres URL")
     ap.add_argument("--bots-only", action="store_true", help="only non-LLM players (no API cost)")
     ap.add_argument("--players", help="comma-separated subset of player names")
     ap.add_argument("--parallel", type=int, help="matches at once (overrides config)")
@@ -197,98 +199,99 @@ def main() -> None:
         row = db.query("SELECT id FROM jobs WHERE name = ?", (job_name,))
         print(f"deleted {prune_replays(db, row[0]['id'], jobs, keep) if row else 0} replay files (kept {keep} per pairing)")
         return
-    job_id = db.get_or_create_job(job_name, config_text, [p["name"] for p in specs], seeds, decision_ticks,
-                                  len(jobs), args.notes)
-    db.queue_matches(job_id, jobs)
-    done = db.done_match_ids(job_id)
-    todo = [j for j in jobs if j["match_id"] not in done]
-    if args.equalize:
-        done_rows = db.query("SELECT blue, red FROM matches WHERE job_id = ? AND status = 'done'", (job_id,))
-        todo = equalize_plan([p["name"] for p in specs], done_rows, todo)
-        keep_ids = {j["match_id"] for j in todo}
-        db.execute("UPDATE matches SET status = 'queued' WHERE job_id = ? AND status = 'skipped'", (job_id,))
-        db.executemany("UPDATE matches SET status = 'skipped' WHERE job_id = ? AND match_id = ? AND status != 'done'",
-                       [(job_id, j["match_id"]) for j in jobs if j["match_id"] not in done and j["match_id"] not in keep_ids])
-        db.execute("UPDATE jobs SET total_matches = ? WHERE id = ?", (len(done) + len(todo), job_id))
-        print(f"equalize: playing {len(todo)} games: " + ", ".join(j["match_id"] for j in todo))
-    calls = sum((j["blue"] in llm_names) + (j["red"] in llm_names) for j in todo) * est_decisions
-    print(f"job '{job_name}' (id {job_id}): {len(specs)} players, {len(jobs)} matches, {len(done)} done, "
-          f"{len(todo)} to play, ~{calls:,} LLM calls")
-    job_dir = out_dir / job_name
-    db.set_job_status(job_id, "running")
+    with db.job_lock(job_name):
+        job_id = db.get_or_create_job(job_name, config_text, [p["name"] for p in specs], seeds, decision_ticks,
+                                      len(jobs), args.notes)
+        db.queue_matches(job_id, jobs)
+        done = db.done_match_ids(job_id)
+        todo = [j for j in jobs if j["match_id"] not in done]
+        if args.equalize:
+            done_rows = db.query("SELECT blue, red FROM matches WHERE job_id = ? AND status = 'done'", (job_id,))
+            todo = equalize_plan([p["name"] for p in specs], done_rows, todo)
+            keep_ids = {j["match_id"] for j in todo}
+            db.execute("UPDATE matches SET status = 'queued' WHERE job_id = ? AND status = 'skipped'", (job_id,))
+            db.executemany("UPDATE matches SET status = 'skipped' WHERE job_id = ? AND match_id = ? AND status != 'done'",
+                           [(job_id, j["match_id"]) for j in jobs if j["match_id"] not in done and j["match_id"] not in keep_ids])
+            db.execute("UPDATE jobs SET total_matches = ? WHERE id = ?", (len(done) + len(todo), job_id))
+            print(f"equalize: playing {len(todo)} games: " + ", ".join(j["match_id"] for j in todo))
+        calls = sum((j["blue"] in llm_names) + (j["red"] in llm_names) for j in todo) * est_decisions
+        print(f"job '{job_name}' (id {job_id}): {len(specs)} players, {len(jobs)} matches, {len(done)} done, "
+              f"{len(todo)} to play, ~{calls:,} LLM calls")
+        job_dir = out_dir / job_name
+        db.set_job_status(job_id, "running")
 
-    def run(job):
-        mid = job["match_id"]
-        record = job["round"] < keep  # only the first few games of each pairing save a replay
-        db.match_started(job_id, mid, str(job_dir / "logs" / f"{mid}.jsonl"),
-                         str(job_dir / "replays" / f"{mid}.msgpack") if record else "")
+        def run(job):
+            mid = job["match_id"]
+            record = job["round"] < keep  # only the first few games of each pairing save a replay
+            db.match_started(job_id, mid, str(job_dir / "logs" / f"{mid}.jsonl"),
+                             str(job_dir / "replays" / f"{mid}.msgpack") if record else "")
 
-        def on_step(rows):
-            db.add_decisions([(job_id, mid, r["step"], r["team"], r["player"], r["time_left"], r["elixir"],
-                               r["my_towers"], r["enemy_towers"], r["n_moves"], r["asked"], r["move"], r["result"],
-                               r["ok"], r["error"], r["latency_s"], r["tokens_in"], r["tokens_out"], r["cache_read"],
-                               r["cache_write"], r["raw"], r["state"], r["cost_usd"]) for r in rows])
+            def on_step(rows):
+                db.add_decisions([(job_id, mid, r["step"], r["team"], r["player"], r["time_left"], r["elixir"],
+                                   r["my_towers"], r["enemy_towers"], r["n_moves"], r["asked"], r["move"], r["result"],
+                                   r["ok"], r["error"], r["latency_s"], r["tokens_in"], r["tokens_out"], r["cache_read"],
+                                   r["cache_write"], r["raw"], r["state"], r["cost_usd"]) for r in rows])
 
-        # Fresh player objects per match: each match has its own deck / prompt / RNG.
-        blue = build_player(by_name[job["blue"]])
-        red = build_player(by_name[job["red"]])
-        deck_blue, deck_red = job["deck_blue"], job["deck_red"]
-        builds = [None, None]
-        if deck_mode == "build":
-            # Both sides build blind, at the same time. Bots (no opinion) play their fixed/default deck.
-            with ThreadPoolExecutor(max_workers=2) as bp:
-                futs = [bp.submit(p.build_deck, POOL, POOL_TEXT, decision_ticks * 0.05) for p in (blue, red)]
-                builds = [f.result() for f in futs]
-            decks_now = []
-            for p, b, fixed in ((blue, builds[0], deck_blue), (red, builds[1], deck_red)):
-                decks_now.append(b.deck if (b and b.ok) else (fixed if b is None else DEFAULT_DECK))
-            deck_blue, deck_red = decks_now
-        db.set_match_decks(job_id, mid, deck_blue, deck_red)
-        res = play_match(blue, red, deck_blue, deck_red, job["seed"], mid, job_dir,
-                         decision_ticks=decision_ticks, verbose=args.verbose, on_step=on_step, record=record)
-        for key, b in (("stats_blue", builds[0]), ("stats_red", builds[1])):
-            if b is not None:
-                res[key]["deck_build"] = {"deck": b.deck, "ok": b.ok, "error": b.error, "raw": b.raw,
-                                          "latency_s": round(b.latency_s, 1), "usage": b.usage}
-                res[key]["cost_usd"] = round(res[key].get("cost_usd", 0.0) + b.usage.get("cost", 0.0), 6)
-        return res
+            # Fresh player objects per match: each match has its own deck / prompt / RNG.
+            blue = build_player(by_name[job["blue"]])
+            red = build_player(by_name[job["red"]])
+            deck_blue, deck_red = job["deck_blue"], job["deck_red"]
+            builds = [None, None]
+            if deck_mode == "build":
+                # Both sides build blind, at the same time. Bots (no opinion) play their fixed/default deck.
+                with ThreadPoolExecutor(max_workers=2) as bp:
+                    futs = [bp.submit(p.build_deck, POOL, POOL_TEXT, decision_ticks * 0.05) for p in (blue, red)]
+                    builds = [f.result() for f in futs]
+                decks_now = []
+                for p, b, fixed in ((blue, builds[0], deck_blue), (red, builds[1], deck_red)):
+                    decks_now.append(b.deck if (b and b.ok) else (fixed if b is None else DEFAULT_DECK))
+                deck_blue, deck_red = decks_now
+            db.set_match_decks(job_id, mid, deck_blue, deck_red)
+            res = play_match(blue, red, deck_blue, deck_red, job["seed"], mid, job_dir,
+                             decision_ticks=decision_ticks, verbose=args.verbose, on_step=on_step, record=record)
+            for key, b in (("stats_blue", builds[0]), ("stats_red", builds[1])):
+                if b is not None:
+                    res[key]["deck_build"] = {"deck": b.deck, "ok": b.ok, "error": b.error, "raw": b.raw,
+                                              "latency_s": round(b.latency_s, 1), "usage": b.usage}
+                    res[key]["cost_usd"] = round(res[key].get("cost_usd", 0.0) + b.usage.get("cost", 0.0), 6)
+            return res
 
-    from .game import Game
+        from .game import Game
 
-    POOL_TEXT = pool_text(Game(DEFAULT_DECK, DEFAULT_DECK, seed=0, record=False).cards)
-    parallel = args.parallel or t.get("parallel", 4)
-    crashed = 0
-    pool = ThreadPoolExecutor(max_workers=parallel)
-    try:
-        futs = {pool.submit(run, j): j for j in todo}
-        for n, fut in enumerate(as_completed(futs), 1):
-            job = futs[fut]
-            try:
-                res = fut.result()
-            except InfraError as exc:
-                crashed += 1
-                db.match_crashed(job_id, job["match_id"], f"InfraError (not scored, rerun the job to retry): {exc}")
-                print(f"[{n}/{len(todo)}] {job['match_id']} ABORTED, model unreachable: {exc}")
-                continue
-            except Exception:
-                crashed += 1
-                db.match_crashed(job_id, job["match_id"], traceback.format_exc())
-                print(f"[{n}/{len(todo)}] {job['match_id']} CRASHED (rerun the job to retry)\n{traceback.format_exc()}")
-                continue
-            db.match_finished(job_id, res)
-            w = {0: res["blue"], 1: res["red"], 2: "draw"}[res["winner"]]
-            print(f"[{n}/{len(todo)}] {job['match_id']}: winner {w}, crowns {res['crowns']}, {res['wall_s']}s "
-                  f"(errors blue {res['stats_blue']['errors']}/red {res['stats_red']['errors']})")
-    except KeyboardInterrupt:
-        # Don't wait for in-flight matches: they stay 'running' in the DB and are re-queued on resume.
-        db.set_job_status(job_id, "stopped")
-        print("\nstopped; rerun with the same --job to resume")
-        pool.shutdown(wait=False, cancel_futures=True)
-        os._exit(130)
-    pool.shutdown()
-    db.set_job_status(job_id, "done" if crashed == 0 else "stopped")
-    print()
-    print(leaderboard(db, job_id, anchor))
+        POOL_TEXT = pool_text(Game(DEFAULT_DECK, DEFAULT_DECK, seed=0, record=False).cards)
+        parallel = args.parallel or t.get("parallel", 4)
+        crashed = 0
+        pool = ThreadPoolExecutor(max_workers=parallel)
+        try:
+            futs = {pool.submit(run, j): j for j in todo}
+            for n, fut in enumerate(as_completed(futs), 1):
+                job = futs[fut]
+                try:
+                    res = fut.result()
+                except InfraError as exc:
+                    crashed += 1
+                    db.match_crashed(job_id, job["match_id"], f"InfraError (not scored, rerun the job to retry): {exc}")
+                    print(f"[{n}/{len(todo)}] {job['match_id']} ABORTED, model unreachable: {exc}")
+                    continue
+                except Exception:
+                    crashed += 1
+                    db.match_crashed(job_id, job["match_id"], traceback.format_exc())
+                    print(f"[{n}/{len(todo)}] {job['match_id']} CRASHED (rerun the job to retry)\n{traceback.format_exc()}")
+                    continue
+                db.match_finished(job_id, res)
+                w = {0: res["blue"], 1: res["red"], 2: "draw"}[res["winner"]]
+                print(f"[{n}/{len(todo)}] {job['match_id']}: winner {w}, crowns {res['crowns']}, {res['wall_s']}s "
+                      f"(errors blue {res['stats_blue']['errors']}/red {res['stats_red']['errors']})")
+        except KeyboardInterrupt:
+            # Don't wait for in-flight matches: they stay 'running' in the DB and are re-queued on resume.
+            db.set_job_status(job_id, "stopped")
+            print("\nstopped; rerun with the same --job to resume")
+            pool.shutdown(wait=False, cancel_futures=True)
+            os._exit(130)
+        pool.shutdown()
+        db.set_job_status(job_id, "done" if crashed == 0 else "stopped")
+        print()
+        print(leaderboard(db, job_id, anchor))
 
 
 if __name__ == "__main__":

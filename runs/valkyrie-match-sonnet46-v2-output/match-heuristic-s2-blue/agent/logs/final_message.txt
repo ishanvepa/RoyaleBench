@@ -1,0 +1,12 @@
+The match ended in a loss: **0 crowns vs enemy's 1 crown**.
+
+**Post-match analysis:**
+
+The match was competitive but ultimately came down to a few critical moments:
+
+- **Early game**: I successfully damaged the enemy right tower (down to 2245 HP) with a Giant + Musketeer combo — a solid start.
+- **Mid game**: The enemy's Cannon + Minions counter-push was very effective at killing my Giants before they could deal more tower damage. Each Giant push was answered with a Cannon to draw it away from the tower.
+- **Late game**: The enemy executed a smart two-lane split attack — Giant pushing left lane while Knight + Musketeer + Minions pressured right. My left tower fell at ~14 seconds remaining.
+- **Key mistake**: I may have been too slow on the second Giant push, letting the enemy build a strong counter. I also missed the value of Fireballing the enemy tower + Musketeer cluster earlier to finish off the right tower.
+
+The enemy right tower survived at **1992/3052 HP** — 807 HP from going down. A better-timed Fireball on that tower combined with the Giant push might have been the difference.

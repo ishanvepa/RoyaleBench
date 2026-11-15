@@ -2292,6 +2292,22 @@
         grid.m[point.cy * grid.width + point.cx] === "1"
       );
     },
+    // The allowed half-cell closest to point (by centre distance), or null if none.
+    nearest(grid, point) {
+      if (!point) return null;
+      let best = null,
+        bestD = Infinity;
+      for (let cy = 0; cy < grid.height; cy++)
+        for (let cx = 0; cx < grid.width; cx++) {
+          if (grid.m[cy * grid.width + cx] !== "1") continue;
+          const d = (cx - point.cx) ** 2 + (cy - point.cy) ** 2;
+          if (d < bestD) {
+            bestD = d;
+            best = { cx, cy };
+          }
+        }
+      return best && { ...best, x: (best.cx + 0.5) / grid.half, y: (best.cy + 0.5) / grid.half };
+    },
     // Shades every blocked half-cell (one fillRect each), outlines where blocked meets
     // allowed, then previews the card at the hovered half-cell's centre.
     draw(ctx, grid, scale, hover, cue = null) {

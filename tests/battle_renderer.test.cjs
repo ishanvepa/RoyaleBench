@@ -530,3 +530,13 @@ test('other spells and effect objects keep the generic drawing', () => {
   renderer.draw(a, b, .4, 30, {scale: 20, cards: generic});
   assert.ok(!operations.some(op => op[0] === 'fillStyle' && ['#9a6434', '#7a4a22', '#e2b43c'].includes(op[1])));
 });
+
+test('nearest snaps a blocked opponent-side tap to the closest allowed cell', () => {
+  const p = window.BattleRenderer.placement;
+  // Only the bottom half (cy < 32) is allowed.
+  const grid = {half: 2, width: 36, height: 64, m: Array.from({length: 36 * 64}, (_, i) => i < 36 * 32 ? '1' : '0').join('')};
+  const hit = p.nearest(grid, p.at(4.2, 25, grid));
+  assert.deepEqual([hit.cx, hit.cy, hit.x, hit.y], [8, 31, 4.25, 15.75]);
+  assert.equal(p.allowed(grid, hit), true);
+  assert.equal(p.nearest({...grid, m: '0'.repeat(36 * 64)}, p.at(4, 25, grid)), null);
+});

@@ -1,0 +1,6 @@
+I won the scenario: a Fireball destroyed the enemy's left princess tower, giving a 1–0 crown lead. The game ended as `SUCCESS` with 7 elixir spent.
+
+1. **Decision 1:** I played Cannon at (3.5, 9.0) to pull the Balloon off my left princess tower, which had only 305 HP. The Cannon took the Balloon's hit, dropping to 157/824 HP, and my tower stayed up.
+2. **Decision 2:** The enemy left princess tower was down to 149 HP, apparently from my Giant and Musketeer. I cast Fireball at (3.5, 25.5), and it finished the tower.
+
+I submitted each move myself with `cr play`. I didn't use any scripts or loops.

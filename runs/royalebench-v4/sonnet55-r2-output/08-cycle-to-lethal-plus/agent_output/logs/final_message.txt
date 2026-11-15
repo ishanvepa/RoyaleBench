@@ -1,0 +1,14 @@
+I lost: the scenario ended in failure, 0 crowns for me and 1 for the enemy.
+
+My left princess tower (458 HP) fell, which gave the enemy the winning crown. I had the tower at 458 HP and reported "tower damage 458".
+
+What I played:
+1. I put IceGolemite at (3.5, 11.5) to block the Giant on my left lane.
+2. I added Skeletons at (4.5, 11.0) as a distraction. That brought Fireball into my hand.
+3. I cast Fireball at (3.5, 25.5), aiming at the enemy's left princess tower, which was at 180 HP.
+
+The Fireball cast was accepted, but the game ended right after it, before I could confirm it hit. It deals 159 and the tower had 180, so it would have left 21 HP. I had planned to finish the tower with Ice Spirits, which I never got to send. I held back that cast until the Giant was already attacking, so it was too late.
+
+The Giant was still alive (3,451/3,968 HP) when the game ended. My blockers never stopped it, and my 458-HP tower couldn't absorb its hits long enough.
+
+I didn't use `cr wait` or any rejected plays, and I didn't write any scripts to choose or submit moves.

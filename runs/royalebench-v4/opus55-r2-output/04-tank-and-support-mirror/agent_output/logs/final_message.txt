@@ -1,0 +1,7 @@
+The scenario finished with **SUCCESS**: both princess towers were still standing after 20 seconds, and I spent 8 of the 9 allowed elixir.
+
+- **Giant (right lane):** I placed an Inferno Tower at (11, 9). That pulled the Giant off the weakened right tower, which started at 1068 HP, and killed it before it hit the tower. The right tower stayed at 1068 HP.
+- **Musketeer behind the Giant:** I dropped a Knight at (14.5, 13) to fight it, which kept it off the right tower.
+- **Later pushes:** The opponent sent a second Musketeer down the left lane, then Minions and a Knight down the right. I had only 1 elixir left in the budget, so I waited. The left tower killed the Musketeer and fell from 3052 to 1967 HP. The Minions and Knight hadn't reached the right tower when the window ended.
+
+The towers took 1085 damage in total, all of it on the left tower. That doesn't affect the result, because the objective only required keeping both towers alive.

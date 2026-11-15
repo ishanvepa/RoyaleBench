@@ -1,0 +1,6 @@
+The defence worked: the run ended with **GAME OVER: scenario SUCCESS**, with 0 tower damage, both princess towers alive and 3 of the 4 allowed elixir spent.
+
+- **Move 1:** As the Hog Rider crossed the river in the right lane, I placed the Cannon near the middle of our side at (11, 9.5). It was closer to the Hog Rider than the right princess tower, so the Hog Rider went for the Cannon instead of the tower.
+- **Moves 2–6:** I waited. The Cannon and the tower brought the Hog Rider down to 235 HP before the Cannon was destroyed. The tower then finished it off before it could deal any damage. Zap wasn't an option because it costs 2 and only 1 elixir of budget was left.
+
+The right princess tower stayed at its starting 1831/3052 HP; the opponent played nothing besides the Hog Rider.

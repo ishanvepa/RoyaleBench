@@ -1,0 +1,6 @@
+The scenario failed, so the reward is 0. Both princess towers survived, but they took 1652 tower damage against the 450 limit. I stayed within the elixir limit, spending exactly 8.
+
+- **Right lane:** The Log killed the first Goblin Gang. An IceGolemite and then a Cannon covered the GoblinBarrel, and the Cannon cost 3 elixir. The right tower still took 375 damage from the barrel goblins.
+- **Left lane:** The opponent sent a second Goblin Gang, a Princess and IceSpirits down the left lane. I had only 1 elixir left, so my one answer was a single IceSpirits at about 12s. It didn't stop the gang. The left tower took 866 damage by 18s, and a second Goblin Gang on that lane was probably most of the rest of the total.
+
+I spent 6 of my 8 elixir (Log, IceGolemite, Cannon) on the right lane before the left-lane threat was visible. The IceGolemite was also a poor play: it walked across the river instead of staying near the tower. A better plan would have held back about 4 elixir for the left lane, and used a cheaper defence on the right.

@@ -24,10 +24,23 @@ v1 set; cycle-history and comeback candidates remain gated. Build with
 See the guide and manifest for release validation and model-run evidence.
 Current release: `royalebench/royalebench-v3@2` (tag `v3-support`), with capture provenance,
 compact opponent play observations and the Modal model endpoint allowlist. All 11 references pass isolated Docker
-validation and deterministic replay. Full-cohort model calibration remains pending.
+validation and deterministic replay. In one full-cohort run each, Claude Opus 5.5 scored
+**11/11** and Claude Sonnet 5.5 scored **7/11** with the same harness and dataset revision.
+See the [comparison and v4 challenge design](docs/royalebench_v4.md) for per-task traces and limits.
 The `@1` lethal control passed with Sonnet 4.6 on Valkyrie/Modal (reward 1, integrity 1).
 An `@2` Qwen/mini-SWE-agent lethal smoke test also passed with reward 1, integrity 1 and
 complete archived capture; neither single-task result estimates the full benchmark score.
+
+## RoyaleBench v4 challenge set
+
+The [v4 challenge set](docs/royalebench_v4.md) targets spatial placement and multi-step
+lethal planning exposed by the Opus and Sonnet v3 runs. Its corrected `@2` release contains
+five locally and Docker-validated positions and keeps v3 unchanged for historical comparisons. Build with
+`uv run python -m cr_arena.build_v4 --jobs 2`.
+In one full run per model on immutable `royalebench/royalebench-v4@2`, Opus 5.5
+scored **3/5 (60%)** and Sonnet 5.5 **1/5 (20%)**, all with replay integrity 1.
+The v4 guide has per-task outcomes, traces, costs, and the `@1` instruction defect
+that made its earlier aggregate scores unsuitable for comparison.
 
 ## Historical v1 and coordinate pilot
 
@@ -105,6 +118,7 @@ Structure follows Vals AI's [Poker Agent](https://www.vals.ai/benchmarks/poker_a
 - [RoyaleBench v1](docs/royalebench_v1.md): strategic continuation tasks against Planner, exact scoring, local validation, and release gates.
 - [RoyaleBench v3](docs/royalebench_v3.md): default full continuation benchmark using coordinate actions, release validation, and run commands.
 - [RoyaleBench Tactics](docs/tactics.md): four task families with spatial variations, timing and resource constraints, contrast evidence, and build/validation commands.
+- [RoyaleBench v4](docs/royalebench_v4.md): focused challenge set based on the Opus and Sonnet v3 traces, with validation and run instructions.
 - [Data collection](docs/data_collection.md): shared match telemetry, automatic archival for future runs, and reproducible analysis tables ([design plan](docs/data_collection_plan.md)).
 - [Evals dashboard](docs/evals_dashboard.md): run benchmarks on Valkyrie and Modal, watch task replays and agent traces, and browse the original arena (`uv run python -m rb_server`).
 - [Simulation foundation](docs/simulator_foundation.md): the RoyaleGym ecosystem, our current integration, and its role in the benchmark.

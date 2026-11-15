@@ -120,6 +120,31 @@ describe("Benchmark page", () => {
 });
 
 describe("Task page", () => {
+  it("opens the validated resolution only when requested", async () => {
+    let requests = 0;
+    server.use(
+      http.get("*/api/evals/benchmarks/:name/tasks/:taskId", () =>
+        HttpResponse.json({
+          benchmark: "alpha", task: benchmarkDetail().tasks[0], instruction: "Do the thing.", config_toml: "",
+          files: [], dockerfile: null, test_script: null, solution_script: "echo solved",
+        }),
+      ),
+      http.get("*/api/evals/benchmarks/:name/tasks/:taskId/resolution", () => {
+        requests += 1;
+        return HttpResponse.json({ available: true, html: "<html>reference game</html>", partial: false, message: "" });
+      }),
+    );
+    const { user } = renderApp("/evals/benchmarks/alpha/tasks/t1");
+    const view = await screen.findByRole("button", { name: "View resolution" });
+    expect(requests).toBe(0);
+    await user.click(view);
+    const dialog = await screen.findByRole("dialog", { name: "Task resolution: t1" });
+    const frame = within(dialog).getByTitle("Resolution of t1");
+    expect(frame).toHaveAttribute("sandbox", "allow-scripts");
+    expect(frame).toHaveAttribute("srcdoc", "<html>reference game</html>");
+    expect(requests).toBe(1);
+  });
+
   it("renders the instruction and loads results lazily on the Results tab", async () => {
     let resultCalls = 0;
     server.use(

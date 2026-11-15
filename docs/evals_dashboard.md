@@ -76,9 +76,9 @@ Workspace billing access is separate from the Valkyrie sandbox provider connecti
 | --- | --- |
 | Jobs | Every Valkyrie run, filterable by status, model and benchmark, with sortable API cost and average cost per task for each run. Fetch missing costs for the visible runs here. Filters live in the URL. |
 | New job | Pick a published benchmark and revision, run **all of it or selected tasks**, choose harness, model and API-key secret, set concurrency. A live review shows the task count, any problems, and the equivalent `valkyrie run start` command. Sandboxes are always Modal. |
-| Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, API cost and average cost per task, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Fetch missing costs for this run here. Task rows show difficulty badges (easy green, medium amber, hard red) from current local benchmark metadata, with a dash when unavailable; rows open details with **Watch replay** and the agent's trace. |
+| Job monitor | One run, updating as it goes: tasks by state, ETA, queue position, API cost and average cost per task, stop / resume / retry failed / change concurrency, and tabs for tasks, logs, errors and config. Fetch missing costs for this run here. Task rows show difficulty badges (easy green, medium amber, hard red) from current local benchmark metadata, with a dash when unavailable; rows open details with **Watch replay**, **View resolution** when the task exists locally, and the agent's trace. |
 | Benchmarks | The folders under `benchmarks/`, marked draft, published or modified, with their published versions. **Publish** pushes the folder to Valkyrie as a new revision (nothing changes if the content is unchanged). |
-| Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), difficulty badges (easy green, medium amber, hard red), and for each task its instruction, files and results across runs. Each result offers **Watch replay** alongside its agent trace. |
+| Benchmark and task pages | A benchmark's tasks with checks (missing tests, CRLF scripts, no timeout), difficulty badges (easy green, medium amber, hard red), and for each task its instruction, files and results across runs. The task header offers **View resolution** for a validated reference; each result offers **Watch replay** alongside its agent trace. |
 | Leaderboard | Models by harness with solved, pass rate, score, agent failures, infrastructure errors, time and cost. Click any column to sort. |
 | Overview | Totals over every job (jobs and how many are running, tasks finished, tasks solved, estimated API spend) above the ten most recent jobs. Solved and spend come from the leaderboard's finished runs, smoke tests included. |
 | Models | The models in `evals.toml` plus any a job has used, with their provider, key variable, whether a stored Valkyrie secret mentions the provider (it does not test the key), job count, tasks run and solved, and last run. Filter by family; the job count links to the Jobs page filtered by that model. |
@@ -130,6 +130,16 @@ or stopping. Finished-run replay files are cached separately from agent traces; 
 fetched again on opening so a retry or resume does not reuse an earlier attempt. Missing files and
 transfer failures can be retried. Playback never starts a model or sandbox. Fake mode's `arena-lite`
 tasks show explicitly labelled sample gameplay; its smoke tasks have no replay.
+
+On a local benchmark task page, **View resolution** plays the reference solution in the same
+controls as a model replay. The button loads only when opened and reads a saved
+`runs/<benchmark>/docker*/<task>/replay.msgpack`; it never runs a solution, model or sandbox.
+The server requires passing Docker validation with matching task configuration and packaged
+referee protocol hashes. This matters when older validation directories coexist with newer
+dataset revisions, as with v3's `docker-revision2`. If no matching validated replay exists,
+the dialog explains that it is unavailable. A run's task panel shows the resolution for the
+current local task version, which may differ from an older run revision. Reference gameplay
+is a local dashboard view; the solution remains outside the agent sandbox.
 
 **RoyaleBench v3** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It
 uses coordinate actions across all 11 released scenarios. Explicit benchmark links override the

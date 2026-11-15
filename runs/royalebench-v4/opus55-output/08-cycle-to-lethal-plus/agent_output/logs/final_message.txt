@@ -1,0 +1,5 @@
+I won the scenario in three decisions. The verifier reported **SUCCESS**: 1 crown to 0, 7 elixir spent, and both of my princess towers kept their starting HP.
+
+1. **Log at (3.5, 24.0):** I rolled it through the enemy's left princess tower, which had 180 HP. It only did 35 damage, much less than I'd expected, and the hit landed after a short delay. That left the tower at 145.
+2. **Ice Spirits at (3.5, 9.0):** This was my second card play, which brought Fireball into my hand. It also stunned the Giant pushing toward my damaged 458 HP tower.
+3. **Fireball at (3.5, 25.5):** It does 159 damage to towers, which was enough to destroy the 145 HP tower and win in overtime.

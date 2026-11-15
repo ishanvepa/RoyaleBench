@@ -100,9 +100,13 @@ no rejected action, and a direct `cr play 0 3.5 25.5` deployment. Its carried ca
 and its archive verifies; see [pilot evidence](../runs/royalebench-v3/qwen-support-pilot.json).
 This is one task, not a cohort score. The current collector does not extract individual model
 calls from this stock harness, though its raw trajectory is retained in the archive.
-Full-cohort frontier-model scores are not established by reference validation. Historical pilot
-scores (coordinates 3/3, menu 2/3 in one Sonnet 4.6 attempt each) remain attributed to their original
-dataset revisions; they are not renamed v3 results.
+Full-cohort frontier-model scores now include one paired `@2` run each with
+`claude_code-v1.0.0` on Modal: Claude Opus 5.5 scored **11/11** and Claude Sonnet 5.5
+scored **7/11**, both with integrity 1. These are one attempt per task, not repeated
+estimates. The [v4 challenge guide](royalebench_v4.md) records task-level results,
+trace findings and the corrected `@2` challenge comparison. Historical pilot scores
+(coordinates 3/3, menu 2/3 in one Sonnet 4.6 attempt each) remain attributed to
+their original dataset revisions; they are not renamed v3 results.
 
 ## Build, validate and run
 

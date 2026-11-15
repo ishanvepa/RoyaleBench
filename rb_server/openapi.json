@@ -5609,6 +5609,133 @@
         ]
       }
     },
+    "/api/evals/benchmarks/{name}/tasks/{task_id}/resolution": {
+      "get": {
+        "operationId": "get_task_resolution_api_evals_benchmarks__name__tasks__task_id__resolution_get",
+        "parameters": [
+          {
+            "description": "Benchmark folder name",
+            "in": "path",
+            "name": "name",
+            "required": true,
+            "schema": {
+              "description": "Benchmark folder name",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$",
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Task id (the task folder name)",
+            "in": "path",
+            "name": "task_id",
+            "required": true,
+            "schema": {
+              "description": "Task id (the task folder name)",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+              "title": "Task Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReplayOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Rejected"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not signed in to Valkyrie"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Read-only mode"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Not found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Invalid input"
+          },
+          "502": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Upstream error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrorResponse"
+                }
+              }
+            },
+            "description": "Valkyrie unreachable"
+          }
+        },
+        "summary": "Watch the locally validated reference solution for this task version",
+        "tags": [
+          "evals: benchmarks"
+        ]
+      }
+    },
     "/api/evals/benchmarks/{name}/tasks/{task_id}/results": {
       "get": {
         "operationId": "get_task_results_api_evals_benchmarks__name__tasks__task_id__results_get",

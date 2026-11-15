@@ -1,0 +1,3 @@
+I won on the first decision. I cast Fireball at (3.5, 25.5). The enemy left princess tower was on 158 HP and Fireball does 159 to crown towers, so it fell. The game ended 1–0 to me, and `cr` reported "scenario SUCCESS" with 4 elixir spent.
+
+I haven't seen the verifier's independent replay, so I can't confirm the reward of 1 from here.

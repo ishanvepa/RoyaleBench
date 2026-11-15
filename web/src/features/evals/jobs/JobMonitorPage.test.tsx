@@ -2,7 +2,7 @@ import { act, screen, waitFor, within } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { TaskRow } from "@/api/types";
-import { environment, jobDetail, taskList } from "@/test/fixtures";
+import { benchmarkDetail, environment, jobDetail, taskList } from "@/test/fixtures";
 import { renderApp } from "@/test/render";
 import { server } from "@/test/server";
 
@@ -186,7 +186,11 @@ describe("Job monitor", () => {
   });
 
   it("opens a task's panel from the table and records the choice in the URL", async () => {
+    let resolutionRequests = 0;
     server.use(
+      http.get("*/api/evals/benchmarks/:name", () => HttpResponse.json({
+        ...benchmarkDetail(), tasks: [{ ...benchmarkDetail().tasks[0], id: "elixir-check" }],
+      })),
       http.get("*/api/evals/jobs/:runId/tasks/:taskId", () =>
         HttpResponse.json({ task: "elixir-check", status: "FINISHED", category: "", error: "", reward: 1, solved: true, rewards: { reward: 1 }, verifier_output: "reward: 1", agent_s: 5, sandbox_s: 20, build_s: 1, eval_s: 1, exit_reason: null }),
       ),
@@ -195,6 +199,10 @@ describe("Job monitor", () => {
         cost_usd: 0.00123413, cost_source: "modal_token_usage", inference_cost_usd_exact: "0.00123413",
         cost_note: "Modal inference tokens only; excludes infrastructure.",
       })),
+      http.get("*/api/evals/benchmarks/:name/tasks/:taskId/resolution", () => {
+        resolutionRequests += 1;
+        return HttpResponse.json({ available: true, html: "<html>reference game</html>", partial: false, message: "" });
+      }),
     );
     const { router, user } = renderApp("/evals/jobs/run-1");
     await user.click(await screen.findByRole("row", { name: /elixir-check/ }));
@@ -204,6 +212,11 @@ describe("Job monitor", () => {
     expect(screen.getByRole("button", { name: "Load agent trace" })).toBeInTheDocument(); // not downloaded until asked
     await user.click(screen.getByRole("button", { name: "Load agent trace" }));
     expect(await screen.findByText("Exact inference cost: $0.00123413")).toBeInTheDocument();
+    const resolution = await screen.findByRole("button", { name: "View resolution" });
+    expect(resolutionRequests).toBe(0);
+    await user.click(resolution);
+    expect(await screen.findByTitle("Resolution of elixir-check")).toHaveAttribute("sandbox", "allow-scripts");
+    expect(resolutionRequests).toBe(1);
     expect(taskList().tasks).toHaveLength(1);
   });
 });

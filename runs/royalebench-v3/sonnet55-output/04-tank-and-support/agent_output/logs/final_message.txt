@@ -1,0 +1,9 @@
+The scenario failed, so the reward is 0. The left princess tower was destroyed before the 20 seconds ended. The final result was crowns 0–1, tower damage 2153, and 8 elixir spent, which was within the 9 limit.
+
+- **Opening:** I put the Inferno Tower at (3.5, 11) to draw the Giant away from the left princess tower, which started at 1068 HP.
+- **Giant:** The Inferno Tower was destroyed, but the Knight and the princess tower killed the Giant.
+- **Knight:** The Knight then died to the Musketeer and Archers.
+- **Collapse:** After that the Musketeer, Archers and Minions all reached the left lane. The left tower dropped from 1068 to 627 by the 18-second mark and fell before 20 seconds.
+- **Missed spend:** I held the last elixir instead of spending it. I reached 10 elixir with nothing deployed in the left lane, and a card played earlier could have been the difference. The 9 elixir cap meant I could only afford a 1-elixir card after the first two plays, and I had none in hand.
+
+The main mistake was spending 8 of the 9 elixir on the Inferno Tower and Knight against the Giant alone. That left no budget to defend against the ranged units that followed it.

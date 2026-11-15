@@ -1,0 +1,3 @@
+The scenario was completed and passed on the first move.
+
+I cast one Fireball at (3.5, 11.0), between the Balloon (600 HP) and the Minions coming down the left lane, so the blast would catch both as they moved toward the tower. The game ended with **SUCCESS**: both princess towers survived, total tower damage was 107 (the limit was 150), and I spent 4 elixir on that single Fireball.

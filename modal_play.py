@@ -54,11 +54,7 @@ class PlayServer:
         volume.commit()
 
 
-# Keep the originally shared modal.run link usable; only the game Server stays warm.
-@app.function(image=image, max_containers=1, scaledown_window=2, routing_region="us-west")
-@modal.concurrent(max_inputs=100)
-@modal.asgi_app()
-def serve():
+def _redirect_app():
     from starlette.applications import Starlette
     from starlette.responses import RedirectResponse
     from starlette.routing import Route
@@ -67,3 +63,18 @@ def serve():
         return RedirectResponse(PlayServer.get_url().rstrip("/") + request.url.path)
 
     return Starlette(routes=[Route("/{path:path}", redirect)])
+
+
+# Share a short URL and keep the original link usable; only the game Server stays warm.
+@app.function(image=image, max_containers=1, scaledown_window=2, routing_region="us-west")
+@modal.concurrent(max_inputs=100)
+@modal.asgi_app(label="royalebench")
+def share():
+    return _redirect_app()
+
+
+@app.function(image=image, max_containers=1, scaledown_window=2, routing_region="us-west")
+@modal.concurrent(max_inputs=100)
+@modal.asgi_app()
+def serve():
+    return _redirect_app()

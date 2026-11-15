@@ -79,7 +79,9 @@ Selecting a card reads its cached mask immediately, without sending a placement
 request. The engine still validates every actual deployment. Masks invalidate on
 card changes, pending plays, relevant buildings/spells, and tower destruction.
 
-Play online: [public game](https://b-charest04--royalebench-play-playserver.us-west.modal.direct/).
+Play online: [RoyaleBench](https://b-charest04--royalebench.us-west.modal.run/).
+This short share link redirects to the
+[game server](https://b-charest04--royalebench-play-playserver.us-west.modal.direct/).
 The [original shared link](https://b-charest04--royalebench-play-serve.us-west.modal.run/)
 also works through a redirect.
 
@@ -172,7 +174,9 @@ credits. The Valkyrie provider secret is hosted by Valkyrie and does not sign th
 local Modal CLI in automatically. No model API keys or Valkyrie credentials are
 needed by the game.
 
-The deploy command prints the permanent `https://….modal.direct` game URL. The
+Share `https://b-charest04--royalebench.us-west.modal.run/`, configured with
+`@modal.asgi_app(label="royalebench")` on the `share` Function. It redirects to
+the permanent `https://….modal.direct` game URL printed by the deploy command. The
 previously shared `https://b-charest04--royalebench-play-serve.us-west.modal.run/`
 link redirects browsers to it, so that link remains usable. Its `/health` endpoint reports `active_games` and `max_games`; a full server
 remains healthy and serves its capacity message.
@@ -180,8 +184,9 @@ remains healthy and serves its capacity message.
 `min_containers=1` keeps the game server warm and incurs idle hosting charges
 while deployed. `max_containers=1` keeps game capacity in one process. Request
 autoscaling is disabled; setup visitors and the eighth player reach the application
-and see its capacity response. **The game's match cap is seven.** A separate
-redirect Function preserves the original link and scales to zero when unused.
+and see its capacity response. **The game's match cap is seven.** Two
+redirect Functions serve the short share link and the original link;
+both scale to zero when unused.
 Do not increase the game container count or deploy another game process against
 the same volume.
 

@@ -28,7 +28,7 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 ## Documentation index
 
 - Keep this index and the affected documentation up to date whenever documents are added, renamed, removed, or project behavior changes.
-- [`README.md`](README.md): project entry point and links to quick guides.
+- [`README.md`](README.md): benchmark writeup, preliminary match results, evidence placeholders, and links to quick guides.
 - [`docs/simulator_foundation.md`](docs/simulator_foundation.md): RoyaleGym ecosystem, current integration, pinned dependencies, and benchmark validation priorities.
 - [`docs/bots.md`](docs/bots.md): shared bot catalog, registry, implementation layout, adding opponents, and live/turn-based bot strength comparisons.
 - [`docs/search_v2.md`](docs/search_v2.md): implemented search, human-play integration, comparison commands, evaluation protocol, results, and limitations.

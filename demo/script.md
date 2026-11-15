@@ -1,6 +1,6 @@
 # Silent-viewing captions — 67-second edit
 
-The active [v04 Remotion cut](remotion/README.md) has no narration. These lines are burned into the video at the exact times below; a quiet original effects track marks scene changes and matched deployments.
+The active [v04 Remotion cut](remotion/README.md) has no narration. These lines are burned into the video at the exact times below; a quiet original effects track marks scene changes and matched deployments. The separate [Ben and Ishan recording script](voiceover.md) is ready for a future audio mix.
 
 | Time | Caption |
 | --- | --- |
@@ -14,8 +14,8 @@ The active [v04 Remotion cut](remotion/README.md) has no narration. These lines 
 | 33–37s | Opus loses. The validated reference wins. |
 | 37–43s | Reference Cannon: half a tile left, one tile higher. |
 | 43–50s | Model Log: enemy tower. Reference Log: incoming Giant. |
-| 50–59s | In one v6 run, Opus completed 10 of 14 task objectives. |
+| 50–59s | In the latest full v9 run, Opus completed 14 of 21 task objectives. |
 | 59–63s | The validated reference finds the winning connection. |
 | 63–67s | No caption; leave the end card clear. |
 
-The editable source of truth is `remotion/src/GameUI.tsx`. The comparison identifies visible placement differences, not a sole cause of the outcome. The score is task objective success in one historical v6@1 run; v6 contains objectives besides match wins. The model receives text observations, and the arena is the replay visualization for viewers.
+The editable source of truth is `remotion/src/GameUI.tsx`. The comparison identifies visible placement differences, not a sole cause of the outcome. The score is task objective success in the latest full v9@1 run; it is separate from 10/21 match wins. The model receives text observations, and the arena is the replay visualization for viewers.

@@ -29,7 +29,7 @@ export const cues = [
   { from: 33, to: 37, text: "Opus loses. The validated reference wins." },
   { from: 37, to: 43, text: "Reference Cannon: half a tile left, one tile higher." },
   { from: 43, to: 50, text: "Model Log: enemy tower. Reference Log: incoming Giant." },
-  { from: 50, to: 59, text: "In one v6 run, Opus completed 10 of 14 task objectives." },
+  { from: 50, to: 59, text: "In the latest full v9 run, Opus completed 14 of 21 task objectives." },
   { from: 59, to: 63, text: "The validated reference finds the winning connection." },
 ] as const;
 

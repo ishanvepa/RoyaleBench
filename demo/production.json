@@ -1,6 +1,6 @@
 {
   "status": "Remotion v04 67-second benchmark-context demo exported locally; publication pending.",
-  "updated_at_utc": "2026-11-15T20:58:18+00:00",
+  "updated_at_utc": "2026-11-15T21:27:42+00:00",
   "active_edit": {
     "project": "remotion",
     "composition_id": "RoyaleBench",
@@ -56,6 +56,7 @@
       "Explained fixed battle states, the tower-race objective, text observations, card-and-coordinate commands, and replay grading immediately after the opening.",
       "Moved the actual text observation and first recorded command directly after the task diagram, before the synchronized model/reference replays.",
       "Retimed the twelve caption cues and original effects to the new scene order.",
+      "Updated the aggregate Opus result to the verified full RoyaleBench v9@1 run: 14/21 task objectives and 10/21 match wins.",
       "Retained game-authored palette, card portraits, higher-resolution recorded footage, and paired Cannon/Log freezes."
     ],
     "workspace": "/Users/ben/.codex/worktrees/dd22/RoyaleBench/demo/remotion",
@@ -194,8 +195,8 @@
     },
     "export": {
       "path": "exports/royalebench-demo-v04.mp4",
-      "sha256": "6ea03d400c08d54123c90f69592b84a5c342cbb7fd15af92fa962a314c1468e8",
-      "bytes": 6250561,
+      "sha256": "70773917b23866766facc3cac907959c60ed3027947484b4f3e006276cefe8db",
+      "bytes": 6264123,
       "duration_s": 67.008,
       "width": 1920,
       "height": 1080,
@@ -216,17 +217,17 @@
   },
   "checks": {
     "lint_and_typecheck": "passed after final context and timing edits",
-    "bundled_browser_review_stills": "Reviewed the new opening headline at frame 55 and its clearance before the defeat reveal at frame 90; final encoded contact sheet inspected.",
-    "visual_review": "'RoyaleBench: LLM Benchmark' fits cleanly over the arena. The task diagram leads directly into the actual text observation and command before gameplay. Comparison, Cannon/Log freezes, result and end card remain legible.",
+    "bundled_browser_review_stills": "Reviewed the opening headline and its clearance before the defeat reveal, then the updated v9 result card at frame 1530; final encoded contact sheet inspected.",
+    "visual_review": "'RoyaleBench: LLM Benchmark' fits cleanly over the arena. The task diagram leads directly into the actual text observation and command before gameplay. The v9 result card clearly presents 14/21, with 14 completed and 7 missed. Comparison, Cannon/Log freezes, and end card remain legible.",
     "studio_preview": "Loaded the 67-second v04 composition in Remotion Studio; the timeline shows the text-observation scene directly after the benchmark task scene. At frame 570 the command, portrait and board loaded with no error overlay.",
-    "evidence": "Reuses the verified v01 evidence manifest and matching v6 reference.",
+    "evidence": "Reuses the verified v01 evidence manifest and matching v6 headliner reference; aggregate result uses the downloaded full RoyaleBench v9@1 Opus 5.5 record.",
     "documentation_links": "passed",
     "source_footage": "Archived source HTML hashes verified; replay payloads, card order, deployment ticks, winners and final hashes unchanged. Four high-resolution presentation clips captured and hashed.",
     "timeline": "Eight contiguous scenes, no gaps or overlaps, 2010 frames / 67 seconds at 30 fps; actual interface scene occupies seconds 13–24 before synchronized attempts.",
     "ending_animation": "37 renderer tests and 9 replay/embedding tests pass; live benchmark reference test passes. Browser verified deferred dialogs for win/loss/draw/case pass/fail, reset on new match, and reduced motion. Seven updated demo ending frames rendered and reviewed.",
     "api_task_replays": "Additional dashboard API suite could not load: the available Python environment lacks valkyrie-sdk (and requires system httpx). No API-service code changed.",
     "audio": "67-second 48 kHz original effects WAV; exported AAC stereo peaks at -20.6 dB, with no narration.",
-    "full_video_and_audio_decode": "passed for the final 67-second MP4 with updated opening title",
+    "full_video_and_audio_decode": "passed for the final 67-second MP4 with the updated v9 aggregate result",
     "export_probe": "1920x1080 H.264 30 fps, 2010 video frames, 67.008-second container; 48 kHz stereo AAC audio."
   },
   "remaining": [

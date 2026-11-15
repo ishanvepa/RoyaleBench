@@ -2,7 +2,7 @@
 
 Current edit: **67 seconds, 1920×1080, 30 fps**. Composition ID: `RoyaleBench`. The active v04 cut uses the game's navy panels, blue/red team colors, gold outcomes, elixir accents, card portraits, and replay graphics. It works without narration: captions carry the story, with a quiet original effects track at scene and deployment beats.
 
-The opening title reads “RoyaleBench: LLM Benchmark.” The first 13 seconds establish a fixed Clash Royale task state and win objective, and show the text observation → card-and-coordinate command → replay grade loop. The model's recorded defeat supplies the hook. The actual text observation and first command then appear before model and validated-reference replays run side by side at the same simulation time. Paired Cannon and Log freezes make two placement differences visible. The result is labeled as one historical v6@1 run.
+The opening title reads “RoyaleBench: LLM Benchmark.” The first 13 seconds establish a fixed Clash Royale task state and win objective, and show the text observation → card-and-coordinate command → replay grade loop. The model's recorded v6 defeat supplies the hook. The actual text observation and first command then appear before model and validated-reference replays run side by side at the same simulation time. Paired Cannon and Log freezes make two placement differences visible. The result card reports the latest full RoyaleBench v9@1 Opus run: 14/21 objective successes and 10/21 match wins.
 
 ## Preview and edit
 

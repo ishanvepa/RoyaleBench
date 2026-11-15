@@ -33,6 +33,8 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`demo/remotion/README.md`](demo/remotion/README.md): editable video project, official Remotion skills used, asset preparation, preview, and export commands.
 - [`demo/storyboard.md`](demo/storyboard.md): timed headliner sequence and model/reference comparison.
 - [`demo/script.md`](demo/script.md): timed silent-viewing captions and evidence-based editorial notes.
+- [`demo/voiceover.md`](demo/voiceover.md): timed Ben/Ishan recording lines alternating across the eight demo scenes.
+- [`demo/prompter.html`](demo/prompter.html): browser-based 67-second recording prompter with speaker labels and word highlighting.
 - [`demo/shot-list.md`](demo/shot-list.md): footage sources, capture queue, and edit checklist.
 - [`demo/evidence.json`](demo/evidence.json): selected Opus v6 run metadata, task outcome, trace excerpt, and validated reference provenance.
 - [`demo/production.json`](demo/production.json): current Remotion edit, capture provenance, historical first-cut media details, verification, and remaining production work.

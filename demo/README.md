@@ -4,6 +4,10 @@ The active edit is a **67-second Remotion composition** in [remotion](remotion/R
 
 Captions and original effects carry the story without narration. The local [MP4 export](exports/royalebench-demo-v04.mp4) and [contact sheet](exports/v04-contact-sheet.jpg) are ready for review; both are ignored by Git. The public video link is pending.
 
+For recording, use the [timed Ben and Ishan voiceover script](voiceover.md). It alternates speakers at each of the eight scene cuts; the current export does not include these voices yet.
+
+Open [the recording prompter](prompter.html) in a browser to follow the scene clock, auto-scroll, and word highlighting. Its spoken-word pace is 10% faster than the original timing, leaving quiet space between scenes.
+
 ## Source and edit files
 
 - [evidence.json](evidence.json): run ID, actions, outcomes, and reference provenance.

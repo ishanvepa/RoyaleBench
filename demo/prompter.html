@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0e1420">
+  <link rel="icon" href="data:,">
+  <title>RoyaleBench Recording Prompter</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0e1420;
+      --surface: #172033;
+      --panel: #1f2b44;
+      --line: #354563;
+      --text: #e8edf7;
+      --muted: #a5b2c9;
+      --blue: #3b8ef0;
+      --red: #f0703c;
+      --gold: #f2c230;
+      --water: #34dcc8;
+      --font-scale: 1;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      background: radial-gradient(circle at 75% -20%, #28395a 0, transparent 40%), var(--background);
+      color: var(--text);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    button, select, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, select:focus-visible, input:focus-visible {
+      outline: 3px solid var(--water);
+      outline-offset: 3px;
+    }
+    .app { width: min(1680px, calc(100% - 48px)); margin: 0 auto; padding: 24px 0 32px; }
+    .masthead, .brand, .header-meta, .stage-top, .toolbar, .transport, .settings,
+    .timeline-header, .scene-head, .scene-meta, .preview-head { display: flex; align-items: center; }
+    .masthead { justify-content: space-between; gap: 24px; margin-bottom: 18px; }
+    .brand { gap: 14px; }
+    .crest {
+      width: 50px; height: 50px; display: grid; place-items: center;
+      color: var(--gold); background: #26314b; border: 1px solid #5a4d2b;
+      border-radius: 12px; font-size: 31px; line-height: 1;
+    }
+    .eyebrow { color: var(--water); font-size: 11px; font-weight: 850; letter-spacing: .15em; text-transform: uppercase; }
+    h1 { margin: 3px 0 0; font-size: clamp(22px, 2vw, 30px); letter-spacing: -.04em; line-height: 1.1; }
+    .header-meta { gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .tag { padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); font-size: 12px; font-weight: 750; white-space: nowrap; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 345px; gap: 18px; align-items: start; }
+    .stage, .sidebar section {
+      background: linear-gradient(155deg, #1b2940, var(--surface) 55%);
+      border: 1px solid var(--line); border-radius: 18px;
+      box-shadow: 0 18px 45px #03081154;
+    }
+    .stage { min-width: 0; overflow: hidden; }
+    .stage-top { justify-content: space-between; gap: 18px; padding: 21px 25px 15px; }
+    .speaker-box { display: flex; align-items: center; gap: 13px; min-width: 0; }
+    .speaker-badge {
+      flex: none; min-width: 84px; padding: 8px 13px; border-radius: 8px; text-align: center;
+      font-size: 16px; font-weight: 950; text-transform: uppercase; letter-spacing: .06em;
+      color: var(--background); background: var(--blue);
+    }
+    .speaker-badge.ishan { background: var(--red); }
+    .scene-label { min-width: 0; }
+    .scene-label strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 18px; }
+    .scene-label span { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    .timecode { flex: none; font-variant-numeric: tabular-nums; font-weight: 900; font-size: clamp(20px, 2.4vw, 31px); letter-spacing: -.03em; }
+    .timecode small { color: var(--muted); font-size: 16px; }
+    .scrub-wrap { padding: 0 25px 16px; }
+    .scrub {
+      display: block; width: 100%; height: 10px; margin: 0; appearance: none; border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold) 0 var(--played, 0%), #364765 var(--played, 0%) 100%);
+      cursor: pointer;
+    }
+    .scrub::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--gold); border: 3px solid var(--background); box-shadow: 0 0 0 1px var(--gold); }
+    .scrub::-moz-range-thumb { width: 15px; height: 15px; border-radius: 50%; background: var(--gold); border: 3px solid var(--background); }
+    .script-viewport {
+      height: min(61vh, 620px); min-height: 400px; overflow-y: auto; overscroll-behavior: contain;
+      border-block: 1px solid var(--line); scroll-behavior: smooth;
+      scrollbar-color: #526886 transparent; scrollbar-width: thin;
+      background: linear-gradient(180deg, #0e142080, transparent 12%, transparent 88%, #0e142080);
+    }
+    .script-track { padding: 145px 26px 230px; }
+    .scene {
+      position: relative; margin-bottom: 22px; padding: 22px 25px 25px;
+      border: 1px solid #354563a8; border-left: 5px solid #52627e;
+      border-radius: 14px; background: #121b2bd9; opacity: .44;
+      transition: opacity .2s, border-color .2s, background .2s;
+    }
+    .scene.current { opacity: 1; background: var(--panel); border-color: #617391; }
+    .scene.current.ben { border-left-color: var(--blue); }
+    .scene.current.ishan { border-left-color: var(--red); }
+    .scene.upcoming { opacity: .68; }
+    .scene-head { justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .scene-meta { gap: 11px; min-width: 0; }
+    .scene-num { color: var(--gold); font-size: 13px; font-weight: 900; letter-spacing: .1em; }
+    .scene-name { font-size: 15px; font-weight: 800; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .scene-time { color: var(--muted); font-size: 13px; font-weight: 750; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .scene-words { font-size: calc(clamp(26px, 2.5vw, 40px) * var(--font-scale)); line-height: 1.44; font-weight: 730; letter-spacing: -.03em; }
+    .scene.current .scene-words { font-size: calc(clamp(34px, 3.55vw, 57px) * var(--font-scale)); line-height: 1.36; }
+    .cue + .cue { margin-top: .7em; }
+    .word { display: inline; border-radius: .13em; transition: color .08s, background .08s; }
+    .word.past { color: #8394b1; }
+    .word.active { color: #111827; background: var(--gold); box-shadow: 0 0 0 .09em var(--gold); }
+    .scene:not(.current) .word { color: inherit; background: none; box-shadow: none; }
+    .beat { margin: .55em 0; color: var(--water); font-size: 13px; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+    .toolbar { justify-content: space-between; gap: 16px; padding: 17px 22px; flex-wrap: wrap; }
+    .transport, .settings { gap: 8px; flex-wrap: wrap; }
+    .control {
+      min-width: 42px; min-height: 42px; padding: 8px 12px; border: 1px solid #536381;
+      border-radius: 9px; color: var(--text); background: #263652; font-size: 14px; font-weight: 800;
+    }
+    .control:hover, .scene-jump:hover { border-color: var(--water); background: #304462; }
+    .control.primary { min-width: 98px; color: #0b1220; border-color: var(--gold); background: var(--gold); }
+    .control.primary:hover { background: #ffdb60; }
+    .control:disabled { opacity: .4; cursor: default; }
+    .speed { min-height: 42px; padding: 8px; border-radius: 9px; border: 1px solid #536381; background: #263652; color: var(--text); font-weight: 800; }
+    .sidebar { display: grid; gap: 18px; }
+    .sidebar section { overflow: hidden; }
+    .preview-head, .timeline-header { justify-content: space-between; gap: 8px; padding: 16px 17px 12px; }
+    .sidebar h2 { margin: 0; font-size: 15px; letter-spacing: .01em; }
+    .status-pill { color: var(--water); font-size: 10px; font-weight: 900; letter-spacing: .08em; text-align: right; text-transform: uppercase; }
+    .preview-area { position: relative; aspect-ratio: 16 / 9; margin: 0 16px 13px; border: 1px solid var(--line); border-radius: 9px; overflow: hidden; background: #0c1220; }
+    .preview-area video { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .preview-fallback { display: none; position: absolute; inset: 0; place-items: center; padding: 25px; color: var(--muted); text-align: center; line-height: 1.4; font-size: 14px; }
+    .preview-area.no-video video { display: none; }
+    .preview-area.no-video .preview-fallback { display: grid; }
+    .preview-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 0 17px 16px; color: var(--muted); font-size: 11px; }
+    .preview-foot button { border: 0; background: none; color: var(--water); font-size: 11px; font-weight: 800; }
+    .scene-list { padding: 0 10px 10px; max-height: 480px; overflow-y: auto; }
+    .scene-jump {
+      width: 100%; display: grid; grid-template-columns: 36px minmax(0, 1fr) auto; align-items: center; gap: 8px;
+      padding: 10px 9px; border: 1px solid transparent; border-radius: 9px;
+      background: transparent; color: var(--text); text-align: left;
+    }
+    .scene-jump[aria-current="true"] { border-color: #586b88; background: #283a56; }
+    .jump-index { color: var(--gold); font-size: 12px; font-weight: 900; }
+    .jump-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 750; }
+    .jump-speaker { font-size: 10px; font-weight: 900; text-transform: uppercase; }
+    .jump-speaker.ben { color: #79b5ff; }
+    .jump-speaker.ishan { color: #ff9870; }
+    .help { margin: 14px 4px 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    kbd { display: inline-block; padding: 1px 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); color: var(--text); font: inherit; font-weight: 800; }
+    @media (max-width: 1000px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { grid-template-columns: 1fr 1fr; }
+      .script-viewport { height: 52vh; }
+    }
+    @media (max-width: 640px) {
+      .app { width: calc(100% - 24px); padding-top: 15px; }
+      .masthead { align-items: flex-start; }
+      .header-meta { display: none; }
+      .crest { width: 42px; height: 42px; }
+      .stage-top { padding: 15px 14px 12px; }
+      .scene-label strong { font-size: 14px; }
+      .scene-label span { font-size: 10px; }
+      .speaker-badge { min-width: 65px; padding: 7px; font-size: 12px; }
+      .timecode { font-size: 18px; }
+      .timecode small { font-size: 11px; }
+      .scrub-wrap { padding-inline: 15px; }
+      .script-viewport { height: 53vh; min-height: 350px; }
+      .script-track { padding: 95px 13px 160px; }
+      .scene { padding: 17px 15px 20px; }
+      .scene-words, .scene.current .scene-words { font-size: calc(28px * var(--font-scale)); }
+      .toolbar { padding: 13px; }
+      .sidebar { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .script-viewport { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: 0s !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="masthead">
+      <div class="brand">
+        <div class="crest" aria-hidden="true">♛</div>
+        <div><div class="eyebrow">RoyaleBench / recording</div><h1>Timeline prompter</h1></div>
+      </div>
+      <div class="header-meta" aria-label="Script details">
+        <span class="tag">67 seconds</span><span class="tag">8 scenes</span><span class="tag">Ben ↔ Ishan</span><span class="tag">Words at 1.1×</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="stage" aria-label="Teleprompter">
+        <div class="stage-top">
+          <div class="speaker-box">
+            <span class="speaker-badge" id="speakerBadge">Ben</span>
+            <div class="scene-label"><strong id="sceneTitle">Opening</strong><span id="sceneCount">Scene 01 of 08</span></div>
+          </div>
+          <div class="timecode"><span id="currentTime">00:00</span> <small>/ 01:07</small></div>
+        </div>
+        <div class="scrub-wrap"><input class="scrub" id="scrub" type="range" min="0" max="67" step="0.01" value="0" aria-label="Seek through the 67-second script"></div>
+        <div class="script-viewport" id="scriptViewport"><div class="script-track" id="scriptTrack"></div></div>
+        <div class="toolbar">
+          <div class="transport">
+            <button class="control" id="restart" title="Restart (Home)">↺</button>
+            <button class="control" id="previous" title="Previous scene (J)">◀ Scene</button>
+            <button class="control primary" id="play" aria-label="Play timeline">▶ Play</button>
+            <button class="control" id="next" title="Next scene (K)">Scene ▶</button>
+          </div>
+          <div class="settings">
+            <button class="control" id="smaller" title="Smaller text" aria-label="Smaller text">A−</button>
+            <button class="control" id="larger" title="Larger text" aria-label="Larger text">A+</button>
+            <select class="speed" id="speed" aria-label="Playback speed">
+              <option value="0.75">0.75×</option><option value="1" selected>1× speed</option>
+              <option value="1.25">1.25×</option><option value="1.5">1.5×</option>
+            </select>
+            <button class="control" id="fullscreen" title="Full screen (F)">⛶</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="sidebar">
+        <section>
+          <div class="preview-head"><h2>Demo preview</h2><span class="status-pill" id="sourceStatus">Checking local video</span></div>
+          <div class="preview-area" id="previewArea">
+            <video id="video" src="exports/royalebench-demo-v04.mp4" preload="metadata" playsinline muted></video>
+            <div class="preview-fallback">The local MP4 is unavailable here. The prompter clock and word highlighting still work.</div>
+          </div>
+          <div class="preview-foot"><span id="sourceDetail">Video follows the same 67-second clock.</span><button id="mute" type="button">Unmute video</button></div>
+        </section>
+        <section>
+          <div class="timeline-header"><h2>Jump to scene</h2><span class="status-pill">Click to seek</span></div>
+          <nav class="scene-list" id="sceneList" aria-label="Scene timeline"></nav>
+        </section>
+      </aside>
+    </main>
+    <p class="help"><kbd>Space</kbd> play / pause · <kbd>←</kbd> and <kbd>→</kbd> seek 1 second · <kbd>J</kbd> / <kbd>K</kbd> previous / next scene · <kbd>F</kbd> full screen. Spoken words run at 1.1×, leaving quiet space at scene ends. Recorded takes can be timed more precisely in the final edit.</p>
+  </div>
+
+  <script type="application/json" id="timelineData">
+  [
+    {"title":"Opening","speaker":"Ben","start":0,"end":4,"cues":[{"start":0.2,"end":3.29,"text":"RoyaleBench tests how language models play Clash Royale."}]},
+    {"title":"Benchmark task","speaker":"Ishan","start":4,"end":13,"cues":[{"start":4.3,"end":11.94,"text":"From a fixed battle state, the model reads text, chooses a card and coordinates, and a verifier grades the replay."}]},
+    {"title":"Actual observation and command","speaker":"Ben","start":13,"end":24,"cues":[{"start":13.3,"end":22.57,"text":"Here is the real observation: eighteen seconds left, a Giant incoming, and our tower at two hundred fifty health. Opus opens with Ice Spirits."}]},
+    {"title":"Synchronized attempts","speaker":"Ishan","start":24,"end":37,"cues":[{"start":24.4,"end":35.31,"text":"Now compare Opus with a validated winning reference. Same six cards, order, timing, and fifteen elixir. Their placements differ. Opus loses; the reference wins."}]},
+    {"title":"Cannon placement","speaker":"Ben","start":37,"end":43,"cues":[{"start":37.3,"end":42.03,"text":"The reference Cannon sits half a tile left and one tile higher."}]},
+    {"title":"Log target","speaker":"Ishan","start":43,"end":50,"cues":[{"start":43.3,"end":48.85,"text":"With Log, Opus targets the enemy tower. The reference targets the incoming Giant."}]},
+    {"title":"Run result","speaker":"Ben","start":50,"end":59,"cues":[{"start":50.3,"end":57.75,"text":"In the latest full v9 run on Vals AI's Valkyrie, Opus completed fourteen of twenty-one task objectives."}]},
+    {"title":"Winning connection and end card","speaker":"Ishan","start":59,"end":67,"cues":[{"start":59.3,"end":62.12,"text":"The reference finds the winning connection."},{"start":63.2,"end":66.29,"text":"RoyaleBench: the right cards are only the beginning."}]}
+  ]
+  </script>
+  <script>
+    (() => {
+      const scenes = JSON.parse(document.getElementById("timelineData").textContent);
+      const duration = scenes[scenes.length - 1].end;
+      const $ = (id) => document.getElementById(id);
+      const viewport = $("scriptViewport");
+      const track = $("scriptTrack");
+      const list = $("sceneList");
+      const video = $("video");
+      const preview = $("previewArea");
+      const scrub = $("scrub");
+      const playButton = $("play");
+      let time = 0;
+      let playing = false;
+      let videoReady = false;
+      let speed = 1;
+      let fontScale = 1;
+      let lastFrame = performance.now();
+      let shownScene = -1;
+      const cardNodes = [];
+      const jumpNodes = [];
+      const wordNodes = [];
+
+      const stamp = (seconds) => `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+      const sceneAt = (seconds) => {
+        const found = scenes.findIndex((scene) => seconds < scene.end);
+        return found < 0 ? scenes.length - 1 : found;
+      };
+      const wordWeight = (token) => Math.max(0.75, token.replace(/[^\p{L}\p{N}]/gu, "").length / 5) + (/[.!?]$/.test(token) ? 0.55 : /[,;:]$/.test(token) ? 0.25 : 0);
+
+      scenes.forEach((scene, index) => {
+        const card = document.createElement("article");
+        card.className = `scene ${scene.speaker.toLowerCase()}`;
+        card.dataset.index = index;
+        const head = document.createElement("div");
+        head.className = "scene-head";
+        head.innerHTML = `<div class="scene-meta"><span class="scene-num">${String(index + 1).padStart(2, "0")}</span><span class="scene-name"></span></div><span class="scene-time">${stamp(scene.start)}–${stamp(scene.end)}</span>`;
+        head.querySelector(".scene-name").textContent = `${scene.speaker} · ${scene.title}`;
+        card.append(head);
+        const words = document.createElement("div");
+        words.className = "scene-words";
+        scene.cues.forEach((cue, cueIndex) => {
+          if (cueIndex > 0) {
+            const beat = document.createElement("div");
+            beat.className = "beat";
+            beat.textContent = "Pause · end card enters";
+            words.append(beat);
+          }
+          const paragraph = document.createElement("div");
+          paragraph.className = "cue";
+          const tokens = cue.text.match(/\S+/g) || [];
+          const weights = tokens.map(wordWeight);
+          const total = weights.reduce((sum, weight) => sum + weight, 0);
+          let cursor = 0;
+          tokens.forEach((token, tokenIndex) => {
+            if (tokenIndex) paragraph.append(document.createTextNode(" "));
+            const span = document.createElement("span");
+            span.className = "word";
+            span.textContent = token;
+            span.dataset.start = cue.start + (cursor / total) * (cue.end - cue.start);
+            cursor += weights[tokenIndex];
+            span.dataset.end = cue.start + (cursor / total) * (cue.end - cue.start);
+            paragraph.append(span);
+            wordNodes.push({ element: span, scene: index, start: Number(span.dataset.start), end: Number(span.dataset.end) });
+          });
+          words.append(paragraph);
+        });
+        card.append(words);
+        track.append(card);
+        cardNodes.push(card);
+
+        const jump = document.createElement("button");
+        jump.type = "button";
+        jump.className = "scene-jump";
+        jump.innerHTML = `<span class="jump-index">${String(index + 1).padStart(2, "0")}</span><span class="jump-title"></span><span class="jump-speaker ${scene.speaker.toLowerCase()}">${scene.speaker}</span>`;
+        jump.querySelector(".jump-title").textContent = `${stamp(scene.start)} · ${scene.title}`;
+        jump.addEventListener("click", () => seek(scene.start));
+        list.append(jump);
+        jumpNodes.push(jump);
+      });
+
+      const scrollToScene = (index, smooth = true) => {
+        const card = cardNodes[index];
+        const offset = card.offsetTop - track.offsetTop - (viewport.clientHeight - card.offsetHeight) / 2;
+        viewport.scrollTo({ top: Math.max(0, offset), behavior: smooth && !matchMedia("(prefers-reduced-motion: reduce)").matches ? "smooth" : "instant" });
+      };
+      const render = () => {
+        const index = sceneAt(time);
+        const scene = scenes[index];
+        if (index !== shownScene) {
+          cardNodes.forEach((card, i) => {
+            card.classList.toggle("current", i === index);
+            card.classList.toggle("upcoming", i === index + 1);
+          });
+          jumpNodes.forEach((jump, i) => jump.setAttribute("aria-current", String(i === index)));
+          $("speakerBadge").textContent = scene.speaker;
+          $("speakerBadge").classList.toggle("ishan", scene.speaker === "Ishan");
+          $("sceneTitle").textContent = scene.title;
+          $("sceneCount").textContent = `Scene ${String(index + 1).padStart(2, "0")} of 08`;
+          scrollToScene(index, shownScene !== -1);
+          shownScene = index;
+        }
+        wordNodes.forEach(({ element, scene: wordScene, start, end }) => {
+          element.classList.toggle("past", time >= end);
+          element.classList.toggle("active", wordScene === index && time >= start && time < end);
+        });
+        $("currentTime").textContent = stamp(time);
+        scrub.value = time;
+        scrub.style.setProperty("--played", `${(time / duration) * 100}%`);
+        playButton.textContent = playing ? "Ⅱ Pause" : "▶ Play";
+        playButton.setAttribute("aria-label", playing ? "Pause timeline" : "Play timeline");
+      };
+      const seek = (seconds) => {
+        time = Math.max(0, Math.min(duration, Number(seconds)));
+        if (videoReady) video.currentTime = Math.min(time, video.duration || duration);
+        render();
+      };
+      const previousScene = () => {
+        const index = sceneAt(time);
+        seek(scenes[Math.max(0, time > scenes[index].start + .25 ? index : index - 1)].start);
+      };
+      const pause = () => { playing = false; if (videoReady) video.pause(); render(); };
+      const play = async () => {
+        if (time >= duration) seek(0);
+        playing = true;
+        lastFrame = performance.now();
+        if (videoReady) {
+          try { await video.play(); }
+          catch { videoReady = false; preview.classList.add("no-video"); $("sourceStatus").textContent = "Timeline clock"; }
+        }
+        render();
+      };
+      const toggle = () => playing ? pause() : play();
+      const frame = (now) => {
+        if (playing) {
+          if (videoReady) time = Math.min(duration, video.currentTime);
+          else time = Math.min(duration, time + ((now - lastFrame) / 1000) * speed);
+          if (time >= duration) pause();
+          else render();
+        }
+        lastFrame = now;
+        requestAnimationFrame(frame);
+      };
+
+      video.addEventListener("loadedmetadata", () => {
+        videoReady = true;
+        video.playbackRate = speed;
+        $("sourceStatus").textContent = "Video synced";
+        $("sourceDetail").textContent = "Playback follows the local MP4.";
+        seek(time);
+        if (playing) void video.play();
+      });
+      video.addEventListener("error", () => {
+        videoReady = false;
+        preview.classList.add("no-video");
+        $("sourceStatus").textContent = "Timeline clock";
+        $("sourceDetail").textContent = "Open the local export to enable video sync.";
+        $("mute").hidden = true;
+      });
+      video.addEventListener("ended", () => { time = duration; pause(); });
+      $("mute").addEventListener("click", () => { video.muted = !video.muted; $("mute").textContent = video.muted ? "Unmute video" : "Mute video"; });
+      $("play").addEventListener("click", toggle);
+      $("restart").addEventListener("click", () => seek(0));
+      $("previous").addEventListener("click", previousScene);
+      $("next").addEventListener("click", () => seek(scenes[Math.min(scenes.length - 1, sceneAt(time) + 1)].start));
+      scrub.addEventListener("input", () => seek(scrub.value));
+      $("speed").addEventListener("change", (event) => { speed = Number(event.target.value); video.playbackRate = speed; });
+      $("smaller").addEventListener("click", () => { fontScale = Math.max(.75, fontScale - .1); document.documentElement.style.setProperty("--font-scale", fontScale); scrollToScene(sceneAt(time), false); });
+      $("larger").addEventListener("click", () => { fontScale = Math.min(1.5, fontScale + .1); document.documentElement.style.setProperty("--font-scale", fontScale); scrollToScene(sceneAt(time), false); });
+      $("fullscreen").addEventListener("click", () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+      window.addEventListener("resize", () => scrollToScene(sceneAt(time), false));
+      document.addEventListener("keydown", (event) => {
+        if (["INPUT", "SELECT", "BUTTON"].includes(document.activeElement?.tagName)) return;
+        if (event.code === "Space") { event.preventDefault(); toggle(); }
+        else if (event.key === "ArrowLeft") { event.preventDefault(); seek(time - (event.shiftKey ? 5 : 1)); }
+        else if (event.key === "ArrowRight") { event.preventDefault(); seek(time + (event.shiftKey ? 5 : 1)); }
+        else if (event.key.toLowerCase() === "j") previousScene();
+        else if (event.key.toLowerCase() === "k") seek(scenes[Math.min(scenes.length - 1, sceneAt(time) + 1)].start);
+        else if (event.key.toLowerCase() === "f") $("fullscreen").click();
+        else if (event.key === "Home") seek(0);
+      });
+      render();
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

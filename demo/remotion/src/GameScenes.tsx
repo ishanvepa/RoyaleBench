@@ -476,8 +476,8 @@ export const AgentInterface = () => {
 
 const ObjectiveMarks = () => (
   <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 11, marginTop: 24 }}>
-    {Array.from({ length: 14 }, (_, index) => {
-      const completed = index < 10;
+    {Array.from({ length: 21 }, (_, index) => {
+      const completed = index < 14;
       return (
         <div
           key={index}
@@ -499,7 +499,7 @@ const ObjectiveMarks = () => (
 export const RunResult = () => (
   <>
     <GameTag color={game.gold} style={{ position: "absolute", left: 91, top: 70 }}>
-      ONE RECORDED RUN / HISTORICAL V6@1
+      ONE FULL RUN / ROYALEBENCH V9@1
     </GameTag>
     <Interactive.Div
       name="Run result title"
@@ -513,7 +513,7 @@ export const RunResult = () => (
     >
       <div style={{ color: game.gold, fontSize: 27, fontWeight: 850 }}>TASK OBJECTIVE SUCCESS</div>
       <div style={{ fontSize: 250, fontWeight: 1000, lineHeight: 1.1, letterSpacing: "-0.07em", fontVariantNumeric: "tabular-nums" }}>
-        <span style={{ color: game.win }}>10</span><span style={{ color: game.muted }}>/</span>14
+        <span style={{ color: game.win }}>14</span><span style={{ color: game.muted }}>/</span>21
       </div>
       <div style={{ fontSize: 40, fontWeight: 800 }}>objectives completed</div>
       <div style={{ marginTop: 14, fontSize: 27, color: game.muted }}>Includes objectives beyond match wins.</div>
@@ -522,11 +522,11 @@ export const RunResult = () => (
       accent={game.blue}
       style={{ position: "absolute", right: 89, top: 292, width: 830, height: 553, padding: "31px 33px" }}
     >
-      <div style={{ fontSize: 27, fontWeight: 850, color: game.blue }}>14 TASK OBJECTIVES</div>
+      <div style={{ fontSize: 27, fontWeight: 850, color: game.blue }}>21 TASK OBJECTIVES</div>
       <ObjectiveMarks />
       <div style={{ display: "flex", gap: 34, marginTop: 25, fontSize: 29, fontWeight: 750 }}>
-        <span style={{ color: game.win }}>10 completed</span>
-        <span style={{ color: game.loss }}>4 missed</span>
+        <span style={{ color: game.win }}>14 completed</span>
+        <span style={{ color: game.loss }}>7 missed</span>
       </div>
       <div style={{ marginTop: 14, fontSize: 23, color: game.muted }}>Marks grouped by outcome.</div>
     </GameFrame>

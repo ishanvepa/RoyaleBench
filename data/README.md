@@ -108,17 +108,6 @@ Read this table with care:
   set spans 5.8 points (45.0% to 50.8%).
 - **Not the engine.** The engine uses ~2018 card balance, so live-game numbers may not match strength inside it.
 
-### RoyaleAPI exact-list capture
-
-`deck_strength_exact.csv` is an earlier capture (2026-11-14) of RoyaleAPI's deck pages for our exact eight-card lists.
-RoyaleAPI's pages sit behind a Cloudflare challenge that blocks scripts, so a person copied it, and its filters were not
-recorded. Columns: `wins`, `draws`, `losses`; the page's Crown Results (`crown_p3`, `crown_p2`, `crown_p1` = wins by 3,
-2, 1 crowns, `crown_0` = draws, `crown_m1`, `crown_m2`, `crown_m3` = losses by 1, 2, 3 crowns); `top_rating` (the
-page's best "Highest Ratings" entry; player names are not stored). No code reads it. Only three lists had battles:
-hog-2.6-cycle 39.0% over 4,876, log-bait 41.7% over 743 and xbow-cycle 43.5% over 92; giant-beatdown, golem-beatdown,
-lavaloon and pekka-bridge-spam had none. Against the CrownScribe rows above, those three exact lists won 1.6 to 8.1
-points less (different source and window, so indicative only).
-
 ## Visual reference
 
 The local graphics reference is `data/references/arena-1-PD6QCK7GzA8.mp4`,

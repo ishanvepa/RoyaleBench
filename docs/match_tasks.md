@@ -54,16 +54,16 @@ docker run -d --platform linux/amd64 --name rt-agent royale-task:test sleep infi
 ```
 
 ```bash
-docker exec -i -u player rt-agent bash -s < benchmarks/clash-royale/match-heuristic-s1-blue/solution/solve.sh
+docker exec -u player rt-agent bash -c 'until cr act 0 | grep -q "GAME OVER"; do :; done; cr'
 ```
 
 ```bash
 docker cp rt-agent:/var/lib/royale /tmp/royale-carry && docker run --rm --platform linux/amd64 -v /tmp/royale-carry:/var/lib/royale -v "$PWD/benchmarks/clash-royale/match-heuristic-s1-blue/tests:/tests:ro" royale-task:test bash /tests/test.sh
 ```
 
-The reference solution waits at every decision. It checks the plumbing and is expected to lose (reward 0).
+The play step waits at every decision, so it checks the plumbing and is expected to lose (reward 0).
 
-This falls short of the [task design](task_design.md) checklist, which asks for a reference solution that earns full reward. The fix: record a winning move sequence for each task and have `solve.sh` replay it through `cr`. Matches are deterministic, so replaying the same moves reproduces the win.
+These tasks deliberately ship without a `solution/` folder, although the [task design](task_design.md) checklist asks for a reference solution with full reward. Valkyrie and the dashboard don't require one. The checklist's goals are met by recorded runs instead: Valkyrie runs have won `s1-blue`, `s1-red` and `s3-red`, and those wins scored 1.0 through the full grading path. No recorded run has won `s2-blue`, `s2-red` or `s3-blue`, so it is not yet shown that those three can be won.
 
 The tasks follow the upstream layout in `benchmarks/clash-royale/`, and `benchmark.toml` is generated with `kind = "eval"`. Datasets `@1` and `@2` were published from the earlier top-level `tasks/` folder. Their task contents are the same apart from the `task.toml` description and the referee's module layout, and match behaviour is unchanged. Revision `royalebench/clash-royale@3` (tag `v3`, digest `45658a99ce95`) was published from `benchmarks/clash-royale` on November 14, 2026. Use it for the next runs. It has not been run yet.
 

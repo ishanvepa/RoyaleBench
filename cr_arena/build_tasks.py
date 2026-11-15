@@ -107,18 +107,6 @@ if ! PYTHONPATH=/opt/referee/app /opt/referee/venv/bin/python -m cr_arena.royale
 fi
 """
 
-SOLVE_SH = """#!/bin/bash
-# Plumbing check only: waits at every decision until the match ends. Expect reward 0 (a loss).
-set -u
-cr > /dev/null
-for _ in $(seq 1 400); do
-    out="$(cr act 0)" || true
-    case "$out" in *"GAME OVER"*) echo "$out"; exit 0;; esac
-done
-echo "match did not finish" >&2
-exit 1
-"""
-
 INSTRUCTION = """# Win a Clash Royale match
 
 You are playing one complete match of Clash Royale against a fixed, rule-based opponent. You play
@@ -242,7 +230,6 @@ def build(out: Path) -> list[str]:
             env = d / "environment"
             (env / "referee").mkdir(parents=True)
             (d / "tests").mkdir()
-            (d / "solution").mkdir()
             for f in REFEREE_FILES:
                 (env / "referee" / f).parent.mkdir(parents=True, exist_ok=True)
                 shutil.copy2(ROOT / f, env / "referee" / f)
@@ -254,7 +241,6 @@ def build(out: Path) -> list[str]:
             write_exec(env / "royale-start-server", START_SERVER)
             (env / "sudoers").write_text(SUDOERS)
             write_exec(d / "tests" / "test.sh", TEST_SH)
-            write_exec(d / "solution" / "solve.sh", SOLVE_SH)
             (d / "instruction.md").write_text(instruction)
             (d / "task.toml").write_text(task_toml(name, seed, team, avg))
     return names

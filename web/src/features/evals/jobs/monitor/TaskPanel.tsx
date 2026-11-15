@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import type { TaskRow } from "@/api/types";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
 import { StatusPill } from "@/components/domain/StatusPill";
-import { Duration, KeyValues } from "@/components/domain/values";
+import { Duration, KeyValues, Money } from "@/components/domain/values";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CodeBlock } from "@/components/ui/code-block";
@@ -39,6 +39,7 @@ export function TaskPanel({ runId, dataset, task, onClose }: { runId: string; da
                 items={[
                   { label: "Reward", value: d.reward == null ? "Not graded yet" : `${formatReward(d.reward)}${d.solved ? " (solved)" : ""}` },
                   { label: "Agent time", value: <Duration seconds={d.agent_s} /> },
+                  { label: "API cost", value: <Money usd={task.cost_usd} /> },
                   { label: "Sandbox time", value: <Duration seconds={d.sandbox_s} /> },
                   { label: "Build time", value: <Duration seconds={d.build_s} /> },
                   { label: "Grading time", value: <Duration seconds={d.eval_s} /> },

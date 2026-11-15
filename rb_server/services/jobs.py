@@ -115,9 +115,13 @@ def list_tasks(ctx: AppContext, run_id: str) -> TaskList:
     out = []
     for r in rows:
         reward = R.reward_of((details.get(r["task"]) or {}).get("evaluation_result") or {})
+        # Share the run-total cache; listing tasks must never download agent artifacts.
+        metrics = (R.task_metrics(ctx.valkyrie, ctx.cache, run_id, r["task"], download=False)
+                   if run.get("status") == "FINISHED" else None)
         out.append(TaskRow(task=r["task"], status=r["status"], category=r["category"], error=r["error"],
                            duration_s=r["duration_s"], started_at=r["started_at"], finished_at=r["finished_at"],
-                           reward=reward, solved=reward is not None and reward >= R.SOLVED_AT))
+                           reward=reward, solved=reward is not None and reward >= R.SOLVED_AT,
+                           cost_usd=metrics.get("cost") if metrics else None))
     return TaskList(tasks=out, counts=dict(run.get("task_state_counts") or {}))
 
 

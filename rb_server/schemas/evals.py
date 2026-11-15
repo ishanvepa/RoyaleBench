@@ -118,6 +118,7 @@ class TaskRow(BaseModel):
     finished_at: datetime | None = None
     reward: float | None = None
     solved: bool = False
+    cost_usd: float | None = None
 
 
 class TaskList(BaseModel):

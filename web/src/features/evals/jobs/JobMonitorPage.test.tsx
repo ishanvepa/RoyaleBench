@@ -22,6 +22,9 @@ describe("Job monitor", () => {
         total: 2, cost_usd: downloaded ? 0.6 : null, cost_per_task: downloaded ? 0.3 : null,
         cost_known: downloaded ? 2 : 0, costs_pending: downloaded ? 0 : 2,
       }))),
+      http.get("*/api/evals/jobs/:runId/tasks", () => HttpResponse.json({
+        tasks: [task("FINISHED", { cost_usd: downloaded ? 0.2 : null })], counts: { FINISHED: 1 },
+      })),
       http.get("*/api/evals/leaderboard/costs", () => {
         const current = state;
         if (state === "running") { state = "done"; downloaded = true; }
@@ -39,7 +42,31 @@ describe("Job monitor", () => {
     expect(await screen.findByText("$0.600", {}, { timeout: 4000 })).toBeInTheDocument();
     expect(screen.getByText("$0.300")).toBeInTheDocument();
     expect(screen.getByText("Known for 2 of 2 tasks; excludes Modal charges")).toBeInTheDocument();
+    expect(await within(screen.getByRole("table", { name: "Tasks in this run" })).findByText("$0.200")).toBeInTheDocument();
   }, 10_000);
+
+  it("shows and sorts individual task costs, keeping unknown costs last", async () => {
+    server.use(http.get("*/api/evals/jobs/:runId/tasks", () => HttpResponse.json({
+      tasks: [
+        task("FINISHED", { task: "unknown", cost_usd: null }),
+        task("FINISHED", { task: "free", cost_usd: 0 }),
+        task("FINISHED", { task: "expensive", cost_usd: 0.45 }),
+      ], counts: { FINISHED: 3 },
+    })));
+    const { user } = renderApp("/evals/jobs/run-1");
+    const table = await screen.findByRole("table", { name: "Tasks in this run" });
+    expect(await within(table).findByText("$0.450")).toBeInTheDocument();
+    expect(within(within(table).getByRole("row", { name: /free/ })).getByText("$0")).toBeInTheDocument();
+    expect(within(within(table).getByRole("row", { name: /unknown/ })).queryByText(/\$/)).not.toBeInTheDocument();
+    await user.click(within(table).getByRole("button", { name: /API cost/ }));
+    expect(within(table).getAllByRole("row").slice(1).map((r) => r.textContent)).toEqual([
+      expect.stringContaining("expensive"), expect.stringContaining("free"), expect.stringContaining("unknown"),
+    ]);
+    await user.click(within(table).getByRole("button", { name: /API cost/ }));
+    expect(within(table).getAllByRole("row").slice(1).map((r) => r.textContent)).toEqual([
+      expect.stringContaining("free"), expect.stringContaining("expensive"), expect.stringContaining("unknown"),
+    ]);
+  });
 
   it("shows a finished job: status, counts, score and the tasks", async () => {
     renderApp("/evals/jobs/run-1");

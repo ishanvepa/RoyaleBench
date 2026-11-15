@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import type { JobDetail, TaskRow } from "@/api/types";
 import { QueryBoundary } from "@/components/domain/QueryBoundary";
 import { StatusPill } from "@/components/domain/StatusPill";
-import { Duration } from "@/components/domain/values";
+import { Duration, Money } from "@/components/domain/values";
 import { DataTable } from "@/components/ui/data-table";
 import { formatReward } from "@/lib/format";
 import { useBenchmark } from "../../api/benchmarks";
@@ -15,7 +15,7 @@ const col = createColumnHelper<TaskRow & { difficulty: string }>();
 const ORDER = ["IN_PROGRESS", "EVALUATING", "BUILDING", "ERROR", "STOPPED", "PENDING", "FINISHED"];
 
 export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDetail; runId: string; selected: string; onSelect: (task: string) => void }) {
-  const tasks = useJobTasks(runId, detail.active);
+  const tasks = useJobTasks(runId, detail.active, (detail.job.costs_pending ?? 0) > 0);
   const benchmark = useBenchmark(detail.job.dataset);
   const rows = useMemo(() => {
     const difficulties = new Map(benchmark.data?.tasks.map((task) => [task.id, task.difficulty]));
@@ -51,6 +51,14 @@ export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDet
         meta: { align: "right" },
         cell: (c) => <Duration seconds={c.row.original.duration_s} />,
       }),
+      col.accessor((r) => r.cost_usd ?? undefined, {
+        id: "cost",
+        header: "API cost",
+        sortUndefined: "last",
+        sortDescFirst: true,
+        meta: { align: "right" },
+        cell: (c) => <Money usd={c.row.original.cost_usd} />,
+      }),
       col.accessor("category", { header: "Failure", cell: (c) => <span className="text-subtle">{c.getValue() || "–"}</span> }),
       col.accessor("error", {
         header: "Error",
@@ -70,18 +78,23 @@ export function TasksTab({ detail, runId, selected, onSelect }: { detail: JobDet
       {(data) => {
         const row = data.tasks.find((t) => t.task === selected);
         return (
-          <div className={row ? "grid items-start gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]" : ""}>
-            <DataTable
-              caption="Tasks in this run"
-              columns={columns}
-              data={rows}
-              getRowId={(r) => r.task}
-              initialSorting={[{ id: "status", desc: false }]}
-              selectedRowId={selected || null}
-              onRowClick={(r) => onSelect(r.task === selected ? "" : r.task)}
-              empty="This run has no tasks yet."
-            />
-            {row ? <TaskPanel runId={runId} dataset={detail.job.dataset} task={row} onClose={() => onSelect("")} /> : null}
+          <div className="space-y-3">
+            <p className="text-[13px] text-muted">
+              API costs are reported by the harness and exclude Modal charges. A dash means the cost is unknown.
+            </p>
+            <div className={row ? "grid items-start gap-6 xl:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]" : ""}>
+              <DataTable
+                caption="Tasks in this run"
+                columns={columns}
+                data={rows}
+                getRowId={(r) => r.task}
+                initialSorting={[{ id: "status", desc: false }]}
+                selectedRowId={selected || null}
+                onRowClick={(r) => onSelect(r.task === selected ? "" : r.task)}
+                empty="This run has no tasks yet."
+              />
+              {row ? <TaskPanel runId={runId} dataset={detail.job.dataset} task={row} onClose={() => onSelect("")} /> : null}
+            </div>
           </div>
         );
       }}

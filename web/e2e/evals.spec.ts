@@ -19,6 +19,9 @@ test("opens on the Jobs page and lists the seeded runs", async ({ page }) => {
   await page.getByRole("button", { name: "Fetch cost data" }).click();
   await expect(page.getByText("Known for 1 of 1 tasks; excludes Modal charges")).toBeVisible();
   await expect(page.getByRole("button", { name: "Fetch cost data" })).toBeHidden();
+  const tasks = page.getByRole("table", { name: "Tasks in this run" });
+  await expect(tasks.getByRole("columnheader", { name: /API cost/ })).toBeVisible();
+  await expect(tasks.getByRole("row", { name: /elixir-check/ })).toContainText("$");
   await shot(page, "01-job-costs");
   await page.getByRole("link", { name: "Jobs", exact: true }).last().click();
   const costedRun = page.getByRole("row", { name: /royalebench-connection-smoke/ });

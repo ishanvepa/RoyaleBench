@@ -4597,6 +4597,17 @@
             "title": "Category",
             "type": "string"
           },
+          "cost_usd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost Usd"
+          },
           "duration_s": {
             "anyOf": [
               {

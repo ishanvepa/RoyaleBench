@@ -2398,6 +2398,8 @@ export interface components {
              * @default
              */
             category: string;
+            /** Cost Usd */
+            cost_usd?: number | null;
             /** Duration S */
             duration_s?: number | null;
             /**

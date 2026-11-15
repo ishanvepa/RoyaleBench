@@ -99,6 +99,11 @@ with reported costs, including infrastructure failures; the leaderboard excludes
 from its model-scoring pool and associated cost totals. Failed, stopped, and active runs have no run-level
 cost metrics yet. Downloading costs does not launch evaluations.
 
+Each job's **Tasks** tab also shows a sortable **API cost** column and the selected task's cost
+in its detail panel. These are the individual harness-reported costs from the same cache as the run
+total, available for finished runs. The table refreshes as cost data is downloaded; zero is shown as
+`$0` and unknown costs as a dash. These figures exclude Modal sandbox and endpoint serving charges.
+
 To watch a task, select its row in a job's **Tasks** tab, then **Watch replay**. The same button is on
 each row of a task definition's **Results** tab. Playback opens in a wide dialog with play/pause,
 frame stepping, a timeline, speed selection and side switching. The first opening downloads

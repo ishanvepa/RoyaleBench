@@ -116,6 +116,11 @@ class JobListTests(ApiCase):
         self.assertAlmostEqual(detail["cost_usd"], detail["cost_per_task"] * 2)
         for field in ("cost_usd", "cost_per_task", "cost_known", "costs_pending"):
             self.assertEqual(detail[field], listed[field])
+        with patch.object(self.fake, "download_artifact", wraps=self.fake.download_artifact) as download:
+            tasks = self.client.get(f"{JOBS}/{run_id}/tasks").json()["tasks"]
+            download.assert_not_called()
+        self.assertTrue(all(t["cost_usd"] is not None for t in tasks))
+        self.assertAlmostEqual(sum(t["cost_usd"] for t in tasks), detail["cost_usd"])
         other = self.client.get(f"{JOBS}/claude-smoke").json()["job"]
         self.assertIsNone(other["cost_usd"])  # only the selected run was downloaded
 
@@ -128,6 +133,12 @@ class JobListTests(ApiCase):
         summary.write_text('{"metrics": {"cost": 0}}', encoding="utf-8")
         job = self.client.get(f"{JOBS}/{run_id}").json()["job"]
         self.assertEqual((job["cost_usd"], job["cost_per_task"], job["cost_known"], job["costs_pending"]), (0, 0, 1, 1))
+        tasks = self.client.get(f"{JOBS}/{run_id}/tasks").json()["tasks"]
+        self.assertEqual({t["task"]: t["cost_usd"] for t in tasks}, {"t1": 0, "t2": None})
+        # A retry/resume must not expose costs from a previous completed attempt.
+        with patch.object(self.fake, "run", return_value={"status": "IN_PROGRESS"}):
+            tasks = self.client.get(f"{JOBS}/{run_id}/tasks").json()["tasks"]
+        self.assertTrue(all(t["cost_usd"] is None for t in tasks))
 
     def test_lists_runs_newest_first_with_provider_family(self):
         body = self.client.get(JOBS).json()

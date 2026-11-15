@@ -123,3 +123,32 @@ test('a shield is drawn above the health bar and its loss flashes the unit', () 
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#cfe3ff'), 'shield bar drawn');
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff'), 'hit flash after shield damage');
 });
+
+test('bridge decks and river water follow the supplied grid in both orientations', () => {
+  // A 2x-resolution river on half-rows 30–33 with one bridge on half-columns 5–8.
+  const W = 1, river = {tiles_x: 18, tiles_y: 32, half: 2, water_half_rows: [30, 33], bits: {WATER: W, NO_DEPLOY: 2},
+    grid: Array.from({length: 64}, (_, hy) => Array.from({length: 36}, (_, hx) =>
+      hy >= 30 && hy <= 33 && !(hx >= 5 && hx <= 8) ? W : 0))};
+  for (const flip of [false, true]) {
+    const operations = [];
+    let fill = null;
+    const ctx = new Proxy({}, {
+      get: (_, key) => (...args) => { operations.push([key, fill, ...args]); },
+      set: (_, key, value) => { if (key === 'fillStyle') fill = value; return true; },
+    });
+    const r = window.BattleRenderer.create({width: 360, getContext: () => ctx}, river);
+    const s = {en: [], sp: [], pr: []};
+    r.observe(s, 0);
+    r.draw(s, s, 0, 0, {scale: 20, cards, flip});
+    const rects = operations.filter(op => op[0] === 'fillRect');
+    // Deck spans x 2.5–4.5 tiles and the 2-tile river plus a half-tile lip on each bank.
+    const deck = rects.find(op => op[1] === '#e8bd6a');
+    assert.deepEqual(deck.slice(2), [(flip ? 18 - 4.5 : 2.5) * 20, (flip ? 14.5 : 32 - 17.5) * 20, 40, 60]);
+    assert.equal(rects.filter(op => op[1] === '#e8bd6a').length, 1, 'one bridge');
+    // No water cell is painted inside the bridge columns.
+    const water = rects.filter(op => op[1] === '#34dcc8');
+    assert.equal(water.length, 4 * 32);
+    const [bx0, bx1] = flip ? [270, 310] : [50, 90];
+    assert.ok(water.every(op => op[2] + op[4] <= bx0 + 0.6 || op[2] >= bx1), 'water stays off the bridge');
+  }
+});

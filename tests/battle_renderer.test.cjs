@@ -123,3 +123,57 @@ test('a shield is drawn above the health bar and its loss flashes the unit', () 
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#cfe3ff'), 'shield bar drawn');
   assert.ok(operations.some(op => op[0] === 'fillStyle' && op[1] === '#fff'), 'hit flash after shield damage');
 });
+
+function recordingCtx() {
+  const ops = [];
+  let fill = null;
+  const ctx = new Proxy({}, {
+    get: (_, key) => key === 'measureText' ? (t) => ({width: t.length * 6})
+      : (...args) => { ops.push([key, fill, ...args]); },
+    set: (_, key, value) => { if (key === 'fillStyle') fill = value; ops.push([key, value]); return true; },
+  });
+  return {ctx, ops};
+}
+const SHADE = 'rgba(214,52,30,.36)';
+
+test('classic-deck cues: buildings use engine footprints, the eight spells have aim areas', () => {
+  const p = window.BattleRenderer.placement;
+  for (const [name, size] of [['Cannon', 3], ['InfernoTower', 3], ['Tesla', 2], ['Tombstone', 3], ['Xbow', 3]])
+    assert.deepEqual({...p.cue(name, 'BUILDING', size)}, {kind: 'building', name, size});
+  for (const name of ['Fireball', 'Zap', 'Arrows', 'Rocket', 'Lightning', 'Poison', 'GoblinBarrel'])
+    assert.ok(p.cue(name, 'SPELL', 0).radius > 0, name);
+  assert.equal(p.cue('Log', 'SPELL', 0).lane.length, 2);
+  assert.equal(p.cue('Knight', 'TROOP', 0).kind, 'troop');
+});
+
+test('a full canvas keeps one shaded rect per blocked half-cell and outlines the block', () => {
+  const {ctx, ops} = recordingCtx();
+  window.BattleRenderer.placement.draw(ctx, placementMask(), 40, null);
+  assert.equal(ops.filter(op => op[0] === 'fillRect' && op[1] === SHADE).length, 36);
+  // The 6x6 half-cell block has 24 boundary edges.
+  assert.equal(ops.filter(op => op[0] === 'moveTo').length, 24);
+});
+
+test('hover cues are centred on the snapped half-cell centre with the card size', () => {
+  const p = window.BattleRenderer.placement, grid = placementMask(), scale = 40;
+  const hover = p.at(4.2, 10.9, grid); // centre (4.25, 10.75)
+  const px = 4.25 * scale, py = (32 - 10.75) * scale;
+  {
+    const {ctx, ops} = recordingCtx();
+    p.draw(ctx, grid, scale, hover, p.cue('Tesla', 'BUILDING', 2));
+    const rect = ops.find(op => op[0] === 'strokeRect');
+    assert.deepEqual(rect.slice(2), [px - scale, py - scale, 2 * scale, 2 * scale]);
+    assert.ok(ops.some(op => op[0] === 'fillText' && op[2] === 'Tesla'));
+  }
+  {
+    const {ctx, ops} = recordingCtx();
+    p.draw(ctx, grid, scale, hover, p.cue('Fireball', 'SPELL', 0));
+    const arc = ops.find(op => op[0] === 'arc');
+    assert.deepEqual(arc.slice(2, 5), [px, py, 2.5 * scale]);
+  }
+  {
+    const {ctx, ops} = recordingCtx();
+    p.draw(ctx, grid, scale, p.at(9, 3, grid), p.cue('Knight', 'TROOP', 0));
+    assert.ok(ops.some(op => op[0] === 'fillText' && op[2] === 'Knight — not here'));
+  }
+});

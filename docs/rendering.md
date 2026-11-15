@@ -53,3 +53,37 @@ use those same footprints, and destroyed towers release the occupied area. King
 towers retain their arena-defined exclusion block.
 Replay interpolation is a straight-line estimate between recorded frames; a
 replay cannot recover live events or pending placements absent from its trace.
+
+## Live HUD and placement cues
+
+The live HUD follows the layout of the Arena 1 reference video while keeping the
+original artwork. A timer box shows "Time left", "Overtime", or "Paused", and a
+badge appears when elixir runs at x2 or x3. Each side has a crown badge. The hand
+tray shows a "Next:" preview card, four portrait cards with the elixir cost in a drop
+at the bottom, and a ten-segment elixir bar with the whole-elixir count beneath them.
+Hand art is defined only for the 35 distinct cards in the seven `CLASSIC_DECKS`.
+Other cards fall back to the shared unit icon. The cards, next card, timer, crowns,
+and elixir meter have accessible labels.
+
+`placement.draw` still shades each blocked half-cell. It also outlines the boundary
+between blocked and allowed cells, then previews the selected card at the hovered
+half-cell centre, which is the point sent on a play:
+
+- Troops show a ring and the snapped half-cell.
+- Buildings show their engine `footprint_tiles` square, sent as the fourth field of
+  each `init` card. Cannon, Inferno Tower, Tombstone, and X-Bow use 3 tiles; Tesla
+  uses 2.
+- Spells show their area. The engine does not report spell areas, so these radii are
+  display-only approximations: Fireball and Zap 2.5, Arrows 4, Rocket 2, Lightning
+  and Poison 3.5, and Goblin Barrel 1.5. The Log shows a 3.9-tile-wide lane that
+  rolls forward. Legality always comes from the mask.
+
+The preview's name label turns red and adds "not here" over a blocked cell. Phone
+screenshots at 390×844, taken before and after this change, are in
+[`images/hud/`](images/hud/).
+
+REA 6.9.0 static analysis (`rea-agents analyze-javascript-application`) of
+`battle_renderer.js` and the live page's inline script found one `WebSocket`
+request, one `JSON.parse` boundary for incoming messages, and one timer, used by
+the toast. On macOS with the 27.0 Command Line Tools SDK, REA's Swift helper fails
+to compile. Run REA with `SDKROOT` set to the 26.5 SDK instead.

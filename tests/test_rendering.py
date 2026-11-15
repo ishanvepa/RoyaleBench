@@ -15,7 +15,9 @@ import msgspec
 from royalegym.render import extract_view, parse_page
 from royalegym.replay import load_trace, save_trace
 
-from cr_arena.decks import DEFAULT_DECK
+import re
+
+from cr_arena.decks import CLASSIC_DECKS, DEFAULT_DECK
 from cr_arena.game import Game
 from cr_arena.live import Session, page
 from cr_arena.rendering import embed_renderer
@@ -71,6 +73,20 @@ class RenderingTests(unittest.TestCase):
             self.assertEqual(row[4], round(entity.x / session.sub, 3))
             self.assertEqual(row[13], entity.stun_ticks)
             self.assertEqual(row[14], [v / session.sub for v in entity.footprint])
+        for cid, (name, kind, cost, footprint) in init['cards'].items():
+            card = session.game.card_by_id[cid]
+            self.assertEqual((name, kind, cost), (card.name, session.game.kind_of(card), card.elixir))
+            self.assertEqual(footprint, card.footprint_tiles or 0)
+            self.assertEqual(footprint > 0, kind == 'BUILDING', name)
+
+    def test_live_hand_art_covers_exactly_the_classic_deck_cards(self):
+        html = (ROOT / 'cr_arena/live.html').read_text()
+        table = re.search(r'const CARD_FACE = \{(.*?)\};', html, re.S).group(1)
+        faces = dict(re.findall(r'(\w+): "([^"]+)"', table))
+        classic = {card for deck in CLASSIC_DECKS.values() for card in deck}
+        self.assertEqual(len(classic), 35)
+        self.assertEqual(set(faces), classic)
+        self.assertEqual(len(set(faces.values())), len(faces), 'each card needs its own symbol')
 
     def test_invalid_stride_and_missing_renderer_marker_fail_explicitly(self):
         with self.assertRaises(ValueError):

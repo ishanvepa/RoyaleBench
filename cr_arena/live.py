@@ -131,7 +131,7 @@ class Session:
     def init_msg(self) -> dict:
         g = self.game
         return {"t": "init", "opp": self.bot_spec["name"], "seed": self.seed, "decks": list(self.deck_names),
-                "cards": {c.card_id: [c.name, g.kind_of(c), c.elixir] for c in g.cards},
+                "cards": {c.card_id: [c.name, g.kind_of(c), c.elixir, c.footprint_tiles or 0] for c in g.cards},
                 "lockout": g.engine.rules().deploy_lockout_ticks, "delay": self.delay,
                 "arena": {"tiles_x": g.arena.tiles_x, "tiles_y": g.arena.tiles_y,
                           "half": g.arena.half, "grid": g.arena.grid,

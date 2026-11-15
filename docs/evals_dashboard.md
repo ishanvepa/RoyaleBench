@@ -165,11 +165,14 @@ dataset revisions, as with v3's `docker-revision2`. If no matching validated rep
 the dialog explains that it is unavailable. A run's task panel shows the resolution for the
 current local task version, which may differ from an older run revision. Reference gameplay
 is a local dashboard view; the solution remains outside the agent sandbox.
+Merged benchmarks can contain multiple packaged runtimes: playback matches each
+task's configuration and protocol against its passing validation row.
 
-**RoyaleBench v6** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It
-merges 10 unchanged v5 tasks and four win@2 tasks, preserving source objectives. Explicit benchmark links override the
+**RoyaleBench v8** is the default benchmark for new jobs (`default_dataset` in `evals.toml`). It combines
+all 14 v6@1 tasks with the four harder v7@1 continuations, preserving their source objectives. Explicit benchmark links override the
 default, and an unpublished/unavailable default falls back to an available published benchmark.
-See the [v6 guide](royalebench_v6.md) for validation, grading, and launch commands.
+See the [v8 guide](royalebench_v8.md) for validation, grading, and launch commands.
+The historical [v6 merge](royalebench_v6.md) retains all source objectives.
 The separate [win-only cohort](royalebench_win.md) remains available.
 Historical v3 and its 11 scenario objectives remain available separately.
 The [v5 guide](royalebench_v5.md) records the selection evidence for the ten v5 source tasks.

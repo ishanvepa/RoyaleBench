@@ -29,7 +29,7 @@ class EvalsConfig:
     benchmark: str = "royalebench"
     provider: str = "modal"
     default_agent: str = "claude_code-v1.0.0"
-    default_dataset: str = "royalebench-v6"
+    default_dataset: str = "royalebench-v8"
     default_concurrency: int = 1
     max_concurrency: int = 50
     confirm_over_tasks: int = 5

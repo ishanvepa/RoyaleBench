@@ -1,12 +1,14 @@
-"""Verify each unchanged v6 task using its own packaged runtime image.
+"""Verify merged tasks using each task's own packaged runtime image.
 
     uv run python -m cr_arena.validate_v6_docker --jobs 4
+    uv run python -m cr_arena.validate_v6_docker --benchmark benchmarks/royalebench-v8 --jobs 4
 """
 from __future__ import annotations
 
 import argparse
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 import hashlib
 import json
 from pathlib import Path
@@ -25,15 +27,15 @@ def environment_digest(task):
     return hashlib.sha256(json.dumps(files).encode()).hexdigest()
 
 
-def validate_task(item):
+def validate_task(item, *, benchmark=OUT, evidence=EVIDENCE):
     member, image = item
-    task = OUT / member["task"]
+    task = benchmark / member["task"]
     if task_digest(task) != member["digest"]:
         raise ValueError(f"task changed before verification: {task.name}")
-    result = validate(task, image, EVIDENCE / "docker")
+    result = validate(task, image, evidence / "docker")
     negative = {}
     for name, payload in (("empty", ""), ("malformed", "not json\n"), ("wrong-type", "[]\n")):
-        dest = (EVIDENCE / "docker" / task.name / "controls" / name).resolve()
+        dest = (evidence / "docker" / task.name / "controls" / name).resolve()
         dest.mkdir(parents=True, exist_ok=True)
         log = dest / "input.jsonl"
         log.write_text(payload, encoding="utf-8", newline="\n")
@@ -51,30 +53,50 @@ def validate_task(item):
         raise ValueError(f"task changed during verification: {task.name}")
     result.update(source=member["source"], task_digest=member["digest"],
                   negative_rewards=negative)
-    write_json(EVIDENCE / "docker" / task.name / "v6_validation.json", result)
+    label = benchmark.name.removeprefix("royalebench-")
+    write_json(evidence / "docker" / task.name / f"{label}_validation.json", result)
     return result
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--jobs", type=int, choices=range(1, 5), default=1)
+    parser.add_argument("--benchmark", type=Path, default=OUT)
+    parser.add_argument("--out", type=Path)
+    parser.add_argument("--resume", action="store_true", help="reuse complete checks for unchanged packages and images")
     args = parser.parse_args()
-    manifest = json.loads((OUT / "manifest.json").read_text())
+    benchmark = args.benchmark
+    evidence = args.out or Path("runs") / benchmark.name
+    manifest = json.loads((benchmark / "manifest.json").read_text())
     groups = defaultdict(list)
     for member in manifest["tasks"]:
-        groups[environment_digest(OUT / member["task"])].append(member)
-    work, images = [], []
+        groups[environment_digest(benchmark / member["task"])].append(member)
+    work, images, results = [], [], []
     for signature, members in groups.items():
-        image = f"royalebench-v6:validation-{signature[:12]}"
+        image = f"{benchmark.name}:validation-{signature[:12]}"
         print(f"Building source runtime image for {len(members)} tasks: {image}", flush=True)
         docker("build", "--platform", "linux/amd64", "-t", image,
-               OUT / members[0]["task"] / "environment")
-        images.append(dict(environment_sha256=signature, image=image,
-                           image_digest=docker("image", "inspect", image, "--format", "{{.Id}}").strip()))
-        work.extend((member, image) for member in members)
+               benchmark / members[0]["task"] / "environment")
+        image_digest = docker("image", "inspect", image, "--format", "{{.Id}}").strip()
+        images.append(dict(environment_sha256=signature, image=image, image_digest=image_digest))
+        for member in members:
+            previous = evidence / "docker" / member["task"] / f"{benchmark.name.removeprefix('royalebench-')}_validation.json"
+            row = json.loads(previous.read_text()) if args.resume and previous.exists() else {}
+            if (row.get("task_digest") == member["digest"] == task_digest(benchmark / member["task"])
+                    and row.get("image") == image_digest and row.get("source") == member["source"]
+                    and row.get("reward") == row.get("integrity") == 1
+                    and all(row.get(k) is True for k in ("isolated", "restart_verified", "capture_complete", "replay_hashes_verified"))
+                    and row.get("negative_rewards") == {"empty": 0, "malformed": 0, "wrong-type": 0}
+                    and all((previous.parent / p).is_file() for p in ("replay.msgpack", "actions.jsonl", "carried/capture/manifest.json"))):
+                results.append(row)
+                print(f"Reusing passing checks: {member['task']}", flush=True)
+            else:
+                work.append((member, image))
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
-        results = list(pool.map(validate_task, work))
-    write_json(EVIDENCE / "docker/validation.json", dict(task_count=len(results),
+        results.extend(pool.map(partial(validate_task, benchmark=benchmark, evidence=evidence), work))
+    order = {r["task"]: i for i, r in enumerate(manifest["tasks"])}
+    results.sort(key=lambda r: order[r["task"]])
+    write_json(evidence / "docker/validation.json", dict(task_count=len(results),
                images=images, tasks=results, source_packages_unchanged=True,
                all_negative_controls_zero=True))
 

@@ -1,0 +1,17 @@
+{
+  "task": "08-cycle-to-lethal-plus",
+  "family": 8,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "0a08b4c4dfca848149bae22c9ec898848ae116df469984a5978a34219b8c506c",
+  "config_sha256": "19f9ad0923e67613d77540d273e8b7c6e82b5b37dcc4cb487bf5abbd9da35301",
+  "image": "sha256:717cf37420b92d52d81ca97e1d5effbab963c452427021b6f69401cf5e2eeba2",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 178,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 16.059
+}

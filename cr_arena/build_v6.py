@@ -43,12 +43,12 @@ def unpack(archive, target):
         source.extractall(target)
 
 
-async def fetch():
+async def fetch(sources_config=SOURCES, cache=CACHE):
     """Resolve immutable revisions; downloaded bytes must match service task digests."""
     sources, tasks, seen = [], [], set()
     limit = asyncio.Semaphore(4)
     async with ValkyrieClient() as client:
-        for dataset, revision, expected, count in SOURCES:
+        for dataset, revision, expected, count in sources_config:
             version = await client.datasets.versions.get("royalebench", dataset, str(revision))
             if version.digest != expected or version.task_count != count or version.metric_digest is not None:
                 raise ValueError(f"source revision or metric changed: {dataset}@{revision}")
@@ -60,7 +60,7 @@ async def fetch():
 
             async def download(member):
                 async with limit:
-                    archive = CACHE / dataset / f"{member.task_id}.zip"
+                    archive = cache / dataset / f"{member.task_id}.zip"
                     if not archive.is_file():
                         await client.datasets.versions.download("royalebench", dataset, member.task_id,
                                                                archive, ref=str(revision))

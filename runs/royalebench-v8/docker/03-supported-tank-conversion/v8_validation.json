@@ -1,0 +1,24 @@
+{
+  "task": "03-supported-tank-conversion",
+  "family": 3,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+  "config_sha256": "3127a6c2343b9f2bcfef79e52ad45cd9e4276c172b9f146a7a7ce7b4fb867355",
+  "image": "sha256:f76e04e031f0d686267b4cd6c18a0a52b1c4962c7e6d15e4910fde147d249d5b",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 664,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 173.537,
+  "source": "royalebench/royalebench-v7@1",
+  "task_digest": "sha256:ac4e4fef363e529e285a2f3b166962465e9bdf03f52b93404332ed5bd50c4457",
+  "negative_rewards": {
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0
+  }
+}

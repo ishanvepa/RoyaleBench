@@ -1,0 +1,226 @@
+{
+  "benchmark_id": "62553e61-afff-4f15-a3bb-61d3124f39d3",
+  "benchmark_name": "royalebench",
+  "started_at": "2026-11-15T18:07:26.652469",
+  "finished_at": "2026-11-15T18:11:51.801792",
+  "status": "FINISHED",
+  "error_message": null,
+  "benchmark_arguments": {
+    "contract": {
+      "name": "claude_code-v1.0.0",
+      "model": "anthropic/claude-opus-5-5",
+      "install_cmd": "bash setup.sh",
+      "run_cmd": "bash -lc 'set -o pipefail && mkdir -p /logs && AGENT_OUTPUT_ROOT=/logs python3 /bundle/claude_code-v1.0.0/collect_outputs.py {problem_statement_path} --task-id {task_id} --model {model}'",
+      "turns": null,
+      "final_output": "/logs",
+      "output_artifacts": [],
+      "egress_allowlist": [],
+      "install_egress": null,
+      "allow_provider_tools": false,
+      "isolate_agent_uid": false,
+      "secrets": {
+        "ANTHROPIC_API_KEY": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/anthropic-api-key-ishan"
+      },
+      "kwargs": {
+        "model": "anthropic/claude-opus-5-5"
+      },
+      "inference_settings_attested": true,
+      "agent_release": null
+    },
+    "agent_attempts": [],
+    "concurrency": 1,
+    "task_ids": [
+      "03-supported-tank-conversion"
+    ],
+    "slice_str": null,
+    "lambda_function": null,
+    "dataset": "royalebench-v7",
+    "dataset_version": {
+      "id": "royalebench/royalebench-v7@1",
+      "label": null
+    },
+    "sandbox_provider": "modal",
+    "sandbox_provider_secret_name": "valkyrie/tenants/49113804-bbae-46cc-82a7-70f78706d1e5/modal-credentials",
+    "monitoring": null,
+    "monitoring_rules": null,
+    "environment": "aws",
+    "properties": {
+      "region": "us-east-1",
+      "s3_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+      "log_group": "/valkyrie/benchmarks-prod/tenants/49113804-bbae-46cc-82a7-70f78706d1e5",
+      "log_retention_days": 365
+    }
+  },
+  "tasks_stopped": null,
+  "final_evaluation": {
+    "id": "26ba9ddf-1c30-4552-8776-784e211e4205",
+    "org_id": "49113804-bbae-46cc-82a7-70f78706d1e5",
+    "benchmark": "62553e61-afff-4f15-a3bb-61d3124f39d3",
+    "final_score": 0.0,
+    "properties": {
+      "total": 1,
+      "n_trials": 1,
+      "n_errors": 0,
+      "metrics": [
+        {
+          "completed": 1.0,
+          "crowns_against": 0.0,
+          "crowns_for": 0.0,
+          "decisions": 18.0,
+          "enemy_tower_damage_frac": 0.1985,
+          "fast_decision_frac": 0.0,
+          "integrity": 1.0,
+          "objective_met": 0.0,
+          "own_tower_damage_frac": 0.2152,
+          "rejected_actions": 0.0,
+          "reward": 0.0,
+          "spent_elixir": 46.0,
+          "tower_damage": 0.0,
+          "win": 0.0
+        }
+      ],
+      "reward_stats": {
+        "reward": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "win": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "crowns_for": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "crowns_against": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "enemy_tower_damage_frac": {
+          "0.1985": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "own_tower_damage_frac": {
+          "0.2152": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "completed": {
+          "1.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "integrity": {
+          "1.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "decisions": {
+          "18.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "fast_decision_frac": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "spent_elixir": {
+          "46.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "tower_damage": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "objective_met": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        },
+        "rejected_actions": {
+          "0.0": [
+            "03-supported-tank-conversion"
+          ]
+        }
+      },
+      "score_key": "reward",
+      "mean_reward": 0.0
+    }
+  },
+  "average_task_breakdown": {
+    "sandbox_build_duration": 21.080959989999997,
+    "agent_run_duration": 106.56560566299999,
+    "evaluation_run_duration": 61.12126262999999,
+    "sandbox_run_duration": 184.06230106299998
+  },
+  "evaluation_results": {
+    "03-supported-tank-conversion": {
+      "task_id": "03-supported-tank-conversion",
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.1985,
+        "own_tower_damage_frac": 0.2152,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 18.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 46.0,
+        "tower_damage": 0.0,
+        "objective_met": 0.0,
+        "rejected_actions": 0.0
+      },
+      "verifier_result": {
+        "rewards": {
+          "reward": 0.0,
+          "win": 0.0,
+          "crowns_for": 0.0,
+          "crowns_against": 0.0,
+          "enemy_tower_damage_frac": 0.1985,
+          "own_tower_damage_frac": 0.2152,
+          "completed": 1.0,
+          "integrity": 1.0,
+          "decisions": 18.0,
+          "fast_decision_frac": 0.0,
+          "spent_elixir": 46.0,
+          "tower_damage": 0.0,
+          "objective_met": 0.0,
+          "rejected_actions": 0.0
+        }
+      },
+      "metadata": {
+        "reward_source": "/logs/verifier/reward.json",
+        "verifier_exit_code": 0,
+        "verifier_output": "{\n \"rewards\": {\n  \"reward\": 0.0,\n  \"win\": 0.0,\n  \"crowns_for\": 0.0,\n  \"crowns_against\": 0.0,\n  \"enemy_tower_damage_frac\": 0.1985,\n  \"own_tower_damage_frac\": 0.2152,\n  \"completed\": 1.0,\n  \"integrity\": 1.0,\n  \"decisions\": 18.0,\n  \"fast_decision_frac\": 0.0,\n  \"spent_elixir\": 46.0,\n  \"tower_damage\": 0.0,\n  \"objective_met\": 0.0,\n  \"rejected_actions\": 0.0\n },\n \"outcome\": {\n  \"result\": \"unfinished\",\n  \"crowns_for\": 0,\n  \"crowns_against\": 0,\n  \"enemy_tower_damage_frac\": 0.1985,\n  \"own_tower_damage_frac\": 0.2152,\n  \"ticks\": 5520,\n  \"tower_damage\": 0,\n  \"spent_elixir\": 46,\n  \"plays\": [\n   {\n    \"decision\": 0,\n    \"card\": \"InfernoTower\",\n    \"x\": 117000,\n    \"y\": 171000,\n    \"cost\": 5\n   },\n   {\n    \"decision\": 1,\n    \"card\": \"Knight\",\n    \"x\": 81000,\n    \"y\": 207000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 2,\n    \"card\": \"GoblinGang\",\n    \"x\": 63000,\n    \"y\": 243000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 3,\n    \"card\": \"IceSpirits\",\n    \"x\": 72000,\n    \"y\": 261000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 4,\n    \"card\": \"Rocket\",\n    \"x\": 73800,\n    \"y\": 331200,\n    \"cost\": 6\n   },\n   {\n    \"decision\": 6,\n    \"card\": \"GoblinBarrel\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 7,\n    \"card\": \"Knight\",\n    \"x\": 63000,\n    \"y\": 252000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 8,\n    \"card\": \"Princess\",\n    \"x\": 81000,\n    \"y\": 234000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 9,\n    \"card\": \"IceSpirits\",\n    \"x\": 54000,\n    \"y\": 270000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 10,\n    \"card\": \"GoblinGang\",\n    \"x\": 63000,\n    \"y\": 261000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 12,\n    \"card\": \"GoblinBarrel\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 3\n   },\n   {\n    \"decision\": 14,\n    \"card\": \"Rocket\",\n    \"x\": 63000,\n    \"y\": 459000,\n    \"cost\": 6\n   },\n   {\n    \"decision\": 15,\n    \"card\": \"Log\",\n    \"x\": 66600,\n    \"y\": 234000,\n    \"cost\": 2\n   },\n   {\n    \"decision\": 16,\n    \"card\": \"IceSpirits\",\n    \"x\": 63000,\n    \"y\": 216000,\n    \"cost\": 1\n   },\n   {\n    \"decision\": 17,\n    \"card\": \"Princess\",\n    \"x\": 63000,\n    \"y\": 162000,\n    \"cost\": 3\n   }\n  ],\n  \"opponent_plays\": [\n   {\n    \"tick\": 4880,\n    \"card\": \"Musketeer\",\n    \"x\": 81000,\n    \"y\": 351000\n   },\n   {\n    \"tick\": 4960,\n    \"card\": \"Archer\",\n    \"x\": 81000,\n    \"y\": 351000\n   },\n   {\n    \"tick\": 5000,\n    \"card\": \"Knight\",\n    \"x\": 45000,\n    \"y\": 405000\n   },\n   {\n    \"tick\": 5080,\n    \"card\": \"Minions\",\n    \"x\": 45000,\n    \"y\": 405000\n   },\n   {\n    \"tick\": 5120,\n    \"card\": \"Cannon\",\n    \"x\": 171000,\n    \"y\": 405000\n   },\n   {\n    \"tick\": 5160,\n    \"card\": \"Zap\",\n    \"x\": 81000,\n    \"y\": 243000\n   },\n   {\n    \"tick\": 5200,\n    \"card\": \"Archer\",\n    \"x\": 171000,\n    \"y\": 405000\n   },\n   {\n    \"tick\": 5280,\n    \"card\": \"Musketeer\",\n    \"x\": 63000,\n    \"y\": 315000\n   },\n   {\n    \"tick\": 5360,\n    \"card\": \"Knight\",\n    \"x\": 45000,\n    \"y\": 459000\n   },\n   {\n    \"tick\": 5400,\n    \"card\": \"Minions\",\n    \"x\": 63000,\n    \"y\": 315000\n   },\n   {\n    \"tick\": 5480,\n    \"card\": \"Giant\",\n    \"x\": 63000,\n    \"y\": 513000\n   }\n  ],\n  \"elapsed_s\": 36.0,\n  \"rejected_actions\": 0\n },\n \"decisions_applied\": 18,\n \"completed\": true\n}\n",
+        "verifier_environment_mode": "separate"
+      },
+      "agent_caused_exit_reason": null,
+      "task_breakdown": {
+        "agent_run_duration": 106.56560566299999,
+        "sandbox_run_duration": 184.06230106299998,
+        "sandbox_build_duration": 21.080959989999997,
+        "base_generation_allowance_seconds": 3600.0,
+        "external_service_overhead_seconds": null,
+        "external_service_credit_revision": null,
+        "evaluation_run_duration": 61.12126262999999,
+        "accounting_id": null,
+        "cumulative_time_credit_cap_seconds": null,
+        "external_service_credit_applied_seconds": null,
+        "generation_elapsed_seconds": 106.56560873199999
+      },
+      "attempts": 1
+    }
+  },
+  "task_errors": null,
+  "task_failure_categories": null
+}

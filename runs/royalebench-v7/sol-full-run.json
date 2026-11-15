@@ -1,0 +1,26 @@
+{
+  "id": "8a64cce1-a84f-48cb-ab73-b82d876abf75",
+  "name": "royalebench",
+  "agent_name": "codex-v1.0.0",
+  "model": "openai/gpt-6.1-sol",
+  "executor_release_id": "git-6540c6fe1a96-1190559ddbb15b5f",
+  "current_execution_release_id": "git-6540c6fe1a96-1190559ddbb15b5f",
+  "executor_artifact_digest": "1190559ddbb15b5fbe78c62b7d1378702d0c7533b891ac10c1c0707a79680d8f",
+  "executor_protocol_version": "7",
+  "started_at": "2026-11-15T18:17:20.031677+00:00",
+  "finished_at": "2026-11-15T18:21:05.274756+00:00",
+  "status": "FINISHED",
+  "total_tasks": 4,
+  "finished_tasks": 4,
+  "task_state_counts": {
+    "FINISHED": 4
+  },
+  "started_by_email": "ishanvepa171@gmail.com",
+  "final_score": 50.0,
+  "error_message": null,
+  "cloudwatch_url": "https://us-east-1.console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/%2Fvalkyrie%2Fbenchmarks-prod%2Ftenants%2F49113804-bbae-46cc-82a7-70f78706d1e5$252F8a64cce1-a84f-48cb-ab73-b82d876abf75",
+  "s3_bucket_url": "https://us-east-1.console.aws.amazon.com/s3/buckets/valkyrie-629807611108-prod-38a8c2b05d81a451?region=us-east-1&prefix=benchmarks/8a64cce1-a84f-48cb-ab73-b82d876abf75/",
+  "storage_bucket": "valkyrie-629807611108-prod-38a8c2b05d81a451",
+  "label": "royalebench-v7-sol-full-calibration",
+  "dataset": "royalebench-v7"
+}

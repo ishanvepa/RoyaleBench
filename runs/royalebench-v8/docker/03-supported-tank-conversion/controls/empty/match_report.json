@@ -1,0 +1,227 @@
+{
+ "seed": 1703,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 0,
+ "outcome": {
+  "result": "loss",
+  "crowns_for": 0,
+  "crowns_against": 1,
+  "enemy_tower_damage_frac": 0.1329,
+  "own_tower_damage_frac": 0.3127,
+  "ticks": 4955,
+  "tower_damage": 700,
+  "spent_elixir": 0,
+  "plays": [],
+  "opponent_plays": [],
+  "elapsed_s": 7.75,
+  "rejected_actions": 0
+ },
+ "rewards": {
+  "reward": 0.0,
+  "win": 0.0,
+  "crowns_for": 0.0,
+  "crowns_against": 1.0,
+  "enemy_tower_damage_frac": 0.1329,
+  "own_tower_damage_frac": 0.3127,
+  "completed": 0.0,
+  "integrity": 1.0,
+  "decisions": 0.0,
+  "fast_decision_frac": 0.0,
+  "spent_elixir": 0.0,
+  "tower_damage": 700.0,
+  "objective_met": 0.0,
+  "rejected_actions": 0.0
+ },
+ "decisions_applied": 0,
+ "completed": false,
+ "termination_tick": 4800,
+ "timing_known": 0,
+ "task_config": {
+  "id": "03-supported-tank-conversion",
+  "family": 3,
+  "title": "Convert a supported-tank defense into a crown",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v7",
+  "version": "7.0.0",
+  "seed": 1703,
+  "agent_team": 0,
+  "agent_deck": [
+   "GoblinBarrel",
+   "Princess",
+   "GoblinGang",
+   "Knight",
+   "InfernoTower",
+   "Rocket",
+   "Log",
+   "IceSpirits"
+  ],
+  "opponent_deck": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "player_deck_name": "log-bait",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": null,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "action_mode": "coordinates-v1",
+  "release_gate": null,
+  "objective": "Win the actual match by destroying an enemy crown tower within the next 36 seconds. The position starts with 60 seconds of overtime remaining. The scoring window ends before the overtime HP tiebreak: survival, an HP lead, and an unfinished match receive zero credit.",
+  "capability": "Separate tank and support, then convert surviving defenders and spell cycles into lethal",
+  "expected_failure": "Spend all regenerated elixir on defense or stop with an HP lead that earns no reward",
+  "scenario": {
+   "start_tick": 4800,
+   "horizon_s": 36,
+   "elixir": 10,
+   "opponent_elixir": 0,
+   "order": [
+    "InfernoTower",
+    "Knight",
+    "GoblinGang",
+    "Log",
+    "Rocket",
+    "Princess",
+    "IceSpirits",
+    "GoblinBarrel"
+   ],
+   "opponent_order": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+   ],
+   "units": [
+    {
+     "card": "Giant",
+     "team": 1,
+     "x": 3.5,
+     "y": 15.5
+    },
+    {
+     "card": "Musketeer",
+     "team": 1,
+     "x": 3.5,
+     "y": 19.5
+    }
+   ],
+   "grading": "win",
+   "tower_hp": [
+    [
+     4824,
+     700,
+     3052
+    ],
+    [
+     4824,
+     3052,
+     1600
+    ]
+   ],
+   "disclose_queue": true
+  },
+  "task_id": "03-supported-tank-conversion",
+  "instruction_sha256": "f97684bb98da4c63244b3d905ea9905494d73a777c537b3d5187394c04434d7a",
+  "rubric": "binary-crown-win-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+   "agent_timeout_s": 3600,
+   "verifier_timeout_s": 600,
+   "cpus": 1,
+   "memory_mb": 2048,
+   "storage_mb": 4096
+  }
+ },
+ "rubric": "scenario-objective-coordinates-v1",
+ "tiebreak_reason": "crowns",
+ "benchmark": "RoyaleBench v7",
+ "task_id": "03-supported-tank-conversion",
+ "scenario": {
+  "start_tick": 4800,
+  "horizon_s": 36,
+  "elixir": 10,
+  "opponent_elixir": 0,
+  "order": [
+   "InfernoTower",
+   "Knight",
+   "GoblinGang",
+   "Log",
+   "Rocket",
+   "Princess",
+   "IceSpirits",
+   "GoblinBarrel"
+  ],
+  "opponent_order": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "units": [
+   {
+    "card": "Giant",
+    "team": 1,
+    "x": 3.5,
+    "y": 15.5
+   },
+   {
+    "card": "Musketeer",
+    "team": 1,
+    "x": 3.5,
+    "y": 19.5
+   }
+  ],
+  "grading": "win",
+  "tower_hp": [
+   [
+    4824,
+    700,
+    3052
+   ],
+   [
+    4824,
+    3052,
+    1600
+   ]
+  ],
+  "disclose_queue": true
+ },
+ "setup_hash": "a93852f27e5a9982bcab610f8a57d08a4743d79f3da50c53f50c0fe4e8acb74f",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ },
+ "action_mode": "coordinates-v1"
+}

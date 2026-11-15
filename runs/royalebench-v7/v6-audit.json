@@ -1,0 +1,6278 @@
+{
+  "runs": [
+    {
+      "run_id": "2678c8e8-74a3-4691-9ed0-80dda8c8093c",
+      "model": "openai/Qwen/Qwen3.8-2.4T-A95B",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 7.142857142857142,
+      "harness": "mini_swe_agent",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:28:30.677914+00:00",
+      "tasks": {
+        "08-cycle-to-lethal-plus": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2605,
+            "ticks": 5982,
+            "tower_damage": 253,
+            "spent_elixir": 14,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 144000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 68400,
+                "y": 187200,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Musketeer",
+                "x": 86400,
+                "y": 180000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "Skeletons",
+                "x": 77400,
+                "y": 171000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 17.1,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 7.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.1347,
+            "ticks": 3100,
+            "tower_damage": 1472,
+            "spent_elixir": 5,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Musketeer",
+                "x": 81000,
+                "y": 90000,
+                "cost": 4
+              },
+              {
+                "decision": 2,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 135000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Knight",
+                "x": 63000,
+                "y": 513000
+              },
+              {
+                "tick": 2980,
+                "card": "Princess",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 1,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 3600,
+            "tower_damage": 549,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 99000,
+                "y": 171000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 252000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 70200,
+                "y": 154800,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3480,
+                "card": "Archer",
+                "x": 63000,
+                "y": 351000
+              },
+              {
+                "tick": 3560,
+                "card": "Minions",
+                "x": 261000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-bait-damage-sequence": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2223,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5856,
+            "tower_damage": 1068,
+            "spent_elixir": 17,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "InfernoTower",
+                "x": 63000,
+                "y": 225000,
+                "cost": 5
+              },
+              {
+                "decision": 1,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 2,
+                "card": "Knight",
+                "x": 63000,
+                "y": 243000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 66600,
+                "y": 243000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Log",
+                "x": 63000,
+                "y": 279000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5640,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 16.8,
+            "rejected_actions": 0
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 4.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5811,
+            "tower_damage": 250,
+            "spent_elixir": 9,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 198000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 279000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 8.55,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2671,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5872,
+            "tower_damage": 700,
+            "spent_elixir": 16,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 81000,
+                "y": 171000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 153000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "IceSpirits",
+                "x": 66600,
+                "y": 190800,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 261000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Musketeer",
+                "x": 117000,
+                "y": 153000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 66600,
+                "y": 169200,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 11.6,
+            "rejected_actions": 0
+          }
+        },
+        "07-counterpush": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.401,
+            "own_tower_damage_frac": 0.4552,
+            "ticks": 3600,
+            "tower_damage": 2685,
+            "spent_elixir": 17,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 63000,
+                "y": 266400,
+                "cost": 5
+              },
+              {
+                "decision": 4,
+                "card": "Musketeer",
+                "x": 72000,
+                "y": 261000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "Knight",
+                "x": 63000,
+                "y": 369000,
+                "cost": 3
+              },
+              {
+                "decision": 7,
+                "card": "Cannon",
+                "x": 99000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 8,
+                "card": "Zap",
+                "x": 86400,
+                "y": 315000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "ElectroWizard",
+                "x": 63000,
+                "y": 351000
+              },
+              {
+                "tick": 3140,
+                "card": "BattleRam",
+                "x": 171000,
+                "y": 405000
+              },
+              {
+                "tick": 3180,
+                "card": "Bats",
+                "x": 81000,
+                "y": 315000
+              },
+              {
+                "tick": 3300,
+                "card": "MiniPekka",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 35.0,
+            "rejected_actions": 0
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.5111,
+            "ticks": 3200,
+            "tower_damage": 1968,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 234000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "Zap",
+                "x": 59400,
+                "y": 383400,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "BattleRam",
+                "x": 63000,
+                "y": 405000
+              },
+              {
+                "tick": 3040,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3080,
+                "card": "Bats",
+                "x": 117000,
+                "y": 333000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2656,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5437,
+            "tower_damage": 305,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.85,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 2440,
+            "tower_damage": 3052,
+            "spent_elixir": 0,
+            "plays": [],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "05-successive-threats-mirror": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.1516,
+            "ticks": 3100,
+            "tower_damage": 1657,
+            "spent_elixir": 7,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 261000,
+                "y": 207000,
+                "cost": 2
+              },
+              {
+                "decision": 3,
+                "card": "IceGolemite",
+                "x": 234000,
+                "y": 135000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "Cannon",
+                "x": 261000,
+                "y": 189000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 2940,
+                "card": "Log",
+                "x": 243000,
+                "y": 207000
+              },
+              {
+                "tick": 2980,
+                "card": "IceSpirits",
+                "x": 171000,
+                "y": 405000
+              },
+              {
+                "tick": 3060,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-sustained-tower-race": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.1059,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5518,
+            "tower_damage": 305,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 198000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Minions",
+                "x": 63000,
+                "y": 171000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 5.9,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0098,
+            "ticks": 2440,
+            "tower_damage": 107,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 211500,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        }
+      }
+    },
+    {
+      "run_id": "a7b33697-9621-4bd5-969c-aaeb5afbc205",
+      "model": "openai/inkling-2-small",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 21.428571428571427,
+      "harness": "mini_swe_agent",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:28:16.733050+00:00",
+      "tasks": {
+        "02-sustained-tower-race": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5432,
+            "tower_damage": 305,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 162000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.6,
+            "rejected_actions": 0
+          }
+        },
+        "03-bait-damage-sequence": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 11.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2808,
+            "ticks": 5937,
+            "tower_damage": 1085,
+            "spent_elixir": 25,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "InfernoTower",
+                "x": 63000,
+                "y": 189000,
+                "cost": 5
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 99000,
+                "y": 261000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "GoblinGang",
+                "x": 63000,
+                "y": 270000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "Princess",
+                "x": 63000,
+                "y": 234000,
+                "cost": 3
+              },
+              {
+                "decision": 5,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 450000,
+                "cost": 3
+              },
+              {
+                "decision": 7,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 9,
+                "card": "Log",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5600,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 5680,
+                "card": "Knight",
+                "x": 81000,
+                "y": 405000
+              },
+              {
+                "tick": 5720,
+                "card": "Archer",
+                "x": 171000,
+                "y": 369000
+              },
+              {
+                "tick": 5800,
+                "card": "Giant",
+                "x": 81000,
+                "y": 495000
+              }
+            ],
+            "elapsed_s": 20.85,
+            "rejected_actions": 1
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2656,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5437,
+            "tower_damage": 305,
+            "spent_elixir": 3,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Minions",
+                "x": 63000,
+                "y": 198000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.85,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 8.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.1347,
+            "ticks": 3100,
+            "tower_damage": 1472,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 234000,
+                "cost": 2
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 108000,
+                "y": 144000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Knight",
+                "x": 63000,
+                "y": 513000
+              },
+              {
+                "tick": 2980,
+                "card": "Princess",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "07-counterpush": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 11.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.5209,
+            "own_tower_damage_frac": 0.3691,
+            "ticks": 3600,
+            "tower_damage": 1744,
+            "spent_elixir": 18,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 63000,
+                "y": 216000,
+                "cost": 5
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 243000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Cannon",
+                "x": 261000,
+                "y": 225000,
+                "cost": 3
+              },
+              {
+                "decision": 7,
+                "card": "Fireball",
+                "x": 102600,
+                "y": 390600,
+                "cost": 4
+              },
+              {
+                "decision": 8,
+                "card": "Zap",
+                "x": 73800,
+                "y": 356400,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3140,
+                "card": "BattleRam",
+                "x": 117000,
+                "y": 405000
+              },
+              {
+                "tick": 3180,
+                "card": "Bats",
+                "x": 171000,
+                "y": 567000
+              },
+              {
+                "tick": 3260,
+                "card": "Zap",
+                "x": 63000,
+                "y": 387000
+              },
+              {
+                "tick": 3380,
+                "card": "ElectroWizard",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 35.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5707,
+            "tower_damage": 250,
+            "spent_elixir": 3,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 171000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 207000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 3.35,
+            "rejected_actions": 0
+          }
+        },
+        "05-successive-threats-mirror": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.1364,
+            "ticks": 3100,
+            "tower_damage": 1491,
+            "spent_elixir": 7,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 171000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Log",
+                "x": 261000,
+                "y": 117000,
+                "cost": 2
+              },
+              {
+                "decision": 6,
+                "card": "IceSpirits",
+                "x": 273600,
+                "y": 109800,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 351000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 261000,
+                "y": 351000
+              },
+              {
+                "tick": 2980,
+                "card": "Knight",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 3060,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.5391,
+            "ticks": 3200,
+            "tower_damage": 2289,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 81000,
+                "y": 162000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "Zap",
+                "x": 77400,
+                "y": 205200,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3000,
+                "card": "Bats",
+                "x": 63000,
+                "y": 513000
+              },
+              {
+                "tick": 3080,
+                "card": "BattleRam",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0232,
+            "ticks": 2440,
+            "tower_damage": 253,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 64800,
+                "y": 183600,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2615,
+            "ticks": 5868,
+            "tower_damage": 506,
+            "spent_elixir": 13,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 216000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Skeletons",
+                "x": 70200,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 2,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 144000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 252000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5760,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 11.4,
+            "rejected_actions": 0
+          }
+        },
+        "08-cycle-to-lethal-plus": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2628,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5745,
+            "tower_damage": 458,
+            "spent_elixir": 7,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 162000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Skeletons",
+                "x": 66600,
+                "y": 153000,
+                "cost": 1
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 5.25,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0196,
+            "ticks": 2440,
+            "tower_damage": 214,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 243000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2753,
+            "ticks": 3600,
+            "tower_damage": 506,
+            "spent_elixir": 11,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 81000,
+                "y": 180000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Archer",
+                "x": 36000,
+                "y": 153000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "IceSpirits",
+                "x": 66600,
+                "y": 162000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        }
+      }
+    },
+    {
+      "run_id": "9e0623c6-86e6-4452-ace5-c1f251a1f956",
+      "model": "openai/kimi-k3.1-pro",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 28.57142857142857,
+      "harness": "mini_swe_agent",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:28:03.832904+00:00",
+      "tasks": {
+        "03-bait-damage-sequence": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 11.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2808,
+            "ticks": 5980,
+            "tower_damage": 1085,
+            "spent_elixir": 29,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "InfernoTower",
+                "x": 99000,
+                "y": 189000,
+                "cost": 5
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 333000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "GoblinGang",
+                "x": 63000,
+                "y": 315000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 5,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 459000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 441000,
+                "cost": 1
+              },
+              {
+                "decision": 7,
+                "card": "Log",
+                "x": 63000,
+                "y": 405000,
+                "cost": 2
+              },
+              {
+                "decision": 8,
+                "card": "Princess",
+                "x": 63000,
+                "y": 297000,
+                "cost": 3
+              },
+              {
+                "decision": 9,
+                "card": "GoblinGang",
+                "x": 63000,
+                "y": 261000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5600,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 5680,
+                "card": "Knight",
+                "x": 171000,
+                "y": 369000
+              },
+              {
+                "tick": 5760,
+                "card": "Minions",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 23.0,
+            "rejected_actions": 0
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5807,
+            "tower_damage": 250,
+            "spent_elixir": 13,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 99000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 162000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 261000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 432000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 8.35,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 7.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0077,
+            "own_tower_damage_frac": 0.184,
+            "ticks": 3100,
+            "tower_damage": 2011,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 189000,
+                "cost": 2
+              },
+              {
+                "decision": 3,
+                "card": "Log",
+                "x": 63000,
+                "y": 117000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 117000,
+                "cost": 1
+              },
+              {
+                "decision": 6,
+                "card": "Skeletons",
+                "x": 261000,
+                "y": 171000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2980,
+                "card": "Knight",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 3020,
+                "card": "Log",
+                "x": 261000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-sustained-tower-race": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2733,
+            "ticks": 5617,
+            "tower_damage": 240,
+            "spent_elixir": 15,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 225000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Minions",
+                "x": 63000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 117000,
+                "y": 333000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "Archer",
+                "x": 63000,
+                "y": 387000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "Zap",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 10.85,
+            "rejected_actions": 0
+          }
+        },
+        "07-counterpush": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.4231,
+            "own_tower_damage_frac": 0.3926,
+            "ticks": 3600,
+            "tower_damage": 2001,
+            "spent_elixir": 17,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 63000,
+                "y": 261000,
+                "cost": 5
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 225000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Cannon",
+                "x": 261000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Knight",
+                "x": 261000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 7,
+                "card": "Zap",
+                "x": 75600,
+                "y": 356400,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3100,
+                "card": "Bats",
+                "x": 99000,
+                "y": 351000
+              },
+              {
+                "tick": 3140,
+                "card": "Zap",
+                "x": 63000,
+                "y": 333000
+              },
+              {
+                "tick": 3260,
+                "card": "ElectroWizard",
+                "x": 117000,
+                "y": 423000
+              },
+              {
+                "tick": 3380,
+                "card": "BattleRam",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 35.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0232,
+            "ticks": 2440,
+            "tower_damage": 253,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 66600,
+                "y": 162000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 8.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 2,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.5977,
+            "ticks": 3200,
+            "tower_damage": 2747,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 81000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Zap",
+                "x": 264600,
+                "y": 156600,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3000,
+                "card": "Bats",
+                "x": 63000,
+                "y": 351000
+              },
+              {
+                "tick": 3080,
+                "card": "BattleRam",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 3160,
+                "card": "Zap",
+                "x": 261000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "05-successive-threats-mirror": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 9.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0611,
+            "ticks": 3100,
+            "tower_damage": 668,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Musketeer",
+                "x": 243000,
+                "y": 171000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 261000,
+                "y": 117000,
+                "cost": 2
+              },
+              {
+                "decision": 6,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 81000,
+                "cost": 1
+              },
+              {
+                "decision": 7,
+                "card": "Skeletons",
+                "x": 261000,
+                "y": 261000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 351000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 2980,
+                "card": "Knight",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 171000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "08-cycle-to-lethal-plus": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2374,
+            "ticks": 5759,
+            "tower_damage": 0,
+            "spent_elixir": 9,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 99000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 5.95,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0196,
+            "ticks": 2440,
+            "tower_damage": 214,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 243000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2615,
+            "ticks": 5864,
+            "tower_damage": 506,
+            "spent_elixir": 16,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 81000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 261000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 153000,
+                "cost": 1
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 66600,
+                "y": 169200,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 11.2,
+            "rejected_actions": 0
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2656,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5437,
+            "tower_damage": 305,
+            "spent_elixir": 3,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 153000,
+                "y": 153000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.85,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2522,
+            "ticks": 3600,
+            "tower_damage": 253,
+            "spent_elixir": 12,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 99000,
+                "y": 189000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Archer",
+                "x": 45000,
+                "y": 153000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 72000,
+                "y": 153000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Skeletons",
+                "x": 72000,
+                "y": 144000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        }
+      }
+    },
+    {
+      "run_id": "99187fdb-277b-4085-9627-5b19c1db8d2e",
+      "model": "openai/deepseek-v4.1-flash-1017",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 14.285714285714285,
+      "harness": "mini_swe_agent",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:27:47.715348+00:00",
+      "tasks": {
+        "05-successive-threats-mirror": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 7.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.112,
+            "ticks": 3100,
+            "tower_damage": 1224,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 261000,
+                "y": 216000,
+                "cost": 2
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 144000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "IceGolemite",
+                "x": 297000,
+                "y": 126000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "Cannon",
+                "x": 261000,
+                "y": 162000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2940,
+                "card": "Log",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2980,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3060,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.2037,
+            "ticks": 3100,
+            "tower_damage": 2226,
+            "spent_elixir": 5,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 216000,
+                "cost": 2
+              },
+              {
+                "decision": 3,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 144000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 144000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2980,
+                "card": "Knight",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 171000,
+                "y": 369000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2384,
+            "ticks": 5866,
+            "tower_damage": 253,
+            "spent_elixir": 15,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 198000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 252000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 198000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 270000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5720,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 11.3,
+            "rejected_actions": 0
+          }
+        },
+        "03-bait-damage-sequence": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.2419,
+            "own_tower_damage_frac": 0.2946,
+            "ticks": 6000,
+            "tower_damage": 1235,
+            "spent_elixir": 18,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "InfernoTower",
+                "x": 63000,
+                "y": 189000,
+                "cost": 5
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 81000,
+                "y": 234000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 4,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 243000,
+                "cost": 1
+              },
+              {
+                "decision": 5,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 459000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5600,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 5680,
+                "card": "Minions",
+                "x": 81000,
+                "y": 315000
+              },
+              {
+                "tick": 5760,
+                "card": "Archer",
+                "x": 63000,
+                "y": 405000
+              },
+              {
+                "tick": 5920,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 24.0,
+            "rejected_actions": 1
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5729,
+            "tower_damage": 250,
+            "spent_elixir": 5,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 126000,
+                "y": 144000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 189000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 4.45,
+            "rejected_actions": 0
+          }
+        },
+        "07-counterpush": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 3,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.7612,
+            "own_tower_damage_frac": 0.2095,
+            "ticks": 3386,
+            "tower_damage": 0,
+            "spent_elixir": 17,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 63000,
+                "y": 270000,
+                "cost": 5
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 81000,
+                "y": 243000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Knight",
+                "x": 234000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Zap",
+                "x": 90000,
+                "y": 351000,
+                "cost": 2
+              },
+              {
+                "decision": 7,
+                "card": "Minions",
+                "x": 102600,
+                "y": 405000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3100,
+                "card": "Bats",
+                "x": 99000,
+                "y": 351000
+              },
+              {
+                "tick": 3140,
+                "card": "Zap",
+                "x": 81000,
+                "y": 351000
+              }
+            ],
+            "elapsed_s": 24.3,
+            "rejected_actions": 1
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.5595,
+            "ticks": 3200,
+            "tower_damage": 2523,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Zap",
+                "x": 261000,
+                "y": 252000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 72000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Archer",
+                "x": 90000,
+                "y": 144000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3000,
+                "card": "Bats",
+                "x": 171000,
+                "y": 567000
+              },
+              {
+                "tick": 3080,
+                "card": "ElectroWizard",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2522,
+            "ticks": 3600,
+            "tower_damage": 253,
+            "spent_elixir": 12,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 108000,
+                "y": 180000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 99000,
+                "y": 216000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Archer",
+                "x": 126000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 77400,
+                "y": 178200,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Skeletons",
+                "x": 68400,
+                "y": 169200,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 0.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.1001,
+            "ticks": 2440,
+            "tower_damage": 1094,
+            "spent_elixir": 0,
+            "plays": [],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0232,
+            "ticks": 2440,
+            "tower_damage": 253,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 64800,
+                "y": 171000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2656,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5440,
+            "tower_damage": 305,
+            "spent_elixir": 3,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Minions",
+                "x": 63000,
+                "y": 189000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 2.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        },
+        "02-sustained-tower-race": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5442,
+            "tower_damage": 305,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Minions",
+                "x": 72000,
+                "y": 153000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Giant",
+                "x": 72000,
+                "y": 297000,
+                "cost": 5
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 2.1,
+            "rejected_actions": 0
+          }
+        },
+        "08-cycle-to-lethal-plus": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 4.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2774,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5762,
+            "tower_damage": 458,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 171000,
+                "cost": 1
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "Log",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 6.1,
+            "rejected_actions": 0
+          }
+        }
+      }
+    },
+    {
+      "run_id": "1fa0262c-1b19-46f6-a7f8-e30859ee1b85",
+      "model": "anthropic/claude-haiku-5-5",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 21.428571428571427,
+      "harness": "claude_code-v1.0.0",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:27:18.240148+00:00",
+      "tasks": {
+        "03-bait-damage-sequence": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 12.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.2191,
+            "own_tower_damage_frac": 0.2213,
+            "ticks": 6000,
+            "tower_damage": 434,
+            "spent_elixir": 32,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Knight",
+                "x": 63000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "InfernoTower",
+                "x": 63000,
+                "y": 171000,
+                "cost": 5
+              },
+              {
+                "decision": 2,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 4,
+                "card": "Princess",
+                "x": 261000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 264600,
+                "y": 250200,
+                "cost": 2
+              },
+              {
+                "decision": 6,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 387000,
+                "cost": 3
+              },
+              {
+                "decision": 7,
+                "card": "Knight",
+                "x": 63000,
+                "y": 225000,
+                "cost": 3
+              },
+              {
+                "decision": 8,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 378000,
+                "cost": 1
+              },
+              {
+                "decision": 11,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5600,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 5680,
+                "card": "Archer",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 5840,
+                "card": "Giant",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 24.0,
+            "rejected_actions": 0
+          }
+        },
+        "05-successive-threats-mirror": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.1114,
+            "ticks": 3100,
+            "tower_damage": 1217,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 261000,
+                "y": 198000,
+                "cost": 2
+              },
+              {
+                "decision": 3,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 63000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 171000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 2940,
+                "card": "Log",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2980,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 3060,
+                "card": "Knight",
+                "x": 261000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.19,
+            "ticks": 3100,
+            "tower_damage": 2076,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 234000,
+                "cost": 2
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 63000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 2900,
+                "card": "Knight",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2940,
+                "card": "Log",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 513000
+              },
+              {
+                "tick": 3060,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "07-counterpush": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 12.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 3,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.7612,
+            "own_tower_damage_frac": 0.2095,
+            "ticks": 3357,
+            "tower_damage": 0,
+            "spent_elixir": 21,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 81000,
+                "y": 252000,
+                "cost": 5
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 81000,
+                "y": 243000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Knight",
+                "x": 243000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Zap",
+                "x": 61200,
+                "y": 320400,
+                "cost": 2
+              },
+              {
+                "decision": 9,
+                "card": "Minions",
+                "x": 117000,
+                "y": 243000,
+                "cost": 3
+              },
+              {
+                "decision": 10,
+                "card": "Fireball",
+                "x": 162000,
+                "y": 513000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3100,
+                "card": "Bats",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 3140,
+                "card": "Zap",
+                "x": 63000,
+                "y": 387000
+              }
+            ],
+            "elapsed_s": 22.85,
+            "rejected_actions": 1
+          }
+        },
+        "08-cycle-to-lethal-plus": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2774,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5821,
+            "tower_damage": 458,
+            "spent_elixir": 12,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 261000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 252000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Log",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 9.05,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5811,
+            "tower_damage": 700,
+            "spent_elixir": 12,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 171000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 99000,
+                "y": 135000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Log",
+                "x": 66600,
+                "y": 147600,
+                "cost": 2
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 68400,
+                "y": 158400,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 68400,
+                "y": 169200,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 8.55,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 1,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.3317,
+            "ticks": 3600,
+            "tower_damage": 766,
+            "spent_elixir": 13,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 63000,
+                "y": 189000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 81000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "Xbow",
+                "x": 45000,
+                "y": 189000,
+                "cost": 6
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3480,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3560,
+                "card": "Minions",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-sustained-tower-race": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5432,
+            "tower_damage": 305,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 180000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.6,
+            "rejected_actions": 0
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 2,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.5977,
+            "ticks": 3200,
+            "tower_damage": 2747,
+            "spent_elixir": 3,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Knight",
+                "x": 63000,
+                "y": 216000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "BattleRam",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 3040,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3120,
+                "card": "Bats",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0098,
+            "ticks": 2440,
+            "tower_damage": 107,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 216000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0,
+            "ticks": 2440,
+            "tower_damage": 0,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 225000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 261000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5707,
+            "tower_damage": 250,
+            "spent_elixir": 3,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 63000,
+                "y": 171000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "IceSpirits",
+                "x": 99000,
+                "y": 171000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 3.35,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2656,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5437,
+            "tower_damage": 305,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.85,
+            "rejected_actions": 0
+          }
+        }
+      }
+    },
+    {
+      "run_id": "4792d23c-ce1f-4234-bdcf-b6560b8ca946",
+      "model": "openai/gpt-6.1-sol",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 64.28571428571429,
+      "harness": "codex-v1.0.0",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:27:13.192588+00:00",
+      "tasks": {
+        "07-counterpush": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 18.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.4231,
+            "own_tower_damage_frac": 0.2095,
+            "ticks": 3600,
+            "tower_damage": 0,
+            "spent_elixir": 26,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 63000,
+                "y": 266400,
+                "cost": 5
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 252000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Cannon",
+                "x": 189000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Knight",
+                "x": 216000,
+                "y": 162000,
+                "cost": 3
+              },
+              {
+                "decision": 8,
+                "card": "Minions",
+                "x": 63000,
+                "y": 252000,
+                "cost": 3
+              },
+              {
+                "decision": 13,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 369000,
+                "cost": 4
+              },
+              {
+                "decision": 14,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 180000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3140,
+                "card": "BattleRam",
+                "x": 99000,
+                "y": 405000
+              },
+              {
+                "tick": 3220,
+                "card": "Bats",
+                "x": 63000,
+                "y": 513000
+              },
+              {
+                "tick": 3260,
+                "card": "Zap",
+                "x": 45000,
+                "y": 387000
+              },
+              {
+                "tick": 3380,
+                "card": "ElectroWizard",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 35.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0154,
+            "own_tower_damage_frac": 0.1914,
+            "ticks": 3100,
+            "tower_damage": 2092,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceGolemite",
+                "x": 108000,
+                "y": 180000,
+                "cost": 2
+              },
+              {
+                "decision": 3,
+                "card": "Log",
+                "x": 63000,
+                "y": 54000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 117000,
+                "cost": 1
+              },
+              {
+                "decision": 6,
+                "card": "Skeletons",
+                "x": 207000,
+                "y": 162000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2980,
+                "card": "Log",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 3020,
+                "card": "Knight",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-bait-damage-sequence": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 12.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.2536,
+            "own_tower_damage_frac": 0.2509,
+            "ticks": 6000,
+            "tower_damage": 758,
+            "spent_elixir": 33,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "InfernoTower",
+                "x": 108000,
+                "y": 216000,
+                "cost": 5
+              },
+              {
+                "decision": 1,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 2,
+                "card": "GoblinGang",
+                "x": 72000,
+                "y": 234000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 252000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Knight",
+                "x": 63000,
+                "y": 261000,
+                "cost": 3
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 63000,
+                "y": 261000,
+                "cost": 2
+              },
+              {
+                "decision": 7,
+                "card": "Princess",
+                "x": 117000,
+                "y": 135000,
+                "cost": 3
+              },
+              {
+                "decision": 9,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 10,
+                "card": "IceSpirits",
+                "x": 66600,
+                "y": 216000,
+                "cost": 1
+              },
+              {
+                "decision": 11,
+                "card": "GoblinGang",
+                "x": 66600,
+                "y": 252000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5600,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 5720,
+                "card": "Minions",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 24.0,
+            "rejected_actions": 0
+          }
+        },
+        "05-successive-threats-mirror": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0032,
+            "ticks": 3100,
+            "tower_damage": 35,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 180000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Log",
+                "x": 261000,
+                "y": 72000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "IceGolemite",
+                "x": 198000,
+                "y": 180000,
+                "cost": 2
+              },
+              {
+                "decision": 7,
+                "card": "Cannon",
+                "x": 252000,
+                "y": 234000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2940,
+                "card": "Log",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2980,
+                "card": "IceSpirits",
+                "x": 279000,
+                "y": 333000
+              },
+              {
+                "tick": 3060,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.5402,
+            "ticks": 3200,
+            "tower_damage": 2302,
+            "spent_elixir": 7,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 117000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Musketeer",
+                "x": 81000,
+                "y": 153000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "MiniPekka",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 3040,
+                "card": "BattleRam",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3080,
+                "card": "Bats",
+                "x": 63000,
+                "y": 225000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2384,
+            "ticks": 5868,
+            "tower_damage": 253,
+            "spent_elixir": 14,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 180000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 126000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 90000,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 261000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "IceSpirits",
+                "x": 79200,
+                "y": 144000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5760,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 11.4,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0098,
+            "ticks": 2440,
+            "tower_damage": 107,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 211500,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "08-cycle-to-lethal-plus": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2605,
+            "ticks": 5817,
+            "tower_damage": 253,
+            "spent_elixir": 10,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 180000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 108000,
+                "y": 162000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "Log",
+                "x": 63000,
+                "y": 270000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 8.85,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0,
+            "ticks": 2440,
+            "tower_damage": 0,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 214200,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 261000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2522,
+            "ticks": 3600,
+            "tower_damage": 253,
+            "spent_elixir": 12,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 135000,
+                "y": 207000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Archer",
+                "x": 99000,
+                "y": 153000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Knight",
+                "x": 63000,
+                "y": 225000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 81000,
+                "y": 153000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Skeletons",
+                "x": 81000,
+                "y": 162000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5812,
+            "tower_damage": 250,
+            "spent_elixir": 13,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 180000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 117000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 72000,
+                "y": 180000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 270000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 8.6,
+            "rejected_actions": 0
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2514,
+            "ticks": 5442,
+            "tower_damage": 0,
+            "spent_elixir": 7,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 117000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 2.1,
+            "rejected_actions": 0
+          }
+        },
+        "02-sustained-tower-race": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5440,
+            "tower_damage": 305,
+            "spent_elixir": 3,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Minions",
+                "x": 63000,
+                "y": 180000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 2.0,
+            "rejected_actions": 0
+          }
+        }
+      }
+    },
+    {
+      "run_id": "45124458-3a52-4e73-b380-ee42f6934b19",
+      "model": "anthropic/claude-opus-5-5",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 71.42857142857143,
+      "harness": "claude_code-v1.0.0",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:26:59.687662+00:00",
+      "tasks": {
+        "07-counterpush": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 18.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2786,
+            "ticks": 3600,
+            "tower_damage": 755,
+            "spent_elixir": 24,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 63000,
+                "y": 243000,
+                "cost": 5
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 372600,
+                "cost": 4
+              },
+              {
+                "decision": 7,
+                "card": "Cannon",
+                "x": 117000,
+                "y": 198000,
+                "cost": 3
+              },
+              {
+                "decision": 8,
+                "card": "Knight",
+                "x": 99000,
+                "y": 225000,
+                "cost": 3
+              },
+              {
+                "decision": 10,
+                "card": "Musketeer",
+                "x": 81000,
+                "y": 153000,
+                "cost": 4
+              },
+              {
+                "decision": 11,
+                "card": "Minions",
+                "x": 261000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 12,
+                "card": "Zap",
+                "x": 90000,
+                "y": 333000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "ElectroWizard",
+                "x": 63000,
+                "y": 369000
+              },
+              {
+                "tick": 3140,
+                "card": "BattleRam",
+                "x": 63000,
+                "y": 405000
+              },
+              {
+                "tick": 3180,
+                "card": "Bats",
+                "x": 63000,
+                "y": 405000
+              },
+              {
+                "tick": 3300,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3380,
+                "card": "Zap",
+                "x": 261000,
+                "y": 207000
+              }
+            ],
+            "elapsed_s": 35.0,
+            "rejected_actions": 0
+          }
+        },
+        "05-successive-threats-mirror": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.135,
+            "ticks": 3100,
+            "tower_damage": 1475,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 261000,
+                "y": 180000,
+                "cost": 2
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 243000,
+                "y": 63000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 153000,
+                "cost": 1
+              },
+              {
+                "decision": 5,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 171000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 2900,
+                "card": "Princess",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 2940,
+                "card": "Log",
+                "x": 243000,
+                "y": 171000
+              },
+              {
+                "tick": 3020,
+                "card": "Knight",
+                "x": 261000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.19,
+            "ticks": 3100,
+            "tower_damage": 2076,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 198000,
+                "cost": 2
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 63000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 2900,
+                "card": "Knight",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 2940,
+                "card": "Log",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 513000
+              },
+              {
+                "tick": 3060,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-bait-damage-sequence": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 12.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.265,
+            "own_tower_damage_frac": 0.237,
+            "ticks": 6000,
+            "tower_damage": 606,
+            "spent_elixir": 33,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "InfernoTower",
+                "x": 117000,
+                "y": 189000,
+                "cost": 5
+              },
+              {
+                "decision": 1,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 2,
+                "card": "Knight",
+                "x": 45000,
+                "y": 261000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 261000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 459000,
+                "cost": 3
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 63000,
+                "y": 270000,
+                "cost": 2
+              },
+              {
+                "decision": 8,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 9,
+                "card": "Princess",
+                "x": 63000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 10,
+                "card": "IceSpirits",
+                "x": 50400,
+                "y": 225000,
+                "cost": 1
+              },
+              {
+                "decision": 11,
+                "card": "Knight",
+                "x": 261000,
+                "y": 180000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5600,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 5720,
+                "card": "Minions",
+                "x": 45000,
+                "y": 405000
+              },
+              {
+                "tick": 5760,
+                "card": "Knight",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 24.0,
+            "rejected_actions": 0
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.4299,
+            "ticks": 3200,
+            "tower_damage": 1341,
+            "spent_elixir": 8,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 99000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 81000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Zap",
+                "x": 261000,
+                "y": 266400,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "BattleRam",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 3000,
+                "card": "Bats",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3080,
+                "card": "MiniPekka",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-sustained-tower-race": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2733,
+            "ticks": 5617,
+            "tower_damage": 240,
+            "spent_elixir": 15,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 81000,
+                "y": 198000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 68400,
+                "y": 190800,
+                "cost": 4
+              },
+              {
+                "decision": 2,
+                "card": "Minions",
+                "x": 81000,
+                "y": 162000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "Archer",
+                "x": 63000,
+                "y": 333000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "Zap",
+                "x": 63000,
+                "y": 459000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 10.85,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2753,
+            "ticks": 3600,
+            "tower_damage": 506,
+            "spent_elixir": 15,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 117000,
+                "y": 189000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 261000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "IceSpirits",
+                "x": 77400,
+                "y": 198000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "Skeletons",
+                "x": 68400,
+                "y": 178200,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Log",
+                "x": 68400,
+                "y": 154800,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "Fireball",
+                "x": 70200,
+                "y": 169200,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3480,
+                "card": "Archer",
+                "x": 63000,
+                "y": 351000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "08-cycle-to-lethal-plus": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2374,
+            "ticks": 5759,
+            "tower_damage": 0,
+            "spent_elixir": 9,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 423000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 117000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 5.95,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2615,
+            "ticks": 5864,
+            "tower_damage": 506,
+            "spent_elixir": 15,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 198000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 108000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 261000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Log",
+                "x": 63000,
+                "y": 378000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "IceSpirits",
+                "x": 75600,
+                "y": 171000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 11.2,
+            "rejected_actions": 0
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2527,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5847,
+            "tower_damage": 250,
+            "spent_elixir": 15,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 198000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 135000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 270000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Log",
+                "x": 63000,
+                "y": 441000,
+                "cost": 2
+              },
+              {
+                "decision": 5,
+                "card": "IceSpirits",
+                "x": 79200,
+                "y": 162000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 10.35,
+            "rejected_actions": 0
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2514,
+            "ticks": 5442,
+            "tower_damage": 0,
+            "spent_elixir": 7,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 225000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 2.1,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0,
+            "ticks": 2440,
+            "tower_damage": 0,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 64800,
+                "y": 208800,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 261000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0098,
+            "ticks": 2440,
+            "tower_damage": 107,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 201600,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        }
+      }
+    },
+    {
+      "run_id": "85d119a4-77e7-4ed3-8b25-85debe6bc0c0",
+      "model": "anthropic/claude-sonnet-5-5",
+      "revision": "royalebench/royalebench-v6@1",
+      "score": 35.714285714285715,
+      "harness": "claude_code-v1.0.0",
+      "concurrency": 14,
+      "started_at": "2026-11-15T10:23:10.686117+00:00",
+      "tasks": {
+        "07-counterpush": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 18.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.9276,
+            "own_tower_damage_frac": 0.331,
+            "ticks": 3600,
+            "tower_damage": 1328,
+            "spent_elixir": 29,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Giant",
+                "x": 63000,
+                "y": 270000,
+                "cost": 5
+              },
+              {
+                "decision": 2,
+                "card": "Musketeer",
+                "x": 63000,
+                "y": 270000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Cannon",
+                "x": 261000,
+                "y": 198000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Zap",
+                "x": 90000,
+                "y": 351000,
+                "cost": 2
+              },
+              {
+                "decision": 7,
+                "card": "Archer",
+                "x": 261000,
+                "y": 216000,
+                "cost": 3
+              },
+              {
+                "decision": 10,
+                "card": "Fireball",
+                "x": 162000,
+                "y": 513000,
+                "cost": 4
+              },
+              {
+                "decision": 12,
+                "card": "Minions",
+                "x": 144000,
+                "y": 414000,
+                "cost": 3
+              },
+              {
+                "decision": 14,
+                "card": "Knight",
+                "x": 63000,
+                "y": 180000,
+                "cost": 3
+              },
+              {
+                "decision": 16,
+                "card": "Zap",
+                "x": 162000,
+                "y": 513000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 3020,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3100,
+                "card": "Bats",
+                "x": 99000,
+                "y": 351000
+              },
+              {
+                "tick": 3140,
+                "card": "Zap",
+                "x": 45000,
+                "y": 333000
+              },
+              {
+                "tick": 3340,
+                "card": "ElectroWizard",
+                "x": 63000,
+                "y": 459000
+              },
+              {
+                "tick": 3380,
+                "card": "BattleRam",
+                "x": 63000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 35.0,
+            "rejected_actions": 2
+          }
+        },
+        "03-bait-damage-sequence": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 12.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.2788,
+            "own_tower_damage_frac": 0.2808,
+            "ticks": 6000,
+            "tower_damage": 1085,
+            "spent_elixir": 32,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "InfernoTower",
+                "x": 63000,
+                "y": 207000,
+                "cost": 5
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 81000,
+                "y": 225000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "GoblinGang",
+                "x": 63000,
+                "y": 270000,
+                "cost": 3
+              },
+              {
+                "decision": 4,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              },
+              {
+                "decision": 5,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 441000,
+                "cost": 3
+              },
+              {
+                "decision": 6,
+                "card": "Log",
+                "x": 63000,
+                "y": 396000,
+                "cost": 2
+              },
+              {
+                "decision": 8,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 279000,
+                "cost": 1
+              },
+              {
+                "decision": 9,
+                "card": "GoblinGang",
+                "x": 63000,
+                "y": 279000,
+                "cost": 3
+              },
+              {
+                "decision": 11,
+                "card": "Rocket",
+                "x": 63000,
+                "y": 459000,
+                "cost": 6
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 5600,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 5680,
+                "card": "Minions",
+                "x": 9000,
+                "y": 333000
+              },
+              {
+                "tick": 5720,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 333000
+              }
+            ],
+            "elapsed_s": 24.0,
+            "rejected_actions": 0
+          }
+        },
+        "02-reserve-counter-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.1506,
+            "ticks": 3100,
+            "tower_damage": 1646,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Log",
+                "x": 63000,
+                "y": 189000,
+                "cost": 2
+              },
+              {
+                "decision": 1,
+                "card": "Musketeer",
+                "x": 81000,
+                "y": 81000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 63000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 2900,
+                "card": "Knight",
+                "x": 63000,
+                "y": 513000
+              },
+              {
+                "tick": 2980,
+                "card": "Princess",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "06-unequal-threats": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.5167,
+            "ticks": 3200,
+            "tower_damage": 2032,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Knight",
+                "x": 63000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 5,
+                "card": "Cannon",
+                "x": 261000,
+                "y": 207000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2920,
+                "card": "BattleRam",
+                "x": 261000,
+                "y": 405000
+              },
+              {
+                "tick": 3040,
+                "card": "MiniPekka",
+                "x": 261000,
+                "y": 315000
+              },
+              {
+                "tick": 3080,
+                "card": "Bats",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "05-successive-threats-mirror": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 10.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0839,
+            "ticks": 3100,
+            "tower_damage": 917,
+            "spent_elixir": 6,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Musketeer",
+                "x": 261000,
+                "y": 153000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "Log",
+                "x": 261000,
+                "y": 135000,
+                "cost": 2
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2820,
+                "card": "GoblinBarrel",
+                "x": 261000,
+                "y": 117000
+              },
+              {
+                "tick": 2860,
+                "card": "GoblinGang",
+                "x": 261000,
+                "y": 351000
+              },
+              {
+                "tick": 2900,
+                "card": "Knight",
+                "x": 261000,
+                "y": 351000
+              },
+              {
+                "tick": 2980,
+                "card": "Princess",
+                "x": 63000,
+                "y": 315000
+              },
+              {
+                "tick": 3020,
+                "card": "IceSpirits",
+                "x": 261000,
+                "y": 315000
+              }
+            ],
+            "elapsed_s": 20.0,
+            "rejected_actions": 0
+          }
+        },
+        "10-protect-the-lead": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2522,
+            "ticks": 3600,
+            "tower_damage": 253,
+            "spent_elixir": 12,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Tesla",
+                "x": 63000,
+                "y": 189000,
+                "cost": 4
+              },
+              {
+                "decision": 1,
+                "card": "Knight",
+                "x": 63000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Archer",
+                "x": 63000,
+                "y": 153000,
+                "cost": 3
+              },
+              {
+                "decision": 3,
+                "card": "IceSpirits",
+                "x": 66600,
+                "y": 162000,
+                "cost": 1
+              },
+              {
+                "decision": 4,
+                "card": "Skeletons",
+                "x": 66600,
+                "y": 171000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-spell-placement": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0098,
+            "ticks": 2440,
+            "tower_damage": 107,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 212400,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "01-cycle-and-connect": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 6.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2615,
+            "ticks": 5864,
+            "tower_damage": 506,
+            "spent_elixir": 14,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 243000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 81000,
+                "y": 189000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 225000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 270000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 5,
+                "card": "IceSpirits",
+                "x": 59400,
+                "y": 189000,
+                "cost": 1
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 11.2,
+            "rejected_actions": 0
+          }
+        },
+        "04-critical-cycle-and-connect": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2381,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5804,
+            "tower_damage": 250,
+            "spent_elixir": 13,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 189000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 99000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 153000,
+                "y": 252000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 270000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 8.2,
+            "rejected_actions": 0
+          }
+        },
+        "09-tower-race-defend": {
+          "reward": 1.0,
+          "integrity": 1.0,
+          "win": 1.0,
+          "decisions": 2.0,
+          "outcome": {
+            "result": "win",
+            "crowns_for": 1,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.3127,
+            "own_tower_damage_frac": 0.2514,
+            "ticks": 5442,
+            "tower_damage": 0,
+            "spent_elixir": 7,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 207000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 2.1,
+            "rejected_actions": 0
+          }
+        },
+        "01-timed-spell-a": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "unfinished",
+            "crowns_for": 0,
+            "crowns_against": 0,
+            "enemy_tower_damage_frac": 0.0,
+            "own_tower_damage_frac": 0.0463,
+            "ticks": 2440,
+            "tower_damage": 506,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 297000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [
+              {
+                "tick": 2320,
+                "card": "Goblins",
+                "x": 63000,
+                "y": 405000
+              }
+            ],
+            "elapsed_s": 12.0,
+            "rejected_actions": 0
+          }
+        },
+        "03-tower-race-b": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 1.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2689,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5868,
+            "tower_damage": 50,
+            "spent_elixir": 4,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 1.4,
+            "rejected_actions": 0
+          }
+        },
+        "08-cycle-to-lethal-plus": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 5.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.2774,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5834,
+            "tower_damage": 458,
+            "spent_elixir": 13,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "IceSpirits",
+                "x": 63000,
+                "y": 270000,
+                "cost": 1
+              },
+              {
+                "decision": 1,
+                "card": "Cannon",
+                "x": 72000,
+                "y": 198000,
+                "cost": 3
+              },
+              {
+                "decision": 2,
+                "card": "Skeletons",
+                "x": 63000,
+                "y": 288000,
+                "cost": 1
+              },
+              {
+                "decision": 3,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 459000,
+                "cost": 4
+              },
+              {
+                "decision": 4,
+                "card": "HogRider",
+                "x": 63000,
+                "y": 288000,
+                "cost": 4
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 9.7,
+            "rejected_actions": 0
+          }
+        },
+        "02-sustained-tower-race": {
+          "reward": 0.0,
+          "integrity": 1.0,
+          "win": 0.0,
+          "decisions": 3.0,
+          "outcome": {
+            "result": "loss",
+            "crowns_for": 0,
+            "crowns_against": 1,
+            "enemy_tower_damage_frac": 0.0629,
+            "own_tower_damage_frac": 0.3127,
+            "ticks": 5483,
+            "tower_damage": 305,
+            "spent_elixir": 10,
+            "plays": [
+              {
+                "decision": 0,
+                "card": "Cannon",
+                "x": 63000,
+                "y": 171000,
+                "cost": 3
+              },
+              {
+                "decision": 1,
+                "card": "Fireball",
+                "x": 63000,
+                "y": 180000,
+                "cost": 4
+              },
+              {
+                "decision": 2,
+                "card": "Minions",
+                "x": 63000,
+                "y": 162000,
+                "cost": 3
+              }
+            ],
+            "opponent_plays": [],
+            "elapsed_s": 4.15,
+            "rejected_actions": 0
+          }
+        }
+      }
+    }
+  ],
+  "source_files": {
+    "runs\\recent\\v7-design\\audit.json": "acaae65a07dcd75fda79ade756e08bc796d2269fb0118c2ab7170de737bc2626",
+    "runs\\recent\\v7-design\\results.json": "63bda3d4da16a4f882c69e7cb2e995e3862dcd6c1dfab0de855be5ce30936921"
+  },
+  "note": "Development set evidence; one attempt per model/task, different stock harnesses."
+}

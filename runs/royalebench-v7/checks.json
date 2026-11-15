@@ -1,0 +1,123 @@
+{
+  "static_tasks": 4,
+  "linux_focused_tests": 56,
+  "local_reference_wins": 4,
+  "local_negative_controls": 28,
+  "container_references": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "family": 1,
+      "reward": 1,
+      "integrity": 1,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "config_sha256": "5b209b7bc223af62cb6e9355d71af48a67c7863010c28ac33200c89f7f5e28a8",
+      "image": "sha256:c39cba47565f281e2530f9c49e6740f01b5b5e06d79c18f2491f0b521d468ddf",
+      "isolated": true,
+      "restart_verified": true,
+      "capture_complete": true,
+      "trace_frames": 289,
+      "replay_hashes_verified": true,
+      "capture_schema_version": "1.0",
+      "network": "none",
+      "elapsed_s": 51.91
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "family": 2,
+      "reward": 1,
+      "integrity": 1,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "config_sha256": "3d1036662d120233fff669127ccba72e8a3013e75c7869ff11af464d2ffeb6f6",
+      "image": "sha256:c39cba47565f281e2530f9c49e6740f01b5b5e06d79c18f2491f0b521d468ddf",
+      "isolated": true,
+      "restart_verified": true,
+      "capture_complete": true,
+      "trace_frames": 248,
+      "replay_hashes_verified": true,
+      "capture_schema_version": "1.0",
+      "network": "none",
+      "elapsed_s": 77.403
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "family": 3,
+      "reward": 1,
+      "integrity": 1,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "config_sha256": "3127a6c2343b9f2bcfef79e52ad45cd9e4276c172b9f146a7a7ce7b4fb867355",
+      "image": "sha256:c39cba47565f281e2530f9c49e6740f01b5b5e06d79c18f2491f0b521d468ddf",
+      "isolated": true,
+      "restart_verified": true,
+      "capture_complete": true,
+      "trace_frames": 664,
+      "replay_hashes_verified": true,
+      "capture_schema_version": "1.0",
+      "network": "none",
+      "elapsed_s": 176.709
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "family": 4,
+      "reward": 1,
+      "integrity": 1,
+      "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+      "config_sha256": "26f6779f37c936fc06b50c331ea19609bec7513d6abd906cc43e8abf26d4018f",
+      "image": "sha256:c39cba47565f281e2530f9c49e6740f01b5b5e06d79c18f2491f0b521d468ddf",
+      "isolated": true,
+      "restart_verified": true,
+      "capture_complete": true,
+      "trace_frames": 329,
+      "replay_hashes_verified": true,
+      "capture_schema_version": "1.0",
+      "network": "none",
+      "elapsed_s": 44.4
+    }
+  ],
+  "first_container_attempt": {
+    "task": "04-split-lane-conversion",
+    "failure": "Windows Docker bind mount rejected an extended Windows path; retry passed without task changes"
+  },
+  "publication": {
+    "benchmark": "royalebench",
+    "dataset": "royalebench-v7",
+    "revision": 1,
+    "digest": "sha256:8cc4ceee579bdb878039229758ca2aea57660509c5a5ccec439d44bf8f9fe3b3",
+    "task_count": 4,
+    "tags": [
+      "latest",
+      "v7"
+    ],
+    "created_by_email": "ishanvepa171@gmail.com",
+    "created_at": "2026-11-15T18:07:12.854555+00:00",
+    "metric_digest": null,
+    "manifest": null
+  },
+  "reviewed_pilot": {
+    "run_id": "62553e61-afff-4f15-a3bb-61d3124f39d3",
+    "task": "03-supported-tank-conversion",
+    "classification": "gameplay conversion failure",
+    "evidence": "Completed all 36 seconds; own tower damage 0, enemy left tower 883 HP, no crowns; model spent first Rocket on defense and did not arrange sufficient follow-up damage.",
+    "reward": 0,
+    "integrity": 1,
+    "rejected_actions": 0
+  },
+  "default_configuration_tests": {
+    "passed": 112,
+    "subtests_passed": 18,
+    "command": "uv run --with pytest python -X utf8 -m pytest -q tests/test_royalebench_v7.py tests/test_royalebench_v6.py tests/test_evals_backend.py tests/test_api_evals.py"
+  },
+  "opus_full": {
+    "run_id": "5cfa7c26-442c-4d23-8405-67c2ca263c32",
+    "score": 0,
+    "integrity": 1,
+    "tasks": 4,
+    "review": "opus-review.json"
+  },
+  "sol_full": {
+    "run_id": "8a64cce1-a84f-48cb-ab73-b82d876abf75",
+    "score": 0.5,
+    "integrity": 1,
+    "tasks": 4,
+    "review": "sol-review.json"
+  }
+}

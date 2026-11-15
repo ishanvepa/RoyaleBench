@@ -1,0 +1,62 @@
+{
+  "push": {
+    "version": {
+      "benchmark": "royalebench",
+      "dataset": "royalebench-v7",
+      "revision": 1,
+      "digest": "sha256:8cc4ceee579bdb878039229758ca2aea57660509c5a5ccec439d44bf8f9fe3b3",
+      "task_count": 4,
+      "tags": [
+        "latest",
+        "v7"
+      ],
+      "created_by_email": "ishanvepa171@gmail.com",
+      "created_at": "2026-11-15T18:07:12.854555+00:00",
+      "metric_digest": null,
+      "manifest": null
+    },
+    "stored": [
+      "01-critical-cycle-conversion",
+      "03-supported-tank-conversion",
+      "02-second-wave-air-race",
+      "04-split-lane-conversion"
+    ],
+    "created": [
+      "dataset royalebench/royalebench-v7"
+    ],
+    "warnings": [],
+    "left_out": {}
+  },
+  "tasks": [
+    {
+      "task_id": "01-critical-cycle-conversion",
+      "digest": "sha256:cf2b7f8b3229fb3516cf9d66ab8bcde92a319a7ecd1fb77c1e21d924bd967bba",
+      "size": 98902,
+      "source_name": null
+    },
+    {
+      "task_id": "02-second-wave-air-race",
+      "digest": "sha256:a976ec53cb90fe875106d701dd775f09dd1eb95928828a31486eb7f8cd3883fd",
+      "size": 98954,
+      "source_name": null
+    },
+    {
+      "task_id": "03-supported-tank-conversion",
+      "digest": "sha256:ac4e4fef363e529e285a2f3b166962465e9bdf03f52b93404332ed5bd50c4457",
+      "size": 99618,
+      "source_name": null
+    },
+    {
+      "task_id": "04-split-lane-conversion",
+      "digest": "sha256:52bf1880f56583b4eeb20654e0c7e13dadd9a5cd9018b5d5863c316583946dfd",
+      "size": 99030,
+      "source_name": null
+    }
+  ],
+  "local_task_digests": {
+    "01-critical-cycle-conversion": "sha256:cf2b7f8b3229fb3516cf9d66ab8bcde92a319a7ecd1fb77c1e21d924bd967bba",
+    "02-second-wave-air-race": "sha256:a976ec53cb90fe875106d701dd775f09dd1eb95928828a31486eb7f8cd3883fd",
+    "03-supported-tank-conversion": "sha256:ac4e4fef363e529e285a2f3b166962465e9bdf03f52b93404332ed5bd50c4457",
+    "04-split-lane-conversion": "sha256:52bf1880f56583b4eeb20654e0c7e13dadd9a5cd9018b5d5863c316583946dfd"
+  }
+}

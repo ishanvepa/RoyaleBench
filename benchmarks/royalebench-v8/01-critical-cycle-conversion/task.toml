@@ -1,0 +1,55 @@
+schema_version = "1.4"
+artifacts = [
+    { source = "/var/lib/royale", destination = "royale" },
+]
+
+[task]
+name = "royalebench/v7-01-critical-cycle-conversion"
+description = "Preserve a critical tower while cycling into repeated win-condition damage. time_left=60s overtime | window=28s | player=hog-2.6-cycle | opponent_deck=giant-beatdown | opponent=planner | seed=1701 | scoring=completed crown win before window ends"
+
+[metadata]
+category = "clash-royale-continuation"
+difficulty = "hard"
+opponent = "planner"
+deck = "hog-2.6-cycle"
+seed = 1701
+seat = "blue"
+decision_ticks = 40
+dataset_version = "7.0.0"
+family = 1
+opponent_deck = "giant-beatdown"
+control = false
+action_mode = "coordinates-v1"
+
+[agent]
+network_mode = "allowlist"
+allowed_hosts = [
+    "api.anthropic.com",
+    "api.openai.com",
+    "openrouter.ai",
+    "ishanvepa171--ep-qwen3-8-2-4t-a95b-server.us-west.modal.direct",
+    "ishanvepa171--ep-inkling-2-small-server.us-west.modal.direct",
+    "ishanvepa171--ep-deepseek-v4-1-flash-1017-server.us-west.modal.direct",
+    "ishanvepa171--ep-kimi-k3-1-pro-server.us-west.modal.direct",
+]
+timeout_sec = 3600.0
+user = "player"
+
+[verifier]
+network_mode = "no-network"
+timeout_sec = 600.0
+environment_mode = "separate"
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 900.0
+cpus = 1
+memory_mb = 2048
+storage_mb = 4096
+workdir = "/app"
+
+[environment.healthcheck]
+command = "runuser -u referee -- /usr/local/sbin/royale-start-server"
+timeout_sec = 60
+start_period_sec = 0
+retries = 3

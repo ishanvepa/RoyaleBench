@@ -1,0 +1,311 @@
+{
+  "run_id": "5cfa7c26-442c-4d23-8405-67c2ca263c32",
+  "revision": "royalebench/royalebench-v7@1",
+  "harness": "claude_code-v1.0.0",
+  "model": "anthropic/claude-opus-5-5",
+  "provider": "modal",
+  "concurrency": 4,
+  "inference_overrides": {},
+  "task_reviews": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "classification": "gameplay failure",
+      "finding": "Defense preserved all own HP, but two Hog pushes were intercepted; the window expired with target tower at 706 HP.",
+      "final_tower_hp": [
+        [
+          4824,
+          250,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          706
+        ]
+      ],
+      "game_over": false,
+      "winner": -1,
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.2147,
+        "own_tower_damage_frac": 0.2564,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 14.0,
+        "fast_decision_frac": 0.0714,
+        "spent_elixir": 32.0,
+        "tower_damage": 0.0,
+        "objective_met": 0.0,
+        "rejected_actions": 0.0
+      }
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "classification": "gameplay failure",
+      "finding": "Defensive Fireball and later spell allocation left the target at 75 HP at the deadline; both own princess towers survived.",
+      "final_tower_hp": [
+        [
+          4824,
+          160,
+          241
+        ],
+        [
+          4824,
+          3052,
+          75
+        ]
+      ],
+      "game_over": false,
+      "winner": -1,
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.2724,
+        "own_tower_damage_frac": 0.5219,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 15.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 38.0,
+        "tower_damage": 3051.0,
+        "objective_met": 0.0,
+        "rejected_actions": 0.0
+      }
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "classification": "gameplay failure",
+      "finding": "Misplaced Rocket and a rejected Knight deployment on WATER delayed conversion; target ended at 688 HP. A separate zero-rejection pilot also failed this task.",
+      "final_tower_hp": [
+        [
+          4824,
+          652,
+          2042
+        ],
+        [
+          4824,
+          3052,
+          688
+        ]
+      ],
+      "game_over": false,
+      "winner": -1,
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 0.0,
+        "enemy_tower_damage_frac": 0.2163,
+        "own_tower_damage_frac": 0.312,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 18.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 45.0,
+        "tower_damage": 1058.0,
+        "objective_met": 0.0,
+        "rejected_actions": 1.0
+      }
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "classification": "gameplay failure",
+      "finding": "Opening air/ground defense succeeded, but the follow-up Hog was diverted by Tombstone; target remained 72 HP and a renewed enemy push took own tower.",
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          360
+        ],
+        [
+          4824,
+          1967,
+          72
+        ]
+      ],
+      "game_over": true,
+      "winner": 1,
+      "rewards": {
+        "reward": 0.0,
+        "win": 0.0,
+        "crowns_for": 0.0,
+        "crowns_against": 1.0,
+        "enemy_tower_damage_frac": 0.372,
+        "own_tower_damage_frac": 0.5476,
+        "completed": 1.0,
+        "integrity": 1.0,
+        "decisions": 16.0,
+        "fast_decision_frac": 0.0,
+        "spent_elixir": 38.0,
+        "tower_damage": 840.0,
+        "objective_met": 0.0,
+        "rejected_actions": 0.0
+      }
+    }
+  ],
+  "harness_reported_cost_usd": 1.4982158,
+  "metrics_sources": [
+    {
+      "path": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\0\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": 0.2857814,
+        "wall_clock_duration": 94.121,
+        "input_tokens": 29,
+        "cache_creation_input_tokens": 21672,
+        "cache_read_input_tokens": 397127,
+        "output_tokens": 4894,
+        "output_tokens_details": {
+          "thinking_tokens": 3398
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 21672
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 469,
+            "cache_read_input_tokens": 35174,
+            "cache_creation_input_tokens": 1216,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 1216,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      }
+    },
+    {
+      "path": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\2\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": 0.465886,
+        "wall_clock_duration": 163.322,
+        "input_tokens": 33,
+        "cache_creation_input_tokens": 30470,
+        "cache_read_input_tokens": 523820,
+        "output_tokens": 10432,
+        "output_tokens_details": {
+          "thinking_tokens": 8898
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 30470
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 471,
+            "cache_read_input_tokens": 45023,
+            "cache_creation_input_tokens": 165,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 165,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      }
+    },
+    {
+      "path": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\4\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": 0.3179641999999999,
+        "wall_clock_duration": 119.227,
+        "input_tokens": 38,
+        "cache_creation_input_tokens": 20810,
+        "cache_read_input_tokens": 591911,
+        "output_tokens": 4769,
+        "output_tokens_details": {
+          "thinking_tokens": 3094
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 20810
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 452,
+            "cache_read_input_tokens": 40573,
+            "cache_creation_input_tokens": 286,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 286,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      }
+    },
+    {
+      "path": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\6\\extracted\\logs\\metrics_total.json",
+      "metrics": {
+        "cost": 0.4285842,
+        "wall_clock_duration": 137.767,
+        "input_tokens": 35,
+        "cache_creation_input_tokens": 28393,
+        "cache_read_input_tokens": 530096,
+        "output_tokens": 9023,
+        "output_tokens_details": {
+          "thinking_tokens": 7399
+        },
+        "server_tool_use": {
+          "web_search_requests": 0,
+          "web_fetch_requests": 0
+        },
+        "service_tier": "standard",
+        "cache_creation": {
+          "ephemeral_1h_input_tokens": 0,
+          "ephemeral_5m_input_tokens": 28393
+        },
+        "inference_geo": "global",
+        "iterations": [
+          {
+            "input_tokens": 2,
+            "output_tokens": 549,
+            "cache_read_input_tokens": 42834,
+            "cache_creation_input_tokens": 277,
+            "cache_creation": {
+              "ephemeral_5m_input_tokens": 277,
+              "ephemeral_1h_input_tokens": 0
+            },
+            "type": "message"
+          }
+        ],
+        "speed": "standard",
+        "fallback_credit": null
+      }
+    }
+  ],
+  "interpretation": "Four-task development calibration, one attempt per task; zero observed wins is not an estimate of a stable zero win probability. All four winning references pass protected-container replay."
+}

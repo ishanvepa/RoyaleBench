@@ -1,0 +1,27 @@
+{
+  "benchmark": {
+    "name": "royalebench-v8",
+    "title": "RoyaleBench v8",
+    "description": "18 unchanged tasks: all 14 v6@1 tasks plus the four harder v7@1 continuations. Source grading retained.",
+    "kind": "eval",
+    "state": "published",
+    "local": true,
+    "task_count": 18,
+    "versions": 1,
+    "latest_revision": 1,
+    "tags": [
+      "latest",
+      "v8"
+    ],
+    "runs": 0,
+    "best_score": null,
+    "problems": 0
+  },
+  "task_count": 18,
+  "sync_states": [
+    "in sync"
+  ],
+  "errors": [],
+  "valkyrie_error": null,
+  "live_default": "royalebench-v8"
+}

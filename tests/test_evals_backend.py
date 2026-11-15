@@ -51,7 +51,7 @@ class ConfigTests(unittest.TestCase):
         cfg = load_config(Path(tempfile.gettempdir()) / "does-not-exist-evals.toml")
         self.assertEqual((cfg.benchmark, cfg.provider, cfg.default_concurrency), ("royalebench", "modal", 1))
         self.assertEqual(cfg.models, ())
-        self.assertEqual(cfg.default_dataset, "royalebench-v6")
+        self.assertEqual(cfg.default_dataset, "royalebench-v8")
 
     def test_reads_values_and_read_only_flag(self):
         with tempfile.TemporaryDirectory() as d:

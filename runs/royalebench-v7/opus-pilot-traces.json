@@ -1,0 +1,95 @@
+{
+  "run_id": "62553e61-afff-4f15-a3bb-61d3124f39d3",
+  "raw_cache": "runs\\recent\\v7-design\\frontier\\62553e61-afff-4f15-a3bb-61d3124f39d3",
+  "artifacts": [
+    {
+      "remote": {
+        "path": "03-supported-tank-conversion/agent_output.tar.gz",
+        "size": 58962,
+        "last_modified": "2026-11-15T18:10:20Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\62553e61-afff-4f15-a3bb-61d3124f39d3\\0\\03-supported-tank-conversion\\agent_output.tar.gz",
+      "sha256": "c5fa335454f9c1a32604e3c8e62f45a939bbf049da228128fe8a5976cd607e3f"
+    },
+    {
+      "remote": {
+        "path": "03-supported-tank-conversion/artifacts/royale.tar.gz",
+        "size": 224125,
+        "last_modified": "2026-11-15T18:10:24Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\62553e61-afff-4f15-a3bb-61d3124f39d3\\1\\03-supported-tank-conversion\\artifacts\\royale.tar.gz",
+      "sha256": "7e6993a4365f313902a138f92f0369a7125fa84dd0bba33cfd67a2885d4f6f31"
+    }
+  ],
+  "reviewed": [
+    {
+      "task": "03-supported-tank-conversion",
+      "trajectory_sha256": "4cd41a78ed17da757529f202bee0b9cd6bc1fa6f85b8c1bc408127b98eca3e5d",
+      "commands": [
+        {
+          "command": "cr"
+        },
+        {
+          "command": "cr play 0 6.5 9.5"
+        },
+        {
+          "command": "cr play 1 4.5 11.5"
+        },
+        {
+          "command": "cr play 2 3.5 13.5"
+        },
+        {
+          "command": "cr play 2 4 14.5"
+        },
+        {
+          "command": "cr play 0 4.1 18.4"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 2 3.5 25.5"
+        },
+        {
+          "command": "cr play 2 3.5 14"
+        },
+        {
+          "command": "cr play 1 4.5 13"
+        },
+        {
+          "command": "cr play 1 3 15"
+        },
+        {
+          "command": "cr play 2 3.5 14.5"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 2 3.5 25.5"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 1 3.5 25.5"
+        },
+        {
+          "command": "cr play 3 3.7 13"
+        },
+        {
+          "command": "cr play 3 3.5 12"
+        },
+        {
+          "command": "cr play 1 3.5 9"
+        }
+      ],
+      "model_text": [
+        "Defense held (the Giant is down). Now I'm using Rocket on both Musketeers so my troops can push.",
+        "Tower is at 1475 with 16s left. I'm sending everything into the push: Goblin Gang now, then Goblin Barrel and Rocket.",
+        "Enemy tower is at 883 with about 4s left, so a crown isn't reachable now. I'm defending the rest of the window.",
+        "I failed this one. The 36-second window ran out with crowns at 0\u20130, so it scores 0.\n\n**What happened:**\n- **Defense (0\u201310s):** Inferno Tower at (6.5, 9.5) and Knight stopped the Giant. Goblin Gang and Ice Spirits hit the first Musketeer, and one Rocket killed the second Musketeer and both Archers. My 700-HP tower took no damage.\n- **Counter-push (12\u201330s):** I sent two Goblin Barrels and a push of Knight plus Goblin Gang up the left lane. The opponent answered with Knight, Minions, Zap, Cannon, Archers and another Musketeer. The Cannon in the center pulled my second Goblin Gang off the lane, so my ground troops never reached the tower.\n- **Result:** My final Rocket (342) and the second Barrel's goblins took the enemy left princess tower from 1600 to 883. That's about 717 damage, roughly half of what I needed.\n\n**What went wrong:** I used my first Rocket on defense, and in an 8-card cycle it doesn't come back within 36 seconds, so I had only one Rocket for the tower. That Rocket trade was a good one, but the push it opened up wasn't strong enough to finish 1600 HP. I probably should have held Rocket for the tower and put both Goblin Barrels down sooner, while the opponent was low on elixir right after the Giant push."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+ "seed": 1701,
+ "agent_team": 0,
+ "opponent": "planner",
+ "log_entries": 0,
+ "outcome": {
+  "result": "loss",
+  "crowns_for": 0,
+  "crowns_against": 1,
+  "enemy_tower_damage_frac": 0.1969,
+  "own_tower_damage_frac": 0.3127,
+  "ticks": 4867,
+  "tower_damage": 250,
+  "spent_elixir": 0,
+  "plays": [],
+  "opponent_plays": [],
+  "elapsed_s": 3.35,
+  "rejected_actions": 0
+ },
+ "rewards": {
+  "reward": 0.0,
+  "win": 0.0,
+  "crowns_for": 0.0,
+  "crowns_against": 1.0,
+  "enemy_tower_damage_frac": 0.1969,
+  "own_tower_damage_frac": 0.3127,
+  "completed": 0.0,
+  "integrity": 1.0,
+  "decisions": 0.0,
+  "fast_decision_frac": 0.0,
+  "spent_elixir": 0.0,
+  "tower_damage": 250.0,
+  "objective_met": 0.0,
+  "rejected_actions": 0.0
+ },
+ "decisions_applied": 0,
+ "completed": false,
+ "termination_tick": 4800,
+ "timing_known": 0,
+ "task_config": {
+  "id": "01-critical-cycle-conversion",
+  "family": 1,
+  "title": "Convert a critical defense into sustained damage",
+  "difficulty": "hard",
+  "benchmark": "RoyaleBench v7",
+  "version": "7.0.0",
+  "seed": 1701,
+  "agent_team": 0,
+  "agent_deck": [
+   "HogRider",
+   "Musketeer",
+   "Cannon",
+   "IceGolemite",
+   "IceSpirits",
+   "Skeletons",
+   "Fireball",
+   "Log"
+  ],
+  "opponent_deck": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "player_deck_name": "hog-2.6-cycle",
+  "opponent_deck_name": "giant-beatdown",
+  "csv_win_rate": null,
+  "opponent": "planner",
+  "planner": {
+   "horizon_s": 10.0,
+   "top_k": 4,
+   "margin": 40.0,
+   "two_ply": true,
+   "workers": 0,
+   "elixir_hp": 150.0,
+   "prefilter": true,
+   "three_ply": true,
+   "answer_k": 3
+  },
+  "decision_ticks": 40,
+  "action_mode": "coordinates-v1",
+  "release_gate": null,
+  "objective": "Win the actual match by destroying an enemy crown tower within the next 28 seconds. The position starts with 60 seconds of overtime remaining. The scoring window ends before the overtime HP tiebreak: survival, an HP lead, and an unfinished match receive zero credit.",
+  "capability": "Preserve a critical tower while cycling into repeated win-condition damage",
+  "expected_failure": "Reuse a loose building pull or spend defensive control on premature tower damage",
+  "scenario": {
+   "start_tick": 4800,
+   "horizon_s": 28,
+   "elixir": 7,
+   "opponent_elixir": 0,
+   "order": [
+    "IceSpirits",
+    "Skeletons",
+    "IceGolemite",
+    "Log",
+    "Cannon",
+    "Fireball",
+    "HogRider",
+    "Musketeer"
+   ],
+   "opponent_order": [
+    "Giant",
+    "Musketeer",
+    "Knight",
+    "Archer",
+    "Minions",
+    "Cannon",
+    "Fireball",
+    "Zap"
+   ],
+   "units": [
+    {
+     "card": "Giant",
+     "team": 1,
+     "x": 3.5,
+     "y": 12,
+     "hp": 2500
+    }
+   ],
+   "grading": "win",
+   "tower_hp": [
+    [
+     4824,
+     250,
+     3052
+    ],
+    [
+     4824,
+     3052,
+     900
+    ]
+   ],
+   "disclose_queue": true
+  },
+  "task_id": "01-critical-cycle-conversion",
+  "instruction_sha256": "e14e938d8e4d0e2e2429a8b2fa0355acc9a5268b0e6bc0c11904b22dcd5292bc",
+  "rubric": "binary-crown-win-coordinates-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+   "agent_timeout_s": 3600,
+   "verifier_timeout_s": 600,
+   "cpus": 1,
+   "memory_mb": 2048,
+   "storage_mb": 4096
+  }
+ },
+ "rubric": "scenario-objective-coordinates-v1",
+ "tiebreak_reason": "crowns",
+ "benchmark": "RoyaleBench v7",
+ "task_id": "01-critical-cycle-conversion",
+ "scenario": {
+  "start_tick": 4800,
+  "horizon_s": 28,
+  "elixir": 7,
+  "opponent_elixir": 0,
+  "order": [
+   "IceSpirits",
+   "Skeletons",
+   "IceGolemite",
+   "Log",
+   "Cannon",
+   "Fireball",
+   "HogRider",
+   "Musketeer"
+  ],
+  "opponent_order": [
+   "Giant",
+   "Musketeer",
+   "Knight",
+   "Archer",
+   "Minions",
+   "Cannon",
+   "Fireball",
+   "Zap"
+  ],
+  "units": [
+   {
+    "card": "Giant",
+    "team": 1,
+    "x": 3.5,
+    "y": 12,
+    "hp": 2500
+   }
+  ],
+  "grading": "win",
+  "tower_hp": [
+   [
+    4824,
+    250,
+    3052
+   ],
+   [
+    4824,
+    3052,
+    900
+   ]
+  ],
+  "disclose_queue": true
+ },
+ "setup_hash": "ddbb1a9a750376164d751abdb024ae3962a975a306b841a60c8f46c78d7841c9",
+ "planner": {
+  "horizon_s": 10.0,
+  "top_k": 4,
+  "margin": 40.0,
+  "two_ply": true,
+  "workers": 0,
+  "elixir_hp": 150.0,
+  "prefilter": true,
+  "three_ply": true,
+  "answer_k": 3
+ },
+ "action_mode": "coordinates-v1"
+}

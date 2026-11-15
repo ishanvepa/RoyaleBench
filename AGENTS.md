@@ -41,7 +41,15 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/task_design.md`](docs/task_design.md): how to design, build, and validate benchmark tasks, including what the deck-strength data can and cannot support as a lever.
 - [`docs/royalebench_v3.md`](docs/royalebench_v3.md): historical coordinate-action benchmark, all 11 released scenarios, scoring, validation, and Harbor/Valkyrie workflow.
 - [`docs/royalebench_win.md`](docs/royalebench_win.md): separate win-only continuation tasks, v3 saturation audit, calibration controls, and container/hosted validation.
-- [`docs/royalebench_v6.md`](docs/royalebench_v6.md): default 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
+- [`docs/royalebench_v6.md`](docs/royalebench_v6.md): historical 14-task merge of v5@1 and win@2, exact source provenance, retained grading, runtime-specific validation, and publication.
+- [`docs/royalebench_v8.md`](docs/royalebench_v8.md): default 18-task merge of v6@1 and v7@1, exact source provenance, retained grading, runtime-specific validation and publication.
+- [`runs/royalebench-v8/merge.json`](runs/royalebench-v8/merge.json): all 18 source task digests, archive checksums, objectives and packaged protocol hashes.
+- [`runs/royalebench-v8/checks.json`](runs/royalebench-v8/checks.json): merged source identity, protected reference and negative-control checks, regression tests and publication evidence.
+- [`docs/royalebench_v7.md`](docs/royalebench_v7.md): separate harder tower-winning continuations included in v8, latest eight-model v6 audit, second-wave and split-lane task design, validation and frontier calibration.
+- [`runs/royalebench-v7/v6-audit.json`](runs/royalebench-v7/v6-audit.json): latest v6 model scores, exact revisions and run settings, per-task rewards and independently verified gameplay outcomes informing v7.
+- [`runs/royalebench-v7/checks.json`](runs/royalebench-v7/checks.json): v7 static, deterministic reference, negative-control and isolated container checks, pinned runtime and publication.
+- [`runs/royalebench-v7/opus-review.json`](runs/royalebench-v7/opus-review.json): first full v7 Opus calibration, all four gameplay failure reviews, captured final states, exact run settings and model API cost.
+- [`runs/royalebench-v7/sol-review.json`](runs/royalebench-v7/sol-review.json): first full v7 Sol comparison, reviewed wins and losses, final captured tower states, and token/cost reporting limits.
 - [`docs/royalebench_v4.md`](docs/royalebench_v4.md): Opus and Sonnet v3 comparison, task-level failure evidence, focused challenge variants, validation, and publication workflow.
 - [`runs/royalebench-v4/checks-revision2.json`](runs/royalebench-v4/checks-revision2.json): corrected v4 `@2` digest, protocol and Docker checks, full Opus/Sonnet run settings, costs, and per-task scores.
 - [`docs/royalebench_v5.md`](docs/royalebench_v5.md): ten-case coordinate dataset, source revisions, Opus/Sonnet/Haiku selection evidence, scoring, validation, and Valkyrie workflow.

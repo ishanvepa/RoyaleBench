@@ -1,0 +1,327 @@
+{
+  "run_id": "5cfa7c26-442c-4d23-8405-67c2ca263c32",
+  "raw_cache": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32",
+  "artifacts": [
+    {
+      "remote": {
+        "path": "01-critical-cycle-conversion/agent_output.tar.gz",
+        "size": 57695,
+        "last_modified": "2026-11-15T18:14:19Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\0\\01-critical-cycle-conversion\\agent_output.tar.gz",
+      "sha256": "1e68f71b47c7ab0d068004995f9baff2e9a313b61995a98ce7227b410be70156"
+    },
+    {
+      "remote": {
+        "path": "01-critical-cycle-conversion/artifacts/royale.tar.gz",
+        "size": 186632,
+        "last_modified": "2026-11-15T18:14:23Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\1\\01-critical-cycle-conversion\\artifacts\\royale.tar.gz",
+      "sha256": "b0d80fc0871e06f1a727a55be24a54b9d7a6deacfb87864a2b79a9092175e89e"
+    },
+    {
+      "remote": {
+        "path": "02-second-wave-air-race/agent_output.tar.gz",
+        "size": 94276,
+        "last_modified": "2026-11-15T18:15:24Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\2\\02-second-wave-air-race\\agent_output.tar.gz",
+      "sha256": "4f32ba90071d37dffbc7eb88adf3b2cb910b180a96195bda09760c95981e1693"
+    },
+    {
+      "remote": {
+        "path": "02-second-wave-air-race/artifacts/royale.tar.gz",
+        "size": 214482,
+        "last_modified": "2026-11-15T18:15:27Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\3\\02-second-wave-air-race\\artifacts\\royale.tar.gz",
+      "sha256": "80336de4ee7abab30ab053cdaf1c6928262634bfc5648420364841e2e8f458f4"
+    },
+    {
+      "remote": {
+        "path": "03-supported-tank-conversion/agent_output.tar.gz",
+        "size": 64629,
+        "last_modified": "2026-11-15T18:14:24Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\4\\03-supported-tank-conversion\\agent_output.tar.gz",
+      "sha256": "5ea1dc9f00cc4a91849eab17156e9a4d459cc4d199d30c2d4e23250ea80353ba"
+    },
+    {
+      "remote": {
+        "path": "03-supported-tank-conversion/artifacts/royale.tar.gz",
+        "size": 220773,
+        "last_modified": "2026-11-15T18:14:27Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\5\\03-supported-tank-conversion\\artifacts\\royale.tar.gz",
+      "sha256": "9807157221e5ea94c8ebb294056bfd37857d1089132fbb9760792419d9fc6332"
+    },
+    {
+      "remote": {
+        "path": "04-split-lane-conversion/agent_output.tar.gz",
+        "size": 85234,
+        "last_modified": "2026-11-15T18:15:04Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\6\\04-split-lane-conversion\\agent_output.tar.gz",
+      "sha256": "de0fc61983f66383d9b6b04249fcd082a535b13875a49873f0cb21cd43bd87a8"
+    },
+    {
+      "remote": {
+        "path": "04-split-lane-conversion/artifacts/royale.tar.gz",
+        "size": 208305,
+        "last_modified": "2026-11-15T18:15:07Z"
+      },
+      "local": "runs\\recent\\v7-design\\frontier\\5cfa7c26-442c-4d23-8405-67c2ca263c32\\7\\04-split-lane-conversion\\artifacts\\royale.tar.gz",
+      "sha256": "86fa2482f372c740a873713d94425f51277219a5c421590e331799a8629f9ed2"
+    }
+  ],
+  "reviewed": [
+    {
+      "task": "01-critical-cycle-conversion",
+      "trajectory_sha256": "0ee4b013855cfddeda9d6e7d1f8fce301ebbeaef277c94b916f1eb0c852df05d",
+      "commands": [
+        {
+          "command": "cd /app; cr"
+        },
+        {
+          "command": "cd /app; cr play 0 3.5 11"
+        },
+        {
+          "command": "cd /app; cr play 0 7 10"
+        },
+        {
+          "command": "cd /app; cr play 1 5.5 11.5"
+        },
+        {
+          "command": "cd /app; cr play 1 3.5 14.5"
+        },
+        {
+          "command": "cd /app; cr play 0 3.5 17.8"
+        },
+        {
+          "command": "cd /app; cr wait"
+        },
+        {
+          "command": "cd /app; cr play 3 6.5 21.5"
+        },
+        {
+          "command": "cd /app; cr play 3 7 10"
+        },
+        {
+          "command": "cd /app; cr play 3 3.5 14.5"
+        },
+        {
+          "command": "cd /app; cr play 3 2.5 14.5"
+        },
+        {
+          "command": "cd /app; cr play 3 3.5 25.5"
+        },
+        {
+          "command": "cd /app; cr play 3 3 17.5"
+        },
+        {
+          "command": "cd /app; cr play 0 3 14.5"
+        },
+        {
+          "command": "cd /app; cr play 2 4 10"
+        }
+      ],
+      "model_text": [
+        "Giant is down. Now I'm protecting the Hog push and my 250-HP tower from the Archers.",
+        "Hog is crossing; fireballing the 900-HP tower to shorten the number of hits needed.",
+        "Hog died; a win in the remaining 4s isn't possible. Defending the low tower.",
+        "I didn't meet the objective: the scenario ended in failure with crowns 0\u20130, so the score is 0. The enemy's left princess tower finished at 706/3052, and none of their towers fell in the 28-second window.\n\n**What happened:**\n- **Defense worked:** Ice Spirits froze the Giant, a Cannon placed in the middle pulled it off my 250-HP tower, and Skeletons helped finish it. My tower survived the whole window.\n- **First Hog push (around 8s):** I sent the Hog Rider down the left lane and a Fireball killed the Archers and Minions sent to stop it. The enemy then placed a Cannon, which pulled the Hog away. The Hog died without hitting the tower.\n- **Second Hog push (around 20s):** I cycled cards to get the Hog back and added a Fireball (tower down to 741), Log and Ice Spirits on the defenders (tower down to 706). A Knight, a Musketeer and two Archers were already waiting at the bridge, and they killed the Hog before it reached the tower.\n\n**Where I went wrong:** I used the Fireball on the Archers, and the Log on the enemy Cannon, which left the Hog with no answer to their buildings and troops. I also needed to cycle back to the Hog faster. Holding the cheap cards for after the Giant died and keeping the Fireball for the tower and its defenders would probably have given the push a better chance."
+      ]
+    },
+    {
+      "task": "02-second-wave-air-race",
+      "trajectory_sha256": "2a9efb06eb5f517c1e05ca414a81e463b5463a2c5405440fcfdc9ac0194a7d13",
+      "commands": [
+        {
+          "command": "cr"
+        },
+        {
+          "command": "cr play 3 6 11"
+        },
+        {
+          "command": "cr play 0 7 10"
+        },
+        {
+          "command": "cr play 1 5.5 10.9"
+        },
+        {
+          "command": "cr play 0 3.5 14"
+        },
+        {
+          "command": "cr play 0 3.5 23.3"
+        },
+        {
+          "command": "cr play 1 3.5 14.9"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 1 3.5 13.5"
+        },
+        {
+          "command": "cr play 2 3 14.9"
+        },
+        {
+          "command": "cr play 2 3.5 10"
+        },
+        {
+          "command": "cr play 2 3.5 17.2"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 2 3.5 14.9"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 1 3.5 25.5"
+        }
+      ],
+      "model_text": [
+        "Balloon is dead, but its death damage dropped my left tower to 160 HP. My Giant is hitting the enemy's left tower, which is at 788. Next I'm zapping the enemy minions on the Giant.",
+        "Last interval. Fireball the tower anyway.",
+        "I lost the scenario: no tower fell within the 30-second window, so the score is 0. Crowns ended 0\u20130.\n\n**What happened:**\n- **Defence:** A Cannon at (6, 11) pulled the first Balloon away from my left tower, and Minions plus Fireball killed it. Its death damage still dropped that tower from 400 to 160 HP. After that I had to spend Archers, Musketeer and Minions holding off the opponent's air units, including a Mega Minion and more Minions, to keep that tower alive.\n- **Offence:** My Giant, helped by a Zap, took the enemy's left princess tower from 1800 to 234 HP. Two waves of Minions plus Tombstone skeletons killed it. Arrows wiped out my support, and the Knight I sent next was shredded before it reached the tower.\n- **Ending:** With 234 HP left on the tower, my remaining spells couldn't finish it. Fireball plus Zap only does 207, and I had already used the Zap to protect the Knight. My last Musketeer push came too late, and the final Fireball landed as the window closed.\n\n**Main mistake:** I spent my only Fireball on the first Balloon. The Cannon pull plus tower and Minion damage would probably have killed it anyway. That left me 75 HP short, the amount Fireball's 159 would have covered at the end alongside Zap or one more Giant hit."
+      ]
+    },
+    {
+      "task": "03-supported-tank-conversion",
+      "trajectory_sha256": "e543f57a0542f5836db72e84d9941e98603ffd13a9076f08f2d9430dc527bad0",
+      "commands": [
+        {
+          "command": "cr"
+        },
+        {
+          "command": "cr play 0 6.5 9.5"
+        },
+        {
+          "command": "cr play 1 4.5 11.5"
+        },
+        {
+          "command": "cr play 2 3.5 14.5"
+        },
+        {
+          "command": "cr play 2 4.0 18.0"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 0 2.4 19.0"
+        },
+        {
+          "command": "cr play 2 3.5 25.0"
+        },
+        {
+          "command": "cr play 1 4.5 4.0"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 2 2.5 16.5"
+        },
+        {
+          "command": "cr play 3 4.5 20.5"
+        },
+        {
+          "command": "cr play 3 3.5 14.0"
+        },
+        {
+          "command": "cr play 3 3.5 25.5"
+        },
+        {
+          "command": "cr play 3 3.5 25.0"
+        },
+        {
+          "command": "cr play 2 3.0 13.0"
+        },
+        {
+          "command": "cr play 2 3.5 24.0"
+        },
+        {
+          "command": "cr play 2 3.5 14.0"
+        },
+        {
+          "command": "cr play 1 14.5 10.0"
+        }
+      ],
+      "model_text": [
+        "Knight and three goblins are pushing into the remaining Musketeer. I'm holding elixir for a follow-up.",
+        "Lost an interval to an illegal river placement. Now cycling cheap cards to get Rocket and Goblin Barrel back for the tower.",
+        "The tower is at 723 with about 4 seconds left, so I'm playing out the last intervals.",
+        "I didn't win. The 36-second window ran out at 0 crowns each, with the enemy's left princess tower still at 688 of the 1,600 HP it started with. The scenario was scored as a failure.\n\n**What happened:**\n- **Defense held:** the Inferno Tower and Knight killed the Giant, and Goblin Gang plus Ice Spirits killed the first Musketeer. My weakened left tower dropped only from 700 to 652.\n- **Misplaced first Rocket:** I fired it at the Musketeer and Archers to clear the way for a push, but it landed after the enemy had added Minions and seems to have done little. That Rocket would have been worth 342 HP on the tower.\n- **Lost interval:** I tried to place a Knight on the river tile at (2.5, 16.5). The game rejected it as an illegal placement, which cost me 2 seconds and about 2 elixir of tempo.\n- **Not enough damage at the end:** two Goblin Barrels, one Rocket on the tower and two Logs took it from 1,600 to 688. Given how fast I could cycle back to Rocket and Barrel, I'd have needed every one of those on the tower, plus a push that actually reached it, to have a chance.\n\nBetter lines would have been to keep both Rockets for the tower, and to cycle the Goblin Barrel faster from the moment the Giant died."
+      ]
+    },
+    {
+      "task": "04-split-lane-conversion",
+      "trajectory_sha256": "2a5ad004b9059be88b1b1ecc682b657f8603251bb6665683ae8df57539c415e8",
+      "commands": [
+        {
+          "command": "cr"
+        },
+        {
+          "command": "cr play 1 13.5 10"
+        },
+        {
+          "command": "cr play 2 14.5 9.5"
+        },
+        {
+          "command": "cr play 0 6.5 10"
+        },
+        {
+          "command": "cr play 2 4.5 10.5"
+        },
+        {
+          "command": "cr play 0 4.1 10.3"
+        },
+        {
+          "command": "cr play 3 3.5 14.5"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 0 3.5 14.5"
+        },
+        {
+          "command": "cr play 1 14.5 13"
+        },
+        {
+          "command": "cr play 3 14.5 14.5"
+        },
+        {
+          "command": "cr play 3 3.5 25.5"
+        },
+        {
+          "command": "cr wait"
+        },
+        {
+          "command": "cr play 3 4.5 14.5"
+        },
+        {
+          "command": "cr play 2 4.8 16.5"
+        },
+        {
+          "command": "cr play 0 3.5 12"
+        },
+        {
+          "command": "cr play 0 3.5 10"
+        }
+      ],
+      "model_text": [
+        "Defending the giant in the left lane, then I'll push with Hog.",
+        "Enemy left tower is at 266 \u2014 fireballing it now, then cycling into Hog to finish.",
+        "I lost this one. The game ended as a **FAILURE**: crowns were 0\u20131 to the enemy, so the reward is 0.\n\n**What happened:**\n- **Opening defence worked.** Musketeer plus Ice Spirits killed the right-lane Balloon. Its death damage dropped my right tower to 360. In the left lane, Cannon, Skeletons, Fireball and the tower together killed the Giant. My left tower took one hit and fell to 347.\n- **Offence got close.** My first Hog Rider push, followed by my own Fireball, took the enemy left princess tower from 900 to 107. My Log then brought it to 72.\n- **The finish failed.** The enemy placed a Tombstone in the left lane to pull my second Hog Rider, then Fireballed it. Meanwhile they sent a second Giant and a Balloon down the left lane at the same time. With about 2 seconds left I placed a Cannon to pull the Balloon and Ice Spirits to freeze it. The window still ended with the enemy holding a crown, so one of my towers fell right at the end.\n\n**Main mistake:** Before my Fireball, the enemy tower had 266 HP. My Fireball (159) and Log (35) together only did 194, so I still needed a troop to land a hit. My Hog Rider went out too late (about 24s into the 32s window), right into a Tombstone pull. I should have played Fireball and Hog together earlier, or kept the Musketeer moving towards the tower, instead of waiting a turn to save elixir."
+      ]
+    }
+  ]
+}

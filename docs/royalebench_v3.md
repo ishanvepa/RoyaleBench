@@ -145,7 +145,7 @@ The Qwen, Inkling, DeepSeek and Kimi presets in `evals.toml` can also use `@2` w
 harness and secret mappings documented in their respective Modal guides. Their v1 pilot scores
 do not transfer to v3; compare models only after new runs on this exact revision.
 
-The dashboard now defaults to [RoyaleBench v6](royalebench_v6.md), merging unchanged v5 and
-win@2 tasks with their original objectives. Explicit benchmark links and manual selections take precedence. If the configured
+The dashboard now defaults to the combined [RoyaleBench v8](royalebench_v8.md).
+The historical v6 merge remains available with its original objectives. Explicit benchmark links and manual selections take precedence. If the configured
 default is unavailable/unpublished, the form falls back to an available published benchmark.
 Historical datasets and existing runs retain their original interfaces and scores.

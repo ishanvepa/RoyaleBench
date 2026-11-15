@@ -74,9 +74,10 @@ The smoke task should receive reward 1. Check the downloaded trace too. Exclude 
 
 ## Publish the benchmark and compare models
 
-The default is **RoyaleBench v6**: use the [v6 guide](royalebench_v6.md) and build with
-`uv run python -m cr_arena.build_v6`. It merges 10 unchanged tasks from v5@1 with four from win@2,
-preserving the original objectives. Use the immutable revision in the guide with `--provider modal`.
+The default is **RoyaleBench v8**: use the [v8 guide](royalebench_v8.md) and build with
+`uv run python -m cr_arena.build_v8`. It preserves all 14 v6@1 tasks plus the four
+harder v7@1 tasks. Use `royalebench/royalebench-v8@1` with `--provider modal`.
+The historical [v6 merge](royalebench_v6.md) preserves the original v5@1 and win@2 objectives.
 The separate `royalebench/royalebench-win@2` (`win-v2`) cohort remains exclusively win-only.
 Historical v3, v1 menu tasks, the coordinate pilot and the older full-match dataset below remain separate.
 

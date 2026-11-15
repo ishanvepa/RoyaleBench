@@ -1,0 +1,4 @@
+[benchmark]
+title = "RoyaleBench v7"
+kind = "eval"
+description = "4 hard continuations requiring a tower-winning conversion before overtime tiebreak."

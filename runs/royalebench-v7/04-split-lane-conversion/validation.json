@@ -1,0 +1,71 @@
+{
+  "task": "04-split-lane-conversion",
+  "config_sha256": "22052c1198975bc66d161262bc99f37fc2ec6cb4e68cea2d24783e3e23292519",
+  "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+  "reference_log_sha256": "7795b4f39cb74dca7679402f0ed586c84f31d06e4a683726519e5c209401c814",
+  "reward": 1,
+  "integrity": 1,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "spell-rush": 0.0,
+    "bridge-rush": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0,
+    "partial": 0.0
+  },
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 1,
+    "crowns_against": 0,
+    "enemy_tower_damage_frac": 0.4074,
+    "own_tower_damage_frac": 0.4939,
+    "ticks": 5128,
+    "tower_damage": 493,
+    "spent_elixir": 13,
+    "plays": [
+      {
+        "decision": 0,
+        "card": "Musketeer",
+        "x": 261000,
+        "y": 216000,
+        "cost": 4
+      },
+      {
+        "decision": 1,
+        "card": "IceSpirits",
+        "x": 261000,
+        "y": 180000,
+        "cost": 1
+      },
+      {
+        "decision": 2,
+        "card": "Cannon",
+        "x": 126000,
+        "y": 207000,
+        "cost": 3
+      },
+      {
+        "decision": 3,
+        "card": "Skeletons",
+        "x": 90000,
+        "y": 198000,
+        "cost": 1
+      },
+      {
+        "decision": 4,
+        "card": "HogRider",
+        "x": 63000,
+        "y": 270000,
+        "cost": 4
+      }
+    ],
+    "opponent_plays": [],
+    "elapsed_s": 16.4,
+    "rejected_actions": 0
+  },
+  "decisions": 9,
+  "frontier_model_runs": [],
+  "reference_policy": "private explicit opening followed by privileged Planner; log proves solvability"
+}

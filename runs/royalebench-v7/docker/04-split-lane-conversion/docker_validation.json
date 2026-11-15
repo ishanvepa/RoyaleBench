@@ -1,0 +1,17 @@
+{
+  "task": "04-split-lane-conversion",
+  "family": 4,
+  "reward": 1,
+  "integrity": 1,
+  "protocol_sha256": "249b5327f768a4d7142cd8ee9a91f2ea2b808833c76ac979b79ba6c2321cf308",
+  "config_sha256": "26f6779f37c936fc06b50c331ea19609bec7513d6abd906cc43e8abf26d4018f",
+  "image": "sha256:c39cba47565f281e2530f9c49e6740f01b5b5e06d79c18f2491f0b521d468ddf",
+  "isolated": true,
+  "restart_verified": true,
+  "capture_complete": true,
+  "trace_frames": 329,
+  "replay_hashes_verified": true,
+  "capture_schema_version": "1.0",
+  "network": "none",
+  "elapsed_s": 44.4
+}

@@ -4,8 +4,8 @@ This separate dataset addresses saturation in v3 and makes every task's gameplay
 success condition **winning the actual match**. Historical datasets retain their
 original scores. The player uses the existing `coordinates-v1` protocol, paused
 observations, and independently replayed actions against the unchanged Planner.
-The dashboard now defaults to [RoyaleBench v6](royalebench_v6.md), which includes
-these four tasks unchanged alongside v5's ten tasks. This separate win-only revision is
+The dashboard now defaults to [RoyaleBench v8](royalebench_v8.md). The historical
+[v6 merge](royalebench_v6.md) includes these four tasks unchanged alongside v5's ten tasks. This separate win-only revision is
 `royalebench/royalebench-win@2`, tagged `win-v2`.
 The initial three-task revision remains `royalebench/royalebench-win@1`, tagged `win-v1`.
 The expanded cohort adds a critical-health paired position after both frontier

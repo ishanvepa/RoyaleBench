@@ -99,5 +99,16 @@
       ]
     ]
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "07-counterpush",
+  "instruction_sha256": "e5f54c8aebfedb7ddbd3ba5f04e0f48b0114fbcfe295dea6522f5c4936f18c97",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

@@ -109,5 +109,16 @@
     "damage_limit": 150,
     "only_card": "Fireball"
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "03-spell-placement",
+  "instruction_sha256": "e0d1957d4968721572c38fb4a15e89c8d4ceac59bd89e65b3fd4c21af44ad732",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

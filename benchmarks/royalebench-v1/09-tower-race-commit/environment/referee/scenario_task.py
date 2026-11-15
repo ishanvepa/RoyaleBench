@@ -93,6 +93,7 @@ class ScenarioReferee(Referee):
             if len(moves) > 1:
                 self.moves = moves
                 return
+            self.moves = None
             self._step(moves[0])
         self.moves = None
 
@@ -117,11 +118,22 @@ class ScenarioReferee(Referee):
 
     def _step(self, agent_move: Move) -> str:
         g = self.game
+        tick = self.tick
         opp = self._opponent_move()  # both choose from the same frozen state
         if opp.slot >= 0:
             self.opponent_plays.append(dict(tick=self.tick, card=opp.card, x=opp.x, y=opp.y))
         g.decision_ticks = min(self.cfg["decision_ticks"], self.end_tick - self.tick)
-        result = g.step([agent_move, opp])[0]
+        if self.capture:
+            self.capture.snapshot(g, phase="pre_step", decision_id=f"0:{tick}")
+        results = g.step([agent_move, opp])
+        result = results[0]
+        if self.capture:
+            for team, move in enumerate((agent_move, opp)):
+                source = ("forced_wait" if self.moves is None else self.action_source) if team == 0 else "opponent"
+                self.capture.command(g, team, f"{team}:{tick}", move, kind="application", tick=tick,
+                    end_tick=self.tick, action_source=source,
+                    accepted=results[team] == "wait" or results[team].startswith("played"), result=results[team])
+            self.capture.snapshot(g, phase="post_step")
         if agent_move.slot >= 0:
             if not result.startswith("played "):
                 raise RuntimeError(f"legal scenario move refused: {result}")

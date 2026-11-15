@@ -97,5 +97,16 @@
       ]
     ]
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "10-protect-the-lead",
+  "instruction_sha256": "5de230a5ee75ce4d1815020cd2bfc482e1e504886f234934669319b708c965b3",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

@@ -1,15 +1,15 @@
 {
   "benchmark": "RoyaleBench v1",
   "version": "1.0.0",
-  "commit": "843b80600ec0c2b76a96cc1e264b2038cf41e643",
-  "python": "3.12.16",
-  "platform": "Windows-11-10.0.26300-SP0",
+  "commit": "e514cc3e71cef4c11ab224fb4191f16438625d1e",
+  "python": "3.12.4",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
   "dependencies": {
     "royalegym": "0.1.28",
     "royalesim": "0.1.48",
     "msgspec": "0.22.0"
   },
-  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
   "tasks": [
     {
       "task": "01-immediate-lethal",
@@ -42,10 +42,10 @@
       "deterministic": true,
       "setup_hash": "78a243e833de87c30c8f40c7516a55db4ad01862b3b31ff578f965e1099ed814",
       "config_sha256": "2c758fe74a132f8f3fd38ac8e65443a930948a0ded01502476b853fbb03cab99",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "2d9dd3b3925ce4fbd325ac7a1afac1300a50fdaea71d0879cb834d0fc545115c",
       "reference_decisions": 1,
-      "elapsed_s": 5.141,
+      "elapsed_s": 4.008,
       "frontier_model_run": null
     },
     {
@@ -79,10 +79,10 @@
       "deterministic": true,
       "setup_hash": "dd9b0be3306d75326df209c3ef824079bb575b019cf8a28664ff7712d51112eb",
       "config_sha256": "469c31f555375c3c201c9f0cb6fd1068ff9ff75a752c315a3dba1262956c6acc",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "33e7728a5e2a5f00fe1868716f4df5b2652f1377c279cc2990f9cb1d55e37c95",
       "reference_decisions": 1,
-      "elapsed_s": 6.291,
+      "elapsed_s": 4.849,
       "frontier_model_run": null
     },
     {
@@ -116,10 +116,10 @@
       "deterministic": true,
       "setup_hash": "8ca44334324286f1cee11bd325546ded6a930c4686230bb96c1fca7c4facac2c",
       "config_sha256": "a6a2a61e85467130861e69ca1e9301c251dd242bc1f73c7ab67ffcdb966c5adc",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "f8ffc51fd7a4a33de1080d3f5c212579677d773b8ecca427a9328fe80f509bfb",
       "reference_decisions": 1,
-      "elapsed_s": 26.863,
+      "elapsed_s": 14.975,
       "frontier_model_run": null
     },
     {
@@ -179,10 +179,10 @@
       "deterministic": true,
       "setup_hash": "4fd37b46de20f1e15f5cc7175e2699646604b391f7cc53603cb8657b033bbb3f",
       "config_sha256": "e7f02e4e782db24c553fae10f356a6a62e3e017e12338226e9d33bce66bbf22b",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "95d15b086720e0fd7eb42cccbc097264094988131ce043b1c0e688173489fb2d",
       "reference_decisions": 3,
-      "elapsed_s": 116.313,
+      "elapsed_s": 52.507,
       "frontier_model_run": null
     },
     {
@@ -261,10 +261,10 @@
       "deterministic": true,
       "setup_hash": "f4331971edc83f2a59639657dc680803d773383fb9650d0bd847fe29e8a01503",
       "config_sha256": "8d78fdde37d70455e8d9f4e555c724e60ae1f25fd0e96b058fc120c4b8575178",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "cf9f5cdc497c3c698dff05313e55e96a7139ea888109998903be94abe60acd1b",
       "reference_decisions": 10,
-      "elapsed_s": 112.084,
+      "elapsed_s": 72.203,
       "frontier_model_run": null
     },
     {
@@ -330,10 +330,10 @@
       "deterministic": true,
       "setup_hash": "d416ff86f1b04561c8410ea7189c65cea26e9f5f7fa032cf0d649904ff5ce74b",
       "config_sha256": "c9d0619f2efd8531a7c21aac00162fbe2b3290d444fcdbdc79d0749a97d5e84a",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "50e3a717b5e147ebc1440f37640e07573f38be916ef004328a40d7c430351ab5",
       "reference_decisions": 10,
-      "elapsed_s": 91.143,
+      "elapsed_s": 61.779,
       "frontier_model_run": null
     },
     {
@@ -433,10 +433,10 @@
       "deterministic": true,
       "setup_hash": "3f6bd96f02b011e5b097b58ba31c729e186487c7fc1827beb4314c4ba9708d89",
       "config_sha256": "76b801f0bf4247171be39c2537473a0aa2337f77a6fea8b731886b0613865ad8",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "9fff344ba188be5ad5da44e67fadabe993bf53f800a93e68bc5d11e9e722274b",
       "reference_decisions": 16,
-      "elapsed_s": 243.672,
+      "elapsed_s": 106.096,
       "frontier_model_run": null
     },
     {
@@ -484,10 +484,10 @@
       "deterministic": true,
       "setup_hash": "6e48217ecf601ef43021a699901efe1b77ea98da24367e796310ff0f5b204ec3",
       "config_sha256": "15fe9a77ea859506102f67e85b25275d9c11499d59aee99471e009823858556c",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "fbecbebc45cfaeb737aaa1b9096c82a30eebc9c19ea5d1038454b4986ac6b7c0",
       "reference_decisions": 3,
-      "elapsed_s": 6.386,
+      "elapsed_s": 4.304,
       "frontier_model_run": null
     },
     {
@@ -521,10 +521,10 @@
       "deterministic": true,
       "setup_hash": "983d16ede87469a41a2a7c95e08b1c4a241e6a2c9783aedef059903fe0fba6f0",
       "config_sha256": "d5a5796b2e9ab8ae0fefba8512cdc29d62b112f5026a8525a4108a3a53214fa8",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "59c4536dcba8cd86e5cb5da810ed47236d822d991910910beffb011b1b2280bf",
       "reference_decisions": 1,
-      "elapsed_s": 6.511,
+      "elapsed_s": 3.781,
       "frontier_model_run": null
     },
     {
@@ -558,10 +558,10 @@
       "deterministic": true,
       "setup_hash": "23119cb1afe97af28883105a9397d62cb3c2222d39dd8acc627554cdcadeb50c",
       "config_sha256": "afe143721d38da54fcbfe59bb55cf0060e64f1b66cf3a3ce70d82034bcc8c224",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "acaece388156ee425a734e644bdca8f7009afaf06598916273358d7db003f7cc",
       "reference_decisions": 2,
-      "elapsed_s": 6.312,
+      "elapsed_s": 3.772,
       "frontier_model_run": null
     },
     {
@@ -602,47 +602,10 @@
       "deterministic": true,
       "setup_hash": "9563d19d9ffbcf4e1d12f09da48b5d83c101b608b2712818006d7e5bf248b5a1",
       "config_sha256": "1202771bd5d30cec670897f297411e815c949f5df6820d9d6ba084f5db9be0b9",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
       "reference_log_sha256": "628e7319cc286cf645fe1fd656f205ef9f80eea51c7cd2391f96ee0730a837e8",
       "reference_decisions": 6,
-      "elapsed_s": 73.748,
-      "frontier_model_run": null
-    },
-    {
-      "task": "11-opponent-cycle-log-ready",
-      "family": 11,
-      "reference_reward": 1.0,
-      "reference_outcome": {
-        "result": "win",
-        "crowns_for": 1,
-        "crowns_against": 0,
-        "enemy_tower_damage_frac": 0.3127,
-        "own_tower_damage_frac": 0.2513,
-        "ticks": 5488,
-        "tower_damage": 0,
-        "spent_elixir": 3,
-        "plays": [
-          {
-            "decision": 0,
-            "card": "GoblinBarrel",
-            "x": 63000,
-            "y": 459000,
-            "cost": 3
-          }
-        ],
-        "opponent_plays": [],
-        "elapsed_s": 4.4
-      },
-      "wait_success": false,
-      "empty_reward": 0.0,
-      "malformed_reward": 0.0,
-      "deterministic": true,
-      "setup_hash": "77ef005b2c403873dd03d531f267cdf6d5ca14f46acb4a0a82cab021e98335bb",
-      "config_sha256": "0876ad75cceaf7d818cc49e442c8f4a17b5b386670f0e75eb79bcfb807e466fb",
-      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
-      "reference_log_sha256": "7881c190ebf0ca79bf4de61f22a93bf23000f6de962c5ee92fe2e28adae68811",
-      "reference_decisions": 3,
-      "elapsed_s": 124.561,
+      "elapsed_s": 27.11,
       "frontier_model_run": null
     },
     {
@@ -680,6 +643,43 @@
       "reference_log_sha256": "7881c190ebf0ca79bf4de61f22a93bf23000f6de962c5ee92fe2e28adae68811",
       "reference_decisions": 3,
       "elapsed_s": 123.98,
+      "frontier_model_run": null
+    },
+    {
+      "task": "11-opponent-cycle-log-ready",
+      "family": 11,
+      "reference_reward": 1.0,
+      "reference_outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2513,
+        "ticks": 5488,
+        "tower_damage": 0,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "GoblinBarrel",
+            "x": 63000,
+            "y": 459000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 4.4
+      },
+      "wait_success": false,
+      "empty_reward": 0.0,
+      "malformed_reward": 0.0,
+      "deterministic": true,
+      "setup_hash": "77ef005b2c403873dd03d531f267cdf6d5ca14f46acb4a0a82cab021e98335bb",
+      "config_sha256": "0876ad75cceaf7d818cc49e442c8f4a17b5b386670f0e75eb79bcfb807e466fb",
+      "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+      "reference_log_sha256": "7881c190ebf0ca79bf4de61f22a93bf23000f6de962c5ee92fe2e28adae68811",
+      "reference_decisions": 3,
+      "elapsed_s": 124.561,
       "frontier_model_run": null
     },
     {
@@ -859,7 +859,5 @@
       "frontier_model_run": null
     }
   ],
-  "status": "local calibration; no frontier-model or Modal validation claimed",
-  "working_tree_dirty": true,
-  "planner_upstream_commit": "6cc18759efb321ec317bc0450555b71314e54ff2"
+  "status": "local calibration; no frontier-model or Modal validation claimed"
 }

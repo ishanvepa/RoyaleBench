@@ -20,6 +20,7 @@ from .build_tasks import DOCKERFILE, REFEREE_FILES, ROOT, START_SERVER, SUDOERS,
 from .royalebench_v1 import TITLE, VERSION, catalog, protocol_digest
 from .scenario_task import ScenarioReferee
 from .royale_task import verify
+from .telemetry import VERSION as CAPTURE_VERSION, digest
 
 OUT = Path("benchmarks/royalebench-v1")
 EVIDENCE = Path("runs/royalebench-v1")
@@ -198,8 +199,13 @@ kind = "eval"
         for name in REFEREE_FILES + ["scenario_task.py", "bots/planner.py"]:
             # Explicit files only: no tests, solutions, credentials, or calibration results.
             write(env / "referee" / name, (ROOT / name).read_text(encoding="utf-8"))
-        write(env / "task.json", json_text(cfg))
-        write(d / "tests/task.json", json_text(cfg))
+        task_instruction = instruction(cfg)
+        packaged_config = dict(cfg, task_id=cfg["id"], instruction_sha256=digest(task_instruction),
+                               rubric="scenario-objective-v1", capture_schema_version=CAPTURE_VERSION,
+                               resources={"agent_timeout_s": 3600, "verifier_timeout_s": 600,
+                                          "cpus": 1, "memory_mb": 2048, "storage_mb": 4096})
+        write(env / "task.json", json_text(packaged_config))
+        write(d / "tests/task.json", json_text(packaged_config))
         dockerfile = DOCKERFILE.replace("FROM python:3.12-slim-bookworm", "FROM python:3.12-slim-bookworm@sha256:935c3c5b12357a7e10caa9c1e6ca5692344d97cf229832ef584be2cec9fc03df")
         pins = " ".join(f"{p}=={version(p)}" for p in ["numpy", "gymnasium", "pettingzoo", "msgspec", "cloudpickle", "typing-extensions", "farama-notifications"])
         dockerfile = dockerfile.replace("royalesim==0.1.48", "royalesim==0.1.48 " + pins)
@@ -209,7 +215,7 @@ kind = "eval"
         write(env / "royale-start-server", START_SERVER)
         write(env / "sudoers", SUDOERS)
         write(d / "tests/test.sh", TEST_SH)
-        write(d / "instruction.md", instruction(cfg))
+        write(d / "instruction.md", task_instruction)
         toml = task_toml(cfg["id"], cfg["seed"], 0, 0)
         # Reuse the isolation/resource protocol, replacing match-specific metadata.
         lines = toml.splitlines()
@@ -238,7 +244,8 @@ kind = "eval"
         write(d / "solution/solve.sh", "#!/bin/bash\nset -euo pipefail\npython3 /solution/replay_reference.py\n")
         write(d / "solution/replay_reference.py", SOLUTION_DRIVER)
         write(d / "solution/reference.jsonl", reference_text)
-    manifest = dict(benchmark=TITLE, version=VERSION, opponent="planner", planner=configs[0]["planner"],
+    manifest = dict(benchmark=TITLE, version=VERSION, capture_schema_version=CAPTURE_VERSION,
+                    opponent="planner", planner=configs[0]["planner"],
                     protocol_sha256=protocol_digest(),
                     dependencies={p: version(p) for p in ["royalegym", "royalesim", "msgspec"]},
                     runnable_tasks=names, tasks=entries,

@@ -93,5 +93,16 @@
     "verified_fireball_crown_damage": 159,
     "disclose_queue": true
   },
-  "release_gate": null
+  "release_gate": null,
+  "task_id": "08-cycle-to-lethal",
+  "instruction_sha256": "303ab260237c54bad8ef7c1df6688bb7aa1b912070254372cab9b8b50f6314bd",
+  "rubric": "scenario-objective-v1",
+  "capture_schema_version": "1.0",
+  "resources": {
+    "agent_timeout_s": 3600,
+    "verifier_timeout_s": 600,
+    "cpus": 1,
+    "memory_mb": 2048,
+    "storage_mb": 4096
+  }
 }

@@ -508,7 +508,7 @@ def export_tables(folder: Path, rows: dict):
 def seal_bundle(folder: Path) -> dict:
     folder = Path(folder)
     # Analysis must remain reproducible even while the implementation is uncommitted.
-    sources = list(Path(__file__).parent.glob("*.py")) + [ROOT / "cr_arena/telemetry.py"]
+    sources = list(Path(__file__).resolve().parent.glob("*.py")) + [ROOT / "cr_arena/telemetry.py"]
     hashes = {str(p.relative_to(ROOT)): file_hash(p) for p in sources}
     collector_hash = digest(hashes)
     collector = folder / "collector" / collector_hash

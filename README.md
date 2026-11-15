@@ -16,7 +16,7 @@ Clash Royale asks a player to manage a regenerating resource, choose where and w
 
 ## RoyaleBench v1
 
-The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands. Frontier-model results for this dataset are pending; the full-match results below use the earlier benchmark and opponent.
+The [RoyaleBench v1 dataset](benchmarks/royalebench-v1) contains strategic continuation scenarios against the updated three-ply **Planner** bot. Use `royalebench/royalebench-v1@2` for automatic replay and telemetry capture. See the [v1 guide](docs/royalebench_v1.md) for exact objectives, reference validation, release gates, and run commands. The full-match results below use the earlier benchmark and opponent.
 
 ## Preliminary full-match results
 

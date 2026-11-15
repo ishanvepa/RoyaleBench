@@ -29,9 +29,9 @@
   "deterministic": true,
   "setup_hash": "dd9b0be3306d75326df209c3ef824079bb575b019cf8a28664ff7712d51112eb",
   "config_sha256": "469c31f555375c3c201c9f0cb6fd1068ff9ff75a752c315a3dba1262956c6acc",
-  "protocol_sha256": "70d8de86e6d4abfa07cf3d2b1beb18b0a77a94be1b42a10933e33e363987e4fb",
+  "protocol_sha256": "161a68342fcdfb25fd5e7edd4f19a41271bcc760094cb2793ad5e63240c1c418",
   "reference_log_sha256": "33e7728a5e2a5f00fe1868716f4df5b2652f1377c279cc2990f9cb1d55e37c95",
   "reference_decisions": 1,
-  "elapsed_s": 6.291,
+  "elapsed_s": 4.849,
   "frontier_model_run": null
 }

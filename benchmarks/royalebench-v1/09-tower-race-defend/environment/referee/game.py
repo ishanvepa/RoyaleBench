@@ -124,6 +124,7 @@ class Game:
         self.sub = self.arena.subtile
         self.rules = self.engine.rules()
         self.decision_ticks = decision_ticks
+        self.telemetry = None  # trusted diagnostic observer; never used by a player
         self.seed = seed
         decks = [deck_ids(deck_blue, self.cards), deck_ids(deck_red, self.cards)]
         self.setup = setup if setup is not None else MatchSetup(decks=decks)
@@ -418,6 +419,12 @@ class Game:
             tick = s.tick
             send = cmds if first else []
             res = self.engine.step(send, 1)
+            if self.telemetry is not None:
+                try:
+                    self.telemetry.tick(s, self.state, list(send), res)
+                except Exception as exc:
+                    self.telemetry.capture.manifest["capture_errors"].append(f"engine_tick: {exc}")
+                    self.telemetry = None
             if self.recorder:
                 self.recorder.record_step(tick, 1, list(send), res)
                 self.recorder.record_frame(self.engine)

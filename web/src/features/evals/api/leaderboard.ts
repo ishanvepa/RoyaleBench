@@ -10,6 +10,9 @@ export interface LeaderboardFilters {
   includeSmoke: boolean;
 }
 
+/** Every finished run, smoke tests included: the pool that overview-style totals are summed over. */
+export const ALL_RESULTS: LeaderboardFilters = { dataset: "", revision: "", harness: "", includeSmoke: true };
+
 function query(filters: LeaderboardFilters) {
   return {
     dataset: filters.dataset || undefined,

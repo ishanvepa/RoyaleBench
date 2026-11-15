@@ -25,6 +25,8 @@ class QueueSummary(BaseModel):
 class ModelPresetOut(BaseModel):
     id: str
     secret_env: str
+    family: str
+    logo_url: str | None = None
 
 
 class EvalsSettingsOut(BaseModel):

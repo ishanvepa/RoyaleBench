@@ -1687,8 +1687,12 @@ export interface components {
         };
         /** ModelPresetOut */
         ModelPresetOut: {
+            /** Family */
+            family: string;
             /** Id */
             id: string;
+            /** Logo Url */
+            logo_url?: string | null;
             /** Secret Env */
             secret_env: string;
         };

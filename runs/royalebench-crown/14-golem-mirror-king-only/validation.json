@@ -1,0 +1,127 @@
+{
+  "task": "14-golem-mirror-king-only",
+  "config_sha256": "cd81139a2819c0f9c2444d516546267cb3d406caac9ac5762ac568a8c88f87bf",
+  "protocol_sha256": "f5fd98188bc1c05a9c076393215a35b6879df205d3225a3de586f132a009c6c1",
+  "reference_log_sha256": "c23305b5ff27e6e3124dc6c6b822d439707d53697374dbd01527e976e89c2bb2",
+  "reward": 1,
+  "integrity": 1,
+  "deterministic": true,
+  "negative_rewards": {
+    "wait": 0.0,
+    "spell-rush": 0.0,
+    "empty": 0.0,
+    "malformed": 0.0,
+    "wrong-type": 0.0,
+    "partial": 0.0
+  },
+  "reference_outcome": {
+    "result": "win",
+    "crowns_for": 3,
+    "crowns_against": 2,
+    "enemy_tower_damage_frac": 1.0,
+    "own_tower_damage_frac": 0.5977,
+    "ticks": 2949,
+    "tower_damage": 0,
+    "spent_elixir": 21,
+    "plays": [
+      {
+        "decision": 1,
+        "card": "ElectroWizard",
+        "x": 261000,
+        "y": 171000,
+        "cost": 4
+      },
+      {
+        "decision": 5,
+        "card": "MegaMinion",
+        "x": 261000,
+        "y": 261000,
+        "cost": 3
+      },
+      {
+        "decision": 6,
+        "card": "BabyDragon",
+        "x": 63000,
+        "y": 351000,
+        "cost": 4
+      },
+      {
+        "decision": 9,
+        "card": "Tombstone",
+        "x": 135000,
+        "y": 189000,
+        "cost": 3
+      },
+      {
+        "decision": 11,
+        "card": "Bats",
+        "x": 63000,
+        "y": 315000,
+        "cost": 2
+      },
+      {
+        "decision": 12,
+        "card": "Zap",
+        "x": 261000,
+        "y": 225000,
+        "cost": 2
+      },
+      {
+        "decision": 14,
+        "card": "MegaMinion",
+        "x": 63000,
+        "y": 351000,
+        "cost": 3
+      }
+    ],
+    "opponent_plays": [
+      {
+        "tick": 2220,
+        "card": "MegaMinion",
+        "x": 261000,
+        "y": 261000
+      },
+      {
+        "tick": 2260,
+        "card": "ElectroWizard",
+        "x": 261000,
+        "y": 387000
+      },
+      {
+        "tick": 2340,
+        "card": "Zap",
+        "x": 261000,
+        "y": 279000
+      },
+      {
+        "tick": 2460,
+        "card": "Tombstone",
+        "x": 189000,
+        "y": 387000
+      },
+      {
+        "tick": 2540,
+        "card": "Bats",
+        "x": 63000,
+        "y": 405000
+      },
+      {
+        "tick": 2620,
+        "card": "BabyDragon",
+        "x": 63000,
+        "y": 387000
+      },
+      {
+        "tick": 2700,
+        "card": "MegaMinion",
+        "x": 117000,
+        "y": 441000
+      }
+    ],
+    "elapsed_s": 42.45,
+    "rejected_actions": 0
+  },
+  "decisions": 22,
+  "frontier_model_runs": [],
+  "reference_policy": "privileged Planner search; the actual log is the solvability proof"
+}

@@ -139,6 +139,7 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
   var renderer = BattleRenderer.create(cv, A);
   var cards = Object.fromEntries(CARDS.map(function (c) { return [c.card_id, [c.name, c.card_kind, c.elixir]]; }));
   var motionNames = Object.fromEntries(Object.entries(MOTION).map(function (entry) { return [entry[1], entry[0]]; }));
+  var UNIT_TYPES = D.unit_types || [];
   var PF = {};
   (D.projectile_fields || []).forEach(function (n, i) { PF[n] = i; });
   var snapshots = new Map(), observed = -1;
@@ -152,7 +153,8 @@ footer { color:var(--muted); font-size:11px; padding:4px 14px 12px; }
         r[EF.tower_slot], facing[0], facing[1], EF.stun_ticks === undefined ? 0 : r[EF.stun_ticks],
         EF.footprint === undefined || !r[EF.footprint] ? null : r[EF.footprint].map(function (v) { return v / S; }),
         EF.shield === undefined ? 0 : r[EF.shield], EF.status_flags === undefined ? -1 : r[EF.status_flags],
-        EF.charge === undefined ? -1 : r[EF.charge]];
+        EF.charge === undefined ? -1 : r[EF.charge],
+        EF.unit_type === undefined ? null : UNIT_TYPES[r[EF.unit_type]] || null];
     }), sp: (FF.spells === undefined ? [] : f[FF.spells] || []).map(function (q) {
       return [q[SF.team], q[SF.card_id], q[SF.x] / S, q[SF.y] / S, q[SF.aim_x] / S,
         q[SF.aim_y] / S, motionNames[q[SF.motion]]];

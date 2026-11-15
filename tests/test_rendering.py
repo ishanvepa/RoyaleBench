@@ -73,6 +73,10 @@ class RenderingTests(unittest.TestCase):
             self.assertEqual(row[4], round(entity.x / session.sub, 3))
             self.assertEqual(row[13], entity.stun_ticks)
             self.assertEqual(row[14], [v / session.sub for v in entity.footprint])
+            # spawned units keep their card's ID, so the page also gets the unit's own type
+            self.assertEqual(row[18], session.game.engine.unit_types()[entity.unit_type]
+                             if entity.unit_type >= 0 else None)
+
         for cid, (name, kind, cost, footprint) in init['cards'].items():
             card = session.game.card_by_id[cid]
             self.assertEqual((name, kind, cost), (card.name, session.game.kind_of(card), card.elixir))
@@ -87,6 +91,11 @@ class RenderingTests(unittest.TestCase):
         self.assertEqual(len(classic), 35)
         self.assertEqual(set(faces), classic)
         self.assertEqual(len(set(faces.values())), len(faces), 'each card needs its own symbol')
+
+    def test_replay_names_unit_types_for_spawned_units(self):
+        view = extract_view(patched_html(SAMPLE, stride=100))
+        self.assertEqual(view['unit_types'], list(load_trace(SAMPLE).header.unit_types))
+        self.assertIn('unit_type', view['entity_fields'])
 
     def test_invalid_stride_and_missing_renderer_marker_fail_explicitly(self):
         with self.assertRaises(ValueError):

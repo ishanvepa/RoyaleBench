@@ -25,6 +25,8 @@ def patched_html(replay: str | Path, *, title: str | None = None, stride: int = 
     trace = load_trace(replay)
     payload = build_view(trace, stride=stride)
     payload["projectile_fields"] = list(trace.header.projectile_fields)
+    # Spawned units keep their card's ID; the unit-type names tell a Golemite from its Golem.
+    payload["unit_types"] = list(trace.header.unit_types)
     # A trace's card names and caller-supplied title must never become script markup.
     data = json.dumps(payload, separators=(",", ":")).replace("<", "\\u003c")
     data = data.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")

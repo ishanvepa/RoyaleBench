@@ -1,9 +1,10 @@
 /* Shared battle graphics for live play and standalone saved replays.
  * Coordinates and radii in the drawing contract are tiles, Blue at the bottom.
  * en: [uid, team, kind, card, x, y, hp, maxHp, radius, flags, towerSlot, facingX, facingY, stunTicks, footprint,
- *      shield, statusFlags, charge]
+ *      shield, statusFlags, charge, unitType]
  * footprint: optional [x0, y0, x1, y1] in tiles. shield: shield hp left (0 none). statusFlags: the engine's
- * status bits, -1 when not reported. charge: build-up in permille, -1 when not reported.
+ * status bits, -1 when not reported. charge: build-up in permille, -1 when not reported. unitType: the
+ * engine's unit-type name (a Golem's Golemite keeps the Golem card), null when not reported.
  * sp: [team, card, x, y, aimX, aimY, motionName]; pr: [team, x, y]
  * flags: bit 0 flying, bit 1 deploying. Missing optional fields are supported for old traces.
  */
@@ -112,6 +113,34 @@
   });
   const AIR_LIFT = 0.3; // screen tiles of lift per tile of flying height (top-down camera)
   const iconOf = (name) => ICON[name] || ICON[name.replace(/s$/, "")] || "";
+
+  // Ground troops from the seven classic decks get upright three-quarter miniatures, as units
+  // are seen on the battle reference video, instead of top-down tokens that spin with facing.
+  // Spawned units keep their card's ID, so en[18] (the engine's unit-type name) picks the unit;
+  // old traces without it fall back to the card and, for Golem and Battle Ram, the unit radius.
+  const GROUND_CARDS = new Set(["Archer", "BattleRam", "ElectroWizard", "Giant", "GoblinGang", "Golem",
+    "HogRider", "IceGolemite", "IceSpirits", "Knight", "MiniPekka", "Musketeer", "Pekka", "Princess",
+    "Skeletons", "Wizard"]);
+  const UNIT_ALIAS = Object.freeze({Goblin_Stab: "Goblin", Goblins: "Goblin", GoblinGang: "Goblin",
+    Skeletons: "Skeleton", IceSpirits: "IceSpirit", Barbarians: "Barbarian", Golemites: "Golemite"});
+  function groundUnit(card, unit, radius, flying) {
+    if (flying || !GROUND_CARDS.has(card)) return null;
+    let key = unit || card;
+    if (!unit && radius < 0.62 && card === "Golem") key = "Golemite";
+    if (!unit && radius < 0.62 && card === "BattleRam") key = "Barbarian";
+    key = UNIT_ALIAS[key] || key;
+    return GROUND_ART.has(key) ? key : null;
+  }
+  const GROUND_ART = new Set(["Archer", "BattleRam", "Barbarian", "ElectroWizard", "Giant", "Goblin",
+    "SpearGoblin", "Golem", "Golemite", "HogRider", "IceGolemite", "IceSpirit", "Knight", "MiniPekka",
+    "Musketeer", "Pekka", "Princess", "Skeleton", "Wizard"]);
+  // Screen-space facing to a pose: mirror for leftward motion and show the back when walking
+  // up the screen. The vector already includes board flipping.
+  function poseOf(screenX, screenY) {
+    const n = Math.hypot(screenX, screenY);
+    if (!(n > 1e-6)) return {dir: 1, back: false};
+    return {dir: screenX / n < -0.2 ? -1 : 1, back: screenY / n < -0.5};
+  }
 
   const pretty = (n) => n.replace(/([a-z])([A-Z])/g, "$1 $2");
   const lerp = (a, b, t) => a + (b - a) * t;
@@ -785,6 +814,290 @@
       }
       ctx.restore();
     }
+    function rounded(x, y, w, h, rad, fill, stroke = null, width = 0.07) {
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, rad);
+      ctx.fillStyle = fill;
+      ctx.fill();
+      if (stroke) {
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = width;
+        ctx.stroke();
+      }
+    }
+    function line(points, color, width) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(points[0][0], points[0][1]);
+      for (let i = 1; i < points.length; i++) ctx.lineTo(points[i][0], points[i][1]);
+      ctx.stroke();
+    }
+    // Upright miniature in unit space: x = 1 is one radius forward, the feet stand at y ≈ 0.5.
+    // The figure keeps the entity centre, radius and hit target; only its pose follows facing.
+    function drawGroundTroop(unit, px, py, r, fill, edge, hit, pose) {
+      const w = (c) => (hit > 0 ? "#fff" : c), back = pose.back;
+      const OUT = "#2f3438", SKIN = "#e3ad82";
+      const eyes = (hx, hy, color = "#2b3237", size = 1) => {
+        if (back) return;
+        disk(hx + 0.13, hy, 0.05 * size, 0.07 * size, color);
+        disk(hx - 0.07, hy, 0.045 * size, 0.07 * size, color);
+      };
+      const legs = (color, top, len, width, spread) => {
+        rounded(-spread - width / 2, top, width, len, width * 0.35, color, OUT, 0.05);
+        rounded(spread - width / 2, top, width, len, width * 0.35, color, OUT, 0.05);
+      };
+      const shrink = (s) => {
+        ctx.translate(0, 0.52);
+        ctx.scale(s, s);
+        ctx.translate(0, -0.52);
+      };
+      ctx.save();
+      ctx.translate(px, py);
+      ctx.scale(pose.dir * r, r);
+      const big = /Giant|Golem$|Pekka$|HogRider|BattleRam/.test(unit) && unit !== "MiniPekka";
+      disk(0.06, 0.6, big ? 0.92 : 0.78, 0.26, "rgba(14,27,20,.32)");
+      disk(0, 0.55, big ? 0.82 : 0.66, 0.25, edge);
+      disk(0, 0.52, big ? 0.66 : 0.52, 0.17, "#d3c49d");
+      if (/Goblin|Skeleton|IceSpirit/.test(unit)) shrink(unit === "IceSpirit" ? 0.78 : 0.86);
+      switch (unit) {
+        case "Knight":
+        case "Barbarian": {
+          const barb = unit === "Barbarian";
+          legs(barb ? "#6b4a2f" : "#4a4f5c", 0.12, 0.4, 0.2, 0.15);
+          rounded(-0.37, -0.34, 0.74, 0.62, 0.17, w(barb ? "#9a6a3d" : "#aeb6bd"), OUT);
+          if (barb) rounded(-0.37, 0.02, 0.74, 0.12, 0.04, fill);
+          else polygon([[-0.2, -0.3], [0.2, -0.3], [0.16, 0.28], [0, 0.36], [-0.16, 0.28]], w(fill), OUT, 0.05);
+          disk(-0.37, -0.24, 0.16, 0.13, barb ? w(SKIN) : "#cbd2d8", OUT, 0.05);
+          disk(0.4, -0.12, 0.13, 0.13, w(SKIN), OUT, 0.05);
+          disk(0, -0.62, 0.3, 0.3, w(SKIN), "#5b544c", 0.07);
+          if (barb) {
+            polygon([[-0.32, -0.62], [-0.3, -0.84], [0, -0.95], [0.3, -0.84], [0.32, -0.62]], "#9aa3aa", OUT, 0.05);
+            polygon([[-0.3, -0.78], [-0.56, -0.98], [-0.42, -0.7]], "#f1ead2", OUT, 0.04);
+            polygon([[0.3, -0.78], [0.56, -0.98], [0.42, -0.7]], "#f1ead2", OUT, 0.04);
+            if (!back) polygon([[-0.16, -0.5], [0.3, -0.5], [0.12, -0.24], [-0.04, -0.3]], "#e9c24c", "#9a7a26", 0.04);
+          } else {
+            polygon([[-0.31, -0.6], [-0.27, -0.84], [0, -0.94], [0.27, -0.84], [0.31, -0.6], [0.08, -0.74]],
+              "#c58a3a", "#7a5420", 0.04);
+            if (!back) disk(0.1, -0.5, 0.15, 0.05, "#e2b04a");
+          }
+          if (back) disk(0, -0.64, 0.29, 0.27, barb ? "#e9c24c" : "#c58a3a");
+          eyes(0.02, -0.64);
+          line([[0.42, 0.0], [0.8, -0.78]], "#dfe6ea", 0.11);
+          line([[0.3, -0.06], [0.54, 0.08]], "#7a5a2a", 0.08);
+          break;
+        }
+        case "Archer":
+        case "Princess": {
+          const princess = unit === "Princess", hair = princess ? "#f0cf5a" : "#e2549b";
+          if (!back) polygon([[-0.3, -0.36], [0.24, -0.36], [0.4, 0.34], [-0.46, 0.34]], w(fill), OUT, 0.05);
+          legs("#5b4636", 0.14, 0.38, 0.16, 0.13);
+          polygon([[-0.3, -0.36], [0.3, -0.36], [0.38, 0.22], [-0.38, 0.22]],
+            w(princess ? "#f2e6d0" : "#5f9a4a"), OUT, 0.06);
+          rounded(-0.32, -0.06, 0.64, 0.09, 0.03, princess ? fill : "#7a5428");
+          if (back) polygon([[-0.32, -0.38], [0.32, -0.38], [0.46, 0.32], [-0.46, 0.32]], w(fill), OUT, 0.05);
+          disk(0, -0.62, 0.28, 0.28, w(SKIN), "#5b544c", 0.07);
+          polygon([[-0.32, -0.56], [-0.28, -0.84], [0.02, -0.94], [0.28, -0.82], [0.3, -0.64], [0.06, -0.78]],
+            hair, OUT, 0.04);
+          disk(-0.34, -0.48, 0.11, 0.2, hair, OUT, 0.04);
+          if (back) disk(0, -0.64, 0.27, 0.26, hair);
+          if (princess) polygon([[-0.16, -0.86], [-0.12, -1.02], [-0.03, -0.92], [0.05, -1.04], [0.13, -0.92],
+            [0.2, -1.0], [0.2, -0.84]], "#f6d14a", "#8a6a22", 0.035);
+          eyes(0.02, -0.62);
+          ctx.strokeStyle = "#6a412c";
+          ctx.lineWidth = 0.12;
+          ctx.beginPath();
+          ctx.arc(0.32, -0.2, 0.46, -1.25, 1.25);
+          ctx.stroke();
+          line([[0.46, -0.64], [0.46, 0.24]], "#eee5c5", 0.035);
+          if (princess) {
+            line([[0.2, -0.2], [0.72, -0.2]], "#c9a36a", 0.04);
+            disk(0.76, -0.2, 0.09, 0.07, "#ff9a3c", "#ffd36a", 0.03);
+          }
+          break;
+        }
+        case "Musketeer": {
+          legs("#3a3550", 0.14, 0.38, 0.16, 0.13);
+          polygon([[-0.3, -0.36], [0.3, -0.36], [0.42, 0.3], [-0.42, 0.3]], w("#4b3f6e"), OUT, 0.06);
+          polygon([[-0.24, -0.36], [-0.06, -0.36], [0.3, 0.1], [0.14, 0.18]], fill, OUT, 0.04);
+          disk(0, -0.6, 0.28, 0.28, w(SKIN), "#5b544c", 0.07);
+          disk(-0.24, -0.46, 0.12, 0.2, "#6e4aa0", OUT, 0.04);
+          polygon([[-0.42, -0.66], [0.44, -0.66], [0.28, -0.74], [0.18, -0.92], [-0.18, -0.92], [-0.28, -0.74]],
+            "#b8c0c8", "#59616a", 0.05);
+          if (back) disk(0, -0.58, 0.26, 0.22, "#6e4aa0");
+          eyes(0.02, -0.58);
+          line([[0.02, 0.04], [0.98, -0.34]], "#3c4149", 0.1);
+          line([[-0.12, 0.1], [0.34, -0.08]], "#8a5a32", 0.15);
+          break;
+        }
+        case "Wizard":
+        case "ElectroWizard": {
+          const electro = unit === "ElectroWizard";
+          polygon([[-0.3, -0.36], [0.3, -0.36], [0.46, 0.46], [-0.46, 0.46]],
+            w(electro ? "#2f3e66" : fill), OUT, 0.06);
+          polygon([[-0.08, -0.36], [0.08, -0.36], [0.12, 0.46], [-0.12, 0.46]], electro ? fill : "#f2e6d0");
+          disk(0, -0.6, 0.28, 0.28, w(SKIN), "#5b544c", 0.07);
+          if (electro) {
+            polygon([[-0.3, -0.62], [-0.42, -0.94], [-0.18, -0.84], [-0.06, -1.08], [0.06, -0.86], [0.22, -1.04],
+              [0.26, -0.82], [0.4, -0.9], [0.3, -0.6]], "#8fd8ff", "#2d77a8", 0.04);
+            if (back) disk(0, -0.62, 0.27, 0.25, "#8fd8ff");
+            eyes(0.02, -0.6, "#1b6fb8");
+            for (const [ox, oy] of [[0.5, -0.12], [-0.48, -0.06]]) {
+              disk(ox, oy, 0.17, 0.17, "#bff0ff", "#3fa9f5", 0.06);
+              line([[ox - 0.1, oy - 0.26], [ox + 0.04, oy - 0.14], [ox - 0.04, oy - 0.06], [ox + 0.1, oy + 0.08]],
+                "#ffffff", 0.04);
+            }
+          } else {
+            polygon([[-0.34, -0.62], [0.34, -0.62], [0.2, -0.86], [0.04, -1.2], [-0.2, -0.86]],
+              w(fill), OUT, 0.05);
+            if (back) disk(0, -0.6, 0.26, 0.24, "#7a5a3a");
+            else polygon([[-0.14, -0.5], [0.3, -0.5], [0.12, -0.18]], "#8a6a4a", OUT, 0.03);
+            eyes(0.02, -0.64);
+            disk(0.56, -0.18, 0.2, 0.2, "#f6b24b", "#fff0b0", 0.06);
+            disk(0.56, -0.2, 0.09, 0.09, "#fff6c8");
+          }
+          break;
+        }
+        case "Giant": {
+          legs("#6b4a2f", 0.08, 0.44, 0.3, 0.26);
+          rounded(-0.6, -0.48, 1.2, 0.86, 0.32, w("#8b5a35"), OUT, 0.08);
+          rounded(-0.58, 0.08, 1.16, 0.13, 0.04, fill);
+          line([[-0.42, -0.42], [0.36, 0.08]], "#5e3a20", 0.1);
+          disk(-0.66, -0.06, 0.2, 0.3, w(SKIN), OUT, 0.05);
+          disk(0.7, -0.02, 0.24, 0.26, w(SKIN), OUT, 0.06);
+          disk(0, -0.7, 0.3, 0.3, w(SKIN), "#5b544c", 0.07);
+          polygon([[-0.3, -0.72], [-0.24, -0.96], [0.04, -1.04], [0.28, -0.94], [0.3, -0.72], [0.08, -0.84]],
+            "#c8642a", OUT, 0.04);
+          if (back) disk(0, -0.72, 0.29, 0.27, "#c8642a");
+          else polygon([[-0.16, -0.6], [0.3, -0.6], [0.14, -0.38], [-0.06, -0.42]], "#c8642a", OUT, 0.03);
+          eyes(0.03, -0.72);
+          break;
+        }
+        case "Golem":
+        case "Golemite":
+        case "IceGolemite": {
+          const ice = unit === "IceGolemite", stone = ice ? "#a9e3f0" : "#8d8577",
+            dark = ice ? "#5b9fb3" : "#5a5248", glow = ice ? "#e9fbff" : "#ffd65a";
+          if (unit === "Golemite") shrink(0.86);
+          rounded(-0.26, 0.04, 0.2, 0.46, 0.08, dark, OUT, 0.05);
+          rounded(0.06, 0.04, 0.2, 0.46, 0.08, dark, OUT, 0.05);
+          polygon([[-0.62, -0.38], [-0.24, -0.6], [0.3, -0.56], [0.62, -0.3], [0.54, 0.24], [0.04, 0.36],
+            [-0.52, 0.22]], w(stone), OUT, 0.07);
+          line([[-0.2, -0.28], [0.02, -0.06], [-0.08, 0.16]], dark, 0.05);
+          polygon([[0, -0.2], [0.13, -0.05], [0, 0.1], [-0.13, -0.05]], fill, OUT, 0.04);
+          disk(-0.7, -0.08, 0.2, 0.28, w(stone), OUT, 0.06);
+          disk(0.7, -0.02, 0.23, 0.27, w(stone), OUT, 0.06);
+          polygon([[-0.28, -0.6], [-0.22, -0.9], [0.14, -0.96], [0.32, -0.78], [0.26, -0.56]], w(stone), OUT, 0.06);
+          if (!ice && unit === "Golem") disk(-0.12, -0.92, 0.12, 0.05, "#6f9b4b");
+          if (!back) {
+            disk(0.18, -0.74, 0.055, 0.045, glow);
+            disk(0, -0.74, 0.05, 0.045, glow);
+          }
+          break;
+        }
+        case "IceSpirit": {
+          polygon([[-0.3, -0.36], [-0.2, -0.7], [-0.04, -0.46], [0.08, -0.82], [0.18, -0.46], [0.34, -0.66],
+            [0.34, -0.3]], "#e9fbff", "#5fb4d1", 0.05);
+          disk(0, 0.02, 0.4, 0.46, w("#bfefff"), "#5fb4d1", 0.07);
+          rounded(-0.36, 0.06, 0.72, 0.12, 0.05, fill);
+          eyes(0.0, -0.12, "#1f5f86", 1.4);
+          break;
+        }
+        case "HogRider": {
+          for (const lx of [-0.5, -0.24, 0.26, 0.5]) rounded(lx - 0.07, 0.2, 0.14, 0.32, 0.05, "#5e3e33", OUT, 0.04);
+          disk(-0.04, 0.12, 0.76, 0.38, w("#8c5b4a"), OUT, 0.07);
+          disk(0.64, 0.02, 0.3, 0.27, w("#a86f5c"), OUT, 0.06);
+          disk(0.88, 0.08, 0.12, 0.1, "#e3a08a", OUT, 0.04);
+          polygon([[0.74, 0.14], [0.86, 0.22], [0.74, 0.22]], "#f6f0dc");
+          disk(0.6, -0.2, 0.08, 0.1, "#6e4639");
+          if (!back) disk(0.72, -0.04, 0.035, 0.045, "#2b3237");
+          rounded(-0.34, -0.66, 0.56, 0.64, 0.18, w(fill), OUT, 0.06);
+          disk(-0.06, -0.92, 0.24, 0.24, w(SKIN), "#5b544c", 0.06);
+          polygon([[-0.1, -1.12], [-0.02, -1.3], [0.06, -1.12]], "#2b2b2b");
+          rounded(-0.16, -1.2, 0.2, 0.12, 0.05, "#2b2b2b");
+          eyes(-0.06, -0.92);
+          line([[0.12, -0.5], [0.44, -1.0]], "#7a5a2a", 0.08);
+          rounded(0.3, -1.16, 0.3, 0.22, 0.05, "#8f979e", OUT, 0.05);
+          break;
+        }
+        case "BattleRam": {
+          for (const bx of [-0.42, 0.22]) {
+            rounded(bx - 0.16, 0.06, 0.12, 0.42, 0.04, "#6b4a2f", OUT, 0.04);
+            rounded(bx + 0.04, 0.06, 0.12, 0.42, 0.04, "#6b4a2f", OUT, 0.04);
+            rounded(bx - 0.24, -0.42, 0.48, 0.5, 0.14, w(SKIN), OUT, 0.05);
+            rounded(bx - 0.24, -0.08, 0.48, 0.1, 0.03, fill);
+            disk(bx, -0.62, 0.2, 0.2, w(SKIN), "#5b544c", 0.05);
+            polygon([[bx - 0.22, -0.64], [bx - 0.2, -0.8], [bx, -0.88], [bx + 0.2, -0.8], [bx + 0.22, -0.64]],
+              "#9aa3aa", OUT, 0.04);
+            polygon([[bx - 0.2, -0.76], [bx - 0.38, -0.92], [bx - 0.28, -0.68]], "#f1ead2");
+            polygon([[bx + 0.2, -0.76], [bx + 0.38, -0.92], [bx + 0.28, -0.68]], "#f1ead2");
+            eyes(bx, -0.6, "#2b3237", 0.8);
+          }
+          rounded(-0.86, -0.24, 1.6, 0.34, 0.15, w("#8a5a32"), "#4e3219", 0.07);
+          for (const rx of [-0.5, 0.2]) rounded(rx, -0.26, 0.08, 0.38, 0.02, "#6c7378");
+          disk(0.84, -0.07, 0.22, 0.22, "#9aa3aa", OUT, 0.06);
+          polygon([[0.86, -0.22], [1.06, -0.36], [0.98, -0.1]], "#d9d2b8", OUT, 0.03);
+          break;
+        }
+        case "Goblin":
+        case "SpearGoblin": {
+          const spear = unit === "SpearGoblin";
+          legs("#5b4636", 0.14, 0.36, 0.16, 0.12);
+          polygon([[-0.28, -0.3], [0.28, -0.3], [0.34, 0.22], [-0.34, 0.22]], w("#875638"), OUT, 0.06);
+          rounded(-0.3, -0.04, 0.6, 0.1, 0.03, fill);
+          disk(0, -0.56, 0.3, 0.27, w("#8ccc55"), "#4e7135", 0.06);
+          polygon([[-0.26, -0.6], [-0.7, -0.78], [-0.36, -0.42]], "#8ccc55", "#4e7135", 0.04);
+          polygon([[0.26, -0.6], [0.7, -0.78], [0.36, -0.42]], "#8ccc55", "#4e7135", 0.04);
+          if (spear) polygon([[-0.3, -0.6], [-0.2, -0.82], [0.06, -0.9], [0.28, -0.78], [0.3, -0.6]],
+            "#7a4a8a", OUT, 0.04);
+          if (back) disk(0, -0.56, 0.28, 0.24, spear ? "#7a4a8a" : "#7cb84a");
+          eyes(0.02, -0.56, "#2b3237", 1.1);
+          if (spear) {
+            line([[0.34, 0.3], [0.62, -0.92]], "#8a6a3a", 0.07);
+            polygon([[0.56, -0.9], [0.66, -1.12], [0.72, -0.88]], "#c8d0d4", OUT, 0.03);
+          } else {
+            line([[0.36, -0.02], [0.62, -0.36]], "#dfe6ea", 0.09);
+          }
+          break;
+        }
+        case "Skeleton": {
+          line([[-0.12, 0.14], [-0.16, 0.5]], "#e7e4ce", 0.08);
+          line([[0.12, 0.14], [0.16, 0.5]], "#e7e4ce", 0.08);
+          disk(-0.3, -0.06, 0.17, 0.21, fill, OUT, 0.05);
+          rounded(-0.2, -0.3, 0.4, 0.46, 0.1, w("#e7e4ce"), "#7d7a68", 0.05);
+          for (const ry of [-0.2, -0.08, 0.04]) line([[-0.12, ry], [0.12, ry]], "#7d7a68", 0.04);
+          disk(0, -0.56, 0.3, 0.28, w("#efecd8"), "#7d7a68", 0.06);
+          if (!back) {
+            disk(0.13, -0.58, 0.08, 0.1, "#323a42");
+            disk(-0.07, -0.58, 0.08, 0.1, "#323a42");
+            rounded(-0.04, -0.38, 0.16, 0.06, 0.02, "#5b5650");
+          }
+          line([[0.3, -0.04], [0.56, -0.44]], "#dfe6ea", 0.08);
+          break;
+        }
+        case "MiniPekka":
+        case "Pekka": {
+          const mini = unit === "MiniPekka", armor = mini ? "#5f78a8" : "#3f3d66", rim = mini ? "#2f3f63" : "#24223f";
+          legs(rim, 0.1, 0.42, mini ? 0.2 : 0.26, mini ? 0.16 : 0.22);
+          rounded(mini ? -0.36 : -0.5, -0.36, mini ? 0.72 : 1.0, 0.64, 0.2, w(armor), rim, 0.08);
+          disk(mini ? -0.38 : -0.52, -0.26, mini ? 0.15 : 0.22, 0.14, fill, rim, 0.05);
+          disk(mini ? 0.4 : 0.54, -0.2, mini ? 0.14 : 0.2, 0.14, fill, rim, 0.05);
+          disk(0, mini ? -0.6 : -0.66, mini ? 0.4 : 0.34, mini ? 0.34 : 0.32, w(armor), rim, 0.07);
+          const hy = mini ? -0.66 : -0.74;
+          polygon([[-0.26, hy], [-0.5, hy - 0.36], [-0.12, hy - 0.16]], mini ? "#d7dde4" : "#5a568a", rim, 0.04);
+          polygon([[0.26, hy], [0.5, hy - 0.36], [0.12, hy - 0.16]], mini ? "#d7dde4" : "#5a568a", rim, 0.04);
+          if (!back) {
+            if (mini) rounded(-0.18, -0.64, 0.42, 0.08, 0.03, "#bfe8ff");
+            else disk(0.1, -0.66, 0.08, 0.06, "#b7f2ff", "#ffffff", 0.02);
+          }
+          line([[0.48, 0.02], [mini ? 0.82 : 0.96, mini ? -0.78 : -1.02]], mini ? "#dfe6ea" : "#c9d5ff", mini ? 0.12 : 0.14);
+          line([[0.34, -0.04], [0.62, 0.1]], "#5c5c66", 0.08);
+          break;
+        }
+      }
+      ctx.restore();
+    }
     function drawEntity(e, x, y, hp, now) {
       const [uid, team, kind, cid, , , , maxHp, rad, flags, , fxv, fyv] = e;
       const mine = team === 0,
@@ -827,7 +1140,11 @@
           drawFlyer(air, px, py, r, fill, edge, 0, facing, rate ? Math.sin(now / rate + uid) * 0.1 : 0);
           // rings, bars and the hit target follow the miniature; the balloon's envelope rises higher
           r *= AIR[air].size * (air === "Balloon" ? 1.2 : 1);
-        } else drawTroop(name, px, py, r, fill, edge, 0, facing);
+        } else {
+          const unit = groundUnit(name, e[18], rad, flying);
+          if (unit) drawGroundTroop(unit, px, py, r, fill, edge, 0, poseOf(screenX, screenY));
+          else drawTroop(name, px, py, r, fill, edge, 0, facing);
+        }
       }
       ctx.globalAlpha = 1;
       if (hit > 0) {

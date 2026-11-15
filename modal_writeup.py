@@ -11,6 +11,7 @@ image = (
     modal.Image.debian_slim(python_version="3.12")
     .pip_install("starlette==1.10.0")
     .add_local_file(ROOT / "docs/writeup.html", "/site/writeup.html")
+    .add_local_dir(ROOT / "docs/writeup-assets", "/site/writeup-assets")
 )
 
 
@@ -18,7 +19,8 @@ def _web_app(source: Path = Path("/site/writeup.html")):
     from starlette.applications import Starlette
     from starlette.exceptions import HTTPException
     from starlette.responses import FileResponse, RedirectResponse
-    from starlette.routing import Route
+    from starlette.routing import Mount, Route
+    from starlette.staticfiles import StaticFiles
 
     # Keep the original HTML intact; relative guide links open rendered GitHub docs.
     guides = set(re.findall(r'href="([^"/]+\.md)"', source.read_text(encoding="utf-8")))
@@ -35,6 +37,7 @@ def _web_app(source: Path = Path("/site/writeup.html")):
     return Starlette(routes=[
         Route("/", writeup),
         Route("/writeup.html", writeup),
+        Mount("/writeup-assets", app=StaticFiles(directory=source.parent / "writeup-assets"), name="assets"),
         Route("/{document}", guide),
     ])
 
@@ -44,3 +47,13 @@ def _web_app(source: Path = Path("/site/writeup.html")):
 @modal.asgi_app(label="royalebench-writeup")
 def serve():
     return _web_app()
+
+
+if __name__ == "__main__":
+    import argparse
+    import uvicorn
+
+    parser = argparse.ArgumentParser(description="Preview the public writeup locally, without deploying.")
+    parser.add_argument("--port", type=int, default=8768)
+    args = parser.parse_args()
+    uvicorn.run(_web_app(ROOT / "docs/writeup.html"), host="127.0.0.1", port=args.port)

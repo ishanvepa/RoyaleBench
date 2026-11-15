@@ -1,0 +1,188 @@
+/* Vals AI benchmark design reference, inspected November 15, 2026:
+   https://www.vals.ai/benchmarks/poker_agent
+   Fonts remain hosted by Vals AI; local fallbacks work without a connection. */
+@font-face {
+  font-family: "Söhne";
+  src: url("https://www.vals.ai/fonts/Soehne/soehne-leicht.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne";
+  src: url("https://www.vals.ai/fonts/Soehne/soehne-buch.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne";
+  src: url("https://www.vals.ai/fonts/Soehne/soehne-kraftig.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne";
+  src: url("https://www.vals.ai/fonts/Soehne/soehne-halbfett.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Söhne";
+  src: url("https://www.vals.ai/fonts/Soehne/soehne-dreiviertelfett.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Martina Plantijn";
+  src: url("https://www.vals.ai/fonts/MartinaPlantijn/martina-plantijn-light.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Martina Plantijn";
+  src: url("https://www.vals.ai/fonts/MartinaPlantijn/martina-plantijn-regular.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Martina Plantijn";
+  src: url("https://www.vals.ai/fonts/MartinaPlantijn/martina-plantijn-medium.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 500 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Martina Plantijn";
+  src: url("https://www.vals.ai/fonts/MartinaPlantijn/martina-plantijn-light-italic.woff2")
+    format("woff2");
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Martina Plantijn";
+  src: url("https://www.vals.ai/fonts/MartinaPlantijn/martina-plantijn-italic.woff2")
+    format("woff2");
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Martina Plantijn";
+  src: url("https://www.vals.ai/fonts/MartinaPlantijn/martina-plantijn-bold.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Berkeley Mono";
+  src: url("https://www.vals.ai/fonts/BerkeleyMono/BerkeleyMono-Regular.woff2")
+    format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+:root {
+  color-scheme: light;
+  --font-sans:
+    "Söhne", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Martina Plantijn", Georgia, serif;
+  --font-mono: "Berkeley Mono", "SFMono-Regular", Consolas, monospace;
+  --color-bg-base: #fff;
+  --color-bg-primary: rgb(62 59 56 / 5%);
+  --color-bg-secondary: rgb(62 59 56 / 10%);
+  --color-fg-primary: #191917;
+  --color-fg-secondary: #56524e;
+  --color-fg-tertiary: #6e6963;
+  --color-border-subtle: rgb(62 59 56 / 10%);
+  --color-border-primary: rgb(62 59 56 / 30%);
+  --color-border-frame: rgb(81 72 37 / 30%);
+  --color-chart-green-50: #eef6f0;
+  --color-chart-green-100: #d0e7d6;
+  --color-chart-green-300: #94c7a2;
+  --color-chart-green-600: #488959;
+  --color-chart-green-700: #386b46;
+  --color-chart-green-800: #284d32;
+  --color-chart-blue-600: #2d5ba4;
+  --color-chart-yellow-600: #908041;
+  --color-attention: #7b2c28;
+  --color-attention-light: #f9ecec;
+}
+
+/* The standalone recordings use the same editorial chrome. The recorded game
+   graphics and their team/health indicators keep their original meaning. */
+html.writeup-replay {
+  --ink: var(--color-fg-primary);
+  --muted: var(--color-fg-secondary);
+  --bg: var(--color-bg-base);
+  --surface: var(--color-bg-primary);
+  --panel: var(--color-bg-secondary);
+  --line: var(--color-border-subtle);
+  --blue: var(--color-chart-blue-600);
+  --red: var(--color-attention);
+  --elixir: #706433;
+}
+.writeup-replay body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--ink);
+}
+.writeup-replay header {
+  min-height: 56px;
+  background: var(--bg);
+  padding: 12px 24px;
+}
+.writeup-replay header h1 {
+  font: 400 24px/1.5 var(--font-serif);
+}
+.writeup-replay .side,
+.writeup-replay .decision-panel,
+.writeup-replay .card,
+.writeup-replay #controls button,
+.writeup-replay #speed,
+.writeup-replay .decision-step pre {
+  border-radius: 2px;
+}
+.writeup-replay .side,
+.writeup-replay .decision-panel {
+  background: var(--bg);
+  border-color: var(--color-border-primary);
+}
+.writeup-replay .decision-panel h2 {
+  font-weight: 500;
+}
+.writeup-replay .decision-panel pre,
+.writeup-replay #clock,
+.writeup-replay footer {
+  font-family: var(--font-mono);
+}
+.writeup-replay #tip {
+  background: rgb(255 255 255 / 96%);
+  border-color: var(--color-border-primary);
+  border-radius: 2px;
+}
+.writeup-replay #warn {
+  background: #f7f5ed;
+  color: #706433;
+  border-color: var(--color-border-frame);
+}
+.writeup-replay a {
+  color: var(--color-chart-green-700);
+}
+.writeup-replay canvas {
+  border-radius: 0;
+  box-shadow: none;
+}

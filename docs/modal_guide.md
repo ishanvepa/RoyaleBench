@@ -48,10 +48,18 @@ uv run --frozen --extra hosting python -X utf8 -m modal deploy modal_writeup.py
 
 The command prints a stable public HTTPS link. The app runs independently of the
 game and evaluation sandboxes, scales to zero when idle, and needs no terminal
-left open. Only the HTML file is uploaded; its relative Markdown guide links
-redirect to the rendered documents in the public GitHub repository. After editing
-`docs/writeup.html`, run the same deploy command to update the site.
+left open. The HTML and the tracked `docs/writeup-assets/` directory are uploaded;
+the latter contains the frozen v9 results and two independently verified replay
+pages. Relative Markdown guide links redirect to rendered documents in the public
+GitHub repository. No local evaluation cache or credentials are packaged.
+After editing the page or assets, run the same deploy command to update the site.
 The UTF-8 flag also avoids Windows console encoding errors in Modal's CLI output.
+
+Preview the same routes locally with
+`uv run --frozen --extra hosting python -X utf8 modal_writeup.py`, then open
+<http://127.0.0.1:8768/>. This does not deploy. See the
+[writeup maintenance guide](writeup.md) for evidence checks, data and replay
+refreshes, and the boundaries of the published comparison.
 
 ## During the hackathon
 

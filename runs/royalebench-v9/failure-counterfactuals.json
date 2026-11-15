@@ -1,0 +1,1507 @@
+{
+  "engine_versions": {
+    "royalegym": "0.1.28",
+    "royalesim": "0.1.48",
+    "numpy": "2.5.4"
+  },
+  "method": "Local packaged Python referee runtime, pinned installed engine versions; accepted policies reconstructed from verifier card/decision/position records. Counterfactuals are diagnostic probes, not new model attempts or scores.",
+  "probes": [
+    {
+      "task": "07-balloon-fireball",
+      "label": "reference",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": 0,
+      "success": true,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.2792,
+        "ticks": 520,
+        "tower_damage": 240,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 10,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 135000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          1,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 220,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 19.3) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 240,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 18.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 260,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 280,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 15.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 4.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 300,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:45\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 14.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 5.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 320,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:44\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1567/1676 at (3.4, 13.4) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 6.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 340,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:43\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1458/1676 at (3.4, 12.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 7.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 8,
+          "tick": 360,
+          "observation": "DECISION 9 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:42\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1240/1676 at (3.4, 11.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 8.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 9,
+          "tick": 380,
+          "observation": "DECISION 10 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:41\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1131/1676 at (3.3, 9.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 9.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 10,
+          "tick": 400,
+          "observation": "DECISION 11 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:40\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.6 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1022/1676 at (3.3, 8.7) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 10.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "d9986127378f8737c710a6efa89892f8d2040ef0f4db54cc994d56164ac68c7e"
+    },
+    {
+      "task": "07-balloon-fireball",
+      "label": "sol_recorded",
+      "model": "openai/gpt-6.1-sol",
+      "reference": false,
+      "changes": null,
+      "decision_offset": 0,
+      "success": false,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 520,
+        "tower_damage": 241,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 10,
+            "card": "Fireball",
+            "x": 59400,
+            "y": 120600,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 220,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 19.3) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 240,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 18.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 260,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 280,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 15.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 4.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 300,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:45\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 14.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 5.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 320,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:44\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1567/1676 at (3.4, 13.4) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 6.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 340,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:43\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1458/1676 at (3.4, 12.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 7.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 8,
+          "tick": 360,
+          "observation": "DECISION 9 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:42\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1240/1676 at (3.4, 11.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 8.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 9,
+          "tick": 380,
+          "observation": "DECISION 10 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:41\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1131/1676 at (3.3, 9.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 9.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 10,
+          "tick": 400,
+          "observation": "DECISION 11 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:40\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.6 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1022/1676 at (3.3, 8.7) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 10.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "d9986127378f8737c710a6efa89892f8d2040ef0f4db54cc994d56164ac68c7e",
+      "matches_recorded_outcome": true
+    },
+    {
+      "task": "07-balloon-fireball",
+      "label": "sol_same_time_reference_center",
+      "model": "openai/gpt-6.1-sol",
+      "reference": false,
+      "changes": {
+        "10": {
+          "x": 3.5,
+          "y": 7.5
+        }
+      },
+      "decision_offset": 0,
+      "success": true,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.2792,
+        "ticks": 520,
+        "tower_damage": 240,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 10,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 135000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          1,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 220,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 19.3) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 240,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 18.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 260,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 280,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 15.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 4.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 300,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:45\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 14.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 5.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 320,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:44\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1567/1676 at (3.4, 13.4) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 6.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 340,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:43\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1458/1676 at (3.4, 12.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 7.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 8,
+          "tick": 360,
+          "observation": "DECISION 9 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:42\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1240/1676 at (3.4, 11.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 8.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 9,
+          "tick": 380,
+          "observation": "DECISION 10 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:41\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1131/1676 at (3.3, 9.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 9.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 10,
+          "tick": 400,
+          "observation": "DECISION 11 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:40\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.6 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1022/1676 at (3.3, 8.7) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 10.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "d9986127378f8737c710a6efa89892f8d2040ef0f4db54cc994d56164ac68c7e"
+    },
+    {
+      "task": "07-balloon-fireball",
+      "label": "astra_recorded",
+      "model": "openai/gpt-6-astra",
+      "reference": false,
+      "changes": null,
+      "decision_offset": 0,
+      "success": false,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 520,
+        "tower_damage": 241,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 9,
+            "card": "Fireball",
+            "x": 59400,
+            "y": 135000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 220,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 19.3) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 240,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 18.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 260,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 280,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 15.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 4.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 300,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:45\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 14.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 5.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 320,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:44\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1567/1676 at (3.4, 13.4) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 6.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 340,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:43\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1458/1676 at (3.4, 12.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 7.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 8,
+          "tick": 360,
+          "observation": "DECISION 9 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:42\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1240/1676 at (3.4, 11.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 8.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 9,
+          "tick": 380,
+          "observation": "DECISION 10 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:41\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1131/1676 at (3.3, 9.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 9.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "d9986127378f8737c710a6efa89892f8d2040ef0f4db54cc994d56164ac68c7e",
+      "matches_recorded_outcome": true
+    },
+    {
+      "task": "07-balloon-fireball",
+      "label": "reference_one_second_early",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": -1,
+      "success": false,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 520,
+        "tower_damage": 241,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 9,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 135000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 220,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 19.3) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 240,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 18.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 260,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 280,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 15.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 4.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 300,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:45\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 14.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 5.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 320,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:44\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1567/1676 at (3.4, 13.4) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 6.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 340,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:43\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1458/1676 at (3.4, 12.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 7.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 8,
+          "tick": 360,
+          "observation": "DECISION 9 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:42\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1240/1676 at (3.4, 11.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 8.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 9,
+          "tick": 380,
+          "observation": "DECISION 10 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:41\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1131/1676 at (3.3, 9.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 9.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "d9986127378f8737c710a6efa89892f8d2040ef0f4db54cc994d56164ac68c7e"
+    },
+    {
+      "task": "07-balloon-fireball",
+      "label": "reference_sol_center",
+      "model": null,
+      "reference": true,
+      "changes": {
+        "10": {
+          "x": 3.3,
+          "y": 6.7
+        }
+      },
+      "decision_offset": 0,
+      "success": false,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 520,
+        "tower_damage": 241,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 10,
+            "card": "Fireball",
+            "x": 59400,
+            "y": 120600,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 220,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 19.3) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 240,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 18.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 260,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 280,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 15.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 4.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 300,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:45\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.4, 14.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 5.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 320,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:44\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1567/1676 at (3.4, 13.4) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 6.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 340,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:43\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1458/1676 at (3.4, 12.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 7.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 8,
+          "tick": 360,
+          "observation": "DECISION 9 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:42\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1240/1676 at (3.4, 11.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 8.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 9,
+          "tick": 380,
+          "observation": "DECISION 10 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:41\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1131/1676 at (3.3, 9.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 9.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 10,
+          "tick": 400,
+          "observation": "DECISION 11 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:40\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.6 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 241/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1022/1676 at (3.3, 8.7) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-Fireball Balloon defense | elapsed 10.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Fireball play and no other card. Spend at most 4 elixir and take at most 240 additional total crown-tower damage. Your left princess tower has 241 HP. A Balloon attack destroys it; its 240-damage death bomb is allowed and must be included in the damage total. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "d9986127378f8737c710a6efa89892f8d2040ef0f4db54cc994d56164ac68c7e"
+    },
+    {
+      "task": "05-hog-body-block",
+      "label": "reference",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": 0,
+      "success": true,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.2792,
+        "ticks": 520,
+        "tower_damage": 0,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 1,
+            "card": "IceGolemite",
+            "x": 27000,
+            "y": 207000,
+            "cost": 2
+          },
+          {
+            "decision": 2,
+            "card": "Skeletons",
+            "x": 63000,
+            "y": 243000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          1,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 3.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: IceGolemite (2), Skeletons (1), HogRider (4), Musketeer (4) | next card: Cannon\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.5, 18.5) left lane\nHAND SLOTS (zero-based): 0: IceGolemite, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 210,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 3.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: IceGolemite (2), Skeletons (1), HogRider (4), Musketeer (4) | next card: Cannon\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.8, 17.4) left lane\nHAND SLOTS (zero-based): 0: IceGolemite, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 0.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 220,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Skeletons (1), HogRider (4), Musketeer (4) | next card: Fireball\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite (deploying) hp 1228/1228 at (1.5, 11.5) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (3.1, 16.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 1.0s / 16s | spent 2 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 230,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), HogRider (4), Musketeer (4) | next card: Fireball\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (1.5, 11.5) left lane\n  - Skeletons (deploying) hp 81/81 at (3.5, 14.3) left lane\n  - Skeletons (deploying) hp 81/81 at (2.8, 13.1) left lane\n  - Skeletons (deploying) hp 81/81 at (4.2, 13.1) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.8, 15.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:48] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: card#-1, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 1.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 240,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (1.7, 11.9) left lane\n  - Skeletons hp 81/81 at (3.7, 14.2) left lane\n  - Skeletons hp 81/81 at (2.8, 12.9) left lane\n  - Skeletons hp 81/81 at (4.2, 13.1) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.6, 14.1) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:48] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 2.0s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 250,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.1, 11.9) left lane\n  - Skeletons hp 81/81 at (3.7, 14.2) left lane\n  - Skeletons hp 81/81 at (3.4, 12.3) left lane\n  - Skeletons hp 81/81 at (4.2, 13.3) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1535/1697 at (2.6, 13.1) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:48] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 2.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 260,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.3, 11.8) left lane\n  - Skeletons hp 81/81 at (3.1, 14.4) left lane\n  - Skeletons hp 81/81 at (3.6, 12.0) left lane\n  - Skeletons hp 81/81 at (4.1, 13.3) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1345/1697 at (2.8, 12.9) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:48] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 3.0s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 270,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.4, 11.6) left lane\n  - Skeletons hp 81/81 at (3.1, 14.4) left lane\n  - Skeletons hp 81/81 at (3.9, 11.7) left lane\n  - Skeletons hp 81/81 at (4.1, 13.3) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1236/1697 at (3.0, 12.7) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:48] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 3.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "14c052fc1b4171178d002bbab140cdfb2f69b7a0d173195c34b7ac43557c1ccc"
+    },
+    {
+      "task": "05-hog-body-block",
+      "label": "reference_both_plays_half_second_early",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": -1,
+      "success": false,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0077,
+        "own_tower_damage_frac": 0.3681,
+        "ticks": 520,
+        "tower_damage": 635,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceGolemite",
+            "x": 27000,
+            "y": 207000,
+            "cost": 2
+          },
+          {
+            "decision": 1,
+            "card": "Skeletons",
+            "x": 63000,
+            "y": 243000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4190,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          2968
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 3.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: IceGolemite (2), Skeletons (1), HogRider (4), Musketeer (4) | next card: Cannon\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.5, 18.5) left lane\nHAND SLOTS (zero-based): 0: IceGolemite, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 210,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Skeletons (1), HogRider (4), Musketeer (4) | next card: Fireball\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite (deploying) hp 1228/1228 at (1.5, 11.5) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.8, 17.4) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 0.5s / 16s | spent 2 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 220,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), HogRider (4), Musketeer (4) | next card: Fireball\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (1.5, 11.5) left lane\n  - Skeletons (deploying) hp 81/81 at (3.5, 14.3) left lane\n  - Skeletons (deploying) hp 81/81 at (2.8, 13.1) left lane\n  - Skeletons (deploying) hp 81/81 at (4.2, 13.1) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (3.1, 16.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:49] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: card#-1, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 1.0s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 230,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (1.7, 11.9) left lane\n  - Skeletons hp 81/81 at (3.5, 14.3) left lane\n  - Skeletons hp 81/81 at (2.8, 13.1) left lane\n  - Skeletons hp 81/81 at (4.2, 13.1) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.8, 15.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:49] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 1.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 240,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (1.9, 12.3) left lane\n  - Skeletons hp 81/81 at (3.7, 14.4) left lane\n  - Skeletons hp 81/81 at (2.9, 12.9) left lane\n  - Skeletons hp 81/81 at (4.2, 13.6) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1616/1697 at (2.6, 14.1) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:49] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 2.0s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 250,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (1.9, 12.8) left lane\n  - Skeletons hp 81/81 at (3.6, 14.6) left lane\n  - Skeletons hp 81/81 at (3.2, 12.1) left lane\n  - Skeletons hp 81/81 at (4.4, 13.8) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1535/1697 at (3.3, 13.3) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:49] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 2.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 260,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.2, 13.1) left lane\n  - Skeletons hp 81/81 at (3.6, 14.6) left lane\n  - Skeletons hp 81/81 at (2.9, 11.8) left lane\n  - Skeletons hp 81/81 at (4.5, 13.9) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1345/1697 at (4.0, 12.3) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:49] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 3.0s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 270,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.5, 13.4) left lane\n  - Skeletons hp 81/81 at (3.2, 14.4) left lane\n  - Skeletons hp 81/81 at (2.8, 11.8) left lane\n  - Skeletons hp 81/81 at (4.5, 13.9) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1074/1697 at (3.9, 11.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (1.5, 11.5)\n  - [2:49] played Skeletons @ (3.5, 13.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 3.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "14c052fc1b4171178d002bbab140cdfb2f69b7a0d173195c34b7ac43557c1ccc"
+    },
+    {
+      "task": "05-hog-body-block",
+      "label": "opus_recorded",
+      "model": "anthropic/claude-opus-5-5",
+      "reference": false,
+      "changes": null,
+      "decision_offset": 0,
+      "success": false,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0077,
+        "own_tower_damage_frac": 0.3681,
+        "ticks": 520,
+        "tower_damage": 635,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceGolemite",
+            "x": 48600,
+            "y": 225000,
+            "cost": 2
+          },
+          {
+            "decision": 2,
+            "card": "Skeletons",
+            "x": 68400,
+            "y": 234000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4190,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          2968
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 3.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: IceGolemite (2), Skeletons (1), HogRider (4), Musketeer (4) | next card: Cannon\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.5, 18.5) left lane\nHAND SLOTS (zero-based): 0: IceGolemite, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 210,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Skeletons (1), HogRider (4), Musketeer (4) | next card: Fireball\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite (deploying) hp 1228/1228 at (2.5, 12.5) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.8, 17.4) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (2.7, 12.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 0.5s / 16s | spent 2 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 220,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Skeletons (1), HogRider (4), Musketeer (4) | next card: Fireball\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.5, 12.5) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (3.1, 16.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (2.7, 12.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Skeletons, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 1.0s / 16s | spent 2 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 230,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.5, 12.8) left lane\n  - Skeletons (deploying) hp 81/81 at (3.8, 14.7) left lane\n  - Skeletons (deploying) hp 81/81 at (3.2, 13.9) left lane\n  - Skeletons (deploying) hp 81/81 at (4.2, 13.1) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.7, 15.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (2.7, 12.5)\n  - [2:48] played Skeletons @ (3.8, 13.0)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 1.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 240,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (2.8, 13.0) left lane\n  - Skeletons hp 81/81 at (3.9, 14.9) left lane\n  - Skeletons hp 81/81 at (3.7, 13.8) left lane\n  - Skeletons hp 81/81 at (4.3, 13.0) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (2.7, 14.2) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (2.7, 12.5)\n  - [2:48] played Skeletons @ (3.8, 13.0)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 2.0s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 250,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 0.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (3.0, 12.9) left lane\n  - Skeletons hp 81/81 at (3.8, 15.3) left lane\n  - Skeletons hp 81/81 at (3.8, 14.3) left lane\n  - Skeletons hp 81/81 at (4.1, 13.5) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1535/1697 at (2.3, 14.0) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (2.7, 12.5)\n  - [2:48] played Skeletons @ (3.8, 13.0)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 2.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 260,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (3.5, 13.2) left lane\n  - Skeletons hp 81/81 at (3.0, 15.7) left lane\n  - Skeletons hp 81/81 at (3.4, 14.9) left lane\n  - Skeletons hp 81/81 at (4.0, 14.2) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1426/1697 at (2.2, 13.3) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (2.7, 12.5)\n  - [2:48] played Skeletons @ (3.8, 13.0)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 3.0s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 270,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Fireball (4), HogRider (4), Musketeer (4) | next card: Log\nENEMY CARDS SEEN SO FAR: HogRider\nYOUR UNITS ON FIELD:\n  - IceGolemite hp 1228/1228 at (3.9, 13.6) left lane\n  - Skeletons hp 81/81 at (2.7, 15.0) left lane\n  - Skeletons hp 81/81 at (3.7, 14.8) left lane\n  - Skeletons hp 81/81 at (4.8, 14.3) left lane\nENEMY UNITS ON FIELD:\n  - HogRider hp 1317/1697 at (2.8, 12.3) left lane\nYOUR LAST MOVES:\n  - [2:49] played IceGolemite @ (2.7, 12.5)\n  - [2:48] played Skeletons @ (3.8, 13.0)\nHAND SLOTS (zero-based): 0: Cannon, 1: Fireball, 2: HogRider, 3: Musketeer\nSCENARIO: One-hit Hog defense: three elixir to survive | elapsed 3.5s / 16s | spent 3 elixir\nVisible pre-scenario history: none\nObjective: Your left princess tower has 1 HP: a single Hog hit destroys it and fails the task. You start with 3 elixir and may spend only 3 in total. Keep all three crown towers alive for 16 seconds, take zero additional total crown-tower damage, and spend at most 3 elixir. You may submit up to 8 decisions; the referee then resolves the remaining time as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "14c052fc1b4171178d002bbab140cdfb2f69b7a0d173195c34b7ac43557c1ccc",
+      "matches_recorded_outcome": true
+    },
+    {
+      "task": "06-mini-pekka-kite",
+      "label": "reference",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": 0,
+      "success": true,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.2792,
+        "ticks": 520,
+        "tower_damage": 0,
+        "spent_elixir": 1,
+        "plays": [
+          {
+            "decision": 6,
+            "card": "Skeletons",
+            "x": 135000,
+            "y": 243000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          1,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 210,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 19.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 0.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 220,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 18.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 230,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 17.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 1.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 240,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 250,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 16.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 2.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 260,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 2.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 15.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "f99f5c20f3070c59b3ca3be313453ec179d1feac3a259430aabf71b2a357ce21"
+    },
+    {
+      "task": "06-mini-pekka-kite",
+      "label": "reference_half_second_late",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": 1,
+      "success": false,
+      "outcome": {
+        "result": "unfinished",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.0,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 520,
+        "tower_damage": 1,
+        "spent_elixir": 1,
+        "plays": [
+          {
+            "decision": 7,
+            "card": "Skeletons",
+            "x": 135000,
+            "y": 243000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 16.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          3052
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 200,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:50\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.5, 20.5) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 0.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 210,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 19.6) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 0.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 220,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:49\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 18.8) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 1.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 230,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 17.9) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 1.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 240,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:48\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.7 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 17.0) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 2.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 250,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 1.9 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 16.1) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 2.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 6,
+          "tick": 260,
+          "observation": "DECISION 7 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:47\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 2.1 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 15.2) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 3.0s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 7,
+          "tick": 270,
+          "observation": "DECISION 8 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 2:46\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 2.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 1/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 3052/3052, right princess tower 3052/3052\nYOUR HAND: Skeletons (1), Fireball (4), Knight (3), Archer (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: MiniPekka\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - MiniPekka hp 1390/1390 at (3.7, 14.3) left lane\nHAND SLOTS (zero-based): 0: Skeletons, 1: Fireball, 2: Knight, 3: Archer\nSCENARIO: One-elixir Mini P.E.K.K.A. defense | elapsed 3.5s / 16s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Keep all three crown towers alive for 16 seconds using exactly one Skeletons play and no other card. Spend at most 1 elixir and take at most 0 additional total crown-tower damage. Your left princess tower has 1 HP: any hit fails. You may wait before playing. After your one accepted card play, or after 12 decisions, the referee resolves the remaining window as waits.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "f99f5c20f3070c59b3ca3be313453ec179d1feac3a259430aabf71b2a357ce21"
+    },
+    {
+      "task": "03-tower-race-b",
+      "label": "reference_cannon",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": 0,
+      "success": true,
+      "outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2747,
+        "ticks": 5880,
+        "tower_damage": 0,
+        "spent_elixir": 3,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Cannon",
+            "x": 63000,
+            "y": 171000,
+            "cost": 3
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 2.0,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          50,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          0
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 5840,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:08 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 50/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 366/3052, right princess tower 3052/3052\nYOUR HAND: Minions (3), Fireball (4), Knight (3), Cannon (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD:\n  - Giant hp 400/3968 at (3.5, 24.0) left lane\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 9.5) left lane\nHAND SLOTS (zero-based): 0: Minions, 1: Fireball, 2: Knight, 3: Cannon\nSCENARIO: Resolve an overtime tower race: position B | elapsed 0.0s / 8s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Win before the remaining 8 seconds of overtime end, spending at most 4 elixir. At the actual overtime deadline, tied crowns use total remaining tower HP, then seed parity.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "a4f89cc080ffa14fdb8143e347386477f223afb1ea24141e69f17410aff0ce36"
+    },
+    {
+      "task": "03-tower-race-b",
+      "label": "opus_recorded_fireball",
+      "model": "anthropic/claude-opus-5-5",
+      "reference": false,
+      "changes": null,
+      "decision_offset": 0,
+      "success": false,
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.2689,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5868,
+        "tower_damage": 50,
+        "spent_elixir": 4,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 1.4,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          113
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 5840,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:08 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 50/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 366/3052, right princess tower 3052/3052\nYOUR HAND: Minions (3), Fireball (4), Knight (3), Cannon (3) | next card: Giant\nENEMY CARDS SEEN SO FAR: Balloon\nYOUR UNITS ON FIELD:\n  - Giant hp 400/3968 at (3.5, 24.0) left lane\nENEMY UNITS ON FIELD:\n  - Balloon (flying) hp 1676/1676 at (3.5, 9.5) left lane\nHAND SLOTS (zero-based): 0: Minions, 1: Fireball, 2: Knight, 3: Cannon\nSCENARIO: Resolve an overtime tower race: position B | elapsed 0.0s / 8s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Win before the remaining 8 seconds of overtime end, spending at most 4 elixir. At the actual overtime deadline, tied crowns use total remaining tower HP, then seed parity.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "a4f89cc080ffa14fdb8143e347386477f223afb1ea24141e69f17410aff0ce36",
+      "matches_recorded_outcome": true
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "label": "reference",
+      "model": null,
+      "reference": true,
+      "changes": null,
+      "decision_offset": 0,
+      "success": true,
+      "outcome": {
+        "result": "win",
+        "crowns_for": 1,
+        "crowns_against": 0,
+        "enemy_tower_damage_frac": 0.3127,
+        "own_tower_damage_frac": 0.2564,
+        "ticks": 5864,
+        "tower_damage": 0,
+        "spent_elixir": 15,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 180000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 126000,
+            "y": 207000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          },
+          {
+            "decision": 3,
+            "card": "HogRider",
+            "x": 63000,
+            "y": 270000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Log",
+            "x": 89676,
+            "y": 155214,
+            "cost": 2
+          },
+          {
+            "decision": 5,
+            "card": "IceSpirits",
+            "x": 80910,
+            "y": 175788,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 11.2,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          250,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          0
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 5640,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:18 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: IceSpirits (1), Skeletons (1), IceGolemite (2), Log (2) | next card: Cannon\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Giant hp 3968/3968 at (3.5, 12.0) left lane\nHAND SLOTS (zero-based): 0: IceSpirits, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 0.0s / 18s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 5680,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:16 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 8.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Skeletons (1), IceGolemite (2), Log (2) | next card: Fireball\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Giant (stunned) hp 3640/3968 at (3.7, 10.7) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10)\nHAND SLOTS (zero-based): 0: Cannon, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 2.0s / 18s | spent 1 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 5720,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:14 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.3 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Fireball (4), Skeletons (1), IceGolemite (2), Log (2) | next card: HogRider\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Cannon hp 797/824 at (7.5, 11.5) center lane\nENEMY UNITS ON FIELD:\n  - Giant hp 3220/3968 at (5.0, 10.7) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10)\n  - [0:14] played Cannon @ (7, 11.5)\nHAND SLOTS (zero-based): 0: Fireball, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 4.0s / 18s | spent 4 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 5760,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:12 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 5.5 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 291/3052, right princess tower 3052/3052\nYOUR HAND: HogRider (4), Skeletons (1), IceGolemite (2), Log (2) | next card: Musketeer\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Cannon hp 489/824 at (7.5, 11.5) center lane\nENEMY UNITS ON FIELD:\n  - Giant hp 2489/3968 at (5.1, 10.7) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10)\n  - [0:14] played Cannon @ (7, 11.5)\n  - [0:12] played Fireball @ (3.5, 25.5)\nHAND SLOTS (zero-based): 0: HogRider, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 6.0s / 18s | spent 8 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 5800,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:10 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 3.6 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 291/3052, right princess tower 3052/3052\nYOUR HAND: Musketeer (4), Skeletons (1), IceGolemite (2), Log (2) | next card: IceSpirits\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - HogRider hp 1697/1697 at (3.3, 16.9) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 2069/3968 at (5.0, 10.6) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10)\n  - [0:14] played Cannon @ (7, 11.5)\n  - [0:12] played Fireball @ (3.5, 25.5)\n  - [0:10] played HogRider @ (3.5, 15)\nHAND SLOTS (zero-based): 0: Musketeer, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 8.0s / 18s | spent 12 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 5840,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:08 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 3.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 291/3052, right princess tower 3052/3052\nYOUR HAND: Musketeer (4), Skeletons (1), IceGolemite (2), IceSpirits (1) | next card: Cannon\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - HogRider hp 1479/1697 at (3.3, 21.7) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 1474/3968 at (4.5, 9.8) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10)\n  - [0:14] played Cannon @ (7, 11.5)\n  - [0:12] played Fireball @ (3.5, 25.5)\n  - [0:10] played HogRider @ (3.5, 15)\n  - [0:08] played Log @ (4.982, 8.623)\nHAND SLOTS (zero-based): 0: Musketeer, 1: Skeletons, 2: IceGolemite, 3: IceSpirits\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 10.0s / 18s | spent 14 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "10a7989fc23f0f89cc32e905acfa2c908e8d1987b3e3e6b31040ebe0120d9ad6"
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "label": "sol_recorded",
+      "model": "openai/gpt-6.1-sol",
+      "reference": false,
+      "changes": null,
+      "decision_offset": 0,
+      "success": false,
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.2527,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5852,
+        "tower_damage": 250,
+        "spent_elixir": 14,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 126000,
+            "y": 171000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Skeletons",
+            "x": 90000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 3,
+            "card": "HogRider",
+            "x": 63000,
+            "y": 270000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          },
+          {
+            "decision": 5,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 153000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 10.6,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          291
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 5640,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:18 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: IceSpirits (1), Skeletons (1), IceGolemite (2), Log (2) | next card: Cannon\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Giant hp 3968/3968 at (3.5, 12.0) left lane\nHAND SLOTS (zero-based): 0: IceSpirits, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 0.0s / 18s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 5680,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:16 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 8.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Skeletons (1), IceGolemite (2), Log (2) | next card: Fireball\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Giant (stunned) hp 3640/3968 at (3.7, 10.7) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 2.0s / 18s | spent 1 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 5720,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:14 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.3 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Fireball (4), Skeletons (1), IceGolemite (2), Log (2) | next card: HogRider\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Cannon hp 797/824 at (7.5, 9.5) center lane\nENEMY UNITS ON FIELD:\n  - Giant hp 3220/3968 at (4.9, 10.4) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7.0, 9.5)\nHAND SLOTS (zero-based): 0: Fireball, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 4.0s / 18s | spent 4 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 5760,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:12 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 8.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Fireball (4), HogRider (4), IceGolemite (2), Log (2) | next card: Musketeer\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Cannon hp 489/824 at (7.5, 9.5) center lane\n  - Skeletons hp 81/81 at (5.8, 11.8) left lane\n  - Skeletons hp 81/81 at (4.4, 9.4) left lane\n  - Skeletons hp 81/81 at (6.5, 10.0) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 2246/3968 at (5.2, 10.6) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7.0, 9.5)\n  - [0:12] played Skeletons @ (5.0, 10.5)\nHAND SLOTS (zero-based): 0: Fireball, 1: HogRider, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 6.0s / 18s | spent 5 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 5800,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:10 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.6 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Fireball (4), Musketeer (4), IceGolemite (2), Log (2) | next card: IceSpirits\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Skeletons hp 81/81 at (5.8, 11.8) left lane\n  - Skeletons hp 81/81 at (4.4, 9.4) left lane\n  - Skeletons hp 81/81 at (6.5, 10.0) left lane\n  - HogRider hp 1697/1697 at (3.3, 16.9) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 1340/3968 at (5.2, 10.6) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7.0, 9.5)\n  - [0:12] played Skeletons @ (5.0, 10.5)\n  - [0:10] played HogRider @ (3.5, 15.0)\nHAND SLOTS (zero-based): 0: Fireball, 1: Musketeer, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 8.0s / 18s | spent 9 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 5840,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:08 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 291/3052, right princess tower 3052/3052\nYOUR HAND: IceSpirits (1), Musketeer (4), IceGolemite (2), Log (2) | next card: Cannon\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Skeletons hp 81/81 at (5.4, 11.2) left lane\n  - Skeletons hp 81/81 at (4.0, 8.1) left lane\n  - Skeletons hp 81/81 at (6.0, 9.9) left lane\n  - HogRider hp 1479/1697 at (3.3, 21.7) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 527/3968 at (4.3, 9.4) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7.0, 9.5)\n  - [0:12] played Skeletons @ (5.0, 10.5)\n  - [0:10] played HogRider @ (3.5, 15.0)\n  - [0:08] played Fireball @ (3.5, 25.5)\nHAND SLOTS (zero-based): 0: IceSpirits, 1: Musketeer, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 10.0s / 18s | spent 13 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "10a7989fc23f0f89cc32e905acfa2c908e8d1987b3e3e6b31040ebe0120d9ad6",
+      "matches_recorded_outcome": true
+    },
+    {
+      "task": "04-critical-cycle-and-connect",
+      "label": "sol_cannon_reference_position",
+      "model": "openai/gpt-6.1-sol",
+      "reference": false,
+      "changes": {
+        "1": {
+          "x": 7,
+          "y": 11.5
+        }
+      },
+      "decision_offset": 0,
+      "success": false,
+      "outcome": {
+        "result": "loss",
+        "crowns_for": 0,
+        "crowns_against": 1,
+        "enemy_tower_damage_frac": 0.2527,
+        "own_tower_damage_frac": 0.3127,
+        "ticks": 5845,
+        "tower_damage": 250,
+        "spent_elixir": 14,
+        "plays": [
+          {
+            "decision": 0,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 1,
+            "card": "Cannon",
+            "x": 126000,
+            "y": 207000,
+            "cost": 3
+          },
+          {
+            "decision": 2,
+            "card": "Skeletons",
+            "x": 90000,
+            "y": 189000,
+            "cost": 1
+          },
+          {
+            "decision": 3,
+            "card": "HogRider",
+            "x": 63000,
+            "y": 270000,
+            "cost": 4
+          },
+          {
+            "decision": 4,
+            "card": "Fireball",
+            "x": 63000,
+            "y": 459000,
+            "cost": 4
+          },
+          {
+            "decision": 5,
+            "card": "IceSpirits",
+            "x": 63000,
+            "y": 153000,
+            "cost": 1
+          }
+        ],
+        "opponent_plays": [],
+        "elapsed_s": 10.25,
+        "rejected_actions": 0
+      },
+      "final_tower_hp": [
+        [
+          4824,
+          0,
+          3052
+        ],
+        [
+          4824,
+          3052,
+          291
+        ]
+      ],
+      "boards": [
+        {
+          "decision": 0,
+          "tick": 5640,
+          "observation": "DECISION 1 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:18 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.0 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: IceSpirits (1), Skeletons (1), IceGolemite (2), Log (2) | next card: Cannon\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Giant hp 3968/3968 at (3.5, 12.0) left lane\nHAND SLOTS (zero-based): 0: IceSpirits, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 0.0s / 18s | spent 0 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 1,
+          "tick": 5680,
+          "observation": "DECISION 2 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:16 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 8.2 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Cannon (3), Skeletons (1), IceGolemite (2), Log (2) | next card: Fireball\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD: none\nENEMY UNITS ON FIELD:\n  - Giant (stunned) hp 3640/3968 at (3.7, 10.7) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\nHAND SLOTS (zero-based): 0: Cannon, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 2.0s / 18s | spent 1 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 2,
+          "tick": 5720,
+          "observation": "DECISION 3 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:14 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 7.3 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Fireball (4), Skeletons (1), IceGolemite (2), Log (2) | next card: HogRider\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Cannon hp 797/824 at (7.5, 11.5) center lane\nENEMY UNITS ON FIELD:\n  - Giant hp 3220/3968 at (5.0, 10.7) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7, 11.5)\nHAND SLOTS (zero-based): 0: Fireball, 1: Skeletons, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 4.0s / 18s | spent 4 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 3,
+          "tick": 5760,
+          "observation": "DECISION 4 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:12 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 8.4 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Fireball (4), HogRider (4), IceGolemite (2), Log (2) | next card: Musketeer\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Cannon hp 489/824 at (7.5, 11.5) center lane\n  - Skeletons hp 81/81 at (5.9, 11.8) left lane\n  - Skeletons hp 81/81 at (4.6, 9.5) left lane\n  - Skeletons hp 81/81 at (6.2, 10.1) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 2246/3968 at (5.1, 10.7) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7, 11.5)\n  - [0:12] played Skeletons @ (5.0, 10.5)\nHAND SLOTS (zero-based): 0: Fireball, 1: HogRider, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 6.0s / 18s | spent 5 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 4,
+          "tick": 5800,
+          "observation": "DECISION 5 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:10 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 6.6 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 450/3052, right princess tower 3052/3052\nYOUR HAND: Fireball (4), Musketeer (4), IceGolemite (2), Log (2) | next card: IceSpirits\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Skeletons hp 81/81 at (5.9, 11.8) left lane\n  - Skeletons hp 81/81 at (4.5, 9.4) left lane\n  - Skeletons hp 81/81 at (6.2, 10.1) left lane\n  - HogRider hp 1697/1697 at (3.3, 16.9) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 1340/3968 at (5.0, 10.6) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7, 11.5)\n  - [0:12] played Skeletons @ (5.0, 10.5)\n  - [0:10] played HogRider @ (3.5, 15.0)\nHAND SLOTS (zero-based): 0: Fireball, 1: Musketeer, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 8.0s / 18s | spent 9 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        },
+        {
+          "decision": 5,
+          "tick": 5840,
+          "observation": "DECISION 6 (you are BLUE) | action mode: coordinates-v1\nTIME LEFT: 0:08 (OVERTIME - next tower destroyed wins; if none falls, the side with more total tower HP wins), elixir x3\nCROWNS: you 0 - enemy 0\nYOUR ELIXIR: 4.8 / 10\nYOUR TOWERS: king tower 4824/4824, left princess tower 250/3052, right princess tower 3052/3052\nENEMY TOWERS (left/right as you see them): king tower 4824/4824, left princess tower 291/3052, right princess tower 3052/3052\nYOUR HAND: IceSpirits (1), Musketeer (4), IceGolemite (2), Log (2) | next card: Cannon\nENEMY CARDS SEEN SO FAR: Giant\nYOUR UNITS ON FIELD:\n  - Skeletons hp 81/81 at (5.0, 10.9) left lane\n  - Skeletons hp 81/81 at (4.2, 8.0) left lane\n  - Skeletons hp 81/81 at (6.2, 10.1) left lane\n  - HogRider hp 1479/1697 at (3.3, 21.7) left lane\nENEMY UNITS ON FIELD:\n  - Giant hp 608/3968 at (4.7, 9.2) left lane\nYOUR LAST MOVES:\n  - [0:16] played IceSpirits @ (3.5, 10.5)\n  - [0:14] played Cannon @ (7, 11.5)\n  - [0:12] played Skeletons @ (5.0, 10.5)\n  - [0:10] played HogRider @ (3.5, 15.0)\n  - [0:08] played Fireball @ (3.5, 25.5)\nHAND SLOTS (zero-based): 0: IceSpirits, 1: Musketeer, 2: IceGolemite, 3: Log\nSCENARIO: Cycle and connect with a critical-health tower | elapsed 10.0s / 18s | spent 13 elixir\nVisible pre-scenario history: none\nObjective: Win the actual match within the remaining 18 seconds of overtime. Surviving, dealing damage, or leading on HP before the match ends earns no credit.\nPlay: cr play SLOT X Y (own-frame tiles); cr wait. No automatic placement snapping."
+        }
+      ],
+      "configuration_sha256": "10a7989fc23f0f89cc32e905acfa2c908e8d1987b3e3e6b31040ebe0120d9ad6"
+    }
+  ]
+}

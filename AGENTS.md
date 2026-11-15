@@ -56,6 +56,8 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/royalebench_v8.md`](docs/royalebench_v8.md): historical 18-task merge of v6@1 and v7@1, exact source provenance, retained grading, runtime-specific validation and publication.
 - [`docs/royalebench_v9.md`](docs/royalebench_v9.md): 21-task extension of v8@1 with Hog body-block, Mini P.E.K.K.A. kite and Balloon Fireball, exact provenance, validation, all-task resolution playback and observed pass-rate difficulty calibration.
 - [`runs/README.md`](runs/README.md): compact evidence policy and instructions to regenerate local run artifacts.
+- [`docs/royalebench_v9_failure_analysis.md`](docs/royalebench_v9_failure_analysis.md): all 12 full v9 model runs, failure mechanisms, independently reproduced policies, timing/aim/allocation counterfactuals, and harness-step-limit confounds.
+- [`runs/royalebench-v9/failure-analysis.json`](runs/royalebench-v9/failure-analysis.json): 252-attempt verifier and trace audit, run provenance, source hashes, per-model completion and task outcomes; linked simulator probes are documented in the failure review.
 - [`runs/royalebench-v9/difficulty.json`](runs/royalebench-v9/difficulty.json): timestamped 12-run task pass-rate snapshot and thresholds behind v9's benchmark-level difficulty labels.
 - [`runs/royalebench-v9/checks.json`](runs/royalebench-v9/checks.json): source identity, passing references, publication, live API resolution hashes and browser playback checks for all 21 v9 tasks.
 - [`runs/royalebench-v9/model-results.json`](runs/royalebench-v9/model-results.json): twelve complete v9 model runs from Valkyrie, per-task objective and game-win scores, run IDs, result checksums and representative action sequences.
@@ -95,7 +97,10 @@ Before creating or changing any task under `benchmarks/`, read [`docs/task_desig
 - [`docs/data_collection_validation.json`](docs/data_collection_validation.json): local, container, archival and hosted-pilot validation evidence, including RoyaleBench v1 revision `@2`.
 - [`docs/valkyrie_guide.md`](docs/valkyrie_guide.md): concise evaluation workflow and how Valkyrie supports the hackathon goal.
 - [`docs/modal_guide.md`](docs/modal_guide.md): concise Modal setup, compute workflow, public writeup deployment and update command, and links.
-- [`docs/writeup.html`](docs/writeup.html): standalone benchmark writeup and development leaderboard, published by `modal_writeup.py`.
+- [`docs/writeup.html`](docs/writeup.html): Vals AI-styled public writeup with Background, grouped Results, a 21-task catalog, Methodology, the frozen 12-model v9 comparison, sortable performance by task type, task heatmap, synchronized recorded gameplay, cost chart and limitations, served by `modal_writeup.py`.
+- [`docs/writeup.md`](docs/writeup.md): Vals reference styling, published RoyaleBench section layouts and Pareto chart controls, writeup evidence boundaries, snapshot and replay rebuilding, local-file and HTTP playback, browser checks, and Modal publication.
+- [`docs/writeup-assets/results.json`](docs/writeup-assets/results.json): sanitized frozen v9 results for 12 complete model runs, with per-task costs, settings and source checksums.
+- [`docs/writeup-assets/replay-provenance.json`](docs/writeup-assets/replay-provenance.json): independently checked source and export hashes for the synchronized historical model/reference comparison.
 - [`docs/match_tasks.md`](docs/match_tasks.md): full-match Harbor tasks played through the `cr` CLI, referee isolation, replay grading, rewards, and how to build and publish them.
 - [`docs/valkyrie_smoke.md`](docs/valkyrie_smoke.md): project-specific Modal credential setup and a minimal evaluation run.
 - [`docs/build_eval_track.md`](docs/build_eval_track.md): hackathon track requirements, Valkyrie setup, task format, and submission guidance. Use this as the local source for track requirements.

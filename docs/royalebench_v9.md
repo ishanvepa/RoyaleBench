@@ -133,6 +133,15 @@ benchmark-level metadata. Published task files, task digests and reference
 resolution evidence retain their original bytes; the `task.toml` files inside
 the frozen packages still contain their historical difficulty estimates.
 
+## Model failure analysis
+
+The [cross-model failure review](royalebench_v9_failure_analysis.md) covers the
+12 finished full v9 runs behind the difficulty snapshot: 91/252 objective passes,
+127 completed failures and 34 incomplete attempts. It compares recorded policies
+with winning references and tests selected timing, aim and resource-allocation
+counterfactuals using each task's packaged simulator runtime. It also identifies
+the mini-SWE-agent step limit as a material comparison confound.
+
 ## Build and prepare resolutions
 
 ```sh
